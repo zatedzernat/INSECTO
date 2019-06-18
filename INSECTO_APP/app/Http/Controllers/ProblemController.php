@@ -14,7 +14,7 @@ class ProblemController extends Controller
      */
     public function index()
     {
-        //
+        return view('problem.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class ProblemController extends Controller
      */
     public function create()
     {
-        //
+        dd('create');
     }
 
     /**

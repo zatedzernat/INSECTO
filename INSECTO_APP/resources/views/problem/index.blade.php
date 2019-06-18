@@ -1,11 +1,11 @@
 @extends('master')
 
 @section('title')
-Room ADD
+ALL Problems
 @endsection
 
 @section('content')
 <div align="center">
-    <h3>ALL Room</h3>
+    <h3>ALL Problems</h3>
 </div>
 @endsection

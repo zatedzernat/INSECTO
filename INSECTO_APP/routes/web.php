@@ -15,5 +15,8 @@ Route::get('/', function () {
     return view('master');
 });
 
-Route::resource('room', 'RoomController');
+Route::get('/problem', 'ProblemController@create');
+
+Route::resource('rooms', 'RoomController');
+Route::resource('problems', 'ProblemController');
 
