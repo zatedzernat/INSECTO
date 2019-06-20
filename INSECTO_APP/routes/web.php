@@ -15,9 +15,13 @@ Route::get('/', function () {
     return view('master');
 });
 
-Route::get('problem', 'ProblemController@create');
+Route::get('/problem/{id}', 'ProblemController@create')
+->where('id', '[0-9]+');
+Route::get('/problem', 'ProblemController@index');
+Route::post('/problem/send', 'ProblemController@store');
+
 Route::get('rooms', 'RoomController@index');
 Route::get('items', 'ItemController@index');
+Route::get('problems', 'ProblemController@show');
 
-Route::resource('problems', 'ProblemController');
 

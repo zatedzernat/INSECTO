@@ -61,7 +61,7 @@
                             Admin
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{{url('problems')}}">Problems</a>
+                            <a class="dropdown-item" href="/problems">Problems</a>
                             <a class="dropdown-item" href="{{url('rooms')}}">Rooms</a>
                             <a class="dropdown-item" href="/items">Items</a>
                             <a class="dropdown-item" href="#">Problem_description</a>
@@ -71,9 +71,19 @@
             </div>
         </div>
     </nav>
+    <br>
 
     @yield('content')
-
+    {{-- @isset($status)
+    <div class="alert alert-success">
+        <p>{{$status}}</p>
+    </div>
+    @endisset --}}
+    @if (session('status'))
+        <div class="alert alert-success">
+            <p>{{session('status')}}</p>
+        </div>
+    @endif
 </body>
 
 </html>

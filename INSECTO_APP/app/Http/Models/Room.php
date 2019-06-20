@@ -10,6 +10,6 @@ class Room extends Model
     protected $primaryKey = 'room_id';
 
     public function items () {
-        return $this->hasMany('App\Http\Models\Room');
+        return $this->hasMany('App\Http\Models\Item','room_id','room_id');
     }
 }

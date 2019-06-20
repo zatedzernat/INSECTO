@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Problem;
+use App\Http\Models\Problem;
 use Illuminate\Http\Request;
+use App\Http\Models\Item;
+use Carbon\Carbon;
 
 class ProblemController extends Controller
 {
@@ -14,7 +16,8 @@ class ProblemController extends Controller
      */
     public function index()
     {
-        return view('problem.index');
+        // return view('problem.index');
+        return view('problem.create');
     }
 
     /**
@@ -22,9 +25,17 @@ class ProblemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('problem.create');
+        $item = Item::find($id);
+        if (empty($item)) {
+            $hasItem = false;
+        } else {
+            $hasItem = true;
+        }
+        return view('problem.create')
+            ->with('item', $item)
+            ->with('hasItem', $hasItem);
     }
 
     /**
@@ -35,18 +46,48 @@ class ProblemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'room_name' => 'required',
+            'floor' => 'required',
+            'item_id' => 'required',
+            'item_name' => 'required',
+            //problem_detail_id
+            //problem_des
+        ]);
+
+        $problem_detail_id = $request->input('problem_detail_id');
+        if ($problem_detail_id == "etc") {
+            $request->validate([
+                'problem_description' => 'required'
+            ]);
+            dd(555);
+        }else {
+            $problem = new Problem([
+                'problem_date' => Carbon::now()->toDateTime(),
+                'problem_detail_id' => $problem_detail_id,
+                'problem_status' => "waiting",
+                'cancel_flag' => "N"          
+            ]);
+
+            $problem->save();
+
+            return redirect('/')
+            ->with('status','send problem success');
+
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Problem  $problem
+     * @param  App\Http\Models\Problem  $problem
      * @return \Illuminate\Http\Response
      */
-    public function show(Problem $problem)
+    public function show()
     {
-        //
+        $problems = Problem::where('cancel_flag',"N")->get();
+        return view('problem.problems')
+        ->with(compact('problems'));
     }
 
     /**
