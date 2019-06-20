@@ -14,8 +14,12 @@ Problems
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>problem ID</th>
                 <th>Date</th>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Room Name</th>
+                <th>Floor</th>
                 <th>Problem Description</th>
                 <th>Problem Status</th>
                 <th>Create At</th>
@@ -30,6 +34,18 @@ Problems
                     </td>
                     <td>
                         {{$problem->problem_date}}
+                    </td>
+                    <td>
+                        {{$problem->problem_detial->item->item_id}}
+                    </td>
+                    <td>
+                        {{$problem->problem_detial->item->item_name}}
+                    </td>
+                    <td>
+                        {{$problem->problem_detial->item->room->room_name}}
+                    </td>
+                    <td>
+                        {{$problem->problem_detial->item->room->floor}}
                     </td>
                     <td>
                         {{$problem->problem_detial->problem_descriptions->problem_des}}
