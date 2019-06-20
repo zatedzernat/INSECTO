@@ -14,7 +14,10 @@ class ProblemDescriptionController extends Controller
      */
     public function index()
     {
-        //
+        $problems_desc = Problem_Description::where('cancel_flag',"N")->get();
+
+        return view('problem_des')
+        ->with(compact('problems_desc'));
     }
 
     /**

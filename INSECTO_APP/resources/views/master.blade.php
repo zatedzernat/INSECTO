@@ -64,7 +64,7 @@
                             <a class="dropdown-item" href="/problems">Problems</a>
                             <a class="dropdown-item" href="{{url('rooms')}}">Rooms</a>
                             <a class="dropdown-item" href="/items">Items</a>
-                            <a class="dropdown-item" href="#">Problem_description</a>
+                            <a class="dropdown-item" href="/problem_des">Problem_description</a>
                         </div>
                     </li>
                 </ul>
