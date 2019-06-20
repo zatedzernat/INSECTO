@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Item;
+use App\Http\Models\Item;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -14,7 +14,11 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = Item::where('cancel_flag','N')->get();
+        // $item = Item::find(1);
+        // echo $item->room->room_name;
+        return view('item.items')
+            ->with(compact('items'));
     }
 
     /**

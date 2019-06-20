@@ -24,7 +24,7 @@ class ProblemController extends Controller
      */
     public function create()
     {
-        dd('create');
+        return view('problem.create');
     }
 
     /**

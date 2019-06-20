@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Room;
+use App\Http\Models\Room;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -12,9 +12,19 @@ class RoomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
-        return view('room.index');
+        $rooms = Room::where('cancel_flag', 'N')->get();
+        //or
+        // $rooms = Room::all();
+        // $rooms = $rooms->reject(function($room) {
+        //     return $room->cancel_flag == 'Y';
+        // })->toArray(); 
+
+        return view('room.rooms')
+            ->with(compact('rooms'));
     }
 
     /**
