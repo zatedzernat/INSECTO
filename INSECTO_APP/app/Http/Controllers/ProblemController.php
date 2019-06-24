@@ -28,18 +28,20 @@ class ProblemController extends Controller
     public function create($id)
     {
         $item = Item::find($id);
-        //for reject problem_detail that cancel flag === 'Y'
-        $problems_det = $item->problem_details;
-        $problems_det = $problems_det->reject(function ($problem_det) {
-            return $problem_det->cancel_flag == "Y";
-        });
-        // foreach($problems_det as $problem_det) {
-        //     $rs = $problem_det->problem_descriptions->problem_des;
-        //     echo $rs." ";
-        // }
+        
         if (empty($item)) {
+            $problems_det = null;
             $hasItem = false;
         } else {
+            //for reject problem_detail that cancel flag === 'Y'
+            $problems_det = $item->problem_details;
+            $problems_det = $problems_det->reject(function ($problem_det) {
+                return $problem_det->cancel_flag == "Y";
+            });
+            // foreach($problems_det as $problem_det) {
+            //     $rs = $problem_det->problem_descriptions->problem_des;
+            //     echo $rs." ";
+            // }
             $hasItem = true;
         }
         return view('problem.create')
@@ -70,20 +72,20 @@ class ProblemController extends Controller
             $request->validate([
                 'problem_description' => 'required'
             ]);
+            // will create new problem_detail (set cancel_falg to Y) and problem_description
             dd(555);
-        }else {
+        } else {
             $problem = new Problem([
                 'problem_date' => Carbon::now()->toDateTime(),
                 'problem_detail_id' => $problem_detail_id,
                 'problem_status' => "waiting",
-                'cancel_flag' => "N"          
+                'cancel_flag' => "N"
             ]);
 
             $problem->save();
 
             return redirect('/')
-            ->with('status','send problem success');
-
+                ->with('status', 'send problem success');
         }
     }
 
@@ -95,9 +97,9 @@ class ProblemController extends Controller
      */
     public function show()
     {
-        $problems = Problem::where('cancel_flag',"N")->get();
+        $problems = Problem::where('cancel_flag', "N")->get();
         return view('problem.problems')
-        ->with(compact('problems'));
+            ->with(compact('problems'));
     }
 
     /**
