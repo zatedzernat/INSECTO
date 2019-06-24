@@ -14,7 +14,9 @@ class ProblemDetailController extends Controller
      */
     public function index()
     {
-        //
+        $problems_det = Problem_Detail::all();
+        return view('problem_det')
+        ->with(compact('problems_det'));
     }
 
     /**

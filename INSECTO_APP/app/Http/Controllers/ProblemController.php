@@ -28,6 +28,12 @@ class ProblemController extends Controller
     public function create($id)
     {
         $item = Item::find($id);
+        /* for reject problem_detail that cancel flag === 'Y'
+        $problems_det = $item->problem_details;
+        $problems = $problems_det->reject(function ($problem_det) {
+            return $problem_det->cancel_flag === 'N';
+        });
+        */
         if (empty($item)) {
             $hasItem = false;
         } else {
@@ -36,6 +42,7 @@ class ProblemController extends Controller
         return view('problem.create')
             ->with('item', $item)
             ->with('hasItem', $hasItem);
+            // ->with(compact('problems'));
     }
 
     /**
