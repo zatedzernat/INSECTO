@@ -87,11 +87,11 @@ Send Problem
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputState">Problem</label>
-                @isset($item)
-                    @if (!empty($item))
+                @isset($problems_det)
+                    @if (!empty($problems_det))
                     <select name="problem_detail_id" id="selectProblem" class="form-control" onchange="checkEtc()">
                         <option selected>-- select problems --</option>
-                        @foreach ($item->problem_details as $problem_detail)
+                        @foreach ($problems_det as $problem_detail)
                         <option value="{{$problem_detail->problem_detail_id}}">{{$problem_detail->problem_descriptions->problem_des}}</option>
                         @endforeach
                         <option value="etc">etc</option>
