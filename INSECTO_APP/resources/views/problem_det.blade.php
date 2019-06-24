@@ -20,6 +20,7 @@ Problem Details
                 <th>Cancel Flag</th>
                 <th>Create At</th>
                 <th>Update At</th>
+                <th>Cancel Flag</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,12 @@ Problem Details
                     </td>
                     <td>
                         {{$problem_det->updated_at}}
+                    </td>
+                    <td>
+                        <a href="" class="btn btn-warning"> 
+                            {{-- href ex: {{action('UserController@edit',$user['id'])}} --}}
+                            Change
+                        </a>
                     </td>
                 </tr>
             @endforeach

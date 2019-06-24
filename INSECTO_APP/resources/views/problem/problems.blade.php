@@ -24,6 +24,8 @@ Problems
                 <th>Problem Status</th>
                 <th>Create At</th>
                 <th>Update At</th>
+                <th>Fixing</th>
+                <th>Success</th>
             </tr>
         </thead>
         <tbody>
@@ -58,6 +60,18 @@ Problems
                     </td>
                     <td>
                         {{$problem->updated_at}}
+                    </td>
+                    <td>
+                        <a href="" class="btn btn-warning"> 
+                           {{-- href ex: {{action('UserController@edit',$user['id'])}} --}}
+                            Fixing
+                        </a>
+                    </td>
+                    <td>
+                        <a href="" class="btn btn-success"> 
+                            {{-- href ex: {{action('UserController@edit',$user['id'])}} --}}
+                            Success
+                        </a>
                     </td>
                 </tr>
             @endforeach
