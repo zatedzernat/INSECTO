@@ -102,7 +102,7 @@ Send Problem
                 @endisset
             </div>
             <div class="form-group col-md-2" style="display: none" id="problemEtc" >
-                <label for="inputZip">Please Specify</label>
+                <label for="inputZip">Problem Description</label>
                 <input type="text" class="form-control" name="problem_description">
             </div>
         </div>

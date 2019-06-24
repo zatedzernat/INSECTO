@@ -6,6 +6,8 @@ use App\Http\Models\Problem;
 use Illuminate\Http\Request;
 use App\Http\Models\Item;
 use Carbon\Carbon;
+use App\Http\Models\Problem_Description;
+use App\Http\Models\Problem_Detail;
 
 class ProblemController extends Controller
 {
@@ -28,7 +30,7 @@ class ProblemController extends Controller
     public function create($id)
     {
         $item = Item::find($id);
-        
+
         if (empty($item)) {
             $problems_det = null;
             $hasItem = false;
@@ -73,7 +75,29 @@ class ProblemController extends Controller
                 'problem_description' => 'required'
             ]);
             // will create new problem_detail (set cancel_falg to Y) and problem_description
-            dd(555);
+            $problem_des = new Problem_Description([
+                'problem_des' => $request->input('problem_description'),
+                'cancel_flag' => "N"
+            ]);
+
+            $problem_des->save();
+            $problem_des_id = $problem_des->problem_des_id;
+
+            $problem_det = new Problem_Detail([
+                'item_id' => $request->input('item_id'),
+                'problem_des_id' => $problem_des_id,
+                'cancel_flag' => "Y"
+            ]);
+
+            $problem_det->save();
+            $problem_detail_id = $problem_det->problem_detail_id;
+            $problem = new Problem([
+                'problem_date' => Carbon::now()->toDateTime(),
+                'problem_detail_id' => $problem_detail_id,
+                'problem_status' => "waiting",
+                'cancel_flag' => "N"
+            ]);
+            $problem->save();
         } else {
             $problem = new Problem([
                 'problem_date' => Carbon::now()->toDateTime(),
@@ -83,10 +107,9 @@ class ProblemController extends Controller
             ]);
 
             $problem->save();
-
-            return redirect('/')
-                ->with('status', 'send problem success');
         }
+        return redirect('/')
+            ->with('status', 'send problem success');
     }
 
     /**
