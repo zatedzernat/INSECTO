@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             ItemsTableSeeder::class,
             Problem_DescriptionsTableSeeder::class,
             Problem_DetailsTableSeeder::class,
+            BrandsTableSeeder::class,
+            StatusesTableSeeder::class,
             // ProblemsTableSeeder::class
         ]);
     }

@@ -66,6 +66,8 @@
                             <a class="dropdown-item" href="{{url('rooms')}}">Rooms</a>
                             <a class="dropdown-item" href="/items">Items</a>
                             <a class="dropdown-item" href="/problem_des">Problem_description</a>
+                            <a class="dropdown-item" href="/brands">Brands</a>
+                            <a class="dropdown-item" href="/statuses">Statuses</a>
                         </div>
                     </li>
                 </ul>
