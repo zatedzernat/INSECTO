@@ -17,11 +17,12 @@ class CreateItemTypesTable extends Migration
             $table->bigIncrements('type_id');
             $table->string('type_name',45);
             $table->string('cancel_flag',1);
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->timestamps();
             $table->string('update_by',45);
  
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

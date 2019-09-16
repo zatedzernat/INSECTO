@@ -18,8 +18,7 @@ class CreateProblemDescriptionsTable extends Migration
             $table->string('problem_description',100);
             $table->unsignedBigInteger('type_id');
             $table->string('cancel_flag',1);
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->timestamps();
             $table->string('update_by',45);
 
             $table->foreign('type_id')
@@ -28,6 +27,8 @@ class CreateProblemDescriptionsTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
