@@ -14,16 +14,31 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->bigIncrements('item_id');
+            $table->string('item_code',45);
             $table->string('item_name',45);
-            $table->string('picture',45);
-            $table->unsignedBigInteger('room_id');
+            $table->string('room_code',45);
+            $table->unsignedBigInteger('brand_id'); // form ของ fk ที่เป็นตัวเลข
+            $table->string('serial_number',45);
+            $table->string('model',45);
+            $table->unsignedBigInteger('type_id');
             $table->string('cancel_flag',1);
             $table->timestamps();
 
-            $table->foreign('room_id')
-            ->references('room_id')
+            $table->foreign('room_code')
+            ->references('room_code')
             ->on('rooms')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
+            $table->foreign('brand_id')
+            ->references('brand_id')
+            ->on('brands')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
+            $table->foreign('type_id')
+            ->references('type_id')
+            ->on('item__TypesTable')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });

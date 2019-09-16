@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected $fillable = ['floor','room_name','cancel_flag'];
-    protected $primaryKey = 'room_id';
+    protected $fillable = ['room_name','building_code'];
+    protected $primaryKey = 'room_code';
 
-    public function items () {
-        return $this->hasMany('App\Http\Models\Item','room_id','room_id');
+    public function buildings () {
+        return $this->belongsTo('App\Http\Models\Building','building_code');
     }
 }
