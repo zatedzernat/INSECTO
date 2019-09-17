@@ -19,7 +19,7 @@ class CreateProblemDescriptionsTable extends Migration
             $table->unsignedBigInteger('type_id');
             $table->string('cancel_flag',1);
             $table->timestamps();
-            $table->string('update_by',45);
+            $table->string('update_by',45)->nullable();
 
             $table->foreign('type_id')
             ->references('type_id')

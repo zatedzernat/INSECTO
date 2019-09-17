@@ -18,7 +18,7 @@ class CreateItemTypesTable extends Migration
             $table->string('type_name',45);
             $table->string('cancel_flag',1);
             $table->timestamps();
-            $table->string('update_by',45);
+            $table->string('update_by',45)->nullable();
  
         });
 

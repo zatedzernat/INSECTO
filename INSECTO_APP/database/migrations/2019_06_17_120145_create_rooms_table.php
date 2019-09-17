@@ -19,6 +19,7 @@ class CreateRoomsTable extends Migration
             $table->string('building_code',45)->unsigned();
             $table->string('cancel_flag',1);
             $table->timestamps();
+            $table->string('update_by',45)->nullable();
 
             $table->foreign('building_code')
             ->references('building_code')

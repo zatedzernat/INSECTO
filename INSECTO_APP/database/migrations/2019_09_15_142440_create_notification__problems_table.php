@@ -15,14 +15,13 @@ class CreateNotificationProblemsTable extends Migration
     {
         Schema::create('notification__problems', function (Blueprint $table) {
             $table->bigIncrements('noti_id');
-            $table->string('item_code',45);
+            $table->string('item_code',45)->unsigned();
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('problem_des_id');
             $table->string('problem_description',100);
             $table->string('cancel_flag',1);
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
-            $table->string('update_by',45);
+            $table->timestamps();
+            $table->string('update_by',45)->nullable();
 
             $table->foreign('item_code')
             ->references('item_code')

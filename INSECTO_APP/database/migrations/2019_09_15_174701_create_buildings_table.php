@@ -18,6 +18,7 @@ class CreateBuildingsTable extends Migration
             $table->string('building_name',45);
             $table->string('cancel_flag',1);
             $table->timestamps();
+            $table->string('update_by',45)->nullable();
         });
 
         Schema::enableForeignKeyConstraints();

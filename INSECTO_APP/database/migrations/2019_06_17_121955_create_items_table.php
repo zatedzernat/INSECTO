@@ -16,13 +16,14 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->string('item_code',45);
             $table->string('item_name',45);
-            $table->string('room_code',45);
+            $table->string('room_code',45)->unsigned();
             $table->unsignedBigInteger('brand_id'); // form ของ fk ที่เป็นตัวเลข
-            $table->string('serial_number',45);
-            $table->string('model',45);
+            $table->string('serial_number',45)->nullable();
+            $table->string('model',45)->nullable();
             $table->unsignedBigInteger('type_id');
             $table->string('cancel_flag',1);
             $table->timestamps();
+            $table->string('update_by',45)->nullable();
 
             $table->foreign('room_code')
             ->references('room_code')
