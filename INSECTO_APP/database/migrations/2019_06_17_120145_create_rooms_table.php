@@ -16,7 +16,7 @@ class CreateRoomsTable extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->string('room_code',45);
             $table->string('room_name',45);
-            $table->string('building_code',45);
+            $table->string('building_code',45)->unsigned();
             $table->string('cancel_flag',1);
             $table->timestamps();
 
@@ -26,6 +26,8 @@ class CreateRoomsTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
+
+        Schema::enableForeignKeyConstraints();
 
     }
 

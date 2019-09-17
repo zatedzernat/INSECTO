@@ -19,6 +19,8 @@ class CreateBuildingsTable extends Migration
             $table->string('cancel_flag',1);
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

@@ -42,6 +42,8 @@ class CreateNotificationProblemsTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

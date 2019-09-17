@@ -18,6 +18,8 @@ class CreateStatusesTable extends Migration
             $table->string('status_name',45);
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

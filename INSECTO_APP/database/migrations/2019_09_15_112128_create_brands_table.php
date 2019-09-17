@@ -20,8 +20,9 @@ class CreateBrandsTable extends Migration
             $table->string('update_by',45);
             $table->timestamps();
 
-            Schema::enableForeignKeyConstraints();
         });
+        
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
