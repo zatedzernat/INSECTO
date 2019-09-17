@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification_Problem extends Model
 {
-    protected $fillable = ['item_code','status_id','problem_des_id','problem_description','cancel_flag','created_at','updated_at','updated_by'];
+    protected $fillable = ['item_code','status_id','problem_des_id','problem_description','cancel_flag','updated_by'];
     protected $primaryKey = 'noti_id';
 
     public function status() {

@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected $fillable = ['room_name','building_code'];
+    protected $fillable = ['room_code','room_name','building_code','cancel_flag','update_by'];
     protected $primaryKey = 'room_code';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     public function buildings () {
         return $this->belongsTo('App\Http\Models\Building','building_code');
