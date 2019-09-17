@@ -14,6 +14,7 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
+            //if pk is string, it shoukld has primary() function
             $table->string('item_code',45)->primary();
             $table->string('item_name',45);
             $table->string('room_code',45);

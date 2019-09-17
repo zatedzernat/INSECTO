@@ -14,6 +14,7 @@ class CreateRoomsTable extends Migration
     public function up()
     {
         Schema::create('rooms', function (Blueprint $table) {
+            //if pk is string, it shoukld has primary() function
             $table->string('room_code',45)->primary();
             $table->string('room_name',45);
             $table->string('building_code',45);
