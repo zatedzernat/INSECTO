@@ -15,7 +15,7 @@ class CreateNotificationProblemsTable extends Migration
     {
         Schema::create('notification__problems', function (Blueprint $table) {
             $table->bigIncrements('noti_id');
-            $table->string('item_code',45)->unsigned();
+            $table->string('item_code',45);
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('problem_des_id');
             $table->string('problem_description',100);

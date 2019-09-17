@@ -14,9 +14,9 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->string('item_code',45);
+            $table->string('item_code',45)->primary();
             $table->string('item_name',45);
-            $table->string('room_code',45)->unsigned();
+            $table->string('room_code',45);
             $table->unsignedBigInteger('brand_id'); // form ของ fk ที่เป็นตัวเลข
             $table->string('serial_number',45)->nullable();
             $table->string('model',45)->nullable();
