@@ -23,7 +23,7 @@ class CreateProblemDescriptionsTable extends Migration
 
             $table->foreign('type_id')
             ->references('type_id')
-            ->on('item_types')
+            ->on('item__types')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });

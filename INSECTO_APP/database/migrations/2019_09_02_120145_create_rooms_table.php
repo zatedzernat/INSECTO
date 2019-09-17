@@ -23,7 +23,7 @@ class CreateRoomsTable extends Migration
 
             $table->foreign('building_code')
             ->references('building_code')
-            ->on('buildings_table')
+            ->on('buildings')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });

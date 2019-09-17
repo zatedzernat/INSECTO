@@ -31,13 +31,13 @@ class CreateNotificationProblemsTable extends Migration
 
             $table->foreign('status_id')
             ->references('status_id')
-            ->on('status')
+            ->on('statuses')
             ->onUpdate('cascade')
             ->onDelete('cascade');
 
             $table->foreign('problem_des_id')
             ->references('problem_des_id')
-            ->on('problem_descriptions')
+            ->on('problem__descriptions')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
