@@ -15,7 +15,8 @@ class CreateBuildingsTable extends Migration
     {
         Schema::create('buildings', function (Blueprint $table) {
             //if pk is string, it shoukld has primary() function
-            $table->string('building_code',45)->primary();
+            $table->bigIncrements('building_id');
+            $table->string('building_code',45);
             $table->string('building_name',45);
             $table->string('cancel_flag',1);
             $table->timestamps();

@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected $fillable = ['room_code','room_name','building_code','cancel_flag','update_by'];
-    protected $primaryKey = 'room_code';
-    protected $keyType = 'string';
-    public $incrementing = false;
+    protected $fillable = ['room_code','room_name','building_id','cancel_flag','update_by'];
+    protected $primaryKey = 'room_id';
 
     public function buildings () {
-        return $this->belongsTo('App\Http\Models\Building','building_code');
+        return $this->belongsTo('App\Http\Models\Building','building_id');
     }
 
     public function findByCancelFlag($string) {

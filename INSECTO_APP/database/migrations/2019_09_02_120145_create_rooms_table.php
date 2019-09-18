@@ -15,15 +15,16 @@ class CreateRoomsTable extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             //if pk is string, it shoukld has primary() function
-            $table->string('room_code',45)->primary();
+            $table->bigIncrements('room_id');
+            $table->string('room_code',45);
             $table->string('room_name',45);
-            $table->string('building_code',45);
+            $table->unsignedBigInteger('building_id');
             $table->string('cancel_flag',1);
             $table->timestamps();
             $table->string('update_by',45)->nullable();
 
-            $table->foreign('building_code')
-            ->references('building_code')
+            $table->foreign('building_id')
+            ->references('building_id')
             ->on('buildings')
             ->onUpdate('cascade')
             ->onDelete('cascade');

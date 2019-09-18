@@ -14,7 +14,7 @@ class Problem_Description extends Model
     }
 
     public function notification_problems() {
-        return $this->hasMany('App\Http\Models\Notification_Problem','problem_detail_id','problem_detail_id');
+        return $this->hasMany('App\Http\Models\Notification_Problem','problem_des_id','problem_des_id');
     }
 
     public function findByCancelFlag($string) {
