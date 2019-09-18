@@ -17,7 +17,11 @@ class Notification_Problem extends Model
         return $this->belongsTo('App\Http\Models\Item','item_id');
     }
 
-    public function problem_description() {
+    /* 
+    * name can not use problem_description 
+    * because it's same as column_name
+    */
+    public function problem_desc() {
         return $this->belongsTo('App\Http\Models\Problem_Description','problem_des_id');
     }
 
