@@ -77,7 +77,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'update_by' => 'seeder'
         ]);
         DB::table('problem__descriptions')->insert([
-            'problem_description' => 'โถปัสสาวะชำรุด',
+            'problem_description' => 'โถ่ชักโครกชำรุด',
             'type_id' => 3,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),

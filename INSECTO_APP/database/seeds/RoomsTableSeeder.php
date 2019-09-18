@@ -41,7 +41,7 @@ class RoomsTableSeeder extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'CB-2308',
-            'room_name' => 'Classroom',
+            'room_name' => 'CB_2308',
             'building_id' => 2,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
