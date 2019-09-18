@@ -18,7 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('item_code',45)->primary();
             $table->string('item_name',45);
             $table->string('room_code',45);
-            $table->unsignedBigInteger('brand_id'); // form ของ fk ที่เป็นตัวเลข
+            $table->unsignedBigInteger('brand_id')->nullable(); // form ของ fk ที่เป็นตัวเลข
             $table->string('serial_number',45)->nullable();
             $table->string('model',45)->nullable();
             $table->unsignedBigInteger('type_id');
