@@ -61,7 +61,7 @@
                             Admin
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/problems">Problems</a>
+                            <a class="dropdown-item" href="/noti_problems">Notification_Problems</a>
                             <a class="dropdown-item" href="/problem_detail">Problem_detial</a>
                             <a class="dropdown-item" href="{{url('rooms')}}">Rooms</a>
                             <a class="dropdown-item" href="/items">Items</a>

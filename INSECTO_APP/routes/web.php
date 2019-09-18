@@ -24,7 +24,7 @@ Route::get('rooms', 'RoomController@index');
 Route::get('items', 'ItemController@index');
 Route::get('problem_des', 'ProblemDescriptionController@index');
 Route::get('problem_detail', 'ProblemDetailController@index');
-Route::get('problems', 'ProblemController@show');
+Route::get('noti_problems', 'NotificationProblemController@show');
 Route::get('brands','BrandController@index');
 Route::get('statuses','StatusController@index');
 
