@@ -9,13 +9,6 @@ Send Problem
 <div class="container">
     <h3>Send Problem</h3>
     <br>
-    @isset($hasItem)
-    @if (!$hasItem)
-    <div class="alert alert-danger">
-        <h3>Item Not Found!!!</h3>
-    </div>
-    @endif
-    @endisset
 
     @if (count($errors)>0)
             <div class="alert alert-danger">
@@ -26,39 +19,31 @@ Send Problem
                 </ul>
             </div>
     @endif
-    <form method="post" action="/problem/send">
+    <form method="post" action="/send-problem/send">
         @csrf
         <div class="form-row">
             <div class="form-group col-md-2">
-                <label for="inputEmail4">Room Name</label>
+                <label for="inputEmail4">Room</label>
                 @isset($item)
                     @if (!empty($item))
-                    <input type="text" name="room_name" class="form-control" placeholder="room_name" value="{{$item->room->room_name}}" readonly>
+                    <input type="text" name="room_name" class="form-control"  value="{{$item->room->room_name}}" readonly>
+                    <input type="hidden" name="room_id" value="{{$item->room->room_id}}">
                     @endif
                     @else
                     <input type="text" name="room_name" class="form-control" placeholder="room_name">
-                @endisset
+                    @endisset
+                </div>
             </div>
-            <div class="form-group col-md-1">
-                <label for="inputPassword4">Floor</label>
-                @isset($item)
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="inputAddress">Item Code</label>
+                    @isset($item)
                     @if (!empty($item))
-                    <input type="text" name="floor" class="form-control" placeholder="floor" value="{{$item->room->floor}}" readonly>
+                    <input type="text" name="item_code" class="form-control"  value="{{$item->item_code}}" readonly>
+                    <input type="hidden" name="item_id" value="{{$item->item_id}}">
                     @endif
                     @else
-                    <input type="text" name="floor" class="form-control" placeholder="floor">
-                @endisset
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                <label for="inputAddress">Item ID</label>
-                @isset($item)
-                    @if (!empty($item))
-                    <input type="text" name="item_id" class="form-control" placeholder="item_id" value="{{$item->item_id}}" readonly>
-                    @endif
-                    @else
-                    <input type="text" name="item_id" class="form-control" placeholder="item_id">
+                    <input type="text" name="item_id" class="form-control" placeholder="item_code">
                 @endisset
             </div>
         </div>
@@ -67,34 +52,24 @@ Send Problem
                 <label for="inputAddress2">Item Name</label>
                 @isset($item)
                     @if (!empty($item))
-                    <input type="text" name="item_name" class="form-control" placeholder="item_name" value="{{$item->item_name}}" readonly>
+                    <input type="text" name="item_name" class="form-control" value="{{$item->item_name}}" readonly>
                     @endif
                     @else
                     <input type="text" name="item_name" class="form-control" placeholder="item_name">
                 @endisset
             </div>
         </div>
-        @isset($item)
-                    @if (!empty($item))
-                    <div class="form-row">
-                            <div class="form-group col-md-2">
-                                <label for="inputAddress2">Image</label>
-                                <img src="/img/{{$item->picture}}" alt="image not found" width="200px">
-                            </div>
-                        </div>
-                    @endif
-        @endisset
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="inputState">Problem</label>
-                @isset($problems_det)
-                    @if (!empty($problems_det))
-                    <select name="problem_detail_id" id="selectProblem" class="form-control" onchange="checkEtc()">
+                @isset($item)
+                    @if (!empty($item))
+                    <select name="problem_des_id" id="selectProblem" class="form-control" onchange="checkEtc()">
                         <option selected>-- select problems --</option>
-                        @foreach ($problems_det as $problem_detail)
-                        <option value="{{$problem_detail->problem_detail_id}}">{{$problem_detail->problem_descriptions->problem_des}}</option>
+                        @foreach ($item->item_type->problem_descriptions as $problem_desc)
+                        <option value="{{$problem_desc->problem_des_id}}">{{$problem_desc->problem_description}}</option>
                         @endforeach
-                        <option value="etc">etc</option>
+                        <option value="etc">อื่นๆ</option>
                     </select>
                     @endif
                     @else

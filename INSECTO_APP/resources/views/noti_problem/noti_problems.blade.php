@@ -15,64 +15,60 @@ Notication Problems
         <thead>
             <tr>
                 <th>#</th>
-                <th>Date</th>
-                <th>Item ID</th>
+                <th>Item Code</th>
                 <th>Item Name</th>
-                <th>Room Name</th>
-                <th>Floor</th>
+                <th>Problem Desc ID</th>
                 <th>Problem Description</th>
-                <th>Problem Status</th>
-                <th>Create At</th>
-                <th>Update At</th>
-                <th>Fixing</th>
-                <th>Success</th>
+                <th>Status</th>
+                <th>Created at</th>
+                <th>Updated at</th>
+                <th>Update by</th>
+                {{-- <th>Fixing</th> --}}
+                {{-- <th>Success</th> --}}
             </tr>
         </thead>
         <tbody>
-            @foreach ($problems as $problem)
+            @foreach ($noti_problems as $noti_problem)
                 <tr>
                     <td>
-                        {{$problem->problem_id}}
+                        {{$noti_problem->noti_id}}
                     </td>
                     <td>
-                        {{$problem->problem_date}}
+                        {{$noti_problem->item->item_code}}
                     </td>
                     <td>
-                        {{$problem->problem_detial->item->item_id}}
+                        {{$noti_problem->item->item_name}}
                     </td>
                     <td>
-                        {{$problem->problem_detial->item->item_name}}
+                        {{$noti_problem->problem_des_id}}
                     </td>
                     <td>
-                        {{$problem->problem_detial->item->room->room_name}}
+                        {{$noti_problem->problem_description}}
                     </td>
                     <td>
-                        {{$problem->problem_detial->item->room->floor}}
+                        {{$noti_problem->status->status_name}}
                     </td>
                     <td>
-                        {{$problem->problem_detial->problem_descriptions->problem_des}}
+                        {{$noti_problem->created_at}}
                     </td>
                     <td>
-                        {{$problem->problem_status}}
+                        {{$noti_problem->updated_at}}
                     </td>
                     <td>
-                        {{$problem->created_at}}
+                        {{$noti_problem->update_by}}
                     </td>
-                    <td>
-                        {{$problem->updated_at}}
-                    </td>
-                    <td>
+                    {{-- <td>
                         <a href="" class="btn btn-warning"> 
-                           {{-- href ex: {{action('UserController@edit',$user['id'])}} --}}
+                           href ex: {{action('UserController@edit',$user['id'])}}
                             Fixing
                         </a>
                     </td>
                     <td>
                         <a href="" class="btn btn-success"> 
-                            {{-- href ex: {{action('UserController@edit',$user['id'])}} --}}
+                            href ex: {{action('UserController@edit',$user['id'])}}
                             Success
                         </a>
-                    </td>
+                    </td> --}}
                 </tr>
             @endforeach
         </tbody>

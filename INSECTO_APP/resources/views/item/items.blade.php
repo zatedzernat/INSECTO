@@ -17,7 +17,8 @@ Items
                 <th>#</th>
                 <th>Code</th>
                 <th>Name</th>
-                <th>Room</th>
+                <th>Room Code</th>
+                <th>Room Name</th>
                 <th>Type</th>
                 <th>Brand</th>
                 <th>Serial Number</th>
@@ -42,6 +43,9 @@ Items
                     </td>
                     <td>
                         {{$item->room->room_code}}
+                    </td>
+                    <td>
+                        {{$item->room->room_name}}
                     </td>
                     <td>
                         {{$item->item_type->type_name}}
