@@ -1,13 +1,13 @@
 @extends('master')
 
 @section('title')
-Problems
+Notication Problems
 @endsection
 
 @section('content')
 <br>
 <div align="center">
-    <h3>ALL Problems</h3>
+    <h3>ALL Notification Problems</h3>
 </div>
 <br>
 <div class="container">
