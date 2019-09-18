@@ -13,12 +13,12 @@
 
 Route::get('/', function () {
     return view('master');
-});
+})->name('home');
 
 Route::group(['prefix' => 'send-problem'], function () {
-    Route::get('/', 'NotificationProblemController@index');
-    Route::get('{code}', 'ProblemController@create')->where('code', '[A-Za-z0-9]+');
-    Route::post('store', 'ProblemController@store');
+    Route::get('/', 'NotificationProblemController@create')->name('send');
+    Route::get('{code}', 'NotificationProblemController@show')->where('code', '[A-Za-z0-9-.]+');
+    Route::post('send', 'NotificationProblemController@store');
 });
 
 Route::get('buildings', 'BuildingController@index');
@@ -27,7 +27,7 @@ Route::get('items', 'ItemController@index');
 Route::get('brands','BrandController@index');
 Route::get('item_types','ItemTypeController@index');
 Route::get('problem_descs', 'ProblemDescriptionController@index');
-Route::get('noti_problems', 'NotificationProblemController@show');
+Route::get('noti_problems', 'NotificationProblemController@index');
 Route::get('statuses','StatusController@index');
 
 

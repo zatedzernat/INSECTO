@@ -20,4 +20,13 @@ class Problem_Description extends Model
     public function findByCancelFlag($string) {
         return Problem_Description::where('cancel_flag',$string)->get();
     }
+
+    public function findByID($problem_des_id) {
+        return Problem_Description::find($problem_des_id);
+    }
+
+    public function getProblemDescription($problem_des_id) {
+        $problem_desc = Problem_Description::find($problem_des_id);
+        return $problem_desc->problem_description;
+    }
 }

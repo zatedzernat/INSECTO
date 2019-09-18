@@ -29,4 +29,8 @@ class Item extends Model
         return Item::where('cancel_flag',$string)->get();
     }
 
+    public function findByCode($code) {
+        return Item::where('item_code',$code)->first();
+    }
+
 }

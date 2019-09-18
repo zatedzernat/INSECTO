@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Item;
 use App\Http\Models\Notification_Problem;
+use App\Http\Models\Problem_Description;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class NotificationProblemController extends Controller
 {
 
     private $noti_problem;
+    private $item;
+    private $problem_desc;
 
     public function __construct()
     {
         $this->noti_problem = new Notification_Problem();
+        $this->item = new Item();
+        $this->problem_desc = new Problem_Description();
     }
 
     /**
@@ -22,7 +29,9 @@ class NotificationProblemController extends Controller
      */
     public function index()
     {
-        return view('noti_problem.send_problem');
+        $noti_problems = $this->noti_problem->getAll();
+        return view('noti_problem.noti_problems')
+            ->with(compact('noti_problems'));
     }
 
     /**
@@ -32,7 +41,7 @@ class NotificationProblemController extends Controller
      */
     public function create()
     {
-        //
+        return view('noti_problem.send_problem');
     }
 
     /**
@@ -43,7 +52,20 @@ class NotificationProblemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $item_id = $request->input('item_id');
+        $problem_des_id = $request->input('problem_des_id');
+        
+        if ($problem_des_id == "etc") {
+            $problem_des_id = null;
+            $problem_description = $request->input('problem_description');
+        } else {
+            $problem_description = $this->problem_desc->getProblemDescription($problem_des_id);
+        }
+
+        $this->noti_problem->create($item_id, $problem_des_id, $problem_description);
+        $this->noti_problem->save();
+
+        return redirect()->route('home')->with('status', 'Send Problem Success');
     }
 
     /**
@@ -52,9 +74,18 @@ class NotificationProblemController extends Controller
      * @param  \App\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
-    public function show(Notification_Problem $notification_Problem)
+    public function show($code)
     {
-        //
+        $item = $this->item->findByCode($code);
+
+        if (empty($item)) {
+            $errors = new MessageBag();
+            $errors->add('itemnotfound', 'Item Not Found');
+            return redirect()->route('send')->withErrors($errors);
+        } else {
+            return view('noti_problem.send_problem')
+                ->with('item', $item);
+        }
     }
 
     /**
