@@ -77,6 +77,8 @@ class NotificationProblemController extends Controller
     public function show($code)
     {
         $item = $this->item->findByCode($code);
+        
+        //todo: validator for null problem_desc or etc.
 
         if (empty($item)) {
             $errors = new MessageBag();
