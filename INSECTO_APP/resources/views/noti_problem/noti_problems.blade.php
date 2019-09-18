@@ -17,6 +17,7 @@ Notication Problems
                 <th>#</th>
                 <th>Item Code</th>
                 <th>Item Name</th>
+                <th>Item Type</th>
                 <th>Problem Desc ID</th>
                 <th>Problem Description</th>
                 <th>Status</th>
@@ -38,6 +39,9 @@ Notication Problems
                     </td>
                     <td>
                         {{$noti_problem->item->item_name}}
+                    </td>
+                    <td>
+                        {{$noti_problem->problem_desc->item_type->type_name}}
                     </td>
                     <td>
                         {{$noti_problem->problem_des_id}}
