@@ -17,7 +17,7 @@ class CreateNotificationProblemsTable extends Migration
             $table->bigIncrements('noti_id');
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('status_id');
-            $table->unsignedBigInteger('problem_des_id');
+            $table->unsignedBigInteger('problem_des_id')->nullable();
             $table->string('problem_description',100);
             $table->string('cancel_flag',1);
             $table->timestamps();
