@@ -21,7 +21,7 @@ class StatusController extends Controller
     public function index()
     {
         $statuses = $this->status->getAll();
-        return view('statuses')
+        return view('noti_problem.statuses')
                 ->with(compact('statuses'));
     }
 

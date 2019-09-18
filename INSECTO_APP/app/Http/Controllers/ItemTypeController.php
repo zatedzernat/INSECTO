@@ -22,7 +22,9 @@ class ItemTypeController extends Controller
      */
     public function index()
     {
-        //
+        $item_types = $this->item_type->findByCancelFlag('N');
+        return view('type_desc.item_types')
+                ->with(compact('item_types'));
     }
 
     /**

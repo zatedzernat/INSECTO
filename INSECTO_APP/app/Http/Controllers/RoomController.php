@@ -24,9 +24,9 @@ class RoomController extends Controller
 
     public function index()
     {
-        $rooms = Room::where('cancel_flag', 'N')->get();
+        $rooms = $this->room->findByCancelFlag('N');
 
-        return view('room.rooms')
+        return view('location.rooms')
             ->with(compact('rooms'));
     }
 

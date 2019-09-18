@@ -14,7 +14,7 @@ Brands
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Name</th>
                 <th>Cancel Flag</th>
                 <th>Create At</th>

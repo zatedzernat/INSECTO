@@ -14,7 +14,7 @@ Notication Problems
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
-                <th>problem ID</th>
+                <th>#</th>
                 <th>Date</th>
                 <th>Item ID</th>
                 <th>Item Name</th>

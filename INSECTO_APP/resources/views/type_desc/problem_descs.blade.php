@@ -14,10 +14,12 @@ Problem Descriptions
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Problem Description</th>
-                <th>Create At</th>
-                <th>Update At</th>
+                <th>Type</th>
+                <th>Created at</th>
+                <th>Updated at</th>
+                <th>Update by</th>
             </tr>
         </thead>
         <tbody>
@@ -27,13 +29,19 @@ Problem Descriptions
                         {{$problem_desc->problem_des_id}}
                     </td>
                     <td>
-                        {{$problem_desc->problem_des}}
+                        {{$problem_desc->problem_description}}
+                    </td>
+                    <td>
+                        {{$problem_desc->item_type->type_name}}
                     </td>
                     <td>
                         {{$problem_desc->created_at}}
                     </td>
                     <td>
                         {{$problem_desc->updated_at}}
+                    </td>
+                    <td>
+                        {{$problem_desc->update_by}}
                     </td>
                 </tr>
             @endforeach

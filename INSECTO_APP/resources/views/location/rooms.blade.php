@@ -14,9 +14,13 @@ Rooms
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>#</th>
+                <th>Code</th>
                 <th>Name</th>
-                <th>Floor</th>
+                <th>Building</th>
+                <th>Created at</th>
+                <th>Updated at</th>
+                <th>Update by</th>
             </tr>
         </thead>
         <tbody>
@@ -26,10 +30,22 @@ Rooms
                         {{$room->room_id}}
                     </td>
                     <td>
+                        {{$room->room_code}}
+                    </td>
+                    <td>
                         {{$room->room_name}}
                     </td>
                     <td>
-                        {{$room->floor}}
+                        {{$room->buildings->building_name}}
+                    </td>
+                    <td>
+                        {{$room->created_at}}
+                    </td>
+                    <td>
+                        {{$room->updated_at}}
+                    </td>
+                    <td>
+                        {{$room->update_by}}
                     </td>
                 </tr>
             @endforeach

@@ -24,7 +24,7 @@ class ProblemDescriptionController extends Controller
     {
         $problems_descs = $this->problem_desc->findByCancelFlag('N');
 
-        return view('problem_des')
+        return view('type_desc.problem_descs')
             ->with(compact('problems_descs'));
     }
 

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Item_Type extends Model
 {
     //
-    protected $fillable = ['type_id','type_name','cancel_flag','updated_by'];
-    protected $primaryKey = 'noti_id';
+    protected $fillable = ['type_name','cancel_flag','updated_by'];
+    protected $primaryKey = 'type_id';
 
     public function problem_descriptions() {
         return $this->hasMany('App\Http\Models\Problem_Description','type_id','type_id');
