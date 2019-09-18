@@ -22,7 +22,7 @@ class NotificationProblemController extends Controller
      */
     public function index()
     {
-        //
+        return view('noti_problem.send_problem');
     }
 
     /**

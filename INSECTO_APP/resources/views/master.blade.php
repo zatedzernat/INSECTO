@@ -50,7 +50,7 @@
                         <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{'/problem'}}">Send Problem</a>
+                        <a class="nav-link" href="{{'/send-problem'}}">Send Problem</a>
                     </li>
                     {{-- <li class="nav-item">
                         <a class="nav-link" href="#">Admin</a>
