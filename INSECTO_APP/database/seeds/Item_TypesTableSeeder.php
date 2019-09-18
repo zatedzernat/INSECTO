@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
-class item__typesTableSeeder extends Seeder
+class Item_TypesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,42 +17,42 @@ class item__typesTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'update_by' => 'seeder',
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Computer',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'update_by' => 'seeder',
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Toilet',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'update_by' => 'seeder',
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Air-Condition',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'update_by' => 'seeder',
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Printer',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'update_by' => 'seeder',
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Room',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'update_by' => 'seeder',
         ]);
     }
 }
