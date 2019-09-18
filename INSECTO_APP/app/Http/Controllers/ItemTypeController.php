@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Item_Type;
+use App\Http\Models\Item_Type;
 use Illuminate\Http\Request;
 
 class ItemTypeController extends Controller
 {
+
+    private $item_type;
+
+    public function __construct()
+    {
+        $this->item_type = new Item_Type();
+    }
+
     /**
      * Display a listing of the resource.
      *

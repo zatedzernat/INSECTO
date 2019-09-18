@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,10 +12,16 @@ class Notification_Problem extends Model
     public function status() {
         return $this->belongsTo('App\Http\Models\Status','status_id');
     }
+
     public function item() {
         return $this->belongsTo('App\Http\Models\Item','item_code');
     }
+
     public function problem_description() {
         return $this->belongsTo('App\Http\Models\Problem_Description','problem_des_id');
+    }
+
+    public function findByCancelFlag($string) {
+        return Notification_Problem::where('cancel_flag',$string)->get();
     }
 }

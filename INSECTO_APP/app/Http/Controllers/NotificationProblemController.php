@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Notification_Problem;
+use App\Http\Models\Notification_Problem;
 use Illuminate\Http\Request;
 
 class NotificationProblemController extends Controller
 {
+
+    private $noti_problem;
+
+    public function __construct()
+    {
+        $this->noti_problem = new Notification_Problem();
+    }
+
     /**
      * Display a listing of the resource.
      *

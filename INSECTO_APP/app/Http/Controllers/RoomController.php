@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
+
+    private $room;
+
+    public function __construct()
+    {
+        $this->room = new Room();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,11 +25,6 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::where('cancel_flag', 'N')->get();
-        //or
-        // $rooms = Room::all();
-        // $rooms = $rooms->reject(function($room) {
-        //     return $room->cancel_flag == 'Y';
-        // })->toArray(); 
 
         return view('room.rooms')
             ->with(compact('rooms'));

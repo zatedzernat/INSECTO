@@ -12,7 +12,12 @@ class Problem_Description extends Model
     public function item_type() {
         return $this->belongsTo('App\Http\Models\Item_type','type_id');
     }
+
     public function notification_problems() {
         return $this->hasMany('App\Http\Models\Notification_Problem','problem_detail_id','problem_detail_id');
+    }
+
+    public function findByCancelFlag($string) {
+        return Problem_Description::where('cancel_flag',$string)->get();
     }
 }

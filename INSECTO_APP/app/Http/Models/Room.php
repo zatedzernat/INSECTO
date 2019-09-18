@@ -14,4 +14,8 @@ class Room extends Model
     public function buildings () {
         return $this->belongsTo('App\Http\Models\Building','building_code');
     }
+
+    public function findByCancelFlag($string) {
+        return Room::where('cancel_flag',$string)->get();
+    }
 }

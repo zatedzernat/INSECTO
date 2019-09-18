@@ -15,4 +15,8 @@ class Building extends Model
     public function items () {
         return $this->hasMany('App\Http\Models\Item','building_code','building_code');
     }
+
+    public function findByCancelFlag($string) {
+        return Building::where('cancel_flag',$string)->get();
+    }
 }

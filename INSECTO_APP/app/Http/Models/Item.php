@@ -27,4 +27,8 @@ class Item extends Model
         return $this->hasMany('App\Http\Models\Notification_Problem','item_code','item_code');
     }
 
+    public function findByCancelFlag($string) {
+        return Item::where('cancel_flag',$string)->get();
+    }
+
 }

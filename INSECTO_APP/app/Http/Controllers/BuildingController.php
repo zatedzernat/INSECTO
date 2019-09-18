@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Building;
+use App\Http\Models\Building;
 use Illuminate\Http\Request;
 
 class BuildingController extends Controller
 {
+
+    private $building;
+
+    public function __construct()
+    {
+        $this->building = new Building();
+    }
+
     /**
      * Display a listing of the resource.
      *

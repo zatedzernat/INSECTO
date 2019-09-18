@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class ProblemDescriptionController extends Controller
 {
+
+    private $problem_desc;
+
+    public function __construct()
+    {
+        $this->problem_desc = new Problem_Description();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,10 +22,10 @@ class ProblemDescriptionController extends Controller
      */
     public function index()
     {
-        $problems_desc = Problem_Description::where('cancel_flag',"N")->get();
+        $problems_descs = $this->problem_desc->findByCancelFlag('N');
 
         return view('problem_des')
-        ->with(compact('problems_desc'));
+            ->with(compact('problems_descs'));
     }
 
     /**

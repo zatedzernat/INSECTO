@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+
+    private $item;
+
+    public function __construct()
+    {
+        $this->item = new Item();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,9 +22,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::where('cancel_flag','N')->get();
-        // $item = Item::find(1);
-        // echo $item->room->room_name;
+        $items = $this->item->findByCancelFlag('N');
         return view('item.items')
             ->with(compact('items'));
     }

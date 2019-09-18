@@ -21,7 +21,7 @@ Problem Descriptions
             </tr>
         </thead>
         <tbody>
-            @foreach ($problems_desc as $problem_desc)
+            @foreach ($problems_descs as $problem_desc)
                 <tr>
                     <td>
                         {{$problem_desc->problem_des_id}}
