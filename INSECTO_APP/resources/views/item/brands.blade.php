@@ -16,7 +16,6 @@ Brands
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Cancel Flag</th>
                 <th>Create At</th>
                 <th>Update At</th>
                 <th>Update By</th>
@@ -30,9 +29,6 @@ Brands
                     </td>
                     <td>
                         {{$brand->brand_name}}
-                    </td>
-                    <td>
-                        {{$brand->cancel_flag}}
                     </td>
                     <td>
                         {{$brand->created_at}}

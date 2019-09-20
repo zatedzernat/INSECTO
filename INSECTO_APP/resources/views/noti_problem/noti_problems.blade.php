@@ -40,7 +40,7 @@ Notication Problems
                         {{$noti_problem->item->item_name}}
                     </td>
                     <td>
-                        {{$noti_problem->problem_des_id}}
+                        {{$noti_problem->problem_des_id ?? "-"}}
                     </td>
                     <td>
                         {{$noti_problem->problem_description}}
