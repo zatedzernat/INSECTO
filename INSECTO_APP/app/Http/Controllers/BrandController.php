@@ -91,11 +91,10 @@ class BrandController extends Controller
         todo แต่มันกลับขึ้นอันที่เราแก้ไปมะกี้ 
         */
         $id = $request->input('hong');
-        $id2 = $request->input('hong2');
-        // ! oops ทำไมid มันเป็นแต่ 6
-        dd($id,$id2);
-        $brand = $this->brand->findByID($id);
         $newBrand = $request->input('brand_name');
+        // ! oops ทำไมid มันเป็นแต่ 6
+        dd($id, $newBrand);
+        $brand = $this->brand->findByID($id);
         $brand->setName($newBrand);
         $brand->save();
         
@@ -108,8 +107,11 @@ class BrandController extends Controller
      * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Brand $brand)
+    public function destroy(Request $request, $brand_id)
     {
-        //
+        $brand = $this->brand->findByID($brand_id);
+        $brand->setCancelFlag('Y');
+        $brand->save();
+        return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
     }
 }

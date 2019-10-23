@@ -31,5 +31,6 @@ Route::get('noti_problems', 'NotificationProblemController@index');
 Route::get('statuses','StatusController@index');
 Route::post('brand/edit','BrandController@update');
 Route::post('brand/create','BrandController@store');
+Route::get('brand/del/{brand_id}','BrandController@destroy');
 
 

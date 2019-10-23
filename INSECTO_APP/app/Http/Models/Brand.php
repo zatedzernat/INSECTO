@@ -37,6 +37,11 @@ class Brand extends Model
         $this->brand_name = $name;
     }
 
+    public function setCancelFlag($CancelFlag)
+    {
+        $this->cancel_flag = $CancelFlag;
+    }
+
     public function createNewBrand($newBrand)
     {
         $addBrand = Brand::firstOrCreate(

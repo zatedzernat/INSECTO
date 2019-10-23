@@ -20,6 +20,12 @@ Brands
     </ul>
   </div>
   @endif
+
+  @if (session('del_brand'))
+  <div class="alert alert-success" role="alert">
+    {{ session('del_brand') }}
+  </div>
+  @endif
   <form action="/brand/edit" method="post">
     @csrf
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
@@ -54,16 +60,21 @@ Brands
             {{$brand->update_by}}
           </td>
           <td>
+
             <!-- Button trigger modal Edit -->
             <button type="button" class="btn btn-warning" data-toggle="modal"
-              data-target="#exampleModalCenter-{{ $brand->brand_id }}">
+              data-target="#edit-{{ $brand->brand_id }}">
               Edit
             </button>
-            <button type="button" class="btn btn-danger">Del</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal"
+              data-target="#delete-{{ $brand->brand_id }}">
+              Del
+            </button>
           </td>
         </tr>
+
         <!-- Modal Edit -->
-        <div class="modal fade" id="exampleModalCenter-{{ $brand->brand_id }}" tabindex="-1" role="dialog"
+        <div class="modal fade" id="edit-{{ $brand->brand_id }}" tabindex="-1" role="dialog"
           aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -75,19 +86,42 @@ Brands
               </div>
               <div class="modal-body">
                 <input type="hidden" name="hong" value="{{ $brand->brand_id }}">
-                <input type="hidden" name="hong2" value="{{ $brand->brand_id }}">
                 ID: {{ $brand->brand_id }} <br>
                 Name: <input type="text" name="brand_name" value="{{ $brand->brand_name }}">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save change</button>
+                <input type="submit" class="btn btn-primary" value="Save change">
               </div>
             </div>
           </div>
         </div>
-        @endforeach
         <!-- end Modal Edit -->
+
+        <!-- Modal Delete -->
+        <div class="modal fade" id="delete-{{ $brand->brand_id }}" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="delID" value="{{ $brand->brand_id }}">
+                Do you confirm to delete "{{ $brand->brand_name }}"?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="brand/del/{{ $brand->brand_id }}" class="btn btn-primary">Del</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end Modal Delete -->
+        @endforeach
 
       </tbody>
     </table>
