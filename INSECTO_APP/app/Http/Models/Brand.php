@@ -42,6 +42,11 @@ class Brand extends Model
         $this->cancel_flag = $CancelFlag;
     }
 
+    public function setUpdateBy($updateby)
+    {
+        $this->update_by = $updateby;
+    }
+
     public function createNewBrand($newBrand)
     {
         $addBrand = Brand::firstOrCreate(

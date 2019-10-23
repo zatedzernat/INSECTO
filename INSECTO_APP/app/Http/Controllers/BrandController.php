@@ -85,17 +85,14 @@ class BrandController extends Controller
      */
     public function update(Request $request)
     {
-        /* 
-        todo ตอนกดปุ่มeditอะ แล้วเข้าไปแก้ช้ะแต่แบบยังไม่ได้กดsave 
-        todo แต่กดปิดไป แล้วพอกดeditใหม่อะ มันควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้เพราะเรายังไม่ได้เซฟ 
-        todo แต่มันกลับขึ้นอันที่เราแก้ไปมะกี้ 
-        */
-        $id = $request->input('hong');
+        //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
+        $id = $request->input('brand_id');
+        //todo validated null or spac value
         $newBrand = $request->input('brand_name');
-        // ! oops ทำไมid มันเป็นแต่ 6
-        dd($id, $newBrand);
         $brand = $this->brand->findByID($id);
         $brand->setName($newBrand);
+        //todo set updateby ตาม LDAP
+        // $brand->setUpdateBy('ชื่อ user ตามLDAP');
         $brand->save();
         
         return redirect()->route('brands');
@@ -109,6 +106,7 @@ class BrandController extends Controller
      */
     public function destroy(Request $request, $brand_id)
     {
+        // * not real delete but change cancel flag to Y
         $brand = $this->brand->findByID($brand_id);
         $brand->setCancelFlag('Y');
         $brand->save();

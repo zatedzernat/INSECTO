@@ -16,8 +16,8 @@ Statuses
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Create At</th>
-                <th>Update At</th>
+                <th>Created At</th>
+                <th>Updated At</th>
             </tr>
         </thead>
         <tbody>
