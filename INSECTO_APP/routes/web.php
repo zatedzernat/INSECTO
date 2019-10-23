@@ -24,10 +24,12 @@ Route::group(['prefix' => 'send-problem'], function () {
 Route::get('buildings', 'BuildingController@index');
 Route::get('rooms', 'RoomController@index');
 Route::get('items', 'ItemController@index');
-Route::get('brands','BrandController@index');
+Route::get('brands','BrandController@index')->name('brands');
 Route::get('item_types','ItemTypeController@index');
 Route::get('problem_descs', 'ProblemDescriptionController@index');
 Route::get('noti_problems', 'NotificationProblemController@index');
 Route::get('statuses','StatusController@index');
+Route::post('brand/edit','BrandController@update');
+Route::post('brand/create','BrandController@store');
 
 

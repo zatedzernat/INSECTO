@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class BrandController extends Controller
 {
@@ -24,7 +25,7 @@ class BrandController extends Controller
     {
         $brands = $this->brand->findByCancelFlag('N');
         return view('item.brands')
-                ->with(compact('brands'));
+            ->with(compact('brands'));
     }
 
     /**
@@ -34,7 +35,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -45,7 +46,13 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $errors = new MessageBag();
+        $name = $request->newBrand;
+        $addBrand = $this->brand->createNewBrand($name);
+        if (!$addBrand->wasRecentlyCreated) {
+            $errors->add('dupBrand','Already have this Brand!!!');
+        }
+        return redirect()->route('brands')->withErrors($errors);
     }
 
     /**
@@ -65,11 +72,10 @@ class BrandController extends Controller
      * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function edit(Brand $brand)
+    public function edit(Request $request)
     {
-        //
-    }
 
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -77,9 +83,23 @@ class BrandController extends Controller
      * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update(Request $request)
     {
-        //
+        /* 
+        todo ตอนกดปุ่มeditอะ แล้วเข้าไปแก้ช้ะแต่แบบยังไม่ได้กดsave 
+        todo แต่กดปิดไป แล้วพอกดeditใหม่อะ มันควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้เพราะเรายังไม่ได้เซฟ 
+        todo แต่มันกลับขึ้นอันที่เราแก้ไปมะกี้ 
+        */
+        $id = $request->input('hong');
+        $id2 = $request->input('hong2');
+        // ! oops ทำไมid มันเป็นแต่ 6
+        dd($id,$id2);
+        $brand = $this->brand->findByID($id);
+        $newBrand = $request->input('brand_name');
+        $brand->setName($newBrand);
+        $brand->save();
+        
+        return redirect()->route('brands');
     }
 
     /**
