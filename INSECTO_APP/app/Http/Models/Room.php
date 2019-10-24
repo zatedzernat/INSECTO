@@ -16,4 +16,45 @@ class Room extends Model
     public function findByCancelFlag($string) {
         return Room::where('cancel_flag',$string)->get();
     }
+
+    public function findByName($string)
+    {
+        $rooms = DB::table('rooms')
+            ->where('room_name', 'like', '%' . $string . '%')
+            ->first();
+        return $rooms;
+    }
+
+    public function findByID($int)
+    {
+        return room::where('room_id', $int)->first();
+    }
+
+    public function setName($name){
+        $this->room_name = $name;
+    }
+
+    public function setCode($code){
+        $this->room_code = $code;
+    }
+
+    public function setCancelFlag($CancelFlag)
+    {
+        $this->cancel_flag = $CancelFlag;
+    }
+
+    public function setUpdateBy($updateby)
+    {
+        $this->update_by = $updateby;
+    }
+
+    public function createNewRoom($name, $code){
+        $addRoom = Room::firstOrCreate(
+            ['room_code' => $code, 'room_name' => $name],
+            ['cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+        );
+        //! ยังไม่เสร็จโว้ย มันยังไม่ได้เชื่อมกับ building เลยจะแอดยังไม่ได้นะจ๊ะ
+        return $addroom;
+
+    }
 }

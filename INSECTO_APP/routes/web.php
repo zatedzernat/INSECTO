@@ -22,7 +22,7 @@ Route::group(['prefix' => 'send-problem'], function () {
 });
 
 Route::get('buildings', 'BuildingController@index')->name('buildings');
-Route::get('rooms', 'RoomController@index');
+Route::get('rooms', 'RoomController@index')->name('rooms');
 Route::get('items', 'ItemController@index');
 Route::get('brands','BrandController@index')->name('brands');
 Route::get('item_types','ItemTypeController@index');
@@ -33,9 +33,11 @@ Route::post('brand/edit','BrandController@update');
 Route::post('brand/create','BrandController@store');
 Route::post('building/create','BuildingController@store');
 Route::post('building/edit','BuildingController@update');
+Route::post('room/create','RoomController@store');
+Route::post('room/edit','RoomController@update');
 Route::get('brand/del/{brand_id}','BrandController@destroy');
 Route::get('building/del/{building_id}','BuildingController@destroy');
-
+Route::get('room/del/{room_id}', 'RoomController@destroy');
 
 
 

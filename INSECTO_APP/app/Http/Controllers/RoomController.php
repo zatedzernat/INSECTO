@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class RoomController extends Controller
 {
@@ -48,7 +49,14 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $errors = new MessageBag();
+        $name = $request->room_name;
+        $code = $request->room_code;
+        $addRoom = $this->room->createNewRoom($name, $code);
+        if (!$addRoom->wasRecentlyCreated) {
+            $errors->add('dupRoom','Already have this Room!!!');
+        }
+        return redirect()->route('rooms')->withErrors($errors);
     }
 
     /**
@@ -82,7 +90,15 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        //
+        $id = $request->input('room_id');
+        $room = $this->room->findByID($id);
+        $newRoomCode= $request->input('room_code');
+        $newRoomName= $request->input('room_name');
+        $room->setName($newRoomName);
+        $room->setCode($newRoomCode);
+        $room->save();
+        
+        return redirect()->route('rooms');
     }
 
     /**
@@ -91,8 +107,12 @@ class RoomController extends Controller
      * @param  \App\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Room $room)
+    public function destroy(Request $request, $room_id)
     {
-        //
+        $room = $this->room->findByID($room_id);
+        $room->setCancelFlag('Y');
+        $room->save();
+        return redirect()->route('rooms')->with('del_room','Delete room '.$room->room_name.' success');
+
     }
 }
