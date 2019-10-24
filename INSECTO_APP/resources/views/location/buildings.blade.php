@@ -81,7 +81,7 @@ Buildings
                                                 value="{{ $building->building_id }}" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Name:</label>
+                                            <label for="message-text" class="col-form-label">Code:</label>
                                             <input type="text" class="form-control" name="building_code"
                                                 value="{{ $building->building_code  }}" required>
                                         </div>
@@ -102,8 +102,8 @@ Buildings
                     </div>
                     {{-- <!-- end Modal Edit --> --}}
                     <!-- Modal Delete -->
-                    <div class="modal fade text-dark" id="delete-{{ $building->building_id }}" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade text-dark" id="delete-{{ $building->building_id }}" tabindex="-1"
+                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
