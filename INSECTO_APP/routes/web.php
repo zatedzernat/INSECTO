@@ -21,7 +21,7 @@ Route::group(['prefix' => 'send-problem'], function () {
     Route::post('send', 'NotificationProblemController@store');
 });
 
-Route::get('buildings', 'BuildingController@index');
+Route::get('buildings', 'BuildingController@index')->name('buildings');
 Route::get('rooms', 'RoomController@index');
 Route::get('items', 'ItemController@index');
 Route::get('brands','BrandController@index')->name('brands');
@@ -31,6 +31,11 @@ Route::get('noti_problems', 'NotificationProblemController@index');
 Route::get('statuses','StatusController@index');
 Route::post('brand/edit','BrandController@update');
 Route::post('brand/create','BrandController@store');
+Route::post('building/create','BuildingController@store');
+Route::post('building/edit','BuildingController@update');
 Route::get('brand/del/{brand_id}','BrandController@destroy');
+Route::get('building/del/{building_id}','BuildingController@destroy');
+
+
 
 

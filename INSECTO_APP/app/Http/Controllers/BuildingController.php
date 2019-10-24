@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Building;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class BuildingController extends Controller
 {
@@ -35,9 +36,8 @@ class BuildingController extends Controller
      */
     public function create()
     {
-        //
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -46,7 +46,14 @@ class BuildingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $errors = new MessageBag();
+        $name = $request->building_name;
+        $code = $request->building_code;
+        $addBuilding = $this->building->createNewBuilding($name, $code);
+        if (!$addBuilding->wasRecentlyCreated) {
+            $errors->add('dupBuilding','Already have this Building!!!');
+        }
+        return redirect()->route('buildings')->withErrors($errors);
     }
 
     /**
@@ -80,7 +87,15 @@ class BuildingController extends Controller
      */
     public function update(Request $request, Building $building)
     {
-        //
+        $id = $request->input('building_id');
+        $building = $this->building->findByID($id);
+        $newBuildingCode= $request->input('building_code');
+        $newBuildingName= $request->input('building_name');
+        $building->setName($newBuildingName);
+        $building->setCode($newBuildingCode);
+        $building->save();
+        
+        return redirect()->route('buildings');
     }
 
     /**
@@ -89,8 +104,11 @@ class BuildingController extends Controller
      * @param  \App\Building  $building
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Building $building)
+    public function destroy(Request $request, $building_id)
     {
-        //
+        $building = $this->building->findByID($building_id);
+        $building->setCancelFlag('Y');
+        $building->save();
+        return redirect()->route('buildings')->with('del_building','Delete building '.$building->building_name.' success');
     }
 }
