@@ -20,6 +20,11 @@ Rooms
         </ul>
     </div>
     @endif
+    @if (session('del_room'))
+    <div class="alert alert-success" role="alert">
+        {{ session('del_room') }}
+    </div>
+    @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
