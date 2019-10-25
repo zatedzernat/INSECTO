@@ -22,15 +22,26 @@ Route::group(['prefix' => 'send-problem'], function () {
 });
 
 Route::get('buildings', 'BuildingController@index');
+
 Route::get('rooms', 'RoomController@index');
-Route::get('items', 'ItemController@index');
-Route::get('brands','BrandController@index')->name('brands');
-Route::get('item_types','ItemTypeController@index');
+
+Route::get('items', 'ItemController@index')->name('items');;
+Route::post('items/edit', 'ItemController@update');
+Route::post('items/create', 'ItemController@store');
+Route::get('items/del/{item_id}', 'ItemController@destroy');
+
+Route::get('brands', 'BrandController@index')->name('brands');
+Route::post('brand/edit', 'BrandController@update');
+Route::post('brand/create', 'BrandController@store');
+Route::get('brand/del/{brand_id}', 'BrandController@destroy');
+
+Route::get('item_types', 'ItemTypeController@index')->name('item_types');;
+Route::post('item_types/edit', 'ItemTypeController@update');
+Route::post('item_types/create', 'ItemTypeController@store');
+Route::get('item_types/del/{type_id}', 'ItemTypeController@destroy');
+
 Route::get('problem_descs', 'ProblemDescriptionController@index');
+
 Route::get('noti_problems', 'NotificationProblemController@index');
-Route::get('statuses','StatusController@index');
-Route::post('brand/edit','BrandController@update');
-Route::post('brand/create','BrandController@store');
-Route::get('brand/del/{brand_id}','BrandController@destroy');
 
-
+Route::get('statuses', 'StatusController@index');
