@@ -159,7 +159,7 @@ Brands
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save change</button>
+            <button type="submit" class="btn btn-primary">Add</button>
           </div>
         </form>
       </div>

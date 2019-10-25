@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Item_Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class ItemTypeController extends Controller
 {
@@ -24,7 +25,7 @@ class ItemTypeController extends Controller
     {
         $item_types = $this->item_type->findByCancelFlag('N');
         return view('type_desc.item_types')
-                ->with(compact('item_types'));
+            ->with(compact('item_types'));
     }
 
     /**
@@ -45,7 +46,13 @@ class ItemTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $errors = new MessageBag();
+        $name = $request->newItemType;
+        $addItemType = $this->item_type->createNewItemType($name);
+        if (!$addItemType->wasRecentlyCreated) {
+            $errors->add('dupItemType', 'Already have this ItemType!!!');
+        }
+        return redirect()->route('item_types')->withErrors($errors);
     }
 
     /**
@@ -77,9 +84,19 @@ class ItemTypeController extends Controller
      * @param  \App\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item_Type $item_Type)
+    public function update(Request $request)
     {
-        //
+        //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
+        $id = $request->input('type_id');
+        //todo validated null or spac value
+        $newItemType = $request->input('type_name');
+        $ItemType = $this->item_type->findByID($id);
+        $ItemType->setName($newItemType);
+        //todo set updateby ตาม LDAP
+        // $temType->setUpdateBy('ชื่อ user ตามLDAP');
+        $ItemType->save();
+
+        return redirect()->route('item_types');
     }
 
     /**
@@ -88,8 +105,12 @@ class ItemTypeController extends Controller
      * @param  \App\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item_Type $item_Type)
+    public function destroy(Request $request, $type_id)
     {
-        //
+        // * not real delete but change cancel flag to Y
+        $itemType = $this->item_type->findByID($type_id);
+        $itemType->setCancelFlag('Y');
+        $itemType->save();
+        return redirect()->route('item_types')->with('del_itemType', 'Delete itemType ' . $itemType->type_name . ' success');
     }
 }

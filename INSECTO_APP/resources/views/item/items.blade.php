@@ -27,53 +27,237 @@ Items
                 <th>Created at</th>
                 <th>Updated at</th>
                 <th>Update by</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($items as $item)
-                <tr>
-                    <td>
-                        {{$item->item_id}}
-                    </td>
-                    <td>
-                        {{$item->item_code}}
-                    </td>
-                    <td>
-                        {{$item->item_name}}
-                    </td>
-                    <td>
-                        {{$item->room->room_code}}
-                    </td>
-                    <td>
-                        {{$item->room->room_name}}
-                    </td>
-                    <td>
-                        {{$item->item_type->type_name}}
-                    </td>
-                    <td>
-                        {{$item->brand->brand_name ?? "-" }}
-                    </td>
-                    <td>
-                        {{$item->serial_number ?? "-"}}
-                    </td>
-                    <td>
-                        {{$item->model ?? "-"}}
-                    </td>
-                    {{-- <td>
+            <tr>
+                <td>
+                    {{ $loop->iteration }}
+                </td>
+                <td>
+                    {{$item->item_code}}
+                </td>
+                <td>
+                    {{$item->item_name}}
+                </td>
+                <td>
+                    {{ $item->room->room_code }}
+                </td>
+                <td>
+                    {{$item->room->room_name}}
+                </td>
+                <td>
+                    {{ $item->item_type->type_name }}
+                </td>
+                <td>
+                    {{ $item->brand->brand_name??"-" }}
+                </td>
+                <td>
+                    {{ $item->serial_number??"-" }}
+                </td>
+                <td>
+                    {{ $item->model??"-" }}
+                </td>
+                {{-- <td>
                         {{$item->note ?? "-"}}
-                    </td> --}}
-                    <td>
-                        {{$item->created_at}}
-                    </td>
-                    <td>
-                        {{$item->updated_at}}
-                    </td>
-                    <td>
-                        {{$item->update_by}}
-                    </td>
-                </tr>
+                </td> --}}
+                <td>
+                    {{$item->created_at}}
+                </td>
+                <td>
+                    {{$item->updated_at}}
+                </td>
+                <td>
+                    {{$item->update_by}}
+                </td>
+                <td>
+
+                    <!-- Button trigger modal Edit -->
+                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target="#edit-{{ $item->item_id}}">
+                        Edit
+                    </button>
+                    <!-- Button trigger modal Del -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#delete-{{ $item->item_id }}">
+                        Del
+                    </button>
+                </td>
+            </tr>
+
+            <!-- Modal Edit -->
+            <div class="modal fade" id="edit-{{ $item->item_id }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form action="/brand/edit" method="post">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">ID:</label>
+                                    <input type="text" class="form-control" name="item_id" value="{{ $item->item_id }}"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Item Code:</label>
+                                    <input type="text" class="form-control" name="item_code"
+                                        value="{{ $item->item_code }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Item Name:</label>
+                                    <input type="text" class="form-control" name="item_name"
+                                        value="{{ $item->item_name }}" required>
+                                    {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Room Code:</label>
+                                    <input type="text" class="form-control" name="room_code"
+                                        value="{{ $item->room->room_code}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Room Name:</label>
+                                    <input type="text" class="form-control" name="room_name"
+                                        value="{{ $item->room->room_name}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Type Name:</label>
+                                    <input type="text" class="form-control" name="type_name"
+                                        value="{{ $item->item_type->type_name}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Brand name:</label>
+                                    <input type="text" class="form-control" name="brand_name"
+                                        value="{{ $item->brand->brand_name??"-"  }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Serial Number:</label>
+                                    <input type="text" class="form-control" name="serial_number"
+                                        value="{{ $item->serial_number??"-" }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Model:</label>
+                                    <input type="text" class="form-control" name="item_model"
+                                        value="{{ $item->model??"-" }}" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Save change">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{-- <!-- end Modal Edit --> --}}
+
+            <!-- Modal Delete -->
+            <div class="modal fade" id="delete-{{ $item->item_id  }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="delID" value="{{ $item->item_id  }}">
+                            Do you confirm to delete "{{ $item->item_name }}"?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a href="items/del/{{ $item->item_id }}" class="btn btn-primary">Del</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end Modal Delete -->
             @endforeach
         </tbody>
     </table>
+    <br>
+    <button type="button" class="btn btn-primary">Download CSV</button>
+    <!-- Button trigger modal Add -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
+        Add Item
+    </button>
+    <!-- Modal Add -->
+    <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="items/create" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Item Code:</label>
+                                    <input type="text" class="form-control" name="item_code"
+                                         required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Item Name:</label>
+                                    <input type="text" class="form-control" name="item_name"
+                                         required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Room Code:</label>
+                                    <input type="text" class="form-control" name="room_code"
+                                         required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Room Name:</label>
+                                    <input type="text" class="form-control" name="room_name"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Type Name:</label>
+                                    <input type="text" class="form-control" name="type_name"
+                                         required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Brand name:</label>
+                                    <input type="text" class="form-control" name="brand_name"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Serial Number:</label>
+                                    <input type="text" class="form-control" name="serial_number"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Model:</label>
+                                    <input type="text" class="form-control" name="item_model"
+                                        required>
+                                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end Modal Add -->
+
+</div>
+<br>
+<br>
 </div>
 @endsection
