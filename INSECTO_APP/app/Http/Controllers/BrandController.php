@@ -46,8 +46,11 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        //todo check null or spacebar
         $errors = new MessageBag();
         $name = $request->newBrand;
+        //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
+        //todo ควรเปลี่ยน cancel_flag row นั้นๆ เป็น N
         $addBrand = $this->brand->createNewBrand($name);
         if (!$addBrand->wasRecentlyCreated) {
             $errors->add('dupBrand','Already have this Brand!!!');
@@ -106,6 +109,7 @@ class BrandController extends Controller
      */
     public function destroy(Request $request, $brand_id)
     {
+        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหม
         // * not real delete but change cancel flag to Y
         $brand = $this->brand->findByID($brand_id);
         $brand->setCancelFlag('Y');

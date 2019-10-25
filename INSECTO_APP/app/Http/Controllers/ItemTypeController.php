@@ -46,8 +46,11 @@ class ItemTypeController extends Controller
      */
     public function store(Request $request)
     {
+        //todo check null or spacebar
         $errors = new MessageBag();
         $name = $request->newItemType;
+        //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
+        //todo ควรเปลี่ยน cancel_flag row นั้นๆ เป็น N
         $addItemType = $this->item_type->createNewItemType($name);
         if (!$addItemType->wasRecentlyCreated) {
             $errors->add('dupItemType', 'Already have this ItemType!!!');
@@ -92,7 +95,7 @@ class ItemTypeController extends Controller
         $newItemType = $request->input('type_name');
         $ItemType = $this->item_type->findByID($id);
         $ItemType->setName($newItemType);
-        //todo set updateby ตาม LDAP
+        //todo set update_by ตาม LDAP
         // $temType->setUpdateBy('ชื่อ user ตามLDAP');
         $ItemType->save();
 
@@ -107,6 +110,7 @@ class ItemTypeController extends Controller
      */
     public function destroy(Request $request, $type_id)
     {
+        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหม
         // * not real delete but change cancel flag to Y
         $itemType = $this->item_type->findByID($type_id);
         $itemType->setCancelFlag('Y');

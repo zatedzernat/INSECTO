@@ -11,13 +11,14 @@ Items
 </div>
 <br>
 <div class="container">
+    {{-- <div class="table-responsive"></div> --}}
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Code</th>
                 <th>Name</th>
-                <th>Room Code</th>
+                {{-- <th>Room Code</th> --}}
                 <th>Room Name</th>
                 <th>Type</th>
                 <th>Brand</th>
@@ -42,9 +43,9 @@ Items
                 <td>
                     {{$item->item_name}}
                 </td>
-                <td>
+                {{-- <td>
                     {{ $item->room->room_code }}
-                </td>
+                </td> --}}
                 <td>
                     {{$item->room->room_name}}
                 </td>
@@ -118,24 +119,60 @@ Items
                                     {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
                                 </div>
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Room Code:</label>
-                                    <input type="text" class="form-control" name="room_code"
-                                        value="{{ $item->room->room_code}}" required>
-                                </div>
-                                <div class="form-group">
                                     <label for="message-text" class="col-form-label">Room Name:</label>
-                                    <input type="text" class="form-control" name="room_name"
-                                        value="{{ $item->room->room_name}}" required>
+                                    @isset($rooms)
+                                    @if (!empty($rooms))
+                                    <select name="room_id" id="selectRoomName" class="form-control">
+                                        <option>-- select room --</option>
+                                        @foreach ($rooms as $room)
+                                        <option {{ $item->room->room_id == $room->room_id ? "selected" : "" }}
+                                            value="{{$room->room_id}}">
+                                            {{$room->room_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @endif
+                                    @else
+                                    <label for="message-text" class="col-form-label">Please add room first</label>
+                                    @endisset
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Type Name:</label>
-                                    <input type="text" class="form-control" name="type_name"
-                                        value="{{ $item->item_type->type_name}}" required>
+                                    @isset($itemTypes)
+                                    @if (!empty($itemTypes))
+                                    <select name="item_type_id" id="selectItemType" class="form-control">
+                                        <option>-- select type --</option>
+                                        @foreach ($itemTypes as $itemType)
+                                        <option {{ $item->item_type->type_id == $itemType->type_id ? "selected" : "" }}
+                                            value="{{$itemType->type_id}}">
+                                            {{$itemType->type_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @endif
+                                    @else
+                                    <label for="message-text" class="col-form-label">Please add type first</label>
+                                    @endisset
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Brand name:</label>
-                                    <input type="text" class="form-control" name="brand_name"
-                                        value="{{ $item->brand->brand_name??"-"  }}" required>
+                                    @isset($brands)
+                                    @if (!empty($brands))
+                                    <select name="brand_id" id="selectBrand" class="form-control">
+                                        @if (isset($item->brand->brand_id))
+                                        @foreach ($brands as $brand)
+                                        <option {{ $item->brand->brand_id == $brand->brand_id }}
+                                            value="{{$brand->brand_id}}">
+                                            {{$brand->brand_name}}</option>
+                                        @endforeach
+                                        @else
+                                        <option>-- select brand --</option>
+                                        <option value="{{$brand->brand_id}}">
+                                            {{$brand->brand_name}}</option>
+                                        @endif
+                                    </select>
+                                    @endif
+                                    @else
+                                    <label for="message-text" class="col-form-label">Please add brand first</label>
+                                    @endisset
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Serial Number:</label>
@@ -204,47 +241,40 @@ Items
                         </button>
                     </div>
                     <div class="modal-body">
-                            
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Item Code:</label>
-                                    <input type="text" class="form-control" name="item_code"
-                                         required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Item Name:</label>
-                                    <input type="text" class="form-control" name="item_name"
-                                         required>
-                                </div>
-                                <div class="form-group">
+
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Item Code:</label>
+                            <input type="text" class="form-control" name="item_code" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Item Name:</label>
+                            <input type="text" class="form-control" name="item_name" required>
+                        </div>
+                        {{-- <div class="form-group">
                                     <label for="message-text" class="col-form-label">Room Code:</label>
                                     <input type="text" class="form-control" name="room_code"
                                          required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Room Name:</label>
-                                    <input type="text" class="form-control" name="room_name"
-                                        required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Type Name:</label>
-                                    <input type="text" class="form-control" name="type_name"
-                                         required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Brand name:</label>
-                                    <input type="text" class="form-control" name="brand_name"
-                                        required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Serial Number:</label>
-                                    <input type="text" class="form-control" name="serial_number"
-                                        required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Model:</label>
-                                    <input type="text" class="form-control" name="item_model"
-                                        required>
-                                </div>
+                                </div> --}}
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Room Name:</label>
+                            <input type="" class="form-control" name="room_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Type Name:</label>
+                            <input type="text" class="form-control" name="type_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Brand name:</label>
+                            <input type="text" class="form-control" name="brand_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Serial Number:</label>
+                            <input type="text" class="form-control" name="serial_number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Model:</label>
+                            <input type="text" class="form-control" name="item_model" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

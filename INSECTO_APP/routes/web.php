@@ -31,7 +31,7 @@ Route::post('room/create','RoomController@store');
 Route::post('room/edit','RoomController@update');
 Route::get('room/del/{room_id}', 'RoomController@destroy');
 
-Route::get('items', 'ItemController@index')->name('items');;
+Route::get('items', 'ItemController@index')->name('items');
 Route::post('items/create', 'ItemController@store');
 Route::post('items/edit', 'ItemController@update');
 Route::get('items/del/{item_id}', 'ItemController@destroy');
@@ -41,7 +41,7 @@ Route::post('brand/create', 'BrandController@store');
 Route::post('brand/edit', 'BrandController@update');
 Route::get('brand/del/{brand_id}', 'BrandController@destroy');
 
-Route::get('item_types', 'ItemTypeController@index')->name('item_types');;
+Route::get('item_types', 'ItemTypeController@index')->name('item_types');
 Route::post('item_types/create', 'ItemTypeController@store');
 Route::post('item_types/edit', 'ItemTypeController@update');
 Route::get('item_types/del/{type_id}', 'ItemTypeController@destroy');

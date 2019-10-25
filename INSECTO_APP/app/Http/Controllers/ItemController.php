@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Brand;
 use App\Http\Models\Item;
+use App\Http\Models\Room;
+use App\Http\Models\Item_Type;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
 
     private $item;
+    private $room;
+    private $itemType;
+    private $brand;
 
     public function __construct()
     {
         $this->item = new Item();
+        $this->room = new Room();
+        $this->itemType = new Item_Type();
+        $this->brand = new Brand();
     }
 
     /**
@@ -23,8 +32,12 @@ class ItemController extends Controller
     public function index()
     {
         $items = $this->item->findByCancelFlag('N');
+        $rooms = $this->room->findByCancelFlag('N');
+        $itemTypes = $this->itemType->findByCancelFlag('N');
+        $brands = $this->brand->findByCancelFlag('N');
+
         return view('item.items')
-            ->with(compact('items'));
+            ->with(compact('items','rooms','itemTypes','brands'));
     }
 
     /**
@@ -45,8 +58,11 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        //todo check null or spacebar
         $errors = new MessageBag();
         $item = $request->newItem;
+        //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
+        //todo ควรเปลี่ยน cancel_flag row นั้นๆ เป็น N
         $addItem = $this->item->createNewBrand($item);
         if (!$addItem->wasRecentlyCreated) {
             $errors->add('dupItem', 'Already have this Item!!!');
@@ -96,6 +112,7 @@ class ItemController extends Controller
      */
     public function destroy(Request $request, $item_id)
     {
+        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหมก่อน ถ้าไม่มีก็ลบได้
         // * not real delete but change cancel flag to Y
         $item = $this->item->findByID($item_id);
         $item->setCancelFlag('Y');
