@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Item;
 use App\Http\Models\Notification_Problem;
 use App\Http\Models\Problem_Description;
+use App\Http\Requests\SendProblemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -50,14 +51,15 @@ class NotificationProblemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SendProblemRequest $request)
     {
+        //todo: validator for null problem_desc or etc.
         $item_id = $request->input('item_id');
         $problem_des_id = $request->input('problem_des_id');
+        $problem_description = $request->input('problem_description');
         
         if ($problem_des_id == "etc") {
             $problem_des_id = null;
-            $problem_description = $request->input('problem_description');
         } else {
             $problem_description = $this->problem_desc->getProblemDescription($problem_des_id);
         }
@@ -78,8 +80,6 @@ class NotificationProblemController extends Controller
     {
         $item = $this->item->findByCode($code);
         
-        //todo: validator for null problem_desc or etc.
-
         if (empty($item)) {
             $errors = new MessageBag();
             $errors->add('itemnotfound', 'Item Not Found');
