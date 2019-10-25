@@ -141,7 +141,7 @@ Buildings
         <button type="button" class="btn btn-primary">Download CSV</button>
         <!-- Button trigger modal Add -->
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
-            Add Item
+            Add Building
         </button>
         <!-- Modal Add -->
         <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -149,7 +149,7 @@ Buildings
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add Item</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Building</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

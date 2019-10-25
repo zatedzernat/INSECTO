@@ -93,7 +93,7 @@ Items
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <form action="/brand/edit" method="post">
+                        <form action="/item/edit" method="post">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
@@ -212,7 +212,7 @@ Items
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a href="items/del/{{ $item->item_id }}" class="btn btn-primary">Del</a>
+                            <a href="item/del/{{ $item->item_id }}" class="btn btn-primary">Del</a>
                         </div>
                     </div>
                 </div>
@@ -232,7 +232,7 @@ Items
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form action="items/create" method="POST">
+                <form action="item/create" method="POST">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Add Item</h5>

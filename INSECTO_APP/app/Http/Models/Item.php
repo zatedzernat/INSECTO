@@ -38,10 +38,12 @@ class Item extends Model
     {
         return Item::where('item_code', $code)->first();
     }
+
     public function findByID($int)
     {
         return Item::where('item_id', $int)->first();
     }
+    
     public function setCancelFlag($CancelFlag)
     {
         $this->cancel_flag = $CancelFlag;

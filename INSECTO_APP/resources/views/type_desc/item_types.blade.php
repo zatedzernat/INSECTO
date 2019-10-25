@@ -76,7 +76,7 @@ Item Types
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <form action="/item_types/edit" method="post">
+                        <form action="/item_type/edit" method="post">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
@@ -124,7 +124,7 @@ Item Types
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a href="item_types/del/{{ $item_type->type_id }}" class="btn btn-primary">Del</a>
+                            <a href="item_type/del/{{ $item_type->type_id }}" class="btn btn-primary">Del</a>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@ Item Types
 
     <!-- Button trigger modal Add -->
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
-        Add ItemType
+        Add Item Type
     </button>
 
     <!-- Modal Add -->
@@ -147,10 +147,10 @@ Item Types
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form action="/item_types/create" method="POST">
+                <form action="/item_type/create" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add ItemType</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Item Type</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
