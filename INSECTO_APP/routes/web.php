@@ -42,15 +42,18 @@ Route::post('problem_desc/edit','ProblemDescriptionController@update');
 Route::get('problem_desc/del/{room_id}', 'ProblemDescriptionController@destroy');
 
 Route::get('items', 'ItemController@index')->name('items');
-Route::post('items/create', 'ItemController@store');
-Route::post('items/edit', 'ItemController@update');
-Route::get('items/del/{item_id}', 'ItemController@destroy');
+Route::post('item/create', 'ItemController@store');
+Route::post('item/edit', 'ItemController@update');
+Route::get('item/del/{item_id}', 'ItemController@destroy');
 
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');;
-Route::post('item_types/create', 'ItemTypeController@store');
-Route::post('item_types/edit', 'ItemTypeController@update');
-Route::get('item_types/del/{type_id}', 'ItemTypeController@destroy');
+Route::post('item_type/create', 'ItemTypeController@store');
+Route::post('item_type/edit', 'ItemTypeController@update');
+Route::get('item_type/del/{type_id}', 'ItemTypeController@destroy');
 
 Route::get('noti_problems', 'NotificationProblemController@index');
 
-Route::get('statuses', 'StatusController@index');
+Route::get('statuses', 'StatusController@index')->name('statuses');
+Route::post('status/create', 'StatusController@store');
+Route::post('status/edit', 'StatusController@update');
+Route::get('status/del/{status_id}', 'StatusController@destroy');

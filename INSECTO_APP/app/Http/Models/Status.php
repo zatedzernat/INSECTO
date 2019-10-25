@@ -14,11 +14,23 @@ class Status extends Model
     }
 
     public function findByID($int) {
-        return Status::where('status_id',$int)->get();
+        return Status::where('status_id',$int)->first();
     }
 
     public function getAll() {
         return Status::all();
+    }
+
+    public function setName($name) {
+        $this->status_name = $name;
+    }
+
+    public function createNewStatus($status_name)
+    {
+        $newStatus = Status::firstOrCreate(
+            ['status_name' => $status_name]
+        );
+        return $newStatus;
     }
 
 }
