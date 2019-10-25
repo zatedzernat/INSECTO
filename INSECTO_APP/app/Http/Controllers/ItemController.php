@@ -45,7 +45,13 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $errors = new MessageBag();
+        $item = $request->newItem;
+        $addItem = $this->item->createNewBrand($item);
+        if (!$addItem->wasRecentlyCreated) {
+            $errors->add('dupItem', 'Already have this Item!!!');
+        }
+        return redirect()->route('items')->withErrors($errors);
     }
 
     /**
@@ -88,8 +94,12 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy(Request $request, $item_id)
     {
-        //
+        // * not real delete but change cancel flag to Y
+        $item = $this->item->findByID($item_id);
+        $item->setCancelFlag('Y');
+        $item->save();
+        return redirect()->route('items')->with('del_item', 'Delete item ' . $item->item_name . ' success');
     }
 }
