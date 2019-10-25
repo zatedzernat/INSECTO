@@ -48,13 +48,13 @@ class Room extends Model
         $this->update_by = $updateby;
     }
 
-    public function createNewRoom($name, $code){
+    public function createNewRoom($name, $code, $building){
         $addRoom = Room::firstOrCreate(
-            ['room_code' => $code, 'room_name' => $name],
+            ['room_code' => $code, 'room_name' => $name, 'building_id' => $building],
             ['cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
         );
-        //! ยังไม่เสร็จโว้ย มันยังไม่ได้เชื่อมกับ building เลยจะแอดยังไม่ได้นะจ๊ะ
-        return $addroom;
+        //? ยังไม่เสร็จโว้ย มันยังไม่ได้เชื่อมกับ building เลยจะแอดยังไม่ได้นะจ๊ะ
+        return $addRoom;
 
     }
 }

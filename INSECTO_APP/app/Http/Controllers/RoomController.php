@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Room;
+use App\Http\Models\Building;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -10,10 +11,13 @@ class RoomController extends Controller
 {
 
     private $room;
+    private $building;
+    
 
     public function __construct()
     {
         $this->room = new Room();
+        $this->building = new Building();
     }
 
     /**
@@ -26,9 +30,10 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = $this->room->findByCancelFlag('N');
+        $buildings = $this->building->findByCancelFlag('N');
 
         return view('location.rooms')
-            ->with(compact('rooms'));
+            ->with(compact('rooms','buildings'));
     }
 
     /**
@@ -52,7 +57,8 @@ class RoomController extends Controller
         $errors = new MessageBag();
         $name = $request->room_name;
         $code = $request->room_code;
-        $addRoom = $this->room->createNewRoom($name, $code);
+        $building = $request->building_id;
+        $addRoom = $this->room->createNewRoom($name, $code, $building);
         if (!$addRoom->wasRecentlyCreated) {
             $errors->add('dupRoom','Already have this Room!!!');
         }

@@ -152,17 +152,19 @@ Rooms
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group mb-3">
-                            Code: <input type="text" name="room_code" required>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Code:</label>
+                            <input type="text" class="form-control" name="room_code" required>
                         </div>
-                        <div class="input-group mb-3">
-                            Name: <input type="text" name="room_name" required>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" name="room_name" required>
                         </div>
-                        <div class="input-group mb-3">
-                            Building:
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Building:</label>
                             @isset($buildings)
                             @if (!empty($buildings))
-                            <select class="custom-select">
+                            <select class="custom-select" name="building_id">
                                 <option selected>Open this select menu</option>
                                 @foreach ($buildings as $building)
                                 <option value="{{ $building->building_id }}">{{ $building->building_name }}</option>
