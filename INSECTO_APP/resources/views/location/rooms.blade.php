@@ -99,6 +99,24 @@ Rooms
                                             <input type="text" class="form-control" name="room_name"
                                                 value="{{ $room->room_name }}" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Building:</label>
+                                            @isset($buildings)
+                                            @if (!empty($buildings))
+                                            <select class="custom-select" name="building">
+                                                <option selected>Open this select menu</option>
+                                                @foreach ($buildings as $building)
+                                                <option value="{{ $building->building_id }}"
+                                                        @if ($room->buildings->building_id ==
+                                                         $building->building_id ) {{'selected="selected"'}}
+                                                        @endif>
+                                                    {{ $building->building_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                            @else kk
+                                            @endisset
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"

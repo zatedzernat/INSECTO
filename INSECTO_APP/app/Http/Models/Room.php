@@ -37,6 +37,10 @@ class Room extends Model
     public function setCode($code){
         $this->room_code = $code;
     }
+   
+    public function setBuilding($building_id){
+        $this->building_id = $building_id;
+    }
 
     public function setCancelFlag($CancelFlag)
     {

@@ -100,8 +100,10 @@ class RoomController extends Controller
         $room = $this->room->findByID($id);
         $newRoomCode= $request->input('room_code');
         $newRoomName= $request->input('room_name');
+        $newBuilding= $request->input('building');
         $room->setName($newRoomName);
         $room->setCode($newRoomCode);
+        $room->setBuilding($newBuilding);
         $room->save();
         
         return redirect()->route('rooms');
