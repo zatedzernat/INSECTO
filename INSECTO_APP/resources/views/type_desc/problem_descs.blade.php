@@ -91,23 +91,23 @@ Problem Descriptions
                                                 value="{{ $problem_desc->problem_description  }}" required>
                                         </div>
                                         <div class="form-group">
-                                                <label for="message-text" class="col-form-label">Type:</label>
-                                                @isset($types)
-                                                @if (!empty($types))
-                                                <select class="custom-select" name="type">
-                                                    <option selected>Open this select menu</option>
-                                                    @foreach ($types as $type)
-                                                    <option value="{{ $type->type_id }}"
-                                                            @if ($problem_desc->item_type->type_id ==
-                                                             $type->type_id ) {{'selected="selected"'}}
-                                                            @endif>
-                                                        {{ $type->type_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @endif
-                                                @else kk
-                                                @endisset
-                                            </div>
+                                            <label for="message-text" class="col-form-label">Type:</label>
+                                            @isset($types)
+                                            @if (!empty($types))
+                                            <select class="custom-select" name="type">
+                                                <option selected>Open this select menu</option>
+                                                @foreach ($types as $type)
+                                                <option value="{{ $type->type_id }}" @if ($problem_desc->
+                                                    item_type->type_id ==
+                                                    $type->type_id ) {{'selected="selected"'}}
+                                                    @endif>
+                                                    {{ $type->type_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                            @else kk
+                                            @endisset
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -188,7 +188,7 @@ Problem Descriptions
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save change</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </div>
             </div>

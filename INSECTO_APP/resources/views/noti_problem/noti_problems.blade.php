@@ -29,47 +29,47 @@ Notication Problems
         </thead>
         <tbody>
             @foreach ($noti_problems as $noti_problem)
-                <tr>
-                    <td>
-                        {{$noti_problem->noti_id}}
-                    </td>
-                    <td>
-                        {{$noti_problem->item->item_code}}
-                    </td>
-                    <td>
-                        {{$noti_problem->item->item_name}}
-                    </td>
-                    <td>
-                        {{$noti_problem->problem_des_id ?? "-"}}
-                    </td>
-                    <td>
-                        {{$noti_problem->problem_description}}
-                    </td>
-                    <td>
-                        {{$noti_problem->status->status_name}}
-                    </td>
-                    <td>
-                        {{$noti_problem->created_at}}
-                    </td>
-                    <td>
-                        {{$noti_problem->updated_at}}
-                    </td>
-                    <td>
-                        {{$noti_problem->update_by}}
-                    </td>
-                    {{-- <td>
+            <tr>
+                <td>
+                    {{$noti_problem->noti_id}}
+                </td>
+                <td>
+                    {{$noti_problem->item->item_code}}
+                </td>
+                <td>
+                    {{$noti_problem->item->item_name}}
+                </td>
+                <td>
+                    {{$noti_problem->problem_des_id ?? "-"}}
+                </td>
+                <td>
+                    {{$noti_problem->problem_description}}
+                </td>
+                <td>
+                    {{$noti_problem->status->status_name}}
+                </td>
+                <td>
+                    {{$noti_problem->created_at}}
+                </td>
+                <td>
+                    {{$noti_problem->updated_at}}
+                </td>
+                <td>
+                    {{$noti_problem->update_by}}
+                </td>
+                {{-- <td>
                         <a href="" class="btn btn-warning"> 
                            href ex: {{action('UserController@edit',$user['id'])}}
-                            Fixing
-                        </a>
-                    </td>
-                    <td>
-                        <a href="" class="btn btn-success"> 
-                            href ex: {{action('UserController@edit',$user['id'])}}
-                            Success
-                        </a>
-                    </td> --}}
-                </tr>
+                Fixing
+                </a>
+                </td>
+                <td>
+                    <a href="" class="btn btn-success">
+                        href ex: {{action('UserController@edit',$user['id'])}}
+                        Success
+                    </a>
+                </td> --}}
+            </tr>
             @endforeach
         </tbody>
     </table>

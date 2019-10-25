@@ -136,7 +136,7 @@ Buildings
         </tbody>
     </table>
 
-    <form action="building/create" method="POST">
+    <form action="building/create" method="POST" id="frmProduct">
         @csrf
         <button type="button" class="btn btn-primary">Download CSV</button>
         <!-- Button trigger modal Add -->
@@ -165,8 +165,8 @@ Buildings
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save change</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-btn">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </div>
             </div>
@@ -175,6 +175,10 @@ Buildings
 
     </form>
 </div>
-
+<script>
+document.getElementById("close-btn").addEventListener("click", function(){ 
+   document.getElementById("frmProduct").reset();
+});
+</script>
 
 @endsection

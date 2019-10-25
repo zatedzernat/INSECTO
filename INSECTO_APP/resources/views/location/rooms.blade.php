@@ -106,10 +106,10 @@ Rooms
                                             <select class="custom-select" name="building">
                                                 <option selected>Open this select menu</option>
                                                 @foreach ($buildings as $building)
-                                                <option value="{{ $building->building_id }}"
-                                                        @if ($room->buildings->building_id ==
-                                                         $building->building_id ) {{'selected="selected"'}}
-                                                        @endif>
+                                                <option value="{{ $building->building_id }}" @if ($room->
+                                                    buildings->building_id ==
+                                                    $building->building_id ) {{'selected="selected"'}}
+                                                    @endif>
                                                     {{ $building->building_name }}</option>
                                                 @endforeach
                                             </select>
@@ -200,7 +200,7 @@ Rooms
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save change</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </div>
             </div>
