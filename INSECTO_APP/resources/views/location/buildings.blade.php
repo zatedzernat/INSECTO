@@ -20,6 +20,11 @@ Buildings
         </ul>
     </div>
     @endif
+    @if (session('del_building'))
+    <div class="alert alert-success" role="alert">
+        {{ session('del_building') }}
+    </div>
+    @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
@@ -150,8 +155,14 @@ Buildings
                         </button>
                     </div>
                     <div class="modal-body">
-                        Code: <input type="text" name="building_code" required>
-                        Name: <input type="text" name="building_name" required>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Code:</label>
+                            <input type="text" class="form-control" name="building_code" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" name="building_name" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -20,6 +20,11 @@ Rooms
         </ul>
     </div>
     @endif
+    @if (session('del_room'))
+    <div class="alert alert-success" role="alert">
+        {{ session('del_room') }}
+    </div>
+    @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
@@ -94,6 +99,24 @@ Rooms
                                             <input type="text" class="form-control" name="room_name"
                                                 value="{{ $room->room_name }}" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Building:</label>
+                                            @isset($buildings)
+                                            @if (!empty($buildings))
+                                            <select class="custom-select" name="building">
+                                                <option selected>Open this select menu</option>
+                                                @foreach ($buildings as $building)
+                                                <option value="{{ $building->building_id }}"
+                                                        @if ($room->buildings->building_id ==
+                                                         $building->building_id ) {{'selected="selected"'}}
+                                                        @endif>
+                                                    {{ $building->building_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                            @else kk
+                                            @endisset
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -152,17 +175,19 @@ Rooms
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group mb-3">
-                            Code: <input type="text" name="room_code" required>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Code:</label>
+                            <input type="text" class="form-control" name="room_code" required>
                         </div>
-                        <div class="input-group mb-3">
-                            Name: <input type="text" name="room_name" required>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" name="room_name" required>
                         </div>
-                        <div class="input-group mb-3">
-                            Building:
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Building:</label>
                             @isset($buildings)
                             @if (!empty($buildings))
-                            <select class="custom-select">
+                            <select class="custom-select" name="building_id">
                                 <option selected>Open this select menu</option>
                                 @foreach ($buildings as $building)
                                 <option value="{{ $building->building_id }}">{{ $building->building_name }}</option>

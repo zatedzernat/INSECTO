@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Problem_Description extends Model
 {
-    protected $fillable = ['problem_desciption','type_id','cancel_flag','updated_by'];
+    protected $fillable = ['problem_description','type_id','cancel_flag','update_by'];
     protected $primaryKey = 'problem_des_id';
 
     public function item_type() {
@@ -28,5 +28,28 @@ class Problem_Description extends Model
     public function getProblemDescription($problem_des_id) {
         $problem_desc = Problem_Description::find($problem_des_id);
         return $problem_desc->problem_description;
+    }
+
+    public function setProblemDescription($problem_description){
+        $this->problem_description = $problem_description;
+    }
+
+    public function setCancelFlag($CancelFlag)
+    {
+        $this->cancel_flag = $CancelFlag;
+    }
+
+    public function setUpdateBy($updateby)
+    {
+        $this->update_by = $updateby;
+    }
+
+    public function createNewProblemDesc($problem_description, $typeId){
+        $addProblemDesc = Problem_Description::firstOrCreate(
+            ['problem_description' => $problem_description , 'type_id' => $typeId ],
+            ['cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+        );
+        return $addProblemDesc;
+
     }
 }
