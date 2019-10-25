@@ -21,23 +21,29 @@ Route::group(['prefix' => 'send-problem'], function () {
     Route::post('send', 'NotificationProblemController@store');
 });
 
-Route::get('buildings', 'BuildingController@index');
+Route::get('buildings', 'BuildingController@index')->name('buildings');
+Route::post('building/create','BuildingController@store');
+Route::post('building/edit','BuildingController@update');
+Route::get('building/del/{building_id}','BuildingController@destroy');
 
-Route::get('rooms', 'RoomController@index');
+Route::get('rooms', 'RoomController@index')->name('rooms');
+Route::post('room/create','RoomController@store');
+Route::post('room/edit','RoomController@update');
+Route::get('room/del/{room_id}', 'RoomController@destroy');
 
 Route::get('items', 'ItemController@index')->name('items');;
-Route::post('items/edit', 'ItemController@update');
 Route::post('items/create', 'ItemController@store');
+Route::post('items/edit', 'ItemController@update');
 Route::get('items/del/{item_id}', 'ItemController@destroy');
 
 Route::get('brands', 'BrandController@index')->name('brands');
-Route::post('brand/edit', 'BrandController@update');
 Route::post('brand/create', 'BrandController@store');
+Route::post('brand/edit', 'BrandController@update');
 Route::get('brand/del/{brand_id}', 'BrandController@destroy');
 
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');;
-Route::post('item_types/edit', 'ItemTypeController@update');
 Route::post('item_types/create', 'ItemTypeController@store');
+Route::post('item_types/edit', 'ItemTypeController@update');
 Route::get('item_types/del/{type_id}', 'ItemTypeController@destroy');
 
 Route::get('problem_descs', 'ProblemDescriptionController@index');

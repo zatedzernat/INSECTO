@@ -11,6 +11,15 @@ Rooms
 </div>
 <br>
 <div class="container">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
             <tr>
@@ -21,35 +30,158 @@ Rooms
                 <th>Created at</th>
                 <th>Updated at</th>
                 <th>Update by</th>
+                <th>Action</th>
             </tr>
+
         </thead>
         <tbody>
             @foreach ($rooms as $room)
-                <tr>
-                    <td>
-                        {{$room->room_id}}
-                    </td>
-                    <td>
-                        {{$room->room_code}}
-                    </td>
-                    <td>
-                        {{$room->room_name}}
-                    </td>
-                    <td>
-                        {{$room->buildings->building_name}}
-                    </td>
-                    <td>
-                        {{$room->created_at}}
-                    </td>
-                    <td>
-                        {{$room->updated_at}}
-                    </td>
-                    <td>
-                        {{$room->update_by}}
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    {{$room->room_id}}
+                </td>
+                <td>
+                    {{$room->room_code}}
+                </td>
+                <td>
+                    {{$room->room_name}}
+                </td>
+                <td>
+                    {{$room->buildings->building_name}}
+                </td>
+                <td>
+                    {{$room->created_at}}
+                </td>
+                <td>
+                    {{$room->updated_at}}
+                </td>
+                <td>
+                    {{$room->update_by}}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target="#edit-{{ $room->room_id }}">Edit</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#delete-{{ $room->room_id }}">
+                        Del
+                    </button>
+                    <!-- Modal Edit -->
+                    <div class="modal fade text-dark" id="edit-{{ $room->room_id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <form action="/room/edit" method="post">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">ID:</label>
+                                            <input type="text" class="form-control" name="room_id"
+                                                value="{{ $room->room_id }}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Code:</label>
+                                            <input type="text" class="form-control" name="room_code"
+                                                value="{{ $room->room_code  }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Name:</label>
+                                            <input type="text" class="form-control" name="room_name"
+                                                value="{{ $room->room_name }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <input type="submit" class="btn btn-primary" value="Save change">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <!-- end Modal Edit --> --}}
+                    <!-- Modal Delete -->
+                    <div class="modal fade text-dark" id="delete-{{ $room->room_id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="delID" value="{{ $room->room_id }}">
+                                    Do you confirm to delete "{{ $room->room_code }} -
+                                    {{ $room->room_name }}"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <a href="room/del/{{ $room->room_id }}" class="btn btn-primary">Del</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
             @endforeach
         </tbody>
     </table>
+    <form action="room/create" method="POST">
+        @csrf
+        <button type="button" class="btn btn-primary">Download CSV</button>
+        <!-- Button trigger modal Add -->
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
+            Add Item
+        </button>
+        <!-- Modal Add -->
+        <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            Code: <input type="text" name="room_code" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            Name: <input type="text" name="room_name" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            Building:
+                            @isset($buildings)
+                            @if (!empty($buildings))
+                            <select class="custom-select">
+                                <option selected>Open this select menu</option>
+                                @foreach ($buildings as $building)
+                                <option value="{{ $building->building_id }}">{{ $building->building_name }}</option>
+                                @endforeach
+                            </select>
+                            @endif
+                            @else kk
+                            @endisset
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end Modal Add -->
+
+    </form>
 </div>
 @endsection
