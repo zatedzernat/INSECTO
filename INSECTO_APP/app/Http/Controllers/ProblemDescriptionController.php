@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Problem_Description;
+use App\Http\Models\Item_Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class ProblemDescriptionController extends Controller
 {
 
     private $problem_desc;
+    private $type;
 
     public function __construct()
     {
         $this->problem_desc = new Problem_Description();
+        $this->type = new Item_Type();
     }
 
     /**
@@ -23,9 +27,10 @@ class ProblemDescriptionController extends Controller
     public function index()
     {
         $problems_descs = $this->problem_desc->findByCancelFlag('N');
+        $types = $this->type->findByCancelFlag('N');
 
         return view('type_desc.problem_descs')
-            ->with(compact('problems_descs'));
+            ->with(compact('problems_descs','types'));
     }
 
     /**
@@ -46,7 +51,14 @@ class ProblemDescriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $errors = new MessageBag();
+        $description = $request->problem_description;
+        $typeId = $request->type_id;
+        $addProblemDescription = $this->problem_desc->createNewProblemDesc($description, $typeId);
+        if (!$addProblemDescription->wasRecentlyCreated) {
+            $errors->add('dupProblem_Description','Already have this Problem Description!!!');
+        }
+        return redirect()->route('problem_descs')->withErrors($errors);
     }
 
     /**
@@ -78,9 +90,15 @@ class ProblemDescriptionController extends Controller
      * @param  \App\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Problem_Description $problem_Description)
+    public function update(Request $request, Problem_Description $problem_desc)
     {
-        //
+        $id = $request->input('problem_des_id');
+        $problem_desc = $this->problem_desc->findByID($id);
+        $newProblemDes= $request->input('problem_description');
+        $problem_desc->setProblemDescription($newProblemDes);
+        $problem_desc->save();
+        
+        return redirect()->route('problem_descs');
     }
 
     /**
@@ -89,8 +107,11 @@ class ProblemDescriptionController extends Controller
      * @param  \App\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Problem_Description $problem_Description)
+    public function destroy(Request $request, $problem_des_id)
     {
-        //
+        $problem_desc = $this->problem_desc->findByID($problem_des_id);
+        $problem_desc->setCancelFlag('Y');
+        $problem_desc->save();
+        return redirect()->route('problem_descs')->with('del_problem_desc','Delete problem_descs '.$problem_desc->problem_description.' success');
     }
 }
