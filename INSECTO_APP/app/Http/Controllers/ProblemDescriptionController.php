@@ -95,7 +95,9 @@ class ProblemDescriptionController extends Controller
         $id = $request->input('problem_des_id');
         $problem_desc = $this->problem_desc->findByID($id);
         $newProblemDes= $request->input('problem_description');
+        $newType= $request->input('type');
         $problem_desc->setProblemDescription($newProblemDes);
+        $problem_desc->setTypeId($newType);
         $problem_desc->save();
         
         return redirect()->route('problem_descs');

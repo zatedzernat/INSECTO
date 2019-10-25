@@ -34,6 +34,10 @@ class Problem_Description extends Model
         $this->problem_description = $problem_description;
     }
 
+    public function setTypeId($type_id){
+        $this->type_id = $type_id;
+    }
+    
     public function setCancelFlag($CancelFlag)
     {
         $this->cancel_flag = $CancelFlag;
