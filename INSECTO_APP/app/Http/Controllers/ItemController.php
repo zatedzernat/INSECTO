@@ -7,6 +7,7 @@ use App\Http\Models\Item;
 use App\Http\Models\Room;
 use App\Http\Models\Item_Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class ItemController extends Controller
 {
@@ -58,12 +59,15 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //todo check null or spacebar
         $errors = new MessageBag();
-        $item = $request->newItem;
-        //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
-        //todo ควรเปลี่ยน cancel_flag row นั้นๆ เป็น N
-        $addItem = $this->item->createNewBrand($item);
+        $itemCode = $request->item_code;
+        $itemName = $request->item_name;
+        $roomID = $request->room_id;
+        $typeID = $request->item_type_id;
+        $brandName = $request->brand_name;
+        $serial = $request->serial_number;
+        $model = $request->item_model;
+        $addItem = $this->item->createNewItem($itemCode,$itemName,$roomID,$typeID,$brandName,$serial,$model);
         if (!$addItem->wasRecentlyCreated) {
             $errors->add('dupItem', 'Already have this Item!!!');
         }
@@ -99,9 +103,29 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request/*, Item $item*/)
     {
-        //
+        $id = $request->input('item_id');
+        $newCode = $request->input('item_code');
+        $newItemName = $request->input('item_name');
+        $newRoomID = $request->input('room_id');
+        $newTypeID = $request->input('item_type_id');
+        $newBrandID = $request->input('brand_id');
+        $newSerial = $request->input('serial_number');
+        $newModel = $request->input('item_model');
+        $item = $this->item->findByID($id);
+        // ? เวลาเปลี่ยนชื่อ code หรือ name ต้องเช็คค่าซ้ำไหม ?
+        $item->setCode($newCode);
+        $item->setItemName($newItemName);
+        $item->setRoomID($newRoomID);
+        $item->setTypeID($newTypeID);
+        $item->setBrandID($newBrandID);
+        $item->setSerial($newSerial);
+        $item->setModel($newModel);
+        // $item->setUpdateBy('ชื่อ user ตามLDAP');
+        $item->save();
+        
+        return redirect()->route('items');
     }
 
     /**

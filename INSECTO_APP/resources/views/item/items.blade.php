@@ -123,7 +123,6 @@ Items
                                     @isset($rooms)
                                     @if (!empty($rooms))
                                     <select name="room_id" id="selectRoomName" class="form-control">
-                                        <option>-- select room --</option>
                                         @foreach ($rooms as $room)
                                         <option {{ $item->room->room_id == $room->room_id ? "selected" : "" }}
                                             value="{{$room->room_id}}">
@@ -140,7 +139,6 @@ Items
                                     @isset($itemTypes)
                                     @if (!empty($itemTypes))
                                     <select name="item_type_id" id="selectItemType" class="form-control">
-                                        <option>-- select type --</option>
                                         @foreach ($itemTypes as $itemType)
                                         <option {{ $item->item_type->type_id == $itemType->type_id ? "selected" : "" }}
                                             value="{{$itemType->type_id}}">
@@ -159,7 +157,7 @@ Items
                                     <select name="brand_id" id="selectBrand" class="form-control">
                                         @if (isset($item->brand->brand_id))
                                         @foreach ($brands as $brand)
-                                        <option {{ $item->brand->brand_id == $brand->brand_id }}
+                                        <option {{ $item->brand->brand_id == $brand->brand_id  ? "selected" : ""  }}
                                             value="{{$brand->brand_id}}">
                                             {{$brand->brand_name}}</option>
                                         @endforeach
@@ -250,22 +248,53 @@ Items
                             <label for="message-text" class="col-form-label">Item Name:</label>
                             <input type="text" class="form-control" name="item_name" required>
                         </div>
-                        {{-- <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Room Code:</label>
-                                    <input type="text" class="form-control" name="room_code"
-                                         required>
-                                </div> --}}
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Room Name:</label>
-                            <input type="" class="form-control" name="room_name" required>
+                            @isset($rooms)
+                            @if (!empty($rooms))
+                            <select name="room_id" id="selectRoomName" class="form-control">
+                                <option selected>-- select Room Name --</option>
+                                @foreach ($rooms as $room)
+                                <option value="{{$room->room_id}}">
+                                    {{$room->room_name}}</option>
+                                @endforeach
+                            </select>
+                            @endif
+                            @else
+                            <label for="message-text" class="col-form-label">Please add room first</label>
+                            @endisset
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Type Name:</label>
-                            <input type="text" class="form-control" name="type_name" required>
+                            @isset($itemTypes)
+                            @if (!empty($itemTypes))
+                            <select name="item_type_id" id="selectItemType" class="form-control">
+                                <option selected>-- select Type Name --</option>
+                                @foreach ($itemTypes as $itemType)
+                                <option value="{{$itemType->type_id}}">
+                                    {{$itemType->type_name}}</option>
+                                @endforeach
+                            </select>
+                            @endif
+                            @else
+                            <label for="message-text" class="col-form-label">Please add type first</label>
+                            @endisset
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Brand name:</label>
-                            <input type="text" class="form-control" name="brand_name" required>
+                            @isset($brands)
+                            @if (!empty($brands))
+                            <select name="brand_id" id="selectBrand" class="form-control">
+                                <option>-- select Brand Name--</option>
+                                @foreach ($brands as $brand)
+                                <option value="{{$brand->brand_id}}">
+                                    {{$brand->brand_name}}</option>
+                                @endforeach
+                            </select>
+                            @endif
+                            @else
+                            <label for="message-text" class="col-form-label">Please add brand first</label>
+                            @endisset
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Serial Number:</label>

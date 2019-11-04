@@ -54,11 +54,48 @@ class Item extends Model
         $this->update_by = $updateby;
     }
 
-    public function createNewBrand($newItem)
+    public function setCode($code)
+    {
+        $this->item_code = $code;
+    }
+
+    public function setItemName($item_name)
+    {
+        $this->item_name = $item_name;
+    }
+
+    public function setRoomID($room_id)
+    {
+        $this->room_id = $room_id;
+    }
+    public function setTypeID($type_id)
+    {
+        $this->type_id = $type_id;
+    }
+    public function setBrandID($brand_id)
+    {
+        $this->brand_id = $brand_id;
+    }
+    public function setSerial($serial_number)
+    {
+        $this->serial_number = $serial_number;
+    }
+    public function setModel($model)
+    {
+        $this->model = $model;
+    }
+
+    public function createNewItem($itemCode,$itemName,$roomID,$typeID,$brandName,$serial,$model)
     {
         $addItem = Item::firstOrCreate(
-            ['item_name' => $newItem],
+            ['item_code' => $itemCode],
             [
+                'item_name' => $itemName,
+                'room_id' => $roomID,
+                'type_id' => $typeID,
+                'brand_name' => $brandName,
+                'serial_number' => $serial,
+                'item_model' => $model,
                 'cancel_flag' => 'N',
                 'update_by' => 'ชื่อ user ตามLDAP'
             ]
