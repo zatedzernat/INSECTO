@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Status;
+use App\Http\Requests\StatusFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -42,9 +43,8 @@ class StatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StatusFormRequest $request)
     {
-        //todo check null or spacebar
         $errors = new MessageBag();
         $name = $request->status_name;
         //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
@@ -85,11 +85,10 @@ class StatusController extends Controller
      * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $status)
+    public function update(StatusFormRequest $request)
     {
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('status_id');
-        //todo validated null or spac value
         $newStatus = $request->input('status_name');
         $status = $this->status->findByID($id);
         $status->setName($newStatus);
