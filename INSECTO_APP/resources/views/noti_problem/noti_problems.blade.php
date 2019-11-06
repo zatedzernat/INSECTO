@@ -74,7 +74,7 @@ Notication Problems
         </tbody>
     </table>
     <br>
-    <button type="button" class="btn btn-primary">Import CSV</button>
+    <butto`n type="button" class="btn btn-primary">Import CSV</butto`n>
     <button type="button" class="btn btn-primary">Export CSV</button>
 </div>
 @endsection
