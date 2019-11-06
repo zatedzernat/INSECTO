@@ -11,6 +11,21 @@ Items
 </div>
 <br>
 <div class="container">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    @if (session('del_item'))
+    <div class="alert alert-success" role="alert">
+        {{ session('del_item') }}
+    </div>
+    @endif
     {{-- <div class="table-responsive"></div> --}}
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
@@ -163,8 +178,9 @@ Items
                                         @endforeach
                                         @else
                                         <option>-- select brand --</option>
-                                        <option value="{{$brand->brand_id}}">
-                                            {{$brand->brand_name}}</option>
+                                        @foreach ($brands as $brand)
+                                        <option value="{{$brand->brand_id}}"> {{$brand->brand_name}}</option>
+                                        @endforeach
                                         @endif
                                     </select>
                                     @endif
@@ -175,12 +191,12 @@ Items
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Serial Number:</label>
                                     <input type="text" class="form-control" name="serial_number"
-                                        value="{{ $item->serial_number??"-" }}" required>
+                                        value="{{ $item->serial_number??"-" }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Model:</label>
                                     <input type="text" class="form-control" name="item_model"
-                                        value="{{ $item->model??"-" }}" required>
+                                        value="{{ $item->model??"-" }}">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -299,11 +315,11 @@ Items
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Serial Number:</label>
-                            <input type="text" class="form-control" name="serial_number" required>
+                            <input type="text" class="form-control" name="serial_number">
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Model:</label>
-                            <input type="text" class="form-control" name="item_model" required>
+                            <input type="text" class="form-control" name="item_model">
                         </div>
                     </div>
                     <div class="modal-footer">

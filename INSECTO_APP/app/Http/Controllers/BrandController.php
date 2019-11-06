@@ -49,10 +49,8 @@ class BrandController extends Controller
         //todo check null or spacebar
         $errors = new MessageBag();
         $name = $request->newBrand;
-        //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
-        //todo ควรเปลี่ยน cancel_flag row นั้นๆ เป็น N
-        $addBrand = $this->brand->createNewBrand($name);
-        if (!$addBrand->wasRecentlyCreated) {
+        $boolean = $this->brand->createNewBrand($name);
+        if ($boolean) {
             $errors->add('dupBrand','Already have this Brand!!!');
         }
         return redirect()->route('brands')->withErrors($errors);

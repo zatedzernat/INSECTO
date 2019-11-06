@@ -51,11 +51,12 @@ class ProblemDescriptionController extends Controller
      */
     public function store(Request $request)
     {
+        //todo check null or spacebar
         $errors = new MessageBag();
         $description = $request->problem_description;
         $typeId = $request->type_id;
-        $addProblemDescription = $this->problem_desc->createNewProblemDesc($description, $typeId);
-        if (!$addProblemDescription->wasRecentlyCreated) {
+        $boolean = $this->problem_desc->createNewProblemDesc($description, $typeId);
+        if ($boolean) {
             $errors->add('dupProblem_Description','Already have this Problem Description!!!');
         }
         return redirect()->route('problem_descs')->withErrors($errors);

@@ -47,13 +47,25 @@ class Brand extends Model
         $this->update_by = $updateby;
     }
 
-    public function createNewBrand($newBrand)
+    public function createNewBrand($brand_name)
     {
-        $addBrand = Brand::firstOrCreate(
-            ['brand_name' => $newBrand],
-            ['cancel_flag' => 'N', 
-            'update_by' => 'ชื่อ user ตามLDAP']
+        $brand = Brand::firstOrCreate(
+            ['brand_name' => $brand_name],
+            ['cancel_flag' => 'N',
+                'update_by' => 'ชื่อ user ตามLDAP']
         );
-        return $addBrand;
+
+        //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
+        if (!$brand->wasRecentlyCreated) {
+            if ($brand->cancel_flag == "Y") {
+                //todo set update by ตาม LDAP
+                $brand->cancel_flag = "N";
+                $brand->save();
+            } else {
+                return true;
+            }
+
+        }
+        return false;
     }
 }

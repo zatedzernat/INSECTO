@@ -49,10 +49,8 @@ class ItemTypeController extends Controller
         //todo check null or spacebar
         $errors = new MessageBag();
         $name = $request->newItemType;
-        //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
-        //todo ควรเปลี่ยน cancel_flag row นั้นๆ เป็น N
-        $addItemType = $this->item_type->createNewItemType($name);
-        if (!$addItemType->wasRecentlyCreated) {
+        $boolean = $this->item_type->createNewItemType($name);
+        if ($boolean) {
             $errors->add('dupItemType', 'Already have this ItemType!!!');
         }
         return redirect()->route('item_types')->withErrors($errors);

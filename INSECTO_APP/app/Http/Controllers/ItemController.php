@@ -59,6 +59,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        //todo check null or spacebar
         $errors = new MessageBag();
         $itemCode = $request->item_code;
         $itemName = $request->item_name;
@@ -67,8 +68,8 @@ class ItemController extends Controller
         $brandName = $request->brand_name;
         $serial = $request->serial_number;
         $model = $request->item_model;
-        $addItem = $this->item->createNewItem($itemCode,$itemName,$roomID,$typeID,$brandName,$serial,$model);
-        if (!$addItem->wasRecentlyCreated) {
+        $boolean = $this->item->createNewItem($itemCode,$itemName,$roomID,$typeID,$brandName,$serial,$model);
+        if ($boolean) {
             $errors->add('dupItem', 'Already have this Item!!!');
         }
         return redirect()->route('items')->withErrors($errors);
@@ -105,6 +106,8 @@ class ItemController extends Controller
      */
     public function update(Request $request/*, Item $item*/)
     {
+        //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
+        //todo validated null or spac value
         $id = $request->input('item_id');
         $newCode = $request->input('item_code');
         $newItemName = $request->input('item_name');
@@ -122,6 +125,7 @@ class ItemController extends Controller
         $item->setBrandID($newBrandID);
         $item->setSerial($newSerial);
         $item->setModel($newModel);
+        //todo set updateby ตาม LDAP
         // $item->setUpdateBy('ชื่อ user ตามLDAP');
         $item->save();
         

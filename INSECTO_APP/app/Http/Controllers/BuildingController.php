@@ -47,10 +47,10 @@ class BuildingController extends Controller
     public function store(Request $request)
     {
         $errors = new MessageBag();
-        $name = $request->building_name;
-        $code = $request->building_code;
-        $addBuilding = $this->building->createNewBuilding($name, $code);
-        if (!$addBuilding->wasRecentlyCreated) {
+        $building_code = $request->building_code;
+        $building_name = $request->building_name;
+        $boolean = $this->building->createNewBuilding($building_code, $building_name);
+        if ($boolean) {
             $errors->add('dupBuilding','Already have this Building!!!');
         }
         return redirect()->route('buildings')->withErrors($errors);

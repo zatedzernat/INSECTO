@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected $fillable = ['room_code','room_name','building_id','cancel_flag','update_by'];
+    protected $fillable = ['room_code', 'room_name', 'building_id', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'room_id';
 
-    public function buildings () {
-        return $this->belongsTo('App\Http\Models\Building','building_id');
+    public function buildings()
+    {
+        return $this->belongsTo('App\Http\Models\Building', 'building_id');
     }
 
-    public function findByCancelFlag($string) {
-        return Room::where('cancel_flag',$string)->get();
+    public function findByCancelFlag($string)
+    {
+        return Room::where('cancel_flag', $string)->get();
     }
 
     public function findByName($string)
@@ -30,15 +32,18 @@ class Room extends Model
         return room::where('room_id', $int)->first();
     }
 
-    public function setName($name){
+    public function setName($name)
+    {
         $this->room_name = $name;
     }
 
-    public function setCode($code){
+    public function setCode($code)
+    {
         $this->room_code = $code;
     }
-   
-    public function setBuilding($building_id){
+
+    public function setBuilding($building_id)
+    {
         $this->building_id = $building_id;
     }
 
@@ -52,12 +57,26 @@ class Room extends Model
         $this->update_by = $updateby;
     }
 
-    public function createNewRoom($name, $code, $building){
-        $addRoom = Room::firstOrCreate(
-            ['room_code' => $code, 'room_name' => $name, 'building_id' => $building],
-            ['cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+    public function createNewRoom($room_name, $room_code, $building_id)
+    {
+        $room = Room::firstOrCreate(
+            ['room_code' => $room_code],
+            ['room_name' => $room_name, 'building_id' => $building_id, 'cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
         );
-        return $addRoom;
+
+        //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
+        if (!$room->wasRecentlyCreated) {
+            if ($room->cancel_flag == "Y") {
+                //todo set update by ตาม LDAP
+                $room->room_name = $room_name;
+                $room->building_id = $building_id;
+                $room->cancel_flag = "N";
+                $room->save();
+            } else {
+                return true;
+            }
+        }
+        return false;
 
     }
 }

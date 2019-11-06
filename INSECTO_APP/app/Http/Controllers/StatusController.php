@@ -47,10 +47,8 @@ class StatusController extends Controller
     {
         $errors = new MessageBag();
         $name = $request->status_name;
-        //? เวลาลบ (change cancel flag) จะไม่สามารถ add ได้ ใช่หรอ?
-        //todo ควรเปลี่ยน cancel_flag row นั้นๆ เป็น N
-        $newStatus = $this->status->createNewStatus($name);
-        if (!$newStatus->wasRecentlyCreated) {
+        $boolean = $this->status->createNewStatus($name);
+        if ($boolean) {
             $errors->add('dupStatus','Already have this status!!!');
         }
         return redirect()->route('statuses')->withErrors($errors);

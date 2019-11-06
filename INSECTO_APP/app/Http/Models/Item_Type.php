@@ -40,18 +40,28 @@ class Item_Type extends Model
         $this->update_by = $updateby;
     }
 
-    public function createNewItemType($newItemType)
-    {
-        $addItemType = Item_Type::firstOrCreate(
-            ['type_name' => $newItemType],
-            ['cancel_flag' => 'N',
-                'update_by' => 'ชื่อ user ตามLDAP']
-        );
-        return $addItemType;
-    }
-
     public function setCancelFlag($cancelFlag)
     {
         $this->cancel_flag = $cancelFlag;
+    }
+
+    public function createNewItemType($type_name)
+    {
+        $itemtype = Item_Type::firstOrCreate(
+            ['type_name' => $type_name],
+            ['cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+        );
+
+        //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
+        if (!$itemtype->wasRecentlyCreated) {
+            if ($itemtype->cancel_flag == "Y") {
+                //todo set update by ตาม LDAP
+                $itemtype->cancel_flag = "N";
+                $itemtype->save();
+            }else {
+                return true;
+            }
+        }
+        return false;
     }
 }

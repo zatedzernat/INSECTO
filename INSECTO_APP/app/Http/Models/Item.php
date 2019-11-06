@@ -43,7 +43,7 @@ class Item extends Model
     {
         return Item::where('item_id', $int)->first();
     }
-    
+
     public function setCancelFlag($CancelFlag)
     {
         $this->cancel_flag = $CancelFlag;
@@ -85,21 +85,38 @@ class Item extends Model
         $this->model = $model;
     }
 
-    public function createNewItem($itemCode,$itemName,$roomID,$typeID,$brandName,$serial,$model)
+    public function createNewItem($item_code, $item_name, $room_id, $type_id, $brand_name, $serial_number, $item_model)
     {
-        $addItem = Item::firstOrCreate(
-            ['item_code' => $itemCode],
+        $item = Item::firstOrCreate(
+            ['item_code' => $item_code],
             [
-                'item_name' => $itemName,
-                'room_id' => $roomID,
-                'type_id' => $typeID,
-                'brand_name' => $brandName,
-                'serial_number' => $serial,
-                'item_model' => $model,
+                'item_name' => $item_name,
+                'room_id' => $room_id,
+                'type_id' => $type_id,
+                'brand_name' => $brand_name,
+                'serial_number' => $serial_number,
+                'item_model' => $item_model,
                 'cancel_flag' => 'N',
-                'update_by' => 'ชื่อ user ตามLDAP'
+                'update_by' => 'ชื่อ user ตามLDAP',
             ]
         );
-        return $addItem;
+
+        //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
+        if (!$item->wasRecentlyCreated) {
+            if ($item->cancel_flag == "Y") {
+                //todo set update by ตาม LDAP
+                $item->item_name = $item_name;
+                $item->room_id = $room_id;
+                $item->type_id = $type_id;
+                $item->brand_name = $brand_name;
+                $item->serial_number = $serial_number;
+                $item->item_model = $item_model;
+                $item->cancel_flag = "N";
+                $item->save();
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 }
