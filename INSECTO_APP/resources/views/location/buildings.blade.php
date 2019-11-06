@@ -138,7 +138,8 @@ Buildings
 
     <form action="building/create" method="POST" id="frmProduct">
         @csrf
-        <button type="button" class="btn btn-primary">Download CSV</button>
+        <button type="button" class="btn btn-primary">Import CSV</button>
+        <button type="button" class="btn btn-primary">Export CSV</button>
         <!-- Button trigger modal Add -->
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
             Add Building
@@ -165,7 +166,8 @@ Buildings
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-btn">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            id="close-btn">Close</button>
                         <button type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </div>
@@ -176,7 +178,7 @@ Buildings
     </form>
 </div>
 <script>
-document.getElementById("close-btn").addEventListener("click", function(){ 
+    document.getElementById("close-btn").addEventListener("click", function(){ 
    document.getElementById("frmProduct").reset();
 });
 </script>

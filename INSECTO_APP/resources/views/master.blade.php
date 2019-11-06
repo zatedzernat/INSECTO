@@ -19,8 +19,12 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#example').DataTable();
+            $('#example').DataTable( {
+            "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "All"] ]
+                } );
             });
+            
+            
     </script>
 
     {{-- bootstrap4 --}}
@@ -84,9 +88,9 @@
     </div>
     @endisset --}}
     @if (session('status'))
-        <div class="alert alert-success">
-            <p>{{session('status')}}</p>
-        </div>
+    <div class="alert alert-success">
+        <p>{{session('status')}}</p>
+    </div>
     @endif
 </body>
 
