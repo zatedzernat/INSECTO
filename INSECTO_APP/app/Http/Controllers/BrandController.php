@@ -48,7 +48,7 @@ class BrandController extends Controller
     public function store(BrandFormRequest $request)
     {
         $errors = new MessageBag();
-        $name = $request->newBrand;
+        $name = $request->brand_name;
         $boolean = $this->brand->createNewBrand($name);
         if ($boolean) {
             $errors->add('dupBrand','Already have this Brand!!!');

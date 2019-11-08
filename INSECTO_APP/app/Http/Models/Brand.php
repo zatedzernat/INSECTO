@@ -54,7 +54,7 @@ class Brand extends Model
             ['cancel_flag' => 'N',
                 'update_by' => 'ชื่อ user ตามLDAP']
         );
-
+        
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$brand->wasRecentlyCreated) {
             if ($brand->cancel_flag == "Y") {
