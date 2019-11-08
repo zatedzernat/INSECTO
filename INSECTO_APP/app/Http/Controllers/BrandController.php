@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Brand;
+use App\Http\Requests\BrandFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -44,9 +45,8 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BrandFormRequest $request)
     {
-        //todo check null or spacebar
         $errors = new MessageBag();
         $name = $request->newBrand;
         $boolean = $this->brand->createNewBrand($name);
@@ -84,11 +84,10 @@ class BrandController extends Controller
      * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(BrandFormRequest $request)
     {
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('brand_id');
-        //todo validated null or spac value
         $newBrand = $request->input('brand_name');
         $brand = $this->brand->findByID($id);
         $brand->setName($newBrand);

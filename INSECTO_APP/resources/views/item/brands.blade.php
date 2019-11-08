@@ -155,7 +155,7 @@ Brands
           <div class="modal-body">
             <div class="form-group">
               <label for="message-text" class="col-form-label">Name:</label>
-              <input type="text" class="form-control" name="newBrand" required>
+              <input type="text" class="form-control" name="brand_name" required>
             </div>
           </div>
           <div class="modal-footer">

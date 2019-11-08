@@ -6,6 +6,7 @@ use App\Http\Models\Brand;
 use App\Http\Models\Item;
 use App\Http\Models\Room;
 use App\Http\Models\Item_Type;
+use App\Http\Requests\ItemFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -57,7 +58,7 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ItemFormRequest $request)
     {
         //todo check null or spacebar
         $errors = new MessageBag();
@@ -104,7 +105,7 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request/*, Item $item*/)
+    public function update(ItemFormRequest $request/*, Item $item*/)
     {
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         //todo validated null or spac value

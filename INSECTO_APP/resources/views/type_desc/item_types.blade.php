@@ -159,7 +159,7 @@ Item Types
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" name="newItemType" required>
+                            <input type="text" class="form-control" name="type_name" required>
                         </div>
                     </div>
                     <div class="modal-footer">

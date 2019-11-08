@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Item_Type;
+use App\Http\Requests\ItemTypeFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -44,7 +45,7 @@ class ItemTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ItemTypeFormRequest $request)
     {
         //todo check null or spacebar
         $errors = new MessageBag();
@@ -85,7 +86,7 @@ class ItemTypeController extends Controller
      * @param  \App\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(ItemTypeFormRequest $request)
     {
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('type_id');
