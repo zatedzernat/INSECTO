@@ -6,6 +6,7 @@ use App\Http\Models\Problem_Description;
 use App\Http\Models\Item_Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
+use App\Http\Requests\ProblemDescriptionFormRequest;
 
 class ProblemDescriptionController extends Controller
 {
@@ -49,7 +50,7 @@ class ProblemDescriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProblemDescriptionFormRequest $request)
     {
         //todo check null or spacebar
         $errors = new MessageBag();
@@ -91,7 +92,7 @@ class ProblemDescriptionController extends Controller
      * @param  \App\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Problem_Description $problem_desc)
+    public function update(ProblemDescriptionFormRequest $request, Problem_Description $problem_desc)
     {
         $id = $request->input('problem_des_id');
         $problem_desc = $this->problem_desc->findByID($id);

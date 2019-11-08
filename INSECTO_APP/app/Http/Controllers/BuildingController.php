@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Building;
 use Illuminate\Http\Request;
+use App\Http\Requests\BuildingFormRequest;
 use Illuminate\Support\MessageBag;
 
 class BuildingController extends Controller
@@ -44,7 +45,7 @@ class BuildingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BuildingFormRequest $request)
     {
         $errors = new MessageBag();
         $building_code = $request->building_code;
@@ -85,7 +86,7 @@ class BuildingController extends Controller
      * @param  \App\Building  $building
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Building $building)
+    public function update(BuildingFormRequest $request, Building $building)
     {
         $id = $request->input('building_id');
         $building = $this->building->findByID($id);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Building;
 use App\Http\Models\Room;
 use Illuminate\Http\Request;
+use App\Http\Requests\RoomFormRequest;
 use Illuminate\Support\MessageBag;
 
 class RoomController extends Controller
@@ -50,7 +51,7 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoomFormRequest $request)
     {
         //todo check null or spacebar
         $errors = new MessageBag();
@@ -93,7 +94,7 @@ class RoomController extends Controller
      * @param  \App\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Room $room)
+    public function update(RoomFormRequest $request, Room $room)
     {
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         //todo validated null or spac value
