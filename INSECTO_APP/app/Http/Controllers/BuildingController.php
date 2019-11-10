@@ -88,15 +88,15 @@ class BuildingController extends Controller
      */
     public function update(BuildingFormRequest $request, Building $building)
     {
+        $errors = new MessageBag();
         $id = $request->input('building_id');
-        $building = $this->building->findByID($id);
-        $newBuildingCode= $request->input('building_code');
-        $newBuildingName= $request->input('building_name');
-        $building->setName($newBuildingName);
-        $building->setCode($newBuildingCode);
-        $building->save();
-        
-        return redirect()->route('buildings');
+        $code= $request->input('building_code');
+        $name= $request->input('building_name');
+        $updateSuccess = $this->building->updateBuilding($id, $code, $name);
+        if (!$updateSuccess) {
+            $errors->add('upDupBuilding','Duplicate Building Code or Building Name!!!');
+        }
+        return redirect()->route('buildings')->withErrors($errors);
     }
 
     /**

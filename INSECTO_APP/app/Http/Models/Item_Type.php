@@ -58,9 +58,22 @@ class Item_Type extends Model
                 //todo set update by ตาม LDAP
                 $itemtype->cancel_flag = "N";
                 $itemtype->save();
-            }else {
+            } else {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public function updateItemType($id, $name)
+    {
+        $findName = Item_Type::where('type_name', $name)->first();
+
+        if (is_null($findName)) {
+            $itemtype = $this->findByID($id);
+            $itemtype->type_name = $name;
+            $itemtype->save();
+            return true;
         }
         return false;
     }

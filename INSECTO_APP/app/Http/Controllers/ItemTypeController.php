@@ -88,17 +88,17 @@ class ItemTypeController extends Controller
      */
     public function update(ItemTypeFormRequest $request)
     {
+        $errors = new MessageBag();
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('type_id');
-        //todo validated null or spac value
-        $newItemType = $request->input('type_name');
-        $ItemType = $this->item_type->findByID($id);
-        $ItemType->setName($newItemType);
+        $name = $request->input('type_name');
+        $updateSuccess = $this->item_type->updateItemType($id, $name);
+        if (!$updateSuccess) {
+            $errors->add('upDupItemType','Duplicate Type Name!!!');
+        }
         //todo set update_by ตาม LDAP
         // $temType->setUpdateBy('ชื่อ user ตามLDAP');
-        $ItemType->save();
-
-        return redirect()->route('item_types');
+        return redirect()->route('item_types')->withErrors($errors);
     }
 
     /**

@@ -86,16 +86,18 @@ class BrandController extends Controller
      */
     public function update(BrandFormRequest $request)
     {
+        $errors = new MessageBag();
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('brand_id');
-        $newBrand = $request->input('brand_name');
-        $brand = $this->brand->findByID($id);
-        $brand->setName($newBrand);
+        $name = $request->input('brand_name');
+        $updateSuccess = $this->brand->updateBrand($id, $name);
+        if (!$updateSuccess) {
+            $errors->add('upDupBrand','Duplicate Brand Name!!!');
+        }
         //todo set updateby ตาม LDAP
         // $brand->setUpdateBy('ชื่อ user ตามLDAP');
-        $brand->save();
         
-        return redirect()->route('brands');
+        return redirect()->route('brands')->withErrors($errors);
     }
 
     /**
