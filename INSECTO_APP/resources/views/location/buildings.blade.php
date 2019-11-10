@@ -29,7 +29,7 @@ Buildings
         <thead>
             <tr>
                 <th>#</th>
-                <th>Code</th>
+                <th>Code <span style="color: red">*</span></th>
                 <th>Name</th>
                 <th>Created at</th>
                 <th>Updated at</th>
@@ -88,7 +88,7 @@ Buildings
                                         <div class="form-group">
                                             <label for="message-text" class="col-form-label">Code:</label>
                                             <input type="text" class="form-control" name="building_code"
-                                                value="{{ $building->building_code  }}" required>
+                                                value="{{ $building->building_code  }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="message-text" class="col-form-label">Name:</label>

@@ -30,7 +30,7 @@ Item Types
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Name <span style="color: red">*</span></th>
                 <th>Created at</th>
                 <th>Updated at</th>
                 <th>Update by</th>

@@ -30,7 +30,7 @@ Brands
     <thead>
       <tr>
         <th>#</th>
-        <th>Name</th>
+        <th>Name <span style="color: red">*</span></th>
         <th>Created At</th>
         <th>Updated At</th>
         <th>Update By</th>

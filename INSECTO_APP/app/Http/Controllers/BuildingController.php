@@ -90,11 +90,10 @@ class BuildingController extends Controller
     {
         $errors = new MessageBag();
         $id = $request->input('building_id');
-        $code= $request->input('building_code');
         $name= $request->input('building_name');
-        $updateSuccess = $this->building->updateBuilding($id, $code, $name);
+        $updateSuccess = $this->building->updateBuilding($id, $name);
         if (!$updateSuccess) {
-            $errors->add('upDupBuilding','Duplicate Building Code or Building Name!!!');
+            $errors->add('upDupBuilding','Duplicate Building Name!!!');
         }
         return redirect()->route('buildings')->withErrors($errors);
     }

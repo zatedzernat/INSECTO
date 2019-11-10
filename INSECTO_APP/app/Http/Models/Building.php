@@ -74,19 +74,15 @@ class Building extends Model
         return false;
     }
 
-    public function updateBuilding($id, $code, $name)
+    public function updateBuilding($id, $name)
     {
-        $findCode = Building::where('building_code', $code)->first();
         $findName = Building::where('building_name', $name)->first();
 
-        if(is_null($findCode)) {
-            if (is_null($findName)) {
-                $building = $this->findByID($id);
-                $building->building_code = $code;
-                $building->building_name = $name;
-                $building->save();
-                return true;
-            }
+        if (is_null($findName)) {
+            $building = $this->findByID($id);
+            $building->building_name = $name;
+            $building->save();
+            return true;
         }
         return false;
     }
