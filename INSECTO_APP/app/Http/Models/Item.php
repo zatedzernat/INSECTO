@@ -85,7 +85,7 @@ class Item extends Model
         $this->model = $model;
     }
 
-    public function createNewItem($item_code, $item_name, $room_id, $type_id, $brand_name, $serial_number, $item_model)
+    public function createNewItem($item_code, $item_name, $room_id, $type_id, $brand_id, $serial_number, $model)
     {
         $item = Item::firstOrCreate(
             ['item_code' => $item_code],
@@ -93,9 +93,9 @@ class Item extends Model
                 'item_name' => $item_name,
                 'room_id' => $room_id,
                 'type_id' => $type_id,
-                'brand_name' => $brand_name,
+                'brand_id' => $brand_id,
                 'serial_number' => $serial_number,
-                'item_model' => $item_model,
+                'model' => $model,
                 'cancel_flag' => 'N',
                 'update_by' => 'ชื่อ user ตามLDAP',
             ]
@@ -108,9 +108,9 @@ class Item extends Model
                 $item->item_name = $item_name;
                 $item->room_id = $room_id;
                 $item->type_id = $type_id;
-                $item->brand_name = $brand_name;
+                $item->brand_id = $brand_id;
                 $item->serial_number = $serial_number;
-                $item->item_model = $item_model;
+                $item->model = $model;
                 $item->cancel_flag = "N";
                 $item->save();
             } else {
@@ -118,5 +118,23 @@ class Item extends Model
             }
         }
         return false;
+    }
+
+    public function updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial_number, $model)
+    {
+
+        $item = $this->findByID($id);
+        $item->item_name = $item_name;
+        $item->room_id = $room_id;
+        $item->type_id = $type_id;
+        $item->brand_id = $brand_id;
+        $item->serial_number = $serial_number;
+        $item->model = $model;
+        $item->save();
+        //todo set updateby ตาม LDAP
+        // $item->setUpdateBy('ชื่อ user ตามLDAP');
+        
+        return true;
+        // return false;
     }
 }

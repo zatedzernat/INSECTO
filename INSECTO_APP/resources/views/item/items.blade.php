@@ -31,7 +31,7 @@ Items
         <thead>
             <tr>
                 <th>#</th>
-                <th>Code</th>
+                <th>Code <span style="color: red">*</span></th>
                 <th>Name</th>
                 {{-- <th>Room Code</th> --}}
                 <th>Room Name</th>
@@ -125,7 +125,7 @@ Items
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Item Code:</label>
                                     <input type="text" class="form-control" name="item_code"
-                                        value="{{ $item->item_code }}" required>
+                                        value="{{ $item->item_code }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Item Name:</label>

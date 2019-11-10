@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Brand;
 use App\Http\Models\Item;
-use App\Http\Models\Room;
 use App\Http\Models\Item_Type;
+use App\Http\Models\Room;
 use App\Http\Requests\ItemFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -39,7 +39,7 @@ class ItemController extends Controller
         $brands = $this->brand->findByCancelFlag('N');
 
         return view('item.items')
-            ->with(compact('items','rooms','itemTypes','brands'));
+            ->with(compact('items', 'rooms', 'itemTypes', 'brands'));
     }
 
     /**
@@ -60,16 +60,15 @@ class ItemController extends Controller
      */
     public function store(ItemFormRequest $request)
     {
-        //todo check null or spacebar
         $errors = new MessageBag();
         $itemCode = $request->item_code;
         $itemName = $request->item_name;
         $roomID = $request->room_id;
         $typeID = $request->item_type_id;
-        $brandName = $request->brand_name;
+        $brand_id = $request->brand_id;
         $serial = $request->serial_number;
         $model = $request->item_model;
-        $boolean = $this->item->createNewItem($itemCode,$itemName,$roomID,$typeID,$brandName,$serial,$model);
+        $boolean = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
         if ($boolean) {
             $errors->add('dupItem', 'Already have this Item!!!');
         }
@@ -107,30 +106,19 @@ class ItemController extends Controller
      */
     public function update(ItemFormRequest $request/*, Item $item*/)
     {
+        $errors = new MessageBag();
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
-        //todo validated null or spac value
         $id = $request->input('item_id');
-        $newCode = $request->input('item_code');
-        $newItemName = $request->input('item_name');
-        $newRoomID = $request->input('room_id');
-        $newTypeID = $request->input('item_type_id');
-        $newBrandID = $request->input('brand_id');
-        $newSerial = $request->input('serial_number');
-        $newModel = $request->input('item_model');
-        $item = $this->item->findByID($id);
-        // ? เวลาเปลี่ยนชื่อ code หรือ name ต้องเช็คค่าซ้ำไหม ?
-        $item->setCode($newCode);
-        $item->setItemName($newItemName);
-        $item->setRoomID($newRoomID);
-        $item->setTypeID($newTypeID);
-        $item->setBrandID($newBrandID);
-        $item->setSerial($newSerial);
-        $item->setModel($newModel);
-        //todo set updateby ตาม LDAP
-        // $item->setUpdateBy('ชื่อ user ตามLDAP');
-        $item->save();
+        // $code = $request->input('item_code');
+        $item_name = $request->input('item_name');
+        $room_id = $request->input('room_id');
+        $type_id = $request->input('item_type_id');
+        $brand_id = $request->input('brand_id');
+        $serial = $request->input('serial_number');
+        $model = $request->input('item_model');
+        $updateSuccess = $this->item->updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial, $model);
         
-        return redirect()->route('items');
+        return redirect()->route('items')->withErrors($errors);
     }
 
     /**
