@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Building;
 use App\Http\Models\Room;
-use Illuminate\Http\Request;
 use App\Http\Requests\RoomFormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
 class RoomController extends Controller
@@ -53,7 +53,6 @@ class RoomController extends Controller
      */
     public function store(RoomFormRequest $request)
     {
-        //todo check null or spacebar
         $errors = new MessageBag();
         $room_name = $request->room_name;
         $room_code = $request->room_code;
@@ -96,20 +95,15 @@ class RoomController extends Controller
      */
     public function update(RoomFormRequest $request, Room $room)
     {
+        $errors = new MessageBag();
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
-        //todo validated null or spac value
         $id = $request->input('room_id');
-        $room = $this->room->findByID($id);
-        $newRoomCode = $request->input('room_code');
-        $newRoomName = $request->input('room_name');
-        $newBuilding = $request->input('building');
-        $room->setName($newRoomName);
-        $room->setCode($newRoomCode);
-        $room->setBuilding($newBuilding);
-        //todo set updateby ตาม LDAP
-        $room->save();
+        // $room_code = $request->input('room_code');
+        $room_name = $request->input('room_name');
+        $building_id = $request->input('building_id');
+        $updateSuccess = $this->room->updateRoom($id, $room_name, $building_id);
 
-        return redirect()->route('rooms');
+        return redirect()->route('rooms')->withErrors($errors);
     }
 
     /**

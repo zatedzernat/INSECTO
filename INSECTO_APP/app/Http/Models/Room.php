@@ -79,4 +79,16 @@ class Room extends Model
         return false;
 
     }
+
+    public function updateRoom($id, $room_name, $building_id)
+    {
+
+        $room = $this->findByID($id);
+        $room->room_name = $room_name;
+        $room->building_id = $building_id;
+        $room->save();
+        //todo set updateby ตาม LDAP
+        
+        return true;
+    }
 }

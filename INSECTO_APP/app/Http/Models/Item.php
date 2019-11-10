@@ -135,6 +135,5 @@ class Item extends Model
         // $item->setUpdateBy('ชื่อ user ตามLDAP');
         
         return true;
-        // return false;
     }
 }

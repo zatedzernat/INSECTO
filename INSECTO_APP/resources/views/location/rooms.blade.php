@@ -29,7 +29,7 @@ Rooms
         <thead>
             <tr>
                 <th>#</th>
-                <th>Code</th>
+                <th>Code <span style="color: red">*</span></th>
                 <th>Name</th>
                 <th>Building</th>
                 <th>Created at</th>
@@ -92,7 +92,7 @@ Rooms
                                         <div class="form-group">
                                             <label for="message-text" class="col-form-label">Code:</label>
                                             <input type="text" class="form-control" name="room_code"
-                                                value="{{ $room->room_code  }}" required>
+                                                value="{{ $room->room_code  }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="message-text" class="col-form-label">Name:</label>
@@ -103,7 +103,7 @@ Rooms
                                             <label for="message-text" class="col-form-label">Building:</label>
                                             @isset($buildings)
                                             @if (!empty($buildings))
-                                            <select class="custom-select" name="building">
+                                            <select class="custom-select" name="building_id">
                                                 <option selected>Open this select menu</option>
                                                 @foreach ($buildings as $building)
                                                 <option value="{{ $building->building_id }}" @if ($room->
