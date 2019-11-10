@@ -94,8 +94,6 @@ class BrandController extends Controller
         if (!$updateSuccess) {
             $errors->add('upDupBrand','Duplicate Brand Name!!!');
         }
-        //todo set updateby ตาม LDAP
-        // $brand->setUpdateBy('ชื่อ user ตามLDAP');
         
         return redirect()->route('brands')->withErrors($errors);
     }

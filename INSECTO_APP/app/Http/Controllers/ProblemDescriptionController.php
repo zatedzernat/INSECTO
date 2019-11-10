@@ -94,15 +94,15 @@ class ProblemDescriptionController extends Controller
      */
     public function update(ProblemDescriptionFormRequest $request, Problem_Description $problem_desc)
     {
+        $errors = new MessageBag();
         $id = $request->input('problem_des_id');
-        $problem_desc = $this->problem_desc->findByID($id);
-        $newProblemDes= $request->input('problem_description');
-        $newType= $request->input('type');
-        $problem_desc->setProblemDescription($newProblemDes);
-        $problem_desc->setTypeId($newType);
-        $problem_desc->save();
-        
-        return redirect()->route('problem_descs');
+        $description= $request->input('problem_description');
+        $type_id= $request->input('type_id');
+        $updateSuccess = $this->problem_desc->updateProblemDesc($id, $description, $type_id);
+        if (!$updateSuccess) {
+            $errors->add('upDupProbDesc','Duplicate Description and Type!!!');
+        }
+        return redirect()->route('problem_descs')->withErrors($errors);
     }
 
     /**

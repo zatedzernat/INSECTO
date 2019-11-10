@@ -75,4 +75,24 @@ class Problem_Description extends Model
         return false;
 
     }
+
+    public function updateProblemDesc($id, $desc, $type_id)
+    {
+        $findDescAndType = Problem_Description::where([
+            ['problem_description', $desc],
+            ['type_id', $type_id],
+        ])->first();
+
+        if (is_null($findDescAndType)) {
+            $prob_desc = $this->findByID($id);
+            $prob_desc->problem_description = $desc;
+            $prob_desc->type_id = $type_id;
+            $prob_desc->save();
+            return true;
+        }
+        //todo set updateby ตาม LDAP
+        // $brand->setUpdateBy('ชื่อ user ตามLDAP');
+        return false;
+
+    }
 }

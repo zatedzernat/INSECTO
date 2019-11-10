@@ -29,7 +29,7 @@ Problem Descriptions
         <thead>
             <tr>
                 <th>#</th>
-                <th>Problem Description</th>
+                <th>Problem Description <span style="color: red">*</span></th>
                 <th>Type</th>
                 <th>Created at</th>
                 <th>Updated at</th>
@@ -94,7 +94,7 @@ Problem Descriptions
                                             <label for="message-text" class="col-form-label">Type:</label>
                                             @isset($types)
                                             @if (!empty($types))
-                                            <select class="custom-select" name="type">
+                                            <select class="custom-select" name="type_id">
                                                 <option selected>Open this select menu</option>
                                                 @foreach ($types as $type)
                                                 <option value="{{ $type->type_id }}" @if ($problem_desc->

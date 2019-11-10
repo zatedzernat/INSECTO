@@ -79,6 +79,8 @@ class Brand extends Model
             $brand->save();
             return true;
         }
+        //todo set updateby ตาม LDAP
+        // $brand->setUpdateBy('ชื่อ user ตามLDAP');
 
         return false;
     }
