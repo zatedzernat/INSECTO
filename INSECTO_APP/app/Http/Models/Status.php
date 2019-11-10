@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-    protected $fillable = ['status_name'];
+    protected $fillable = ['status_name','status_description'];
     protected $primaryKey = 'status_id';
 
     public function Notification_Problems()
@@ -29,10 +29,16 @@ class Status extends Model
         $this->status_name = $name;
     }
 
-    public function createNewStatus($status_name)
+    public function setDescription($description)
+    {
+        $this->status_description = $description;
+    }
+
+    public function createNewStatus($status_name, $status_description)
     {
         $status = Status::firstOrCreate(
-            ['status_name' => $status_name]
+            ['status_name' => $status_name],
+            ['status_description' => $status_description]
         );
 
         if (!$status->wasRecentlyCreated) {

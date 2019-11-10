@@ -16,7 +16,7 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             //if pk is string, it shoukld has primary() function
             $table->bigIncrements('item_id');
-            $table->string('item_code',45);
+            $table->string('item_code',45)->unique();
             $table->string('item_name',45);
             $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('type_id');

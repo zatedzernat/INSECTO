@@ -31,6 +31,7 @@ Statuses
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Created At</th>
                 <th>Updated At</th>
                 <th>Action</th>
@@ -44,6 +45,9 @@ Statuses
                 </td>
                 <td>
                     {{$status->status_name}}
+                </td>
+                <td>
+                    {{$status->status_description}}
                 </td>
                 <td>
                     {{$status->created_at}}
@@ -89,6 +93,11 @@ Statuses
                                     <input type="text" class="form-control" name="status_name"
                                         value="{{ $status->status_name }}" required>
                                     {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Description:</label>
+                                    <input type="text" class="form-control" name="status_description"
+                                        value="{{ $status->status_description }}" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -151,6 +160,12 @@ Statuses
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">Name:</label>
                             <input type="text" class="form-control" name="status_name" required>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Description:</label>
+                            <input type="text" class="form-control" name="status_description" required>
                         </div>
                     </div>
                     <div class="modal-footer">

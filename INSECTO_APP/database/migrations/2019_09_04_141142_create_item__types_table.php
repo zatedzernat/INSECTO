@@ -15,7 +15,7 @@ class CreateItemTypesTable extends Migration
     {
         Schema::create('item__types', function (Blueprint $table) {
             $table->bigIncrements('type_id');
-            $table->string('type_name',45);
+            $table->string('type_name',45)->unique();
             $table->string('cancel_flag',1);
             $table->timestamps();
             $table->string('update_by',45)->nullable();

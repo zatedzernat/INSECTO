@@ -16,7 +16,7 @@ class CreateRoomsTable extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             //if pk is string, it shoukld has primary() function
             $table->bigIncrements('room_id');
-            $table->string('room_code',45);
+            $table->string('room_code',45)->unique();
             $table->string('room_name',45);
             $table->unsignedBigInteger('building_id');
             $table->string('cancel_flag',1);
