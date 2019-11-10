@@ -30,7 +30,7 @@ Statuses
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Name <span style="color: red">*</span></th>
                 <th>Description</th>
                 <th>Created At</th>
                 <th>Updated At</th>

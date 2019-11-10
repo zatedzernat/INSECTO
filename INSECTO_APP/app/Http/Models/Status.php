@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-    protected $fillable = ['status_name','status_description'];
+    protected $fillable = ['status_name', 'status_description'];
     protected $primaryKey = 'status_id';
 
     public function Notification_Problems()
@@ -44,7 +44,23 @@ class Status extends Model
         if (!$status->wasRecentlyCreated) {
             return true;
         }
-        
+
+        return false;
+    }
+
+    public function updateStatus($id, $status_name, $status_description)
+    {
+        $findName = Status::where('status_name', $status_name)->first();
+
+        if (is_null($findName)) {
+            $status = $this->findByID($id);
+            $status->status_name = $status_name;
+            $status->status_description = $status_description;
+            //todo set updateby ตาม LDAP
+            // $brand->setUpdateBy('ชื่อ user ตามLDAP');
+            $status->save();
+            return true;
+        }
         return false;
     }
 

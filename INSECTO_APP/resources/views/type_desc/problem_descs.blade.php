@@ -30,7 +30,7 @@ Problem Descriptions
             <tr>
                 <th>#</th>
                 <th>Problem Description <span style="color: red">*</span></th>
-                <th>Type</th>
+                <th>Type <span style="color: red">*</span></th>
                 <th>Created at</th>
                 <th>Updated at</th>
                 <th>Update by</th>

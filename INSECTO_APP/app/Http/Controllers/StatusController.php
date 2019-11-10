@@ -50,7 +50,7 @@ class StatusController extends Controller
         $description = $request->status_description;
         $boolean = $this->status->createNewStatus($name, $description);
         if ($boolean) {
-            $errors->add('dupStatus','Already have this status!!!');
+            $errors->add('dupStatus', 'Already have this status!!!');
         }
         return redirect()->route('statuses')->withErrors($errors);
     }
@@ -86,18 +86,16 @@ class StatusController extends Controller
      */
     public function update(StatusFormRequest $request)
     {
+        $errors = new MessageBag();
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('status_id');
-        $newStatus = $request->input('status_name');
-        $description = $request->input('status_description');
-        $status = $this->status->findByID($id);
-        $status->setName($newStatus);
-        $status->setDescription($description);
-        //todo set updateby ตาม LDAP
-        // $brand->setUpdateBy('ชื่อ user ตามLDAP');
-        $status->save();
-
-        return redirect()->route('statuses');
+        $status_name = $request->input('status_name');
+        $status_description = $request->input('status_description');
+        $updateSuccess = $this->status->updateStatus($id, $status_name, $status_description);
+        if (!$updateSuccess) {
+            $errors->add('upDupStatus', 'Duplicate Status Name!!!');
+        }
+        return redirect()->route('statuses')->withErrors($errors);
     }
 
     /**
