@@ -47,9 +47,8 @@ class ItemTypeController extends Controller
      */
     public function store(ItemTypeFormRequest $request)
     {
-        //todo check null or spacebar
         $errors = new MessageBag();
-        $name = $request->newItemType;
+        $name = $request->type_name;
         $boolean = $this->item_type->createNewItemType($name);
         if ($boolean) {
             $errors->add('dupItemType', 'Already have this ItemType!!!');

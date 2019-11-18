@@ -26,6 +26,7 @@ class RoomFormRequest extends FormRequest
         return [
             'room_code' => 'required',
             'room_name' => 'required',
+            'building_id' => 'required'
         ];
     }
 
@@ -41,6 +42,7 @@ class RoomFormRequest extends FormRequest
         return [
             'room_code' => 'enter room code',
             'room_name' => 'enter room name',
+            'building_id' => 'enter building name',
         ];
     }
 }

@@ -189,7 +189,7 @@ Rooms
                             @isset($buildings)
                             @if (!empty($buildings))
                             <select class="custom-select" name="building_id">
-                                <option selected>Open this select menu</option>
+                                <option selected value="">Open this select menu</option>
                                 @foreach ($buildings as $building)
                                 <option value="{{ $building->building_id }}">{{ $building->building_name }}</option>
                                 @endforeach

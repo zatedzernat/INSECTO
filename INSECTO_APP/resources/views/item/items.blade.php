@@ -270,7 +270,7 @@ Items
                             @isset($rooms)
                             @if (!empty($rooms))
                             <select name="room_id" id="selectRoomName" class="form-control">
-                                <option selected>-- select Room Name --</option>
+                                <option value="" selected>-- select Room Name --</option>
                                 @foreach ($rooms as $room)
                                 <option value="{{$room->room_id}}">
                                     {{$room->room_name}}</option>
@@ -286,7 +286,7 @@ Items
                             @isset($itemTypes)
                             @if (!empty($itemTypes))
                             <select name="item_type_id" id="selectItemType" class="form-control">
-                                <option selected>-- select Type Name --</option>
+                                <option value="" selected>-- select Type Name --</option>
                                 @foreach ($itemTypes as $itemType)
                                 <option value="{{$itemType->type_id}}">
                                     {{$itemType->type_name}}</option>
@@ -302,7 +302,7 @@ Items
                             @isset($brands)
                             @if (!empty($brands))
                             <select name="brand_id" id="selectBrand" class="form-control">
-                                <option>-- select Brand Name--</option>
+                                <option value="" selected>-- select Brand Name--</option>
                                 @foreach ($brands as $brand)
                                 <option value="{{$brand->brand_id}}">
                                     {{$brand->brand_name}}</option>
