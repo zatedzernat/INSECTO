@@ -68,13 +68,13 @@ Items
                     {{ $item->item_type->type_name }}
                 </td>
                 <td>
-                    {{ $item->brand->brand_name??"-" }}
+                    {{ $item->brand->brand_name??" " }}
                 </td>
                 <td>
-                    {{ $item->serial_number??"-" }}
+                    {{ $item->serial_number??" " }}
                 </td>
                 <td>
-                    {{ $item->model??"-" }}
+                    {{ $item->model??" " }}
                 </td>
                 {{-- <td>
                         {{$item->note ?? "-"}}
