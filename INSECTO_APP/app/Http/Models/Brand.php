@@ -73,7 +73,7 @@ class Brand extends Model
     {
         $findName = Brand::where('brand_name', $brand_name)->first();
 
-        if (is_null($findName)) {
+        if ($findName->brand_id == $brand_id || is_null($findName)) {
             $brand = $this->findByID($brand_id);
             $brand->brand_name = $brand_name;
             $brand->save();

@@ -48,12 +48,12 @@ class Status extends Model
         return false;
     }
 
-    public function updateStatus($id, $status_name, $status_description)
+    public function updateStatus($status_id, $status_name, $status_description)
     {
         $findName = Status::where('status_name', $status_name)->first();
 
-        if (is_null($findName)) {
-            $status = $this->findByID($id);
+        if ($findName->status_id == $status_id || is_null($findName)) {
+            $status = $this->findByID($status_id);
             $status->status_name = $status_name;
             $status->status_description = $status_description;
             //todo set updateby ตาม LDAP

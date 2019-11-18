@@ -76,15 +76,15 @@ class Problem_Description extends Model
 
     }
 
-    public function updateProblemDesc($id, $desc, $type_id)
+    public function updateProblemDesc($problem_des_id, $desc, $type_id)
     {
         $findDescAndType = Problem_Description::where([
             ['problem_description', $desc],
             ['type_id', $type_id],
         ])->first();
 
-        if (is_null($findDescAndType)) {
-            $prob_desc = $this->findByID($id);
+        if ($findDescAndType->problem_des_id == $problem_des_id || is_null($findDescAndType)) {
+            $prob_desc = $this->findByID($problem_des_id);
             $prob_desc->problem_description = $desc;
             $prob_desc->type_id = $type_id;
             $prob_desc->save();

@@ -65,12 +65,12 @@ class Item_Type extends Model
         return false;
     }
 
-    public function updateItemType($id, $name)
+    public function updateItemType($type_id, $name)
     {
         $findName = Item_Type::where('type_name', $name)->first();
 
-        if (is_null($findName)) {
-            $itemtype = $this->findByID($id);
+        if ($findName->type_id == $type_id || is_null($findName)) {
+            $itemtype = $this->findByID($type_id);
             $itemtype->type_name = $name;
             $itemtype->save();
             return true;
