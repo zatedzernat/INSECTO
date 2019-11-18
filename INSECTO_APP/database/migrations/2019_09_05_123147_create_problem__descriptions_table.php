@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProblemDescriptionsTable extends Migration
 {
@@ -15,17 +15,17 @@ class CreateProblemDescriptionsTable extends Migration
     {
         Schema::create('problem__descriptions', function (Blueprint $table) {
             $table->bigIncrements('problem_des_id');
-            $table->string('problem_description',100);
+            $table->string('problem_description', 100);
             $table->unsignedBigInteger('type_id');
-            $table->string('cancel_flag',1);
+            $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('update_by',45);
+            $table->string('update_by', 45);
 
             $table->foreign('type_id')
-            ->references('type_id')
-            ->on('item__types')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+                ->references('type_id')
+                ->on('item__types')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
 
         Schema::enableForeignKeyConstraints();

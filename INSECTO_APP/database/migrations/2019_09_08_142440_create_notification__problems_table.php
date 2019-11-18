@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateNotificationProblemsTable extends Migration
 {
@@ -18,28 +18,30 @@ class CreateNotificationProblemsTable extends Migration
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('problem_des_id')->nullable();
-            $table->string('problem_description',100);
-            $table->string('cancel_flag',1);
+            $table->string('problem_description', 100);
+            $table->ipAddress('sender_ip');
+            $table->string('help_desk_code', 15)->nullable();
+            $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('update_by',45)->nullable();
+            $table->string('update_by', 45)->nullable();
 
             $table->foreign('item_id')
-            ->references('item_id')
-            ->on('items')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+                ->references('item_id')
+                ->on('items')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('status_id')
-            ->references('status_id')
-            ->on('statuses')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+                ->references('status_id')
+                ->on('statuses')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('problem_des_id')
-            ->references('problem_des_id')
-            ->on('problem__descriptions')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+                ->references('problem_des_id')
+                ->on('problem__descriptions')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
 
         Schema::enableForeignKeyConstraints();
