@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification_Problem extends Model
 {
-    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'cancel_flag', 'updated_by'];
+    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'sender_ip', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'noti_id';
 
     public function status()
@@ -38,12 +38,13 @@ class Notification_Problem extends Model
         return Notification_Problem::all();
     }
 
-    public function create($item_id, $problem_des_id, $problem_description)
+    public function create($item_id, $problem_des_id, $problem_description, $sender_ip)
     {
         $this->item_id = $item_id;
         $this->status_id = 1;
         $this->problem_des_id = $problem_des_id;
         $this->problem_description = $problem_description;
+        $this->sender_ip = $sender_ip;
         $this->cancel_flag = 'N';
         $this->update_by = "std";
     }

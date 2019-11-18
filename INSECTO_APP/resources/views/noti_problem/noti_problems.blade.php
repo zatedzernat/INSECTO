@@ -20,6 +20,8 @@ Notication Problems
                 <th>Problem Desc ID</th>
                 <th>Problem Description</th>
                 <th>Status</th>
+                <th>HDC</th>
+                <th>Sender IP</th>
                 <th>Created at</th>
                 <th>Updated at</th>
                 <th>Update by</th>
@@ -47,6 +49,12 @@ Notication Problems
                 </td>
                 <td>
                     {{$noti_problem->status->status_name}}
+                </td>
+                <td>
+                    {{$noti_problem->help_desk_code}}
+                </td>
+                <td>
+                    {{$noti_problem->sender_ip}}
                 </td>
                 <td>
                     {{$noti_problem->created_at}}

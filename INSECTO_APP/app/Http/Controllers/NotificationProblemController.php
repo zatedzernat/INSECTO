@@ -56,6 +56,7 @@ class NotificationProblemController extends Controller
         $item_id = $request->input('item_id');
         $problem_des_id = $request->input('problem_des_id');
         $problem_description = $request->input('problem_description');
+        $sender_ip = $request->ip();
 
         if ($problem_des_id == "etc") {
             $problem_des_id = null;
@@ -63,7 +64,7 @@ class NotificationProblemController extends Controller
             $problem_description = $this->problem_desc->getProblemDescription($problem_des_id);
         }
 
-        $this->noti_problem->create($item_id, $problem_des_id, $problem_description);
+        $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $sender_ip);
         $this->noti_problem->save();
 
         return redirect()->route('home')->with('status', 'Send Problem Success');
