@@ -13,31 +13,37 @@ class StatusesTableSeeder extends Seeder
     public function run()
     {
         DB::table('statuses')->insert([
-            'status_name' => 'Open',
+            'status_name' => 'waiting',
             'status_description' => 'Request Pending',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('statuses')->insert([
-            'status_name' => 'On Hold',
+            'status_name' => 'open',
+            'status_description' => 'Request Pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('statuses')->insert([
+            'status_name' => 'on hold',
             'status_description' => 'Request On Hold',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('statuses')->insert([
-            'status_name' => 'Queue',
+            'status_name' => 'queue',
             'status_description' => 'รับงานแล้วแต่รอคิว',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('statuses')->insert([
-            'status_name' => 'In Progress',
+            'status_name' => 'in progress',
             'status_description' => 'กำลังดำเนินงาน',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('statuses')->insert([
-            'status_name' => 'Closed',
+            'status_name' => 'closed',
             'status_description' => 'Request Completed',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
