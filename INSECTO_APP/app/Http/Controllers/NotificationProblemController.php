@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Item;
 use App\Http\Models\Notification_Problem;
 use App\Http\Models\Problem_Description;
+use App\Http\Models\Status;
 use App\Http\Requests\SendProblemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -15,12 +16,14 @@ class NotificationProblemController extends Controller
     private $noti_problem;
     private $item;
     private $problem_desc;
+    private $status;
 
     public function __construct()
     {
         $this->noti_problem = new Notification_Problem();
         $this->item = new Item();
         $this->problem_desc = new Problem_Description();
+        $this->status = new Status();
     }
 
     /**
@@ -31,8 +34,9 @@ class NotificationProblemController extends Controller
     public function index()
     {
         $noti_problems = $this->noti_problem->getAll();
+        $statuses = $this->status->getAll();
         return view('noti_problem.noti_problems')
-            ->with(compact('noti_problems'));
+            ->with(compact('noti_problems','statuses'));
     }
 
     /**
