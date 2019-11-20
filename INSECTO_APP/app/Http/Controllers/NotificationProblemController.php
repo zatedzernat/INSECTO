@@ -112,9 +112,9 @@ class NotificationProblemController extends Controller
      * @param  \App\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Notification_Problem $notification_Problem)
+    public function update(Request $request, $id)
     {
-        //
+        $help_desk_code = $request->help_desk_code;
     }
 
     /**

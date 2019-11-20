@@ -90,31 +90,77 @@ Notication Problems
                                     {{ $noti_problem->sender_ip }}</label>
                             </div>
                             <div class="form-group">
-                                <label for="message-text" class="col-form-label">Status:</label>
-                                <select name="status_id" class="form-control">
+                                <label for="message-text" class="col-form-label">Status:
+                                    {{ $noti_problem->status->status_name }}</label>
+                                {{-- <select name="status_id" class="form-control">
                                     @foreach ($statuses as $status)
                                     <option
                                         {{ $noti_problem->status->status_id == $status->status_id ? 'seledted' : '' }}
-                                        value="{{ $status->status_id }}">{{ $status->status_name }}</option>
-                                    @endforeach
-                                </select>
+                                value="{{ $status->status_id }}">{{ $status->status_name }}</option>
+                                @endforeach
+                                </select> --}}
                             </div>
                             @isset($noti_problem->help_desk_code)
                             <div class="form-group">
-                                <label for="message-text" class="col-form-label">HDC: {{ $noti_problem->help_desk_code }}</label>
+                                <label for="message-text" class="col-form-label">HDC:
+                                    {{ $noti_problem->help_desk_code }}</label>
                             </div>
                             @endisset
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Edit</button>
+                            @if ( $noti_problem->status->status_name == 'waiting')
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                data-target="#hdc-{{ $noti_problem->noti_id }}">
+                                Open
+                            </button>
+                            @elseif ( $noti_problem->status->status_name == 'open')
+                            <button type="button" class="btn btn-primary">On Hold</button>
+                            <button type="button" class="btn btn-primary">Queue</button>
+                            <button type="button" class="btn btn-primary">In Progress</button>
+                            @elseif ( $noti_problem->status->status_name == 'on hold' ||
+                            $noti_problem->status->status_name == 'queue')
+                            <button type="button" class="btn btn-primary">In Progress</button>
+                            @elseif ( $noti_problem->status->status_name == 'in progress')
                             <button type="button" class="btn btn-success">Resolved</button>
+                            @elseif ( $noti_problem->status->status_name == 'closed')
                             <button type="button" class="btn btn-warning">Re-open</button>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
             <!-- End Edit Modal -->
+
+            <!-- hdc Modal -->
+            <div class="modal fade" id="hdc-{{ $noti_problem->noti_id }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form action="noti_problem/edit/{{ $noti_problem->noti_id }}" method="POST">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Help Desk Code</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Help Desk Code:</label>
+                                    <input type="text" class="form-control" name="help_desk_code" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End hdc Modal -->
             @endforeach
         </tbody>
     </table>
