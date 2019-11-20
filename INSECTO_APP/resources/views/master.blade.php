@@ -91,6 +91,9 @@
     <div class="alert alert-success">
         <p>{{session('status')}}</p>
     </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
     @endif
 </body>
 

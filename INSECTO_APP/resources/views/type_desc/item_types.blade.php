@@ -13,6 +13,9 @@ Item Types
 <div class="container">
     @if ($errors->any())
     <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         <ul>
             @foreach ($errors->all() as $error)
             <li>{{ $error }}</li>
@@ -25,6 +28,9 @@ Item Types
     <div class="alert alert-success" role="alert">
         {{ session('del_itemType') }}
     </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
     @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
