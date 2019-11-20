@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Request;
 
 class SendProblemRequest extends FormRequest
 {
@@ -23,10 +24,16 @@ class SendProblemRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'problem_des_id' => 'required',
-            'problem_description' => 'required',
-        ];
+        if (Request::input('problem_des_id') == 'etc') {
+            return [
+                'problem_des_id' => 'required',
+                'problem_description' => 'required',
+            ];
+        } else {
+            return [
+                'problem_des_id' => 'required',
+            ];
+        }
     }
 
     public function messages()
@@ -43,5 +50,4 @@ class SendProblemRequest extends FormRequest
             'problem_description' => 'enter problem description',
         ];
     }
-
 }

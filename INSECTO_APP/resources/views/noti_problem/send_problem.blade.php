@@ -103,8 +103,6 @@ Send Problem
                 alert("Please Enter Problem Description");
                 return false;
             }
-        }else {
-            document.getElementById('probETC').value = "pass";
         }
         return true;
     }
