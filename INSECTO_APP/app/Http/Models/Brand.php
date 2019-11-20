@@ -72,8 +72,8 @@ class Brand extends Model
     public function updateBrand($brand_id, $brand_name)
     {
         $findName = Brand::where('brand_name', $brand_name)->first();
-
-        if ($findName->brand_id == $brand_id || is_null($findName)) {
+        // dd($findName);
+        if (is_null($findName) || $findName->brand_id == $brand_id) {
             $brand = $this->findByID($brand_id);
             $brand->brand_name = $brand_name;
             $brand->save();

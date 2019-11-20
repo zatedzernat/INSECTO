@@ -69,7 +69,7 @@ class Item_Type extends Model
     {
         $findName = Item_Type::where('type_name', $name)->first();
 
-        if ($findName->type_id == $type_id || is_null($findName)) {
+        if (is_null($findName) || $findName->type_id == $type_id) {
             $itemtype = $this->findByID($type_id);
             $itemtype->type_name = $name;
             $itemtype->save();

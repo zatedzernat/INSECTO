@@ -78,7 +78,7 @@ class Building extends Model
     {
         $findName = Building::where('building_name', $name)->first();
 
-        if ($findName->building_id == $building_id || is_null($findName)) {
+        if (is_null($findName) || $findName->building_id == $building_id) {
             $building = $this->findByID($building_id);
             $building->building_name = $name;
             $building->save();

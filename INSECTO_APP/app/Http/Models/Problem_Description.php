@@ -83,7 +83,7 @@ class Problem_Description extends Model
             ['type_id', $type_id],
         ])->first();
 
-        if ($findDescAndType->problem_des_id == $problem_des_id || is_null($findDescAndType)) {
+        if (is_null($findDescAndType) || $findDescAndType->problem_des_id == $problem_des_id) {
             $prob_desc = $this->findByID($problem_des_id);
             $prob_desc->problem_description = $desc;
             $prob_desc->type_id = $type_id;

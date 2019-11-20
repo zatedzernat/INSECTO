@@ -52,7 +52,7 @@ class Status extends Model
     {
         $findName = Status::where('status_name', $status_name)->first();
 
-        if ($findName->status_id == $status_id || is_null($findName)) {
+        if (is_null($findName) || $findName->status_id == $status_id) {
             $status = $this->findByID($status_id);
             $status->status_name = $status_name;
             $status->status_description = $status_description;
