@@ -121,7 +121,7 @@ class NotificationProblemController extends Controller
         $note = $request->note;
         $status = $this->noti_problem->checkStatus($next_status, $help_desk_code, $id, $note);
         return redirect()->route('noti_problems')
-        ->with('changeComplete','change status to '.$status.' complete');
+        ->with('changeComplete','change status to \''.$status.'\' complete');
     }
 
     /**

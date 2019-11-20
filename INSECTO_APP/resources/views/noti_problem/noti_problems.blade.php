@@ -132,11 +132,12 @@ Notication Problems
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 @if ( $noti_problem->status->status_name == 'waiting')
                                 <!-- Button hdc modal -->
-                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                <button type="button" class="btn btn-info" data-toggle="modal"
                                     data-target="#hdc-{{ $noti_problem->noti_id }}">
                                     Open
                                 </button>
-                                @elseif ( $noti_problem->status->status_name == 'open')
+                                @elseif ( $noti_problem->status->status_name == 'open' ||
+                                $noti_problem->status->status_name == 'reopen')
                                 <button type="submit" class="btn btn-primary" name="next_status" value="on hold">On
                                     Hold</button>
                                 <button type="submit" class="btn btn-primary" name="next_status"
@@ -154,8 +155,6 @@ Notication Problems
                                     Resolved
                                 </button>
                                 @elseif ( $noti_problem->status->status_name == 'closed')
-                                {{-- <button type="submit" class="btn btn-warning" name="next_status"
-                            value="open">Re-open</button> --}}
                                 <!-- Button hdc modal -->
                                 <button type="button" class="btn btn-warning" data-toggle="modal"
                                     data-target="#hdc-{{ $noti_problem->noti_id }}">

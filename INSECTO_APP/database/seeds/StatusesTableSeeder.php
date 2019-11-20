@@ -14,7 +14,7 @@ class StatusesTableSeeder extends Seeder
     {
         DB::table('statuses')->insert([
             'status_name' => 'waiting',
-            'status_description' => 'Request Pending',
+            'status_description' => 'Request Waiting',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -32,19 +32,25 @@ class StatusesTableSeeder extends Seeder
         ]);
         DB::table('statuses')->insert([
             'status_name' => 'queue',
-            'status_description' => 'รับงานแล้วแต่รอคิว',
+            'status_description' => 'Request In Queue',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('statuses')->insert([
             'status_name' => 'in progress',
-            'status_description' => 'กำลังดำเนินงาน',
+            'status_description' => 'Request In Progress',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('statuses')->insert([
             'status_name' => 'closed',
             'status_description' => 'Request Completed',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('statuses')->insert([
+            'status_name' => 'reopen',
+            'status_description' => 'Re Open Request',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
