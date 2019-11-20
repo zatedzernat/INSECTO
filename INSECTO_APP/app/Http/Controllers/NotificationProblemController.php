@@ -6,6 +6,7 @@ use App\Http\Models\Item;
 use App\Http\Models\Notification_Problem;
 use App\Http\Models\Problem_Description;
 use App\Http\Models\Status;
+use App\Http\Requests\NotiUpdateFormRequest;
 use App\Http\Requests\SendProblemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -36,7 +37,7 @@ class NotificationProblemController extends Controller
         $noti_problems = $this->noti_problem->getAll();
         $statuses = $this->status->getAll();
         return view('noti_problem.noti_problems')
-            ->with(compact('noti_problems','statuses'));
+            ->with(compact('noti_problems', 'statuses'));
     }
 
     /**
@@ -112,9 +113,15 @@ class NotificationProblemController extends Controller
      * @param  \App\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(NotiUpdateFormRequest $request, $id)
     {
+        // $errors = new MessageBag();
         $help_desk_code = $request->help_desk_code;
+        $next_status = $request->next_status;
+        $note = $request->note;
+        $status = $this->noti_problem->checkStatus($next_status, $help_desk_code, $id, $note);
+        return redirect()->route('noti_problems')
+        ->with('changeComplete','change status to '.$status.' complete');
     }
 
     /**
