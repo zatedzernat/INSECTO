@@ -54,9 +54,9 @@ class ProblemDescriptionController extends Controller
     {
         //todo check null or spacebar
         $errors = new MessageBag();
-        $description = $request->problem_description;
-        $typeId = $request->type_id;
-        $boolean = $this->problem_desc->createNewProblemDesc($description, $typeId);
+        $problem_description = $request->problem_description;
+        $type_id = $request->type_id;
+        $boolean = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
         if ($boolean) {
             $errors->add('dupProblem_Description','Already have this Problem Description!!!');
         }

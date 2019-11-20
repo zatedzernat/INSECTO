@@ -95,7 +95,7 @@ Problem Descriptions
                                             @isset($types)
                                             @if (!empty($types))
                                             <select class="custom-select" name="type_id">
-                                                <option selected>Open this select menu</option>
+                                                <option selected value="">Open this select menu</option>
                                                 @foreach ($types as $type)
                                                 <option value="{{ $type->type_id }}" @if ($problem_desc->
                                                     item_type->type_id ==
@@ -177,7 +177,7 @@ Problem Descriptions
                             @isset($types)
                             @if (!empty($types))
                             <select class="custom-select" name="type_id">
-                                <option selected>Open this select menu</option>
+                                <option selected value="">Open this select menu</option>
                                 @foreach ($types as $type)
                                 <option value="{{ $type->type_id }}">{{ $type->type_name }}</option>
                                 @endforeach

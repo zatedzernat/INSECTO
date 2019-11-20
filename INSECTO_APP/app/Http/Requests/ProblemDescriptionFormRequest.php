@@ -25,6 +25,7 @@ class ProblemDescriptionFormRequest extends FormRequest
     {
         return [
             'problem_description' => 'required',
+            'type_id' => 'required',
         ];
     }
 
@@ -39,6 +40,7 @@ class ProblemDescriptionFormRequest extends FormRequest
     {
         return [
             'problem_description' => 'enter problem description',
+            'type_id' => 'enter type'
         ];
     }
 }
