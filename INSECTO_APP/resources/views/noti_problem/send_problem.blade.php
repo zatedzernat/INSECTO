@@ -22,7 +22,7 @@ Send Problem
         </ul>
     </div>
     @endif
-    <form method="post" action="/send-problem/send" onsubmit="return addValue()">
+    <form method="post" action="/send-problem/check" onsubmit="return addValue()">
         @csrf
         <div class="form-row">
             <div class="form-group col-md-2">

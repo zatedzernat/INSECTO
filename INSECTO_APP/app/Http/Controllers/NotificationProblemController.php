@@ -58,9 +58,9 @@ class NotificationProblemController extends Controller
      */
     public function store(SendProblemRequest $request)
     {
-        $item_id = $request->input('item_id');
-        $problem_des_id = $request->input('problem_des_id');
-        $problem_description = $request->input('problem_description');
+        $item_id = $request->item_id;
+        $problem_des_id = $request->problem_des_id;
+        $problem_description = $request->problem_description;
         $sender_ip = $request->ip();
 
         if ($problem_des_id == "etc") {
@@ -70,9 +70,21 @@ class NotificationProblemController extends Controller
         }
 
         $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $sender_ip);
-        $this->noti_problem->save();
-
         return redirect()->route('home')->with('status', 'Send Problem Success');
+    }
+
+    public function check(SendProblemRequest $request)
+    {
+        $item_id = $request->input('item_id');
+        $problem_des_id = $request->input('problem_des_id');
+        $problem_description = $request->input('problem_description');
+        $noti_prob = $this->noti_problem->checkSameProblem($item_id, $problem_des_id);
+
+        if ($noti_prob) {
+            return view('checkProblem')->with(compact('noti_prob', 'problem_description'));
+        } else {
+            return $this->store($request);
+        }
     }
 
     /**
@@ -121,7 +133,7 @@ class NotificationProblemController extends Controller
         $note = $request->note;
         $status = $this->noti_problem->checkStatus($next_status, $help_desk_code, $id, $note);
         return redirect()->route('noti_problems')
-        ->with('changeComplete','change status to \''.$status.'\' complete');
+            ->with('changeComplete', 'change status to \'' . $status . '\' complete');
     }
 
     /**

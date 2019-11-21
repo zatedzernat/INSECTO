@@ -43,6 +43,23 @@ class Notification_Problem extends Model
         return Notification_Problem::where('noti_id', $id)->first();
     }
 
+    public function checkSameProblem($item_id, $problem_des_id)
+    {
+        if ($problem_des_id != 'etc') {
+            $noti_prob = Notification_Problem::where([
+                ['item_id', $item_id],
+                ['problem_des_id', $problem_des_id],
+                ['status_id', '<>', 6],
+            ])->latest()->first();
+        } else {
+            $noti_prob = Notification_Problem::where([
+                ['item_id', $item_id],
+                ['status_id', '<>', 6],
+            ])->latest()->first();
+        }
+        return $noti_prob;
+    }
+
     public function create($item_id, $problem_des_id, $problem_description, $sender_ip)
     {
         $this->item_id = $item_id;
@@ -52,6 +69,7 @@ class Notification_Problem extends Model
         $this->sender_ip = $sender_ip;
         $this->cancel_flag = 'N';
         $this->update_by = "std";
+        $this->save();
     }
 
     public function checkStatus($next_status, $help_desk_code, $id, $note)
