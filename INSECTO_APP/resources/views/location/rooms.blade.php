@@ -49,7 +49,7 @@ Rooms
             @foreach ($rooms as $room)
             <tr>
                 <td>
-                    {{$room->room_id}}
+                    {{$loop->iteration}}
                 </td>
                 <td>
                     {{$room->room_code}}
