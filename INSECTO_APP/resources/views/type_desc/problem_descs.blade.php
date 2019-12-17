@@ -47,7 +47,7 @@ Problem Descriptions
             @foreach ($problems_descs as $problem_desc)
             <tr>
                 <td>
-                    {{$problem_desc->problem_des_id}}
+                    {{$loop->iteration}}
                 </td>
                 <td>
                     {{$problem_desc->problem_description}}

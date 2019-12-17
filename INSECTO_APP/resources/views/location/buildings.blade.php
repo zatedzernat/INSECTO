@@ -48,7 +48,7 @@ Buildings
             @foreach ($buildings as $building)
             <tr>
                 <td>
-                    {{$building->building_id}}
+                    {{$loop->iteration}}
                 </td>
                 <td>
                     {{$building->building_code}}
