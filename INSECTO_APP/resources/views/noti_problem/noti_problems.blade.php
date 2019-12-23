@@ -142,19 +142,32 @@ Notication Problems
                                     Hold</button>
                                 <button type="submit" class="btn btn-primary" name="next_status"
                                     value="queue">Queue</button>
+
                                 <button type="submit" class="btn btn-primary" name="next_status" value="in progress">In
                                     Progress</button>
-                                @elseif ( $noti_problem->status->status_name == 'on hold' ||
-                                $noti_problem->status->status_name == 'queue')
+                                @elseif ( $noti_problem->status->status_name == 'on hold')
+                                <button type="submit" class="btn btn-primary" name="next_status"
+                                    value="queue">Queue</button>
+                                <button type="submit" class="btn btn-primary" name="next_status" value="in progress">In
+                                    Progress</button>
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                    data-target="#res-{{ $noti_problem->noti_id }}">
+                                    Resolved
+                                </button>
+                                @elseif ($noti_problem->status->status_name == 'queue')
+                                <button type="submit" class="btn btn-primary" name="next_status" value="on hold">On
+                                    Hold</button>
                                 <button type="submit" class="btn btn-primary" name="next_status" value="in progress">In
                                     Progress</button>
                                 @elseif ( $noti_problem->status->status_name == 'in progress')
-                                <!-- Button cls modal -->
+                                <button type="submit" class="btn btn-primary" name="next_status" value="on hold">On
+                                    Hold</button>
+                                <!-- Button res modal -->
                                 <button type="button" class="btn btn-success" data-toggle="modal"
-                                    data-target="#cls-{{ $noti_problem->noti_id }}">
+                                    data-target="#res-{{ $noti_problem->noti_id }}">
                                     Resolved
                                 </button>
-                                @elseif ( $noti_problem->status->status_name == 'closed')
+                                @elseif ( $noti_problem->status->status_name == 'resolved')
                                 <!-- Button hdc modal -->
                                 <button type="button" class="btn btn-warning" data-toggle="modal"
                                     data-target="#hdc-{{ $noti_problem->noti_id }}">
@@ -197,15 +210,15 @@ Notication Problems
                 </div>
             </div>
             <!-- End hdc Modal -->
-            <!-- cls Modal -->
-            <div class="modal fade" id="cls-{{ $noti_problem->noti_id }}" tabindex="-1" role="dialog"
+            <!-- res Modal -->
+            <div class="modal fade" id="res-{{ $noti_problem->noti_id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <form action="noti_problem/edit/{{ $noti_problem->noti_id }}" method="POST">
                             @csrf
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Close Task</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Task Resolved</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -215,7 +228,7 @@ Notication Problems
                                     <label for="message-text" class="col-form-label">Note<span
                                             style="color: red">*</span>:</label>
                                     <input type="text" id="NOTE" class="form-control" name="note" required>
-                                    <input type="hidden" name="next_status" value="closed">
+                                    <input type="hidden" name="next_status" value="resolved">
                                 </div>
                             </div>
                             <div class="modal-footer">

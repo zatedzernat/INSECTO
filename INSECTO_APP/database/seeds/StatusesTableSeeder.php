@@ -54,5 +54,11 @@ class StatusesTableSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        DB::table('statuses')->insert([
+            'status_name' => 'resolved',
+            'status_description' => 'Resolved',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
     }
 }

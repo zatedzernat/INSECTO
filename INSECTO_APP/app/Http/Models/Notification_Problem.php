@@ -79,9 +79,9 @@ class Notification_Problem extends Model
             if ($next_status == 'open') {
                 $status = $this->openTask($help_desk_code, $noti_prob);
                 return $status;
-            } else if ($next_status == 'closed') {
+            } else if ($next_status == 'resolved') {
                 $this->closeTask($note, $noti_prob);
-                return 'closed';
+                return 'resolved';
             } else {
                 $status = $this->changeStatus($next_status, $noti_prob);
                 return $status;
@@ -126,7 +126,7 @@ class Notification_Problem extends Model
     public function closeTask($note, $noti_prob)
     {
         $noti_prob->note = $note;
-        $noti_prob->status_id = 6;
+        $noti_prob->status_id = 8;
         $noti_prob->save();
     }
 }
