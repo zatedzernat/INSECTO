@@ -49,12 +49,12 @@ class Notification_Problem extends Model
             $noti_prob = Notification_Problem::where([
                 ['item_id', $item_id],
                 ['problem_des_id', $problem_des_id],
-                ['status_id', '<>', 6],
+                ['status_id', '<>', 8],
             ])->latest()->first();
         } else {
             $noti_prob = Notification_Problem::where([
                 ['item_id', $item_id],
-                ['status_id', '<>', 6],
+                ['status_id', '<>', 8],
             ])->latest()->first();
         }
         return $noti_prob;
