@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Brand;
+use App\Http\Models\Building;
 use App\Http\Models\Item;
 use App\Http\Models\Item_Type;
 use App\Http\Models\Room;
@@ -17,6 +18,7 @@ class ItemController extends Controller
     private $room;
     private $itemType;
     private $brand;
+    private $building;
 
     public function __construct()
     {
@@ -24,6 +26,7 @@ class ItemController extends Controller
         $this->room = new Room();
         $this->itemType = new Item_Type();
         $this->brand = new Brand();
+        $this->building = new Building();
     }
 
     /**
@@ -37,9 +40,10 @@ class ItemController extends Controller
         $rooms = $this->room->findByCancelFlag('N');
         $itemTypes = $this->itemType->findByCancelFlag('N');
         $brands = $this->brand->findByCancelFlag('N');
+        $buildings = $this->building->findByCancelFlag('N');
 
         return view('item.items')
-            ->with(compact('items', 'rooms', 'itemTypes', 'brands'));
+            ->with(compact('items', 'rooms', 'itemTypes', 'brands', 'buildings'));
     }
 
     /**

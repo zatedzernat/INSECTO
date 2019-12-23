@@ -40,6 +40,7 @@ Items
                 <th>Code <span style="color: red">*</span></th>
                 <th>Name</th>
                 {{-- <th>Room Code</th> --}}
+                <th>Building</th>
                 <th>Room Name</th>
                 <th>Type</th>
                 <th>Brand</th>
@@ -67,6 +68,7 @@ Items
                 {{-- <td>
                     {{ $item->room->room_code }}
                 </td> --}}
+                <td> {{ $item->room->buildings->building_code }}</td>
                 <td>
                     {{$item->room->room_name}}
                 </td>
@@ -124,14 +126,18 @@ Items
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">ID:</label>
-                                    <input type="text" class="form-control" name="item_id" value="{{ $item->item_id }}"
-                                        readonly>
+                                    <label for="message-text" class="col-form-label">Item ID: &nbsp;
+                                        {{ $item->item_id }} </label>
+                                    <input type="hidden" name="item_id" value="{{ $item->item_id }}">
+                                    {{-- <input type="text" class="form-control" name="item_id" value="{{ $item->item_id }}"
+                                    readonly> --}}
                                 </div>
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Item Code:</label>
-                                    <input type="text" class="form-control" name="item_code"
-                                        value="{{ $item->item_code }}" readonly>
+                                    <label for="message-text" class="col-form-label">Item Code: &nbsp;
+                                        {{ $item->item_code }}</label>
+                                    <input type="hidden" name="item_code" value="{{ $item->item_code }}">
+                                    {{-- <input type="text" class="form-control" name="item_code"
+                                        value="{{ $item->item_code }}" readonly> --}}
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Item Name:</label>
@@ -140,14 +146,31 @@ Items
                                     {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
                                 </div>
                                 <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Building Code:</label>
+                                    @isset($buildings)
+                                    @if (!empty($buildings))
+                                    <select name="building_id" id="selectBuildingCode" class="form-control">
+                                        @foreach ($buildings as $building)
+                                        <option
+                                            {{ $item->room->building_id == $building->building_id ? "selected" : "" }}
+                                            value="{{ $building->building_id }}">
+                                            {{ $building->building_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    @endif
+                                    @else
+                                    <label for="message-text" class="col-form-label">Please add building first</label>
+                                    @endisset
+                                </div>
+                                <div class="form-group">
                                     <label for="message-text" class="col-form-label">Room Name:</label>
                                     @isset($rooms)
                                     @if (!empty($rooms))
                                     <select name="room_id" id="selectRoomName" class="form-control">
                                         @foreach ($rooms as $room)
                                         <option {{ $item->room->room_id == $room->room_id ? "selected" : "" }}
-                                            value="{{$room->room_id}}">
-                                            {{$room->room_name}}</option>
+                                            value="{{ $room->room_id }}">
+                                            {{ $room->room_name }}</option>
                                         @endforeach
                                     </select>
                                     @endif
