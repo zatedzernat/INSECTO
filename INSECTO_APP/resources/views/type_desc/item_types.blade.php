@@ -126,11 +126,15 @@ Item Types
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="delID" value="{{ $item_type->type_id }}">
-                            Do you confirm to delete "{{ $item_type->type_name }}"?
+                            Do you confirm to delete "{{ $item_type->type_name }}"? <br>
+                            <span style="color: red;">*** All items and problem_descriptions that relate to {{ $item_type->type_name}} will be deleted too ***</span>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a href="item_type/del/{{ $item_type->type_id }}" class="btn btn-primary">Del</a>
+                            <form action="item_type/del/{{ $item_type->type_id }}" method="POST">
+                                @csrf
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Yes</button>
+                            </form>
                         </div>
                     </div>
                 </div>

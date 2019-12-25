@@ -3,6 +3,7 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Item_Type extends Model
 {
@@ -76,5 +77,25 @@ class Item_Type extends Model
             return true;
         }
         return false;
+    }
+
+    public function deleteItemType($type_id)
+    {
+        // * not real delete but change cancel flag to Y
+        $item_type = $this->findByID($type_id);
+        $item_type->cancel_flag = 'Y';
+        $item_type->save();
+
+        // * change cancel_flag in item
+        $items = DB::table('items')
+            ->where('type_id',$type_id)
+            ->update(['cancel_flag' => 'Y']);
+
+        // * change cancel_flag in ยพนิสำท๘กำหแ
+        $items = DB::table('problem__descriptions')
+            ->where('type_id',$type_id)
+            ->update(['cancel_flag' => 'Y']);
+
+        return $item_type;
     }
 }

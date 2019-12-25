@@ -50,7 +50,7 @@ Route::post('item/del/{item_id}', 'ItemController@destroy');
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');;
 Route::post('item_type/create', 'ItemTypeController@store');
 Route::post('item_type/edit', 'ItemTypeController@update');
-Route::get('item_type/del/{type_id}', 'ItemTypeController@destroy');
+Route::post('item_type/del/{type_id}', 'ItemTypeController@destroy');
 
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
 Route::post('noti_problem/edit/{noti_id}', 'NotificationProblemController@update');

@@ -108,11 +108,7 @@ class ItemTypeController extends Controller
      */
     public function destroy(Request $request, $type_id)
     {
-        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหม
-        // * not real delete but change cancel flag to Y
-        $itemType = $this->item_type->findByID($type_id);
-        $itemType->setCancelFlag('Y');
-        $itemType->save();
-        return redirect()->route('item_types')->with('del_itemType', 'Delete itemType ' . $itemType->type_name . ' success');
+        $itemType = $this->item_type->deleteItemType($type_id);
+        return redirect()->route('item_types')->with('del_itemType', 'Delete type ' . $itemType->type_name . ' success');
     }
 }
