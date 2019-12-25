@@ -35,7 +35,7 @@ Route::get('room/del/{room_id}', 'RoomController@destroy');
 Route::get('brands','BrandController@index')->name('brands');
 Route::post('brand/create','BrandController@store');
 Route::post('brand/edit','BrandController@update');
-Route::get('brand/del/{brand_id}','BrandController@destroy');
+Route::post('brand/del/{brand_id}','BrandController@destroy');
 
 Route::get('problem_descs', 'ProblemDescriptionController@index')->name('problem_descs');
 Route::post('problem_desc/create','ProblemDescriptionController@store');

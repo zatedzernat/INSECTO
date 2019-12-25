@@ -91,13 +91,12 @@ Brands
               </div>
               <div class="modal-body">
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">ID:</label>
-                  <input type="text" class="form-control" name="brand_id" value="{{ $brand->brand_id }}" readonly>
+                  <label for="message-text" class="col-form-label">ID: &nbsp; {{ $brand->brand_id }}</label>
+                  <input type="hidden" class="form-control" name="brand_id" value="{{ $brand->brand_id }}" readonly>
                 </div>
                 <div class="form-group">
                   <label for="message-text" class="col-form-label">Name:</label>
                   <input type="text" class="form-control" name="brand_name" value="{{ $brand->brand_name }}" required>
-                  {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
                 </div>
               </div>
               <div class="modal-footer">
@@ -126,8 +125,11 @@ Brands
               Do you confirm to delete "{{ $brand->brand_name }}"?
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <a href="brand/del/{{ $brand->brand_id }}" class="btn btn-primary">Del</a>
+              <form action="brand/del/{{ $brand->brand_id }}" method="POST">
+                @csrf
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Del</button>
+              </form>
             </div>
           </div>
         </div>
