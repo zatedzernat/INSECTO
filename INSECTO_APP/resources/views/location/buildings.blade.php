@@ -87,13 +87,13 @@ Buildings
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">ID:</label>
-                                            <input type="text" class="form-control" name="building_id"
+                                            <label for="message-text" class="col-form-label">ID: &nbsp; {{ $building->building_id }}</label>
+                                            <input type="hidden" class="form-control" name="building_id"
                                                 value="{{ $building->building_id }}" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Code:</label>
-                                            <input type="text" class="form-control" name="building_code"
+                                            <label for="message-text" class="col-form-label">Code: &nbsp; {{ $building->building_code  }}</label>
+                                            <input type="hidden" class="form-control" name="building_code"
                                                 value="{{ $building->building_code  }}" readonly>
                                         </div>
                                         <div class="form-group">
@@ -126,11 +126,17 @@ Buildings
                                 <div class="modal-body">
                                     <input type="hidden" name="delID" value="{{ $building->building_id }}">
                                     Do you confirm to delete "{{ $building->building_code }} -
-                                    {{ $building->building_name }}"?
+                                    {{ $building->building_name }}"? <br>
+                                    <span style="color: red;">*** All rooms and items that relate to
+                                        {{ $building->building_code }} will be deleted too ***</span>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <a href="building/del/{{ $building->building_id }}" class="btn btn-primary">Del</a>
+                                    <form action="building/del/{{ $building->building_id }}" method="POST">
+                                        @csrf
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Yes</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

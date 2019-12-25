@@ -106,9 +106,7 @@ class BuildingController extends Controller
      */
     public function destroy(Request $request, $building_id)
     {
-        $building = $this->building->findByID($building_id);
-        $building->setCancelFlag('Y');
-        $building->save();
-        return redirect()->route('buildings')->with('del_building','Delete building '.$building->building_name.' success');
+        $building = $this->building->deleteBuilding($building_id);
+        return redirect()->route('buildings')->with('del_building','Delete building '.$building->building_code.' success');
     }
 }

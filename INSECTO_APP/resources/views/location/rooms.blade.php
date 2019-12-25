@@ -58,7 +58,7 @@ Rooms
                     {{$room->room_name}}
                 </td>
                 <td>
-                    {{$room->buildings->building_name}}
+                    {{$room->building->building_name}}
                 </td>
                 <td>
                     {{$room->created_at}}
@@ -91,13 +91,15 @@ Rooms
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">ID:</label>
-                                            <input type="text" class="form-control" name="room_id"
+                                            <label for="message-text" class="col-form-label">ID: &nbsp;
+                                                {{ $room->room_id }}</label>
+                                            <input type="hidden" class="form-control" name="room_id"
                                                 value="{{ $room->room_id }}" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Code:</label>
-                                            <input type="text" class="form-control" name="room_code"
+                                            <label for="message-text" class="col-form-label">Code: &nbsp;
+                                                {{ $room->room_code  }}</label>
+                                            <input type="hidden" class="form-control" name="room_code"
                                                 value="{{ $room->room_code  }}" readonly>
                                         </div>
                                         <div class="form-group">
@@ -113,7 +115,7 @@ Rooms
                                                 <option selected>Open this select menu</option>
                                                 @foreach ($buildings as $building)
                                                 <option value="{{ $building->building_id }}" @if ($room->
-                                                    buildings->building_id ==
+                                                    building->building_id ==
                                                     $building->building_id ) {{'selected="selected"'}}
                                                     @endif>
                                                     {{ $building->building_name }}</option>

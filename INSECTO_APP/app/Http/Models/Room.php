@@ -10,9 +10,14 @@ class Room extends Model
     protected $fillable = ['room_code', 'room_name', 'building_id', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'room_id';
 
-    public function buildings()
+    public function building()
     {
         return $this->belongsTo('App\Http\Models\Building', 'building_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany('App\Http\Models\Items', 'room_id', 'room_id');
     }
 
     public function findByCancelFlag($string)

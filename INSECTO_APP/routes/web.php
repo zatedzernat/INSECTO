@@ -25,7 +25,7 @@ Route::group(['prefix' => 'send-problem'], function () {
 Route::get('buildings', 'BuildingController@index')->name('buildings');
 Route::post('building/create','BuildingController@store');
 Route::post('building/edit','BuildingController@update');
-Route::get('building/del/{building_id}','BuildingController@destroy');
+Route::post('building/del/{building_id}','BuildingController@destroy');
 
 Route::get('rooms', 'RoomController@index')->name('rooms');
 Route::post('room/create','RoomController@store');

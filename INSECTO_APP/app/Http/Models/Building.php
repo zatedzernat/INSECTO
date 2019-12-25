@@ -2,6 +2,7 @@
 
 namespace App\Http\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Building extends Model
@@ -10,9 +11,9 @@ class Building extends Model
     protected $fillable = ['building_code', 'building_name', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'building_id';
 
-    public function items()
+    public function rooms()
     {
-        return $this->hasMany('App\Http\Models\Item', 'building_id', 'building_id');
+        return $this->hasMany('App\Http\Models\Room', 'building_id', 'building_id');
     }
 
     public function findByCancelFlag($string)
@@ -85,5 +86,26 @@ class Building extends Model
             return true;
         }
         return false;
+    }
+
+    public function deleteBuilding($building_id)
+    {
+        $building = $this->findByID($building_id);
+        $building->setCancelFlag('Y');
+        $building->save();
+
+        // * change cancel_flag in rooms
+        $rooms = DB::table('rooms')
+            ->where('building_id', $building_id)
+            ->update(['cancel_flag' => 'Y']);
+
+        // * change cancel_flag in items
+        foreach ($building->rooms as $room) {
+            $items = DB::table('items')
+                ->where('room_id', $room->room_id)
+                ->update(['cancel_flag' => 'Y']);
+        }
+
+        return $building;
     }
 }

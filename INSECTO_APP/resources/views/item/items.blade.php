@@ -68,7 +68,7 @@ Items
                 {{-- <td>
                     {{ $item->room->room_code }}
                 </td> --}}
-                <td> {{ $item->room->buildings->building_code }}</td>
+                <td> {{ $item->room->building->building_code }}</td>
                 <td>
                     {{$item->room->room_name}}
                 </td>
