@@ -30,7 +30,7 @@ Route::get('building/del/{building_id}','BuildingController@destroy');
 Route::get('rooms', 'RoomController@index')->name('rooms');
 Route::post('room/create','RoomController@store');
 Route::post('room/edit','RoomController@update'); 
-Route::get('room/del/{room_id}', 'RoomController@destroy');
+Route::post('room/del/{room_id}', 'RoomController@destroy');
 
 Route::get('brands','BrandController@index')->name('brands');
 Route::post('brand/create','BrandController@store');

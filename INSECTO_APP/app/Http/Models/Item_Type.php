@@ -86,13 +86,13 @@ class Item_Type extends Model
         $item_type->cancel_flag = 'Y';
         $item_type->save();
 
-        // * change cancel_flag in item
+        // * change cancel_flag in items
         $items = DB::table('items')
             ->where('type_id',$type_id)
             ->update(['cancel_flag' => 'Y']);
 
-        // * change cancel_flag in ยพนิสำท๘กำหแ
-        $items = DB::table('problem__descriptions')
+        // * change cancel_flag in problem__descriptions
+        $prob_desc = DB::table('problem__descriptions')
             ->where('type_id',$type_id)
             ->update(['cancel_flag' => 'Y']);
 

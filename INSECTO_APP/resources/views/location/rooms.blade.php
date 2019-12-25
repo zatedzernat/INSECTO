@@ -148,11 +148,17 @@ Rooms
                                 <div class="modal-body">
                                     <input type="hidden" name="delID" value="{{ $room->room_id }}">
                                     Do you confirm to delete "{{ $room->room_code }} -
-                                    {{ $room->room_name }}"?
+                                    {{ $room->room_name }}"? <br>
+                                    <span style="color: red;">*** All items that relate to
+                                        {{ $room->room_code }} will be deleted too ***</span>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <a href="room/del/{{ $room->room_id }}" class="btn btn-primary">Del</a>
+                                    <form action="room/del/{{ $room->room_id }}" method="POST">
+                                        @csrf
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Yes</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

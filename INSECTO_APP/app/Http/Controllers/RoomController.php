@@ -114,12 +114,7 @@ class RoomController extends Controller
      */
     public function destroy(Request $request, $room_id)
     {
-        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหม
-        // * not real delete but change cancel flag to Y
-        $room = $this->room->findByID($room_id);
-        $room->setCancelFlag('Y');
-        $room->save();
-        return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_name . ' success');
-
+        $room = $this->room->deleteRoom($room_id);
+        return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_code. '-'. $room->room_name . ' success');
     }
 }

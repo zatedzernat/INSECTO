@@ -2,6 +2,7 @@
 
 namespace App\Http\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
@@ -88,7 +89,22 @@ class Room extends Model
         $room->building_id = $building_id;
         $room->save();
         //todo set updateby ตาม LDAP
-        
+
         return true;
+    }
+
+    public function deleteRoom($room_id)
+    {
+        // * not real delete but change cancel flag to Y
+        $room = $this->findByID($room_id);
+        $room->setCancelFlag('Y');
+        $room->save();
+
+        // * change cancel_flag in items
+        $items = DB::table('items')
+            ->where('room_id', $room_id)
+            ->update(['cancel_flag' => 'Y']);
+
+        return $room;
     }
 }
