@@ -86,8 +86,8 @@ Problem Descriptions
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">ID:</label>
-                                            <input type="text" class="form-control" name="problem_des_id"
+                                            <label for="message-text" class="col-form-label">ID: &nbsp; {{ $problem_desc->problem_des_id }}</label>
+                                            <input type="hidden" class="form-control" name="problem_des_id"
                                                 value="{{ $problem_desc->problem_des_id }}" readonly>
                                         </div>
                                         <div class="form-group">

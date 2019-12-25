@@ -70,7 +70,9 @@ Send Problem
                 <select name="problem_des_id" id="selectProblem" class="form-control" onchange="checkEtc()">
                     <option selected value="">- select problem - </option>
                     @foreach ($item->item_type->problem_descriptions as $problem_desc)
-                    <option value="{{$problem_desc->problem_des_id}}">{{$problem_desc->problem_description}}</option>
+                    @if ($problem_desc->cancel_flag == 'N')
+                    <option value="{{ $problem_desc->problem_des_id }}">{{ $problem_desc->problem_description }}</option>
+                    @endif
                     @endforeach
                     <option value="etc">อื่นๆ</option>
                 </select>
