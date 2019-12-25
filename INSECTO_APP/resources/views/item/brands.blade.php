@@ -122,13 +122,14 @@ Brands
             </div>
             <div class="modal-body">
               <input type="hidden" name="delID" value="{{ $brand->brand_id }}">
-              Do you confirm to delete "{{ $brand->brand_name }}"?
+              Do you confirm to delete "{{ $brand->brand_name }}"? <br>
+              <span style="color: red;">*** All items which are {{ $brand->brand_name }} will be set to null ***</span>
             </div>
             <div class="modal-footer">
               <form action="brand/del/{{ $brand->brand_id }}" method="POST">
                 @csrf
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Del</button>
+                <button type="submit" class="btn btn-primary">Yes</button>
               </form>
             </div>
           </div>

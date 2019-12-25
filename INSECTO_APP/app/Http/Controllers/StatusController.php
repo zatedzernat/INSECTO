@@ -106,7 +106,6 @@ class StatusController extends Controller
      */
     public function destroy(Status $status, $status_id)
     {
-        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหม
         // * not real delete but change cancel flag to Y
         $status = $this->status->findByID($status_id);
         $name = $status->status_name;

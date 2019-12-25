@@ -106,11 +106,7 @@ class BrandController extends Controller
      */
     public function destroy(Request $request, $brand_id)
     {
-        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหม
-        // * not real delete but change cancel flag to Y
-        $brand = $this->brand->findByID($brand_id);
-        $brand->setCancelFlag('Y');
-        $brand->save();
+        $brand = $this->brand->deleteBrandAndSetNullInItem($brand_id);
         return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
     }
 }

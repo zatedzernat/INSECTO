@@ -3,6 +3,7 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Brand extends Model
 {
@@ -83,5 +84,19 @@ class Brand extends Model
         // $brand->setUpdateBy('ชื่อ user ตามLDAP');
 
         return false;
+    }
+
+    public function deleteBrandAndSetNullInItem($brand_id)
+    {
+        // * change brand in items
+        $items = DB::table('items')
+            ->where('brand_id',$brand_id)
+            ->update(['brand_id' => null]);
+
+        // * not real delete but change cancel flag to Y
+        $brand = $this->findByID($brand_id);
+        $brand->cancel_flag = 'Y';
+        $brand->save();
+        return $brand;
     }
 }
