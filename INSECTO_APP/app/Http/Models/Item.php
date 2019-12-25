@@ -36,7 +36,11 @@ class Item extends Model
 
     public function findByCode($code)
     {
-        return Item::where('item_code', $code)->first();
+        // return Item::where('item_code', $code)->first();
+        return Item::where([
+            ['item_code', $code],
+            ['cancel_flag', 'N']
+        ])->first();
     }
 
     public function findByID($int)
@@ -133,7 +137,16 @@ class Item extends Model
         $item->save();
         //todo set updateby ตาม LDAP
         // $item->setUpdateBy('ชื่อ user ตามLDAP');
-        
+
         return true;
+    }
+
+    public function deleteItem($item_id)
+    {
+        // * not real delete but change cancel flag to Y
+        $item = $this->findByID($item_id);
+        $item->setCancelFlag('Y');
+        $item->save();
+        return $item;
     }
 }

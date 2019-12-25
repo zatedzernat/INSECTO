@@ -45,7 +45,7 @@ Route::post('problem_desc/del/{problem_des_id}', 'ProblemDescriptionController@d
 Route::get('items', 'ItemController@index')->name('items');
 Route::post('item/create', 'ItemController@store');
 Route::post('item/edit', 'ItemController@update');
-Route::get('item/del/{item_id}', 'ItemController@destroy');
+Route::post('item/del/{item_id}', 'ItemController@destroy');
 
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');;
 Route::post('item_type/create', 'ItemTypeController@store');

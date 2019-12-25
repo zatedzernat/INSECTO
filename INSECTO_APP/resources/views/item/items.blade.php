@@ -254,8 +254,11 @@ Items
                             Do you confirm to delete "{{ $item->item_name }}"?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a href="item/del/{{ $item->item_id }}" class="btn btn-primary">Del</a>
+                            <form action="item/del/{{ $item->item_id }}" method="POST">
+                                @csrf
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Yes</button>
+                            </form>
                         </div>
                     </div>
                 </div>

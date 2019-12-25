@@ -73,6 +73,7 @@ class NotificationProblemController extends Controller
         return redirect()->route('home')->with('status', 'Send Problem Success');
     }
 
+    // check is it the same problem before store
     public function check(SendProblemRequest $request)
     {
         $item_id = $request->input('item_id');
