@@ -141,9 +141,12 @@ Problem Descriptions
                                     Do you confirm to delete "{{ $problem_desc->problem_description }}"?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <a href="problem_desc/del/{{ $problem_desc->problem_des_id }}"
-                                        class="btn btn-primary">Del</a>
+                                    <form action="problem_desc/del/{{ $problem_desc->problem_des_id }}" method="POST">
+                                        @csrf
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Yes</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

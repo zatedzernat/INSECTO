@@ -40,7 +40,7 @@ Route::post('brand/del/{brand_id}','BrandController@destroy');
 Route::get('problem_descs', 'ProblemDescriptionController@index')->name('problem_descs');
 Route::post('problem_desc/create','ProblemDescriptionController@store');
 Route::post('problem_desc/edit','ProblemDescriptionController@update'); 
-Route::get('problem_desc/del/{room_id}', 'ProblemDescriptionController@destroy');
+Route::post('problem_desc/del/{problem_des_id}', 'ProblemDescriptionController@destroy');
 
 Route::get('items', 'ItemController@index')->name('items');
 Route::post('item/create', 'ItemController@store');

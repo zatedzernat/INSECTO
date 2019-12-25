@@ -95,4 +95,12 @@ class Problem_Description extends Model
         return false;
 
     }
+
+    public function deleteProblemDesc($problem_des_id)
+    {
+        $problem_desc = $this->findByID($problem_des_id);
+        $problem_desc->setCancelFlag('Y');
+        $problem_desc->save();
+        return $problem_desc;
+    }
 }

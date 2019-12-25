@@ -113,9 +113,7 @@ class ProblemDescriptionController extends Controller
      */
     public function destroy(Request $request, $problem_des_id)
     {
-        $problem_desc = $this->problem_desc->findByID($problem_des_id);
-        $problem_desc->setCancelFlag('Y');
-        $problem_desc->save();
-        return redirect()->route('problem_descs')->with('del_problem_desc','Delete problem_descs '.$problem_desc->problem_description.' success');
+        $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
+        return redirect()->route('problem_descs')->with('del_problem_desc','Delete problem_descs '.$problem_desc->problem_description.' in '.$problem_desc->item_type->type_name. ' success');
     }
 }
