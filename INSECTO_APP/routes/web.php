@@ -58,4 +58,4 @@ Route::post('noti_problem/edit/{noti_id}', 'NotificationProblemController@update
 Route::get('statuses', 'StatusController@index')->name('statuses');
 Route::post('status/create', 'StatusController@store');
 Route::post('status/edit', 'StatusController@update');
-Route::get('status/del/{status_id}', 'StatusController@destroy');
+Route::post('status/del/{status_id}', 'StatusController@destroy');

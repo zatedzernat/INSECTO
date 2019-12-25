@@ -68,10 +68,10 @@ Statuses
                         Edit
                     </button>
                     <!-- Button trigger modal Del -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                    {{-- <button type="button" class="btn btn-danger" data-toggle="modal"
                         data-target="#delete-{{ $status->status_id }}">
                         Del
-                    </button>
+                    </button> --}}
                 </td>
             </tr>
 
@@ -90,15 +90,16 @@ Statuses
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">ID:</label>
-                                    <input type="text" class="form-control" name="status_id"
+                                    <label for="message-text" class="col-form-label">ID: &nbsp;
+                                        {{ $status->status_id }}</label>
+                                    <input type="hidden" class="form-control" name="status_id"
                                         value="{{ $status->status_id }}" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Name:</label>
-                                    <input type="text" class="form-control" name="status_name"
+                                    <label for="message-text" class="col-form-label">Name: &nbsp;
+                                        {{ $status->status_name }} </label>
+                                    <input type="hidden" class="form-control" name="status_name"
                                         value="{{ $status->status_name }}" required>
-                                    {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Description:</label>
@@ -132,8 +133,11 @@ Statuses
                             Do you confirm to delete "{{ $status->status_name }}"?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a href="status/del/{{ $status->status_id }}" class="btn btn-primary">Del</a>
+                            <form action="status/del/{{ $status->status_id }}" method="POST">
+                                @csrf
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Del</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -142,12 +146,13 @@ Statuses
         </tbody>
     </table>
     <br>
-    <button type="button" class="btn btn-primary">Import CSV</button>
-    <button type="button" class="btn btn-primary">Export CSV</button>
+    {{-- <button type="button" class="btn btn-primary">Import CSV</button>
+    <button type="button" class="btn btn-primary">Export CSV</button> --}}
+
     <!-- Button trigger modal Add -->
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
+    {{-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
         Add Status
-    </button>
+    </button> --}}
 
     <!-- Modal Add -->
     <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
