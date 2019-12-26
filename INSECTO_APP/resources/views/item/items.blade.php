@@ -251,7 +251,7 @@ Items
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="delID" value="{{ $item->item_id  }}">
-                            Do you confirm to delete "{{ $item->item_name }}"?
+                            Do you confirm to delete "{{ $item->item_code }}"?
                         </div>
                         <div class="modal-footer">
                             <form action="item/del/{{ $item->item_id }}" method="POST">
