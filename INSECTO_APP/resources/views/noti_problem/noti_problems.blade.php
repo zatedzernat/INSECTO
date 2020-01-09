@@ -198,7 +198,7 @@ Notication Problems
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Help Desk Code<span
                                             style="color: red">*</span>:</label>
-                                    <input type="text" id="HDC" class="form-control" name="help_desk_code" required>
+                                    <input type="text" id="HDC" class="form-control" name="help_desk_code" value="{{ $noti_problem->help_desk_code }}" required>
                                     <input type="hidden" name="next_status" value="open">
                                 </div>
                             </div>
@@ -227,7 +227,7 @@ Notication Problems
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Note<span
                                             style="color: red">*</span>:</label>
-                                    <input type="text" id="NOTE" class="form-control" name="note" required>
+                                    <input type="text" id="NOTE" class="form-control" name="note" value="{{ $noti_problem->note }}" required>
                                     <input type="hidden" name="next_status" value="resolved">
                                 </div>
                             </div>
