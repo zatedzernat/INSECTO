@@ -38,7 +38,7 @@ History Logs
                 <th>New Data</th>
                 <th>Note</th>
                 <th>Created At</th>
-                <th>Update By</th>
+                <th>User</th>
             </tr>
         </thead>
         <tbody>
