@@ -20,8 +20,6 @@ class DatabaseSeeder extends Seeder
             Problem_DescriptionsTableSeeder::class,
             ItemsTableSeeder::class,
             StatusesTableSeeder::class,
-            ActionsTableSeeder::class,
-            History_logsTableSeeder::class,
         ]);
     }
 }
