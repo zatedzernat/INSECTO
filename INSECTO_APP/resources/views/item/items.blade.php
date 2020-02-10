@@ -220,12 +220,12 @@ Items
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Serial Number:</label>
                                     <input type="text" class="form-control" name="serial_number"
-                                        value="{{ $item->serial_number??"-" }}">
+                                        value="{{ $item->serial_number??"" }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Model:</label>
                                     <input type="text" class="form-control" name="item_model"
-                                        value="{{ $item->model??"-" }}">
+                                        value="{{ $item->model??"" }}">
                                 </div>
                             </div>
                             <div class="modal-footer">
