@@ -73,3 +73,5 @@ Route::group(['prefix' => 'status'], function () {
 
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
 Route::post('noti_problem/edit/{noti_id}', 'NotificationProblemController@update');
+
+Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');

@@ -4,10 +4,11 @@ namespace App\Http\Models;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Building extends Model
+class Building extends Model implements Auditable
 {
-
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = ['building_code', 'building_name', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'building_id';
 
