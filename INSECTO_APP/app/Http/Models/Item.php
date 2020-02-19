@@ -3,9 +3,11 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Item extends Model
+class Item extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = ['item_code', 'item_name', 'room_id', 'type_id', 'brand_id', 'serial_number', 'model', 'note', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'item_id';
 
@@ -148,5 +150,15 @@ class Item extends Model
         $item->setCancelFlag('Y');
         $item->save();
         return $item;
+    }
+
+    public function setNullInItem($brand_id)
+    {
+        // * change brand in items
+        $items = Item::where('brand_id', $brand_id)->get();
+        foreach ($items as $item) {
+            $item->brand_id = null;
+            $item->save();
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Brand;
+use App\Http\Models\Item;
 use App\Http\Requests\BrandFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -11,10 +12,12 @@ class BrandController extends Controller
 {
 
     private $brand;
+    private $item;
 
     public function __construct()
     {
         $this->brand = new Brand();
+        $this->item = new Item();
     }
 
     /**
@@ -106,7 +109,8 @@ class BrandController extends Controller
      */
     public function destroy(Request $request, $brand_id)
     {
-        $brand = $this->brand->deleteBrandAndSetNullInItem($brand_id);
+        $brand = $this->brand->deleteBrand($brand_id);
+        $items = $this->item->setNullInItem($brand_id);
         return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
     }
 }

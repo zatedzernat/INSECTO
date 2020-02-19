@@ -4,6 +4,7 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Support\Arr;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Brand extends Model implements Auditable
@@ -11,6 +12,22 @@ class Brand extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     protected $fillable = ['brand_name', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'brand_id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transformAudit(array $data): array
+    {
+        if (Arr::has($data['old_values'], 'cancel_flag') and count($data['old_values']) == 1) {
+            if ($data['old_values']['cancel_flag'] == 'N' and $data['new_values']['cancel_flag'] == 'Y') {
+                $data['event'] = 'deleted';
+            } elseif ($data['old_values']['cancel_flag'] == 'Y' and $data['new_values']['cancel_flag'] == 'N') {
+                $data['event'] = 'restored';
+            }
+        }
+
+        return $data;
+    }
 
     public function items()
     {
@@ -54,8 +71,10 @@ class Brand extends Model implements Auditable
     {
         $brand = Brand::firstOrCreate(
             ['brand_name' => $brand_name],
-            ['cancel_flag' => 'N',
-                'update_by' => 'ชื่อ user ตามLDAP']
+            [
+                'cancel_flag' => 'N',
+                'update_by' => 'ชื่อ user ตามLDAP'
+            ]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
@@ -67,7 +86,6 @@ class Brand extends Model implements Auditable
             } else {
                 return true;
             }
-
         }
         return false;
     }
@@ -88,16 +106,13 @@ class Brand extends Model implements Auditable
         return false;
     }
 
-    public function deleteBrandAndSetNullInItem($brand_id)
+    public function deleteBrand($brand_id)
     {
-        // * change brand in items
-        $items = DB::table('items')
-            ->where('brand_id',$brand_id)
-            ->update(['brand_id' => null]);
-
         // * not real delete but change cancel flag to Y
         $brand = $this->findByID($brand_id);
         $brand->cancel_flag = 'Y';
+        $brand->setAuditEvent('deleted');
+        // dd($brand);  
         $brand->save();
         return $brand;
     }
