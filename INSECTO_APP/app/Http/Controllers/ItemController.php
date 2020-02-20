@@ -133,7 +133,6 @@ class ItemController extends Controller
      */
     public function destroy(Request $request, $item_id)
     {
-        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหมก่อน ถ้าไม่มีก็ลบได้
         $item = $this->item->deleteItem($item_id);
         return redirect()->route('items')->with('del_item', 'Delete item ' . $item->item_code . ' success');
     }

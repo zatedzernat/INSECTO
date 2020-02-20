@@ -3,11 +3,30 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Problem_Description extends Model
+class Problem_Description extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = ['problem_description', 'type_id', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'problem_des_id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transformAudit(array $data): array
+    {
+        if (Arr::has($data['old_values'], 'cancel_flag') and Arr::has($data['new_values'], 'cancel_flag')) {
+            if ($data['old_values']['cancel_flag'] == 'N' and $data['new_values']['cancel_flag'] == 'Y') {
+                $data['event'] = 'deleted';
+            } elseif ($data['old_values']['cancel_flag'] == 'Y' and $data['new_values']['cancel_flag'] == 'N') {
+                $data['event'] = 'restored';
+            }
+        }
+
+        return $data;
+    }
 
     public function item_type()
     {
@@ -73,7 +92,6 @@ class Problem_Description extends Model
             }
         }
         return false;
-
     }
 
     public function updateProblemDesc($problem_des_id, $desc, $type_id)
@@ -93,7 +111,6 @@ class Problem_Description extends Model
         //todo set updateby ตาม LDAP
         // $brand->setUpdateBy('ชื่อ user ตามLDAP');
         return false;
-
     }
 
     public function deleteProblemDesc($problem_des_id)
@@ -102,5 +119,15 @@ class Problem_Description extends Model
         $problem_desc->setCancelFlag('Y');
         $problem_desc->save();
         return $problem_desc;
+    }
+
+    public function deleteProblemDescs($item_type)
+    {
+        $problem_descs = $item_type->problem_descriptions;
+        foreach ($problem_descs as $problem_desc) {
+            $problem_desc->cancel_flag = 'Y';
+            $problem_desc->save();
+        }
+        return $problem_descs;
     }
 }

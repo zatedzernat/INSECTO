@@ -18,7 +18,7 @@ class Brand extends Model implements Auditable
      */
     public function transformAudit(array $data): array
     {
-        if (Arr::has($data['old_values'], 'cancel_flag') and count($data['old_values']) == 1) {
+        if (Arr::has($data['old_values'], 'cancel_flag') and Arr::has($data['new_values'], 'cancel_flag')) {
             if ($data['old_values']['cancel_flag'] == 'N' and $data['new_values']['cancel_flag'] == 'Y') {
                 $data['event'] = 'deleted';
             } elseif ($data['old_values']['cancel_flag'] == 'Y' and $data['new_values']['cancel_flag'] == 'N') {
@@ -108,11 +108,9 @@ class Brand extends Model implements Auditable
 
     public function deleteBrand($brand_id)
     {
-        // * not real delete but change cancel flag to Y
+        //* change cancel flag to Y
         $brand = $this->findByID($brand_id);
         $brand->cancel_flag = 'Y';
-        $brand->setAuditEvent('deleted');
-        // dd($brand);  
         $brand->save();
         return $brand;
     }

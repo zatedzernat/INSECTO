@@ -110,7 +110,7 @@ class BrandController extends Controller
     public function destroy(Request $request, $brand_id)
     {
         $brand = $this->brand->deleteBrand($brand_id);
-        $items = $this->item->setNullInItem($brand_id);
+        $items = $this->item->setNullInItem($brand);
         return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
     }
 }

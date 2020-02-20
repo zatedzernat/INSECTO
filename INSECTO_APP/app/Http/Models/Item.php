@@ -2,7 +2,9 @@
 
 namespace App\Http\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Item extends Model implements Auditable
@@ -10,6 +12,22 @@ class Item extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     protected $fillable = ['item_code', 'item_name', 'room_id', 'type_id', 'brand_id', 'serial_number', 'model', 'note', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'item_id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transformAudit(array $data): array
+    {
+        if (Arr::has($data['old_values'], 'cancel_flag') and Arr::has($data['new_values'], 'cancel_flag')) {
+            if ($data['old_values']['cancel_flag'] == 'N' and $data['new_values']['cancel_flag'] == 'Y') {
+                $data['event'] = 'deleted';
+            } elseif ($data['old_values']['cancel_flag'] == 'Y' and $data['new_values']['cancel_flag'] == 'N') {
+                $data['event'] = 'restored';
+            }
+        }
+
+        return $data;
+    }
 
     public function room()
     {
@@ -143,6 +161,17 @@ class Item extends Model implements Auditable
         return true;
     }
 
+    public function setNullInItem($brand)
+    {
+        // * change brand in items
+        $items = $brand->items;
+        foreach ($brand->items as $item) {
+            $item->brand_id = null;
+            $item->save();
+        }
+        return $items;
+    }
+
     public function deleteItem($item_id)
     {
         // * not real delete but change cancel flag to Y
@@ -152,13 +181,39 @@ class Item extends Model implements Auditable
         return $item;
     }
 
-    public function setNullInItem($brand_id)
+    public function deleteItems($model, $data)
     {
-        // * change brand in items
-        $items = Item::where('brand_id', $brand_id)->get();
-        foreach ($items as $item) {
-            $item->brand_id = null;
-            $item->save();
+        $collection = new Collection();
+        switch ($model) {
+            case 'room':
+                $room = $data;
+                $items = $room->items();
+                foreach ($items as $item) {
+                    $collection->push($item);
+                    $item->cancel_flag = 'Y';
+                    $item->save();
+                }
+                break;
+            case 'rooms':
+                $rooms = $data;
+                foreach ($rooms as $room) {
+                    foreach ($room->items as $item) {
+                        $collection->push($item);
+                        $item->cancel_flag = 'Y';
+                        $item->save();
+                    }
+                }
+                break;
+            case 'item_type':
+                $item_type = $data;
+                $items = $item_type->items;
+                foreach ($items as $item) {
+                    $collection->push($item);
+                    $item->cancel_flag = 'Y';
+                    $item->save();
+                }
+                break;
         }
+        return $collection;
     }
 }
