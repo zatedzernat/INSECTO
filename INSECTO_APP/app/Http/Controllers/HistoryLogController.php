@@ -9,12 +9,14 @@ class HistoryLogController extends Controller
 {
     public function index() 
     {
-        $a = Audit::find(4);
-        // dd($a);
-        // dd($a->getMetadata());
-        // dd($a->getModified());
-        // $b = json_decode($a);
-        // dd($a->new_values);
-        // dd($b->new_values->brand_name);
+        // $a = Audit::find(1);
+        $a = Audit::all();
+        // dd($a); //! อ่านไทยไม่ได้
+        // dd($a->getMetadata()); //* อ่านเกี่ยวกับการ audit
+        // dd($a->getModified()); //* อ่านไทยได้ 1 ตัว
+        $b = json_decode($a); //* อ่านไทยได้หลายตัว
+        return $b;
+        // dd($a->new_values); //* อ่านไทยได้ 1 ตัว
+        // dd($b->new_values->brand_name); //* อ่านไทยได้ 1 ตัว
     }
 }
