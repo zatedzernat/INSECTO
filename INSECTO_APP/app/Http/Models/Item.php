@@ -59,7 +59,7 @@ class Item extends Model implements Auditable
         // return Item::where('item_code', $code)->first();
         return Item::where([
             ['item_code', $code],
-            ['cancel_flag', 'N']
+            ['cancel_flag', 'N'],
         ])->first();
     }
 
@@ -174,7 +174,6 @@ class Item extends Model implements Auditable
 
     public function deleteItem($item_id)
     {
-        // * not real delete but change cancel flag to Y
         $item = $this->findByID($item_id);
         $item->setCancelFlag('Y');
         $item->save();
@@ -187,7 +186,7 @@ class Item extends Model implements Auditable
         switch ($model) {
             case 'room':
                 $room = $data;
-                $items = $room->items();
+                $items = $room->items;
                 foreach ($items as $item) {
                     $collection->push($item);
                     $item->cancel_flag = 'Y';

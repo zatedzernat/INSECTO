@@ -56,8 +56,8 @@ class ProblemDescriptionController extends Controller
         $errors = new MessageBag();
         $problem_description = $request->problem_description;
         $type_id = $request->type_id;
-        $boolean = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
-        if ($boolean) {
+        $createFail = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
+        if ($createFail) {
             $errors->add('dupProblem_Description','Already have this Problem Description!!!');
         }
         return redirect()->route('problem_descs')->withErrors($errors);

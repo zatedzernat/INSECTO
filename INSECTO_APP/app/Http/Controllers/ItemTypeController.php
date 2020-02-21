@@ -55,8 +55,8 @@ class ItemTypeController extends Controller
     {
         $errors = new MessageBag();
         $name = $request->type_name;
-        $boolean = $this->item_type->createNewItemType($name);
-        if ($boolean) {
+        $createFail = $this->item_type->createNewItemType($name);
+        if ($createFail) {
             $errors->add('dupItemType', 'Already have this ItemType!!!');
         }
         return redirect()->route('item_types')->withErrors($errors);

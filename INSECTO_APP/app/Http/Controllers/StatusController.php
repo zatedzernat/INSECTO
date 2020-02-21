@@ -48,8 +48,8 @@ class StatusController extends Controller
         $errors = new MessageBag();
         $name = $request->status_name;
         $description = $request->status_description;
-        $boolean = $this->status->createNewStatus($name, $description);
-        if ($boolean) {
+        $createFail = $this->status->createNewStatus($name, $description);
+        if ($createFail) {
             $errors->add('dupStatus', 'Already have this status!!!');
         }
         return redirect()->route('statuses')->withErrors($errors);

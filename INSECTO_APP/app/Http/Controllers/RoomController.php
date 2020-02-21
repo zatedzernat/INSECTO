@@ -60,8 +60,8 @@ class RoomController extends Controller
         $room_name = $request->room_name;
         $room_code = $request->room_code;
         $building_id = $request->building_id;
-        $boolean = $this->room->createNewRoom($room_name, $room_code, $building_id);
-        if ($boolean) {
+        $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id);
+        if ($createFail) {
             $errors->add('dupRoom', 'Already have this Room!!!');
         }
         return redirect()->route('rooms')->withErrors($errors);

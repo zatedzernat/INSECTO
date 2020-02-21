@@ -93,7 +93,6 @@ class Brand extends Model implements Auditable
     public function updateBrand($brand_id, $brand_name)
     {
         $findName = Brand::where('brand_name', $brand_name)->first();
-        // dd($findName);
         if (is_null($findName) || $findName->brand_id == $brand_id) {
             $brand = $this->findByID($brand_id);
             $brand->brand_name = $brand_name;
@@ -108,7 +107,6 @@ class Brand extends Model implements Auditable
 
     public function deleteBrand($brand_id)
     {
-        //* change cancel flag to Y
         $brand = $this->findByID($brand_id);
         $brand->cancel_flag = 'Y';
         $brand->save();

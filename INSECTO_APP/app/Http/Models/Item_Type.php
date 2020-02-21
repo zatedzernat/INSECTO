@@ -99,7 +99,6 @@ class Item_Type extends Model implements Auditable
 
     public function deleteItemType($type_id)
     {
-        // * not real delete but change cancel flag to Y
         $item_type = $this->findByID($type_id);
         $item_type->cancel_flag = 'Y';
         $item_type->save();

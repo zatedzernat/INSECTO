@@ -72,8 +72,8 @@ class ItemController extends Controller
         $brand_id = $request->brand_id;
         $serial = $request->serial_number;
         $model = $request->item_model;
-        $boolean = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
-        if ($boolean) {
+        $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
+        if ($createFail) {
             $errors->add('dupItem', 'Already have this Item!!!');
         }
         return redirect()->route('items')->withErrors($errors);

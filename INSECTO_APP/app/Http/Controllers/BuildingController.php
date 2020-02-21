@@ -56,8 +56,8 @@ class BuildingController extends Controller
         $errors = new MessageBag();
         $building_code = $request->building_code;
         $building_name = $request->building_name;
-        $boolean = $this->building->createNewBuilding($building_code, $building_name);
-        if ($boolean) {
+        $createFail = $this->building->createNewBuilding($building_code, $building_name);
+        if ($createFail) {
             $errors->add('dupBuilding','Already have this Building!!!');
         }
         return redirect()->route('buildings')->withErrors($errors);

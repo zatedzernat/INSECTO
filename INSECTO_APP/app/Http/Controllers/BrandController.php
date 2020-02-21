@@ -52,8 +52,8 @@ class BrandController extends Controller
     {
         $errors = new MessageBag();
         $name = $request->brand_name;
-        $boolean = $this->brand->createNewBrand($name);
-        if ($boolean) {
+        $createFail = $this->brand->createNewBrand($name);
+        if ($createFail) {
             $errors->add('dupBrand','Already have this Brand!!!');
         }
         return redirect()->route('brands')->withErrors($errors);

@@ -118,16 +118,9 @@ class Room extends Model implements Auditable
 
     public function deleteRoom($room_id)
     {
-        // * not real delete but change cancel flag to Y
         $room = $this->findByID($room_id);
         $room->setCancelFlag('Y');
         $room->save();
-
-        // * change cancel_flag in items
-        $items = DB::table('items')
-            ->where('room_id', $room_id)
-            ->update(['cancel_flag' => 'Y']);
-
         return $room;
     }
 
