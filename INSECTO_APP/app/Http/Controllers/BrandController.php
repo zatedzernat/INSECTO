@@ -38,9 +38,7 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        
-    }
+    { }
 
     /**
      * Store a newly created resource in storage.
@@ -54,7 +52,7 @@ class BrandController extends Controller
         $name = $request->brand_name;
         $boolean = $this->brand->createNewBrand($name);
         if ($boolean) {
-            $errors->add('dupBrand','Already have this Brand!!!');
+            $errors->add('dupBrand', 'Already have this Brand!!!');
         }
         return redirect()->route('brands')->withErrors($errors);
     }
@@ -77,9 +75,7 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request)
-    {
-
-    }
+    { }
     /**
      * Update the specified resource in storage.
      *
@@ -95,9 +91,9 @@ class BrandController extends Controller
         $name = $request->input('brand_name');
         $updateSuccess = $this->brand->updateBrand($id, $name);
         if (!$updateSuccess) {
-            $errors->add('upDupBrand','Duplicate Brand Name!!!');
+            $errors->add('upDupBrand', 'Duplicate Brand Name!!!');
         }
-        
+
         return redirect()->route('brands')->withErrors($errors);
     }
 
@@ -111,6 +107,15 @@ class BrandController extends Controller
     {
         $brand = $this->brand->deleteBrand($brand_id);
         $items = $this->item->setNullInItem($brand_id);
-        return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
+        return redirect()->route('brands')->with('del_brand', 'Delete brand ' . $brand->brand_name . ' success');
+    }
+
+    public function hongbrand()
+    {
+        $data = $this->brand->findByCancelFlag('N');
+        // return response()->json([
+        //     'brand' => $data
+        // ]);
+        return $data;
     }
 }
