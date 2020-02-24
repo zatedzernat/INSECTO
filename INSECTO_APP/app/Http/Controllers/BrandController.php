@@ -113,6 +113,7 @@ class BrandController extends Controller
     public function hongbrand()
     {
         $data = $this->brand->findByCancelFlag('N');
+        //tiny
         // return response()->json([
         //     'brand' => $data
         // ]);
