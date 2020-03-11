@@ -33,9 +33,9 @@ class RoomController extends Controller
     {
         $rooms = $this->room->findByCancelFlag('N');
         $buildings = $this->building->findByCancelFlag('N');
-
-        return view('location.rooms')
-            ->with(compact('rooms', 'buildings'));
+        return compact('rooms', 'buildings');
+        /* return view('location.rooms')
+            ->with(compact('rooms', 'buildings')); */
     }
 
     /**

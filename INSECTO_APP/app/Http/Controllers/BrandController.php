@@ -28,8 +28,9 @@ class BrandController extends Controller
     public function index()
     {
         $brands = $this->brand->findByCancelFlag('N');
-        return view('item.brands')
-            ->with(compact('brands'));
+        return $brands;
+        /* return view('item.brands')
+             ->with(compact('brands')); */
     }
 
     /**

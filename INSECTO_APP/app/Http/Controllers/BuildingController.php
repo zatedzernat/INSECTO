@@ -31,9 +31,9 @@ class BuildingController extends Controller
     public function index()
     {
         $buildings = $this->building->findByCancelFlag('N');
-
-        return view('location.buildings')
-            ->with(compact('buildings'));
+        return $buildings;
+        /* return view('location.buildings')
+            ->with(compact('buildings')); */
     }
 
     /**

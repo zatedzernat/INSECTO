@@ -42,8 +42,9 @@ class ItemController extends Controller
         $brands = $this->brand->findByCancelFlag('N');
         $buildings = $this->building->findByCancelFlag('N');
 
-        return view('item.items')
-            ->with(compact('items', 'rooms', 'itemTypes', 'brands', 'buildings'));
+        return compact('items', 'rooms', 'itemTypes', 'brands', 'buildings');
+        /* return view('item.items')
+            ->with(compact('items', 'rooms', 'itemTypes', 'brands', 'buildings')); */
     }
 
     /**

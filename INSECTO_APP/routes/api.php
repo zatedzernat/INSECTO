@@ -17,4 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('hongbrand', 'BrandController@hongbrand');
+Route::get('brands', 'BrandController@index');
+Route::get('items', 'ItemController@index');
+Route::get('item_types', 'ItemTypeController@index');
+Route::get('noti_problems', 'NotificationProblemController@index');
