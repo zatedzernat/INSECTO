@@ -66,6 +66,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/noti_problems">Notification Problems</a>
+                            <a class="dropdown-item" href="/history_logs">History Logs</a>
                             <a class="dropdown-item" href="/problem_descs">Problem Descriptions</a>
                             <a class="dropdown-item" href="/buildings">Building</a>
                             <a class="dropdown-item" href="/rooms">Rooms</a>

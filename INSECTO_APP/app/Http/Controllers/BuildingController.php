@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Building;
+use App\Http\Models\Item;
+use App\Http\Models\Room;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuildingFormRequest;
 use Illuminate\Support\MessageBag;
@@ -11,10 +13,14 @@ class BuildingController extends Controller
 {
 
     private $building;
+    private $room;
+    private $item;
 
     public function __construct()
     {
         $this->building = new Building();
+        $this->room = new Room();
+        $this->item = new Item();
     }
 
     /**
@@ -25,20 +31,11 @@ class BuildingController extends Controller
     public function index()
     {
         $buildings = $this->building->findByCancelFlag('N');
-
-        return view('location.buildings')
-            ->with(compact('buildings'));
+        return $buildings;
+        /* return view('location.buildings')
+            ->with(compact('buildings')); */
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-    
     /**
      * Store a newly created resource in storage.
      *
@@ -50,8 +47,8 @@ class BuildingController extends Controller
         $errors = new MessageBag();
         $building_code = $request->building_code;
         $building_name = $request->building_name;
-        $boolean = $this->building->createNewBuilding($building_code, $building_name);
-        if ($boolean) {
+        $createFail = $this->building->createNewBuilding($building_code, $building_name);
+        if ($createFail) {
             $errors->add('dupBuilding','Already have this Building!!!');
         }
         return redirect()->route('buildings')->withErrors($errors);
@@ -60,7 +57,7 @@ class BuildingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Building  $building
+     * @param  \App\Http\Models\Building  $building
      * @return \Illuminate\Http\Response
      */
     public function show(Building $building)
@@ -69,21 +66,10 @@ class BuildingController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Building  $building
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Building $building)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Building  $building
+     * @param  \App\Http\Models\Building  $building
      * @return \Illuminate\Http\Response
      */
     public function update(BuildingFormRequest $request, Building $building)
@@ -101,12 +87,14 @@ class BuildingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Building  $building
+     * @param  \App\Http\Models\Building  $building
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $building_id)
     {
         $building = $this->building->deleteBuilding($building_id);
+        $rooms = $this->room->deleteRooms($building);
+        $items = $this->item->deleteItems('rooms', $rooms);
         return redirect()->route('buildings')->with('del_building','Delete building '.$building->building_code.' success');
     }
 }

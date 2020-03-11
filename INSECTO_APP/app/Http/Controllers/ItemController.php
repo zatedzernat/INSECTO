@@ -42,18 +42,9 @@ class ItemController extends Controller
         $brands = $this->brand->findByCancelFlag('N');
         $buildings = $this->building->findByCancelFlag('N');
 
-        return view('item.items')
-            ->with(compact('items', 'rooms', 'itemTypes', 'brands', 'buildings'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return compact('items', 'rooms', 'itemTypes', 'brands', 'buildings');
+        /* return view('item.items')
+            ->with(compact('items', 'rooms', 'itemTypes', 'brands', 'buildings')); */
     }
 
     /**
@@ -72,8 +63,8 @@ class ItemController extends Controller
         $brand_id = $request->brand_id;
         $serial = $request->serial_number;
         $model = $request->item_model;
-        $boolean = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
-        if ($boolean) {
+        $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
+        if ($createFail) {
             $errors->add('dupItem', 'Already have this Item!!!');
         }
         return redirect()->route('items')->withErrors($errors);
@@ -82,7 +73,7 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Item  $item
+     * @param  \App\Http\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
     public function show(Item $item)
@@ -91,21 +82,10 @@ class ItemController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Item $item)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Item  $item
+     * @param  \App\Http\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
     public function update(ItemFormRequest $request/*, Item $item*/)
@@ -128,12 +108,11 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Item  $item
+     * @param  \App\Http\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $item_id)
     {
-        //todo ถ้าผูกอยู่กับอันย่อย ๆ เช่น มี item_type air แล้วกดลบ มันไม่ควรกดได้ ต้องทำให้เช็คว่ามีข้อมูลถูกผูกอยู่ไหมก่อน ถ้าไม่มีก็ลบได้
         $item = $this->item->deleteItem($item_id);
         return redirect()->route('items')->with('del_item', 'Delete item ' . $item->item_code . ' success');
     }

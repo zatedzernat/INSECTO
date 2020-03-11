@@ -28,17 +28,10 @@ class BrandController extends Controller
     public function index()
     {
         $brands = $this->brand->findByCancelFlag('N');
-        return view('item.brands')
-            ->with(compact('brands'));
+        return $brands;
+        /* return view('item.brands')
+             ->with(compact('brands')); */
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    { }
 
     /**
      * Store a newly created resource in storage.
@@ -50,9 +43,9 @@ class BrandController extends Controller
     {
         $errors = new MessageBag();
         $name = $request->brand_name;
-        $boolean = $this->brand->createNewBrand($name);
-        if ($boolean) {
-            $errors->add('dupBrand', 'Already have this Brand!!!');
+        $createFail = $this->brand->createNewBrand($name);
+        if ($createFail) {
+            $errors->add('dupBrand','Already have this Brand!!!');
         }
         return redirect()->route('brands')->withErrors($errors);
     }
@@ -60,7 +53,7 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Http\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
     public function show(Brand $brand)
@@ -69,18 +62,10 @@ class BrandController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Brand  $brand
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request)
-    { }
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Brand  $brand
+     * @param  \App\Http\Models\Brand $brand
      * @return \Illuminate\Http\Response
      */
     public function update(BrandFormRequest $request)
@@ -100,22 +85,13 @@ class BrandController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Brand  $brand
+     * @param  \App\Http\Models\Brand   $brand
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $brand_id)
     {
         $brand = $this->brand->deleteBrand($brand_id);
-        $items = $this->item->setNullInItem($brand_id);
-        return redirect()->route('brands')->with('del_brand', 'Delete brand ' . $brand->brand_name . ' success');
-    }
-
-    public function hongbrand()
-    {
-        $data = $this->brand->findByCancelFlag('N');
-        // return response()->json([
-        //     'brand' => $data
-        // ]);
-        return $data;
+        $items = $this->item->setNullInItem($brand);
+        return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
     }
 }

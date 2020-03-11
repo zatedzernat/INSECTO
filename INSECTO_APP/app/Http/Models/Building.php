@@ -4,6 +4,7 @@ namespace App\Http\Models;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Building extends Model implements Auditable
@@ -11,6 +12,22 @@ class Building extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     protected $fillable = ['building_code', 'building_name', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'building_id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transformAudit(array $data): array
+    {
+        if (Arr::has($data['old_values'], 'cancel_flag') and Arr::has($data['new_values'], 'cancel_flag')) {
+            if ($data['old_values']['cancel_flag'] == 'N' and $data['new_values']['cancel_flag'] == 'Y') {
+                $data['event'] = 'deleted';
+            } elseif ($data['old_values']['cancel_flag'] == 'Y' and $data['new_values']['cancel_flag'] == 'N') {
+                $data['event'] = 'restored';
+            }
+        }
+
+        return $data;
+    }
 
     public function rooms()
     {
@@ -94,19 +111,6 @@ class Building extends Model implements Auditable
         $building = $this->findByID($building_id);
         $building->setCancelFlag('Y');
         $building->save();
-
-        // * change cancel_flag in rooms
-        $rooms = DB::table('rooms')
-            ->where('building_id', $building_id)
-            ->update(['cancel_flag' => 'Y']);
-
-        // * change cancel_flag in items
-        foreach ($building->rooms as $room) {
-            $items = DB::table('items')
-                ->where('room_id', $room->room_id)
-                ->update(['cancel_flag' => 'Y']);
-        }
-
         return $building;
     }
 }

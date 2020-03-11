@@ -36,8 +36,9 @@ class NotificationProblemController extends Controller
     {
         $noti_problems = $this->noti_problem->getAll();
         $statuses = $this->status->getAll();
-        return view('noti_problem.noti_problems')
-            ->with(compact('noti_problems', 'statuses'));
+        return compact('noti_problems', 'statuses');
+        /* return view('noti_problem.noti_problems')
+            ->with(compact('noti_problems', 'statuses')); */
     }
 
     /**
@@ -91,7 +92,7 @@ class NotificationProblemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Notification_Problem  $notification_Problem
+     * @param  \App\Http\Models\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
     public function show($code)
@@ -109,21 +110,10 @@ class NotificationProblemController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Notification_Problem  $notification_Problem
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Notification_Problem $notification_Problem)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Notification_Problem  $notification_Problem
+     * @param  \App\Http\Models\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
     public function update(NotiUpdateFormRequest $request, $id)
@@ -140,7 +130,7 @@ class NotificationProblemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Notification_Problem  $notification_Problem
+     * @param  \App\Http\Models\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
     public function destroy(Notification_Problem $notification_Problem)

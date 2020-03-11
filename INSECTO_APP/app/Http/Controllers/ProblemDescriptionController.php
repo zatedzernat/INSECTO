@@ -29,19 +29,9 @@ class ProblemDescriptionController extends Controller
     {
         $problems_descs = $this->problem_desc->findByCancelFlag('N');
         $types = $this->type->findByCancelFlag('N');
-
-        return view('type_desc.problem_descs')
-            ->with(compact('problems_descs','types'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return compact('problems_descs','types');
+        /* return view('type_desc.problem_descs')
+            ->with(compact('problems_descs','types')); */
     }
 
     /**
@@ -56,8 +46,8 @@ class ProblemDescriptionController extends Controller
         $errors = new MessageBag();
         $problem_description = $request->problem_description;
         $type_id = $request->type_id;
-        $boolean = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
-        if ($boolean) {
+        $createFail = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
+        if ($createFail) {
             $errors->add('dupProblem_Description','Already have this Problem Description!!!');
         }
         return redirect()->route('problem_descs')->withErrors($errors);
@@ -66,7 +56,7 @@ class ProblemDescriptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Problem_Description  $problem_Description
+     * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
     public function show(Problem_Description $problem_Description)
@@ -75,21 +65,10 @@ class ProblemDescriptionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Problem_Description  $problem_Description
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Problem_Description $problem_Description)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Problem_Description  $problem_Description
+     * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
     public function update(ProblemDescriptionFormRequest $request, Problem_Description $problem_desc)
@@ -108,7 +87,7 @@ class ProblemDescriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Problem_Description  $problem_Description
+     * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $problem_des_id)

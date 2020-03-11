@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Building;
+use App\Http\Models\Item;
 use App\Http\Models\Room;
 use App\Http\Requests\RoomFormRequest;
 use Illuminate\Http\Request;
@@ -13,11 +14,13 @@ class RoomController extends Controller
 
     private $room;
     private $building;
+    private $item;
 
     public function __construct()
     {
         $this->room = new Room();
         $this->building = new Building();
+        $this->item = new Item();
     }
 
     /**
@@ -30,19 +33,9 @@ class RoomController extends Controller
     {
         $rooms = $this->room->findByCancelFlag('N');
         $buildings = $this->building->findByCancelFlag('N');
-
-        return view('location.rooms')
-            ->with(compact('rooms', 'buildings'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return compact('rooms', 'buildings');
+        /* return view('location.rooms')
+            ->with(compact('rooms', 'buildings')); */
     }
 
     /**
@@ -57,8 +50,8 @@ class RoomController extends Controller
         $room_name = $request->room_name;
         $room_code = $request->room_code;
         $building_id = $request->building_id;
-        $boolean = $this->room->createNewRoom($room_name, $room_code, $building_id);
-        if ($boolean) {
+        $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id);
+        if ($createFail) {
             $errors->add('dupRoom', 'Already have this Room!!!');
         }
         return redirect()->route('rooms')->withErrors($errors);
@@ -67,7 +60,7 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Room  $room
+     * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function show(Room $room)
@@ -76,21 +69,10 @@ class RoomController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Room  $room
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Room $room)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Room  $room
+     * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function update(RoomFormRequest $request, Room $room)
@@ -109,12 +91,13 @@ class RoomController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Room  $room
+     * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $room_id)
     {
         $room = $this->room->deleteRoom($room_id);
+        $items = $this->item->deleteItems('room', $room);
         return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_code. '-'. $room->room_name . ' success');
     }
 }

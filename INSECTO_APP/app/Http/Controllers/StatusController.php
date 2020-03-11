@@ -23,18 +23,9 @@ class StatusController extends Controller
     public function index()
     {
         $statuses = $this->status->getAll();
-        return view('noti_problem.statuses')
-            ->with(compact('statuses'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $statuses;
+        /* return view('noti_problem.statuses')
+            ->with(compact('statuses')); */
     }
 
     /**
@@ -48,8 +39,8 @@ class StatusController extends Controller
         $errors = new MessageBag();
         $name = $request->status_name;
         $description = $request->status_description;
-        $boolean = $this->status->createNewStatus($name, $description);
-        if ($boolean) {
+        $createFail = $this->status->createNewStatus($name, $description);
+        if ($createFail) {
             $errors->add('dupStatus', 'Already have this status!!!');
         }
         return redirect()->route('statuses')->withErrors($errors);
@@ -58,7 +49,7 @@ class StatusController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Status  $status
+     * @param  \App\Http\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
     public function show(Status $status)
@@ -67,21 +58,10 @@ class StatusController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Status  $status
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Status $status)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Status  $status
+     * @param  \App\Http\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
     public function update(StatusFormRequest $request)
@@ -101,7 +81,7 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Status  $status
+     * @param  \App\Http\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
     public function destroy(Status $status, $status_id)
