@@ -50,9 +50,9 @@ class BrandController extends Controller
     {
         $errors = new MessageBag();
         $name = $request->brand_name;
-        $boolean = $this->brand->createNewBrand($name);
-        if ($boolean) {
-            $errors->add('dupBrand', 'Already have this Brand!!!');
+        $createFail = $this->brand->createNewBrand($name);
+        if ($createFail) {
+            $errors->add('dupBrand','Already have this Brand!!!');
         }
         return redirect()->route('brands')->withErrors($errors);
     }
@@ -106,17 +106,7 @@ class BrandController extends Controller
     public function destroy(Request $request, $brand_id)
     {
         $brand = $this->brand->deleteBrand($brand_id);
-        $items = $this->item->setNullInItem($brand_id);
-        return redirect()->route('brands')->with('del_brand', 'Delete brand ' . $brand->brand_name . ' success');
-    }
-
-    public function hongbrand()
-    {
-        $data = $this->brand->findByCancelFlag('N');
-        //tiny
-        // return response()->json([
-        //     'brand' => $data
-        // ]);
-        return $data;
+        $items = $this->item->setNullInItem($brand);
+        return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
     }
 }

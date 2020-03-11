@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Building;
+use App\Http\Models\Item;
+use App\Http\Models\Room;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuildingFormRequest;
 use Illuminate\Support\MessageBag;
@@ -11,10 +13,14 @@ class BuildingController extends Controller
 {
 
     private $building;
+    private $room;
+    private $item;
 
     public function __construct()
     {
         $this->building = new Building();
+        $this->room = new Room();
+        $this->item = new Item();
     }
 
     /**
@@ -50,8 +56,8 @@ class BuildingController extends Controller
         $errors = new MessageBag();
         $building_code = $request->building_code;
         $building_name = $request->building_name;
-        $boolean = $this->building->createNewBuilding($building_code, $building_name);
-        if ($boolean) {
+        $createFail = $this->building->createNewBuilding($building_code, $building_name);
+        if ($createFail) {
             $errors->add('dupBuilding','Already have this Building!!!');
         }
         return redirect()->route('buildings')->withErrors($errors);
@@ -107,6 +113,8 @@ class BuildingController extends Controller
     public function destroy(Request $request, $building_id)
     {
         $building = $this->building->deleteBuilding($building_id);
+        $rooms = $this->room->deleteRooms($building);
+        $items = $this->item->deleteItems('rooms', $rooms);
         return redirect()->route('buildings')->with('del_building','Delete building '.$building->building_code.' success');
     }
 }

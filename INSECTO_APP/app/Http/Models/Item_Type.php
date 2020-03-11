@@ -4,12 +4,30 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Support\Arr;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Item_Type extends Model
+class Item_Type extends Model implements Auditable
 {
-    //
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = ['type_name', 'cancel_flag', 'update_by'];
     protected $primaryKey = 'type_id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transformAudit(array $data): array
+    {
+        if (Arr::has($data['old_values'], 'cancel_flag') and Arr::has($data['new_values'], 'cancel_flag')) {
+            if ($data['old_values']['cancel_flag'] == 'N' and $data['new_values']['cancel_flag'] == 'Y') {
+                $data['event'] = 'deleted';
+            } elseif ($data['old_values']['cancel_flag'] == 'Y' and $data['new_values']['cancel_flag'] == 'N') {
+                $data['event'] = 'restored';
+            }
+        }
+
+        return $data;
+    }
 
     public function problem_descriptions()
     {
@@ -18,7 +36,7 @@ class Item_Type extends Model
 
     public function items()
     {
-        return $this->hasMany('App\Http\Models\Items', 'type_id', 'type_id');
+        return $this->hasMany('App\Http\Models\Item', 'type_id', 'type_id');
     }
 
     public function findByCancelFlag($string)
@@ -81,21 +99,9 @@ class Item_Type extends Model
 
     public function deleteItemType($type_id)
     {
-        // * not real delete but change cancel flag to Y
         $item_type = $this->findByID($type_id);
         $item_type->cancel_flag = 'Y';
         $item_type->save();
-
-        // * change cancel_flag in items
-        $items = DB::table('items')
-            ->where('type_id',$type_id)
-            ->update(['cancel_flag' => 'Y']);
-
-        // * change cancel_flag in problem__descriptions
-        $prob_desc = DB::table('problem__descriptions')
-            ->where('type_id',$type_id)
-            ->update(['cancel_flag' => 'Y']);
-
         return $item_type;
     }
 }

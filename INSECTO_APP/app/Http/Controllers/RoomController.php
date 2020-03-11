@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Building;
+use App\Http\Models\Item;
 use App\Http\Models\Room;
 use App\Http\Requests\RoomFormRequest;
 use Illuminate\Http\Request;
@@ -13,11 +14,13 @@ class RoomController extends Controller
 
     private $room;
     private $building;
+    private $item;
 
     public function __construct()
     {
         $this->room = new Room();
         $this->building = new Building();
+        $this->item = new Item();
     }
 
     /**
@@ -57,8 +60,8 @@ class RoomController extends Controller
         $room_name = $request->room_name;
         $room_code = $request->room_code;
         $building_id = $request->building_id;
-        $boolean = $this->room->createNewRoom($room_name, $room_code, $building_id);
-        if ($boolean) {
+        $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id);
+        if ($createFail) {
             $errors->add('dupRoom', 'Already have this Room!!!');
         }
         return redirect()->route('rooms')->withErrors($errors);
@@ -115,6 +118,7 @@ class RoomController extends Controller
     public function destroy(Request $request, $room_id)
     {
         $room = $this->room->deleteRoom($room_id);
+        $items = $this->item->deleteItems('room', $room);
         return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_code. '-'. $room->room_name . ' success');
     }
 }

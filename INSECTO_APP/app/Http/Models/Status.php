@@ -3,9 +3,11 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Status extends Model
+class Status extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = ['status_name', 'status_description'];
     protected $primaryKey = 'status_id';
 
@@ -63,5 +65,4 @@ class Status extends Model
         }
         return false;
     }
-
 }
