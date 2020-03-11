@@ -36,16 +36,6 @@ class ItemTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -65,7 +55,7 @@ class ItemTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Item_Type  $item_Type
+     * @param  \App\Http\Models\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
     public function show(Item_Type $item_Type)
@@ -74,21 +64,10 @@ class ItemTypeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Item_Type  $item_Type
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Item_Type $item_Type)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Item_Type  $item_Type
+     * @param  \App\Http\Models\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
     public function update(ItemTypeFormRequest $request)
@@ -109,7 +88,7 @@ class ItemTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Item_Type  $item_Type
+     * @param  \App\Http\Models\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $type_id)

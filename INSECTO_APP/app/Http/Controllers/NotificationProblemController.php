@@ -91,7 +91,7 @@ class NotificationProblemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Notification_Problem  $notification_Problem
+     * @param  \App\Http\Models\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
     public function show($code)
@@ -109,21 +109,10 @@ class NotificationProblemController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Notification_Problem  $notification_Problem
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Notification_Problem $notification_Problem)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Notification_Problem  $notification_Problem
+     * @param  \App\Http\Models\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
     public function update(NotiUpdateFormRequest $request, $id)
@@ -140,7 +129,7 @@ class NotificationProblemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Notification_Problem  $notification_Problem
+     * @param  \App\Http\Models\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
     public function destroy(Notification_Problem $notification_Problem)

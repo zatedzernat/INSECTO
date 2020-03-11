@@ -39,16 +39,6 @@ class RoomController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -70,7 +60,7 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Room  $room
+     * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function show(Room $room)
@@ -79,21 +69,10 @@ class RoomController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Room  $room
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Room $room)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Room  $room
+     * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function update(RoomFormRequest $request, Room $room)
@@ -112,7 +91,7 @@ class RoomController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Room  $room
+     * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $room_id)

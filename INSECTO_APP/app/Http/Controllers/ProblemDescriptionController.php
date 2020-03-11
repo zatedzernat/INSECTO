@@ -35,16 +35,6 @@ class ProblemDescriptionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -66,7 +56,7 @@ class ProblemDescriptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Problem_Description  $problem_Description
+     * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
     public function show(Problem_Description $problem_Description)
@@ -75,21 +65,10 @@ class ProblemDescriptionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Problem_Description  $problem_Description
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Problem_Description $problem_Description)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Problem_Description  $problem_Description
+     * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
     public function update(ProblemDescriptionFormRequest $request, Problem_Description $problem_desc)
@@ -108,7 +87,7 @@ class ProblemDescriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Problem_Description  $problem_Description
+     * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $problem_des_id)
