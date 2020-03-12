@@ -39,14 +39,6 @@ class Building extends Model implements Auditable
         return Building::where('cancel_flag', $string)->get();
     }
 
-    public function findByName($string)
-    {
-        $buildings = DB::table('buildings')
-            ->where('building_name', 'like', '%' . $string . '%')
-            ->first();
-        return $buildings;
-    }
-
     public function findByID($int)
     {
         return Building::where('building_id', $int)->first();

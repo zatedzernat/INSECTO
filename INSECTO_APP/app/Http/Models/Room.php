@@ -41,15 +41,7 @@ class Room extends Model implements Auditable
 
     public function findByCancelFlag($string)
     {
-        return Room::where('cancel_flag', $string)->get();
-    }
-
-    public function findByName($string)
-    {
-        $rooms = DB::table('rooms')
-            ->where('room_name', 'like', '%' . $string . '%')
-            ->first();
-        return $rooms;
+        return Room::with('building')->where('cancel_flag', $string)->get();
     }
 
     public function findByID($int)

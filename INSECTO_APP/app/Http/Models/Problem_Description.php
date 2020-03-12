@@ -40,7 +40,7 @@ class Problem_Description extends Model implements Auditable
 
     public function findByCancelFlag($string)
     {
-        return Problem_Description::where('cancel_flag', $string)->get();
+        return Problem_Description::with('item_type')->where('cancel_flag', $string)->get();
     }
 
     public function findByID($problem_des_id)

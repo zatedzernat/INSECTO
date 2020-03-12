@@ -39,14 +39,6 @@ class Brand extends Model implements Auditable
         return Brand::where('cancel_flag', $string)->get();
     }
 
-    public function findByName($string)
-    {
-        $brands = DB::table('brands')
-            ->where('brand_name', 'like', '%' . $string . '%')
-            ->first();
-        return $brands;
-    }
-
     public function findByID($int)
     {
         return Brand::where('brand_id', $int)->first();

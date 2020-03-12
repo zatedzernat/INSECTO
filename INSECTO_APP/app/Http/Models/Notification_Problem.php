@@ -38,7 +38,7 @@ class Notification_Problem extends Model /*implements Auditable*/
 
     public function getAll()
     {
-        return Notification_Problem::all();
+        return Notification_Problem::with('status')->get();
     }
 
     public function findByID($id)
