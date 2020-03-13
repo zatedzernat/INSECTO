@@ -42,7 +42,7 @@ class CreateItemsTable extends Migration
 
             $table->foreign('type_id')
                 ->references('type_id')
-                ->on('item__Types')
+                ->on('item__types')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
