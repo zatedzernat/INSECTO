@@ -51,7 +51,7 @@ class Item extends Model implements Auditable
 
     public function findByCancelFlag($string)
     {
-        return Item::where('cancel_flag', $string)->get();
+        return Item::with('room.building', 'item_type', 'brand')->where('cancel_flag', $string)->get();
     }
 
     public function findByCode($code)
