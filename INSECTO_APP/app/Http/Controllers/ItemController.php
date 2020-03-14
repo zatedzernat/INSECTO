@@ -22,6 +22,7 @@ class ItemController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->item = new Item();
         $this->room = new Room();
         $this->itemType = new Item_Type();

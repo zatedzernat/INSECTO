@@ -18,6 +18,7 @@ class RoomController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->room = new Room();
         $this->building = new Building();
         $this->item = new Item();

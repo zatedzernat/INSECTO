@@ -21,6 +21,7 @@ class NotificationProblemController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->noti_problem = new Notification_Problem();
         $this->item = new Item();
         $this->problem_desc = new Problem_Description();

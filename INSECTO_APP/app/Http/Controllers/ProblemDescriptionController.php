@@ -16,6 +16,7 @@ class ProblemDescriptionController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->problem_desc = new Problem_Description();
         $this->type = new Item_Type();
     }

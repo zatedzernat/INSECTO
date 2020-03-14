@@ -7,8 +7,14 @@ use OwenIt\Auditing\Models\Audit;
 
 class HistoryLogController extends Controller
 {
-    public function index() 
+    public function __construct()
     {
+        $this->middleware('auth');
+    }
+    
+    public function index()
+    {
+
         // $a = Audit::find(1);
         $a = Audit::all();
         // dd($a); //! อ่านไทยไม่ได้

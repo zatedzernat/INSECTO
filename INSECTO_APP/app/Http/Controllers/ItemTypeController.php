@@ -18,6 +18,7 @@ class ItemTypeController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->item_type = new Item_Type();
         $this->item = new Item();
         $this->problem_desc = new Problem_Description();
