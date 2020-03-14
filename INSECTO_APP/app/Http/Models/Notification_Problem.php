@@ -56,17 +56,19 @@ class Notification_Problem extends Model implements Auditable
 
     public function checkSameProblem($item_id, $problem_des_id)
     {
+        // problem_des_id != 'etc' means user send problem that we already have
         if ($problem_des_id != 'etc') {
             $noti_prob = Notification_Problem::where([
                 ['item_id', $item_id],
                 ['problem_des_id', $problem_des_id],
                 ['status_id', '<>', 8],
             ])->latest()->first();
-        } else {
-            $noti_prob = Notification_Problem::where([
-                ['item_id', $item_id],
-                ['status_id', '<>', 8],
-            ])->latest()->first();
+        } else { //user send new problem (ETC)
+            $noti_prob = $this->findProblemNotResolvedByItemID($item_id); //return all problems that not resolved
+            // $noti_prob = Notification_Problem::where([
+            //     ['item_id', $item_id],
+            //     ['status_id', '<>', 8],
+            // ])->latest()->first();
         }
         return $noti_prob;
     }

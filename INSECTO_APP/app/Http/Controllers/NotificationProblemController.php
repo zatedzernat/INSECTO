@@ -82,24 +82,10 @@ class NotificationProblemController extends Controller
         $noti_prob = $this->noti_problem->checkSameProblem($item_id, $problem_des_id);
 
         if ($noti_prob) {
-            return view('checkProblem')->with(compact('noti_prob', 'problem_description'));
+            return view('checkProblem')->with(compact('noti_prob', 'problem_description', 'item_id')); //problem_description empty means send with same problem_des_id
         } else {
             return $this->store($request);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Notification_Problem  $notification_Problem
-     * @return \Illuminate\Http\Response
-     */
-    public function show($code)
-    {
-        $item = $this->item->findByCode($code);
-        // dd($item);
-        return view('noti_problem.send_problem')
-            ->with('item', $item);
     }
 
     public function showproblemNotResolved($code)
@@ -113,12 +99,25 @@ class NotificationProblemController extends Controller
         } else {
             $problemsNotResolved = $this->noti_problem->findProblemNotResolvedByItemID($item->item_id);
             if ($problemsNotResolved->isEmpty()) {
-                $this->show($item->item_code);
+                return $this->showForm($item->item_code);
             } else {
                 return view('itemproblemreport')
                     ->with(compact('item', 'problemsNotResolved'));
             }
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Notification_Problem  $notification_Problem
+     * @return \Illuminate\Http\Response
+     */
+    public function showForm($code)
+    {
+        $item = $this->item->findByCode($code);
+        return view('noti_problem.send_problem')
+            ->with('item', $item);
     }
 
     /**

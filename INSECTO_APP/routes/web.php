@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'send-problem'], function () {
     Route::get('/', 'NotificationProblemController@create')->name('send');
-    Route::get('{code}', 'NotificationProblemController@showproblemNotResolved')->where('code', '[A-Za-z0-9-.]+');
-    Route::post('show/{code}', 'NotificationProblemController@show');
+    Route::get('code/{code}', 'NotificationProblemController@showproblemNotResolved')->where('code', '[A-Za-z0-9-.]+');
+    Route::post('showForm/{code}', 'NotificationProblemController@showForm')->where('code', '[A-Za-z0-9-.]+');
     Route::post('check', 'NotificationProblemController@check');
     Route::post('create', 'NotificationProblemController@store');
 });
@@ -74,11 +74,11 @@ Route::group(['prefix' => 'status'], function () {
 
 Route::get('noti_problems', [
     'middleware' => 'auth',
-    'uses' => 'NotificationProblemController@index'
+    'uses' => 'NotificationProblemController@index',
 ])->name('noti_problems');
 Route::post('noti_problem/edit/{noti_id}', [
     'middleware' => 'auth',
-    'uses' => 'NotificationProblemController@update'
+    'uses' => 'NotificationProblemController@update',
 ]);
 
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');

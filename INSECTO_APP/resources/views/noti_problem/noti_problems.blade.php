@@ -49,7 +49,7 @@ Notication Problems
             @foreach ($noti_problems as $noti_problem)
             <tr>
                 <td>
-                    {{$noti_problem->noti_id}}
+                    {{ $loop->iteration }}
                 </td>
                 <td>
                     {{$noti_problem->item->item_code}}
