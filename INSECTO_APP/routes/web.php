@@ -71,8 +71,14 @@ Route::group(['prefix' => 'status'], function () {
     Route::post('del/{status_id}', 'StatusController@destroy');
 });
 
-Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
-Route::post('noti_problem/edit/{noti_id}', 'NotificationProblemController@update');
+Route::get('noti_problems', [
+    'middleware' => 'auth',
+    'uses' => 'NotificationProblemController@index'
+])->name('noti_problems');
+Route::post('noti_problem/edit/{noti_id}', [
+    'middleware' => 'auth',
+    'uses' => 'NotificationProblemController@update'
+]);
 
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
 
