@@ -32,7 +32,11 @@ Check Same Problem
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+                        @if (!empty($problem_description))
                         <h5 class="modal-title" id="exampleModalLongTitle">ใช่ปัญหาของคุณหรือไม่ ?</h5>
+                        @else
+                        <h5 class="modal-title" id="exampleModalLongTitle">ปัญหานี้ถูกแจ้งเข้ามาแล้ว</h5>
+                        @endif
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -58,9 +62,14 @@ Check Same Problem
                         </div>
                     </div>
                     <div class="modal-footer">
+                        @if (!empty($problem_description))
                         <a href="/" class="btn btn-primary">ใช่</a>
+                        @else
+                        <a href="/" class="btn btn-primary">หน้าแรก</a>
+                        @endif
                         @isset($problem_description)
-                        <button type="submit" class="btn btn-primary">ไม่ใช่ ปัญหาของฉันคือ {{ $problem_description }}</button>
+                        <button type="submit" class="btn btn-primary">ไม่ใช่ ปัญหาของฉันคือ
+                            {{ $problem_description }}</button>
                         <input type="hidden" name="problem_description" value="{{ $problem_description }}">
                         <input type="hidden" name="item_id" value="{{ $noti_prob->item->item_id }}">
                         <input type="hidden" name="problem_des_id" value="etc">

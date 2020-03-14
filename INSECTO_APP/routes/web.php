@@ -17,7 +17,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'send-problem'], function () {
     Route::get('/', 'NotificationProblemController@create')->name('send');
-    Route::get('{code}', 'NotificationProblemController@show')->where('code', '[A-Za-z0-9-.]+');
+    Route::get('{code}', 'NotificationProblemController@showproblemNotResolved')->where('code', '[A-Za-z0-9-.]+');
+    Route::post('show/{code}', 'NotificationProblemController@show');
     Route::post('check', 'NotificationProblemController@check');
     Route::post('create', 'NotificationProblemController@store');
 });

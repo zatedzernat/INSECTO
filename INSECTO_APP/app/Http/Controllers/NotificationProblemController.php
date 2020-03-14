@@ -97,14 +97,27 @@ class NotificationProblemController extends Controller
     public function show($code)
     {
         $item = $this->item->findByCode($code);
+        // dd($item);
+        return view('noti_problem.send_problem')
+            ->with('item', $item);
+    }
+
+    public function showproblemNotResolved($code)
+    {
+        $item = $this->item->findByCode($code);
 
         if (empty($item)) {
             $errors = new MessageBag();
             $errors->add('itemnotfound', 'Item Not Found');
             return redirect()->route('send')->withErrors($errors);
         } else {
-            return view('noti_problem.send_problem')
-                ->with('item', $item);
+            $problemsNotResolved = $this->noti_problem->findProblemNotResolvedByItemID($item->item_id);
+            if ($problemsNotResolved->isEmpty()) {
+                $this->show($item->item_code);
+            } else {
+                return view('itemproblemreport')
+                    ->with(compact('item', 'problemsNotResolved'));
+            }
         }
     }
 

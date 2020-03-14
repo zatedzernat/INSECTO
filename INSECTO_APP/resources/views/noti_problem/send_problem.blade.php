@@ -86,7 +86,7 @@ Send Problem
                 <input type="text" class="form-control" name="problem_description" id="probETC">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" style="float: right" class="btn btn-primary">Submit</button>
     </form>
 </div>
 
