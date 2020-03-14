@@ -75,3 +75,6 @@ Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_p
 Route::post('noti_problem/edit/{noti_id}', 'NotificationProblemController@update');
 
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
+
+Auth::routes();
+Route::get('/home', 'HomeController@index');

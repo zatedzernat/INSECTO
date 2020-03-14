@@ -50,21 +50,30 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{'/send-problem'}}">Send Problem</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="#">Admin</a>
-                    </li> --}}
+                    <!-- Authentication Links -->
+                    @guest
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </li>
+                    @if (Route::has('register'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    </li>
+                    @endif
+                    @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Admin
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/noti_problems">Notification Problems</a>
                             <a class="dropdown-item" href="/history_logs">History Logs</a>
                             <a class="dropdown-item" href="/problem_descs">Problem Descriptions</a>
@@ -74,8 +83,17 @@
                             <a class="dropdown-item" href="/item_types">Item Types</a>
                             <a class="dropdown-item" href="/brands">Brands</a>
                             <a class="dropdown-item" href="/statuses">Statuses</a>
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </div>
                     </li>
+                    @endguest
                 </ul>
             </div>
         </div>
