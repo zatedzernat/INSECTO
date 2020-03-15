@@ -229,4 +229,6 @@ return [
 
     ],
 
+    'test_password' => env('TEST_PASSWORD')
+
 ];

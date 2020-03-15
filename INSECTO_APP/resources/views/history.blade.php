@@ -37,9 +37,6 @@ History Logs
         </thead>
         <tbody>
 
-
-            @endforeach
-
         </tbody>
     </table>
 
