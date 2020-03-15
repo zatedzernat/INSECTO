@@ -40,7 +40,7 @@ Items
                 <th>Code <span style="color: red">*</span></th>
                 <th>Name</th>
                 {{-- <th>Room Code</th> --}}
-                <th>Building</th>
+                {{-- <th>Building</th> --}}
                 <th>Room Name</th>
                 <th>Type</th>
                 <th>Brand</th>
@@ -68,7 +68,7 @@ Items
                 {{-- <td>
                     {{ $item->room->room_code }}
                 </td> --}}
-                <td> {{ $item->room->building->building_code }}</td>
+                {{-- <td> {{ $item->room->building->building_code }}</td> --}}
                 <td>
                     {{$item->room->room_name}}
                 </td>
@@ -145,11 +145,11 @@ Items
                                         value="{{ $item->item_name }}" required>
                                     {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="message-text" class="col-form-label">Building Code:</label>
                                     @isset($buildings)
                                     @if (!empty($buildings))
-                                    <select name="building_id" id="selectBuildingCode" class="form-control">
+                                    <select name="building_id" id="selectBuilding-{{ $item->item_id }}" class="form-control" onchange="test()">
                                         @foreach ($buildings as $building)
                                         <option
                                             {{ $item->room->building_id == $building->building_id ? "selected" : "" }}
@@ -161,12 +161,12 @@ Items
                                     @else
                                     <label for="message-text" class="col-form-label">Please add building first</label>
                                     @endisset
-                                </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Room Name:</label>
                                     @isset($rooms)
                                     @if (!empty($rooms))
-                                    <select name="room_id" id="selectRoomName" class="form-control">
+                                    <select name="room_id" id="selectRoomName1" class="form-control">
                                         @foreach ($rooms as $room)
                                         <option {{ $item->room->room_id == $room->room_id ? "selected" : "" }}
                                             value="{{ $room->room_id }}">
@@ -298,10 +298,26 @@ Items
                             <input type="text" class="form-control" name="item_name" required>
                         </div>
                         <div class="form-group">
+                            <label for="message-text" class="col-form-label">Building Code:</label>
+                            @isset($buildings)
+                            @if (!empty($buildings))
+                            <select name="building_id" id="selectBuildingCode2" class="form-control">
+                                @foreach ($buildings as $building)
+                                <option {{ $item->room->building_id == $building->building_id ? "selected" : "" }}
+                                    value="{{ $building->building_id }}">
+                                    {{ $building->building_code }}</option>
+                                @endforeach
+                            </select>
+                            @endif
+                            @else
+                            <label for="message-text" class="col-form-label">Please add building first</label>
+                            @endisset
+                        </div>
+                        <div class="form-group">
                             <label for="message-text" class="col-form-label">Room Name:</label>
                             @isset($rooms)
                             @if (!empty($rooms))
-                            <select name="room_id" id="selectRoomName" class="form-control">
+                            <select name="room_id" id="selectRoomName2" class="form-control">
                                 <option value="" selected>-- select Room Name --</option>
                                 @foreach ($rooms as $room)
                                 <option value="{{$room->room_id}}">
@@ -368,4 +384,43 @@ Items
 <br>
 <br>
 </div>
+
+<script>
+    // $(function() {
+    //     // console.log(555, $('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuildingCode1]'));
+    //     // $('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuildingCode1]').each(function(data) {
+    //     //     console.log(data)
+    //     // });
+    //     console.log($('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuilding' + {!! $item->item_id !!} + ']'));
+    //     $('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuilding' + {!! $item->item_id !!} + ']').change(function() {
+            
+    //         var url = '{{ url('building') }}'+'/' + $(this).val() + '/rooms/';
+    //         console.log(url)
+
+    //         $.get(url, function(data) {
+    //             var select = $('#edit-' + {!! $item->item_id !!}).children('form select[id=selectBuildingCode1]');
+    //             select.empty();
+
+    //             $.each(data,function(key, value) {
+    //                 select.append('<option value=' + value.room_id + '>' + value.room_name + '</option>');
+    //             });
+    //         });
+    //     });
+    // });
+    $(function() {
+        $('select[id=selectBuildingCode2]').change(function() {
+
+            var url = '{{ url('building') }}'+'/' + $(this).val() + '/rooms/';
+            
+            $.get(url, function(data) {
+                var select = $('form select[id= selectRoomName2]');
+                select.empty();
+
+                $.each(data,function(key, value) {
+                    select.append('<option value=' + value.room_id + '>' + value.room_name + '</option>');
+                });
+            });
+        });
+    });
+</script>
 @endsection

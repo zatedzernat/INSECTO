@@ -72,6 +72,12 @@ class Building extends Model implements Auditable
         $this->update_by = $updateby;
     }
 
+    public function getRooms($building_id)
+    {
+        $rooms = $this->findByID($building_id)->rooms;
+        return $rooms;
+    }
+
     public function createNewBuilding($building_code, $building_name)
     {
         $building = Building::firstOrCreate(
