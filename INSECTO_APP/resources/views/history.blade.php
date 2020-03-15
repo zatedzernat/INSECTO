@@ -7,7 +7,7 @@ History Logs
 @section('content')
 <br>
 <div align="center">
-    <h3>ALL Logs</h3>
+    <h3>ALL History Logs</h3>
 </div>
 <br>
 <div class="container">
@@ -28,14 +28,57 @@ History Logs
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name <span style="color: red">*</span></th>
+                <th>Model</th>
+                <th>Event</th>
+                <th>old values</th>
+                <th>new values</th>
                 <th>Created At</th>
                 <th>Updated At</th>
-                <th>Update By</th>
-                <th>Actions</th>
+                <th>User</th>
+                <th>IP</th>
             </tr>
         </thead>
         <tbody>
+
+            @foreach ($logs as $log)
+            <tr>
+                <td>
+                    {{ $loop->iteration }}
+                </td>
+                <td>
+                    {{ last(explode('\\',$log->auditable_type)) }}
+                </td>
+                <td>
+                    {{ $log->event }}
+                </td>
+                <td>
+                    @if (empty($log->old_values))
+                    -
+                    @else
+                    @foreach ($log->old_values as $key => $value)
+                    {{ $key }}: {{ $value }}
+                    @endforeach
+                    @endif
+                </td>
+                <td>
+                    @foreach ($log->new_values as $key => $value)
+                    {{ $key }}: {{ $value }} <br>
+                    @endforeach
+                </td>
+                <td>
+                    {{ $log->created_at }}
+                </td>
+                <td>
+                    {{ $log->updated_at }}
+                </td>
+                <td>
+                    {{ $log->user->name }}
+                </td>
+                <td>
+                    {{ $log->ip_address }}
+                </td>
+            </tr>
+            @endforeach
 
         </tbody>
     </table>
