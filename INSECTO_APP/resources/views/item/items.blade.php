@@ -231,8 +231,12 @@ Items
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <input type="submit" class="btn btn-primary" value="Save change">
+                                <a href="/getqr/{{ $item->item_code }}">
+                                    <button type="button" class="btn btn-primary">QR Code</button>
+                                </a>
                             </div>
                         </form>
+                        {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
                     </div>
                 </div>
             </div>
@@ -274,6 +278,14 @@ Items
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
         Add Item
     </button>
+    <a onclick="document.getElementById('getqr-zip').submit();">
+        <button type="submit" class="btn btn-primary" style="float: right">
+            Get items QR Code
+        </button>
+    </a>
+    <form id="getqr-zip" action="/getqr-zip" method="POST">
+        @csrf
+    </form>
     <!-- Modal Add -->
     <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">

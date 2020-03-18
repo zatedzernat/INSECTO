@@ -86,3 +86,6 @@ Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index');
+
+Route::get('/getqr/{code}','ItemController@getQRCode');
+Route::post('/getqr-zip', 'ItemController@getQRCodeZIP');

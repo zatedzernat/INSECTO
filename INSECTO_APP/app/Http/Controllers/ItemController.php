@@ -9,7 +9,9 @@ use App\Http\Models\Item_Type;
 use App\Http\Models\Room;
 use App\Http\Requests\ItemFormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ItemController extends Controller
 {
@@ -122,7 +124,7 @@ class ItemController extends Controller
         $serial = $request->input('serial_number');
         $model = $request->input('item_model');
         $updateSuccess = $this->item->updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial, $model);
-        
+
         return redirect()->route('items')->withErrors($errors);
     }
 
@@ -137,4 +139,19 @@ class ItemController extends Controller
         $item = $this->item->deleteItem($item_id);
         return redirect()->route('items')->with('del_item', 'Delete item ' . $item->item_code . ' success');
     }
+
+    public function getQRCode(Request $request, $code)
+    {
+        $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
+        $urlQR = $urlRoot . "/send-problem/code/" . $code;
+        $qrcode = QrCode::format('png')->size(200)->mergeString('test')->generate($urlQR);
+        $name = $code . '.png';
+        Storage::disk('local')->put($name, $qrcode);
+        return response()->download(storage_path('app\\') . $name)->deleteFileAfterSend();
+    }
+
+    // public function getQRCodeZIP()
+    // {
+
+    // }
 }
