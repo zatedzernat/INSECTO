@@ -3,7 +3,6 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Notification_Problem extends Model implements Auditable
@@ -50,26 +49,23 @@ class Notification_Problem extends Model implements Auditable
     {
         return Notification_Problem::where([
             ['item_id', $id],
-            ['status_id', '<>', 8]
+            ['status_id', '<>', 8],
         ])->get();
     }
 
     public function checkSameProblem($item_id, $problem_des_id)
     {
         // problem_des_id != 'etc' means user send problem that we already have
+        $noti_prob = null;
         if ($problem_des_id != 'etc') {
             $noti_prob = Notification_Problem::where([
                 ['item_id', $item_id],
                 ['problem_des_id', $problem_des_id],
                 ['status_id', '<>', 8],
             ])->latest()->first();
-        } else { //user send new problem (ETC)
-            $noti_prob = $this->findProblemNotResolvedByItemID($item_id); //return all problems that not resolved
-            // $noti_prob = Notification_Problem::where([
-            //     ['item_id', $item_id],
-            //     ['status_id', '<>', 8],
-            // ])->latest()->first();
-        }
+        } //else { //user send new problem (ETC)
+        // $noti_prob = $this->findProblemNotResolvedByItemID($item_id); //return all problems that not resolved
+        //}
         return $noti_prob;
     }
 

@@ -82,7 +82,7 @@ class NotificationProblemController extends Controller
         $noti_prob = $this->noti_problem->checkSameProblem($item_id, $problem_des_id);
 
         if ($noti_prob) {
-            return view('checkProblem')->with(compact('noti_prob', 'problem_description', 'item_id')); //problem_description empty means send with same problem_des_id
+            return view('checkProblem')->with(compact('noti_prob', 'problem_description', 'item_id')); //problem_description empty means send with exist problem_des_id & problem_description
         } else {
             return $this->store($request);
         }
