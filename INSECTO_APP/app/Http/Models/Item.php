@@ -235,25 +235,29 @@ class Item extends Model implements Auditable
 
     public function getQRCodeZIP($urlRoot)
     {
-        $zipFileName = 'Items-QRcode.zip';
         $arrayOfAllCode = $this->getItemsCode();
+        if (!$arrayOfAllCode->isEmpty()) {
+            $zipFileName = 'Items-QRcode.zip';
 
-        $zip = Zip::create($zipFileName);
-        $zip->setPAth(storage_path('app'));
+            $zip = Zip::create($zipFileName);
+            $zip->setPAth(storage_path('app'));
 
-        foreach ($arrayOfAllCode as $code) {
-            $urlQR = $urlRoot . "/send-problem/code/" . $code;
-            $qrcode = QrCode::format('png')->size(200)->generate($urlQR);
-            $name = $code . '.png';
-            Storage::disk('local')->put($name, $qrcode);
-            $zip->add($name);
-        }
+            foreach ($arrayOfAllCode as $code) {
+                $urlQR = $urlRoot . "/send-problem/code/" . $code;
+                $qrcode = QrCode::format('png')->size(200)->generate($urlQR);
+                $name = $code . '.png';
+                Storage::disk('local')->put($name, $qrcode);
+                $zip->add($name);
+            }
 
-        $zip->close();
+            $zip->close();
 
-        foreach ($arrayOfAllCode as $code) {
-            $name = $code . '.png';
-            Storage::disk('local')->delete($name);
+            foreach ($arrayOfAllCode as $code) {
+                $name = $code . '.png';
+                Storage::disk('local')->delete($name);
+            }
+        } else {
+            $zipFileName = null;
         }
 
         return $zipFileName;

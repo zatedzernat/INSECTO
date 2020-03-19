@@ -149,8 +149,14 @@ class ItemController extends Controller
 
     public function getQRCodeZIP(Request $request)
     {
+        $errors = new MessageBag();
         $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
         $zipFileName = $this->item->getQRCodeZIP($urlRoot);
-        return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
+        if ($zipFileName) {
+            return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
+        } else {
+            $errors->add('NoItems', 'Please add Item first!!!');
+            return redirect()->route('items')->withErrors($errors);
+        }
     }
 }

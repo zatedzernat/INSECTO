@@ -315,8 +315,7 @@ Items
                             @if (!empty($buildings))
                             <select name="building_id" id="selectBuildingCode2" class="form-control">
                                 @foreach ($buildings as $building)
-                                <option {{ $item->room->building_id == $building->building_id ? "selected" : "" }}
-                                    value="{{ $building->building_id }}">
+                                <option value="{{ $building->building_id }}">
                                     {{ $building->building_code }}</option>
                                 @endforeach
                             </select>
@@ -398,27 +397,6 @@ Items
 </div>
 
 <script>
-    // $(function() {
-    //     // console.log(555, $('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuildingCode1]'));
-    //     // $('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuildingCode1]').each(function(data) {
-    //     //     console.log(data)
-    //     // });
-    //     console.log($('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuilding' + {!! $item->item_id !!} + ']'));
-    //     $('#edit-' + {!! $item->item_id !!}).find('select[id= selectBuilding' + {!! $item->item_id !!} + ']').change(function() {
-            
-    //         var url = '{{ url('building') }}'+'/' + $(this).val() + '/rooms/';
-    //         console.log(url)
-
-    //         $.get(url, function(data) {
-    //             var select = $('#edit-' + {!! $item->item_id !!}).children('form select[id=selectBuildingCode1]');
-    //             select.empty();
-
-    //             $.each(data,function(key, value) {
-    //                 select.append('<option value=' + value.room_id + '>' + value.room_name + '</option>');
-    //             });
-    //         });
-    //     });
-    // });
     $(function() {
         $('select[id=selectBuildingCode2]').change(function() {
 
