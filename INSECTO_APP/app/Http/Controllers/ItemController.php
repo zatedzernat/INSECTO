@@ -11,7 +11,6 @@ use App\Http\Requests\ItemFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ItemController extends Controller
 {
@@ -144,14 +143,14 @@ class ItemController extends Controller
     {
         $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
         $urlQR = $urlRoot . "/send-problem/code/" . $code;
-        $qrcode = QrCode::format('png')->size(200)->generate($urlQR);
-        $name = $code . '.png';
-        Storage::disk('local')->put($name, $qrcode);
-        return response()->download(storage_path('app') . '/' . $name)->deleteFileAfterSend();
+        $fileName = $this->item->getQRCode($code, $urlQR);
+        return response()->download(storage_path('app') . '/' . $fileName)->deleteFileAfterSend();
     }
 
-    // public function getQRCodeZIP()
-    // {
-
-    // }
+    public function getQRCodeZIP(Request $request)
+    {
+        $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
+        $zipFileName = $this->item->getQRCodeZIP($urlRoot);
+        return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
+    }
 }

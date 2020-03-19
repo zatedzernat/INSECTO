@@ -5,7 +5,10 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use ZanySoft\Zip\Zip;
 
 class Item extends Model implements Auditable
 {
@@ -61,6 +64,12 @@ class Item extends Model implements Auditable
             ['item_code', $code],
             ['cancel_flag', 'N'],
         ])->first();
+    }
+
+    public function getItemsCode()
+    {
+        $items = $this->findByCancelFlag('N');
+        return $items->pluck('item_code');
     }
 
     public function findByID($int)
@@ -214,5 +223,40 @@ class Item extends Model implements Auditable
                 break;
         }
         return $collection;
+    }
+
+    public function getQRCode($code, $urlQR)
+    {
+        $qrcode = QrCode::format('png')->size(200)->generate($urlQR);
+        $fileName = $code . '.png';
+        Storage::disk('local')->put($fileName, $qrcode);
+        return $fileName;
+    }
+
+    public function getQRCodeZIP($urlRoot)
+    {
+        $zipFileName = 'Items-QRcode.zip';
+        $arrayOfAllCode = $this->getItemsCode();
+
+        $zip = Zip::create($zipFileName);
+        $zip->setPAth(storage_path('app'));
+
+        foreach ($arrayOfAllCode as $code) {
+            $urlQR = $urlRoot . "/send-problem/code/" . $code;
+            $qrcode = QrCode::format('png')->size(200)->generate($urlQR);
+            $name = $code . '.png';
+            Storage::disk('local')->put($name, $qrcode);
+            $zip->add($name);
+        }
+
+        $zip->close();
+
+        foreach ($arrayOfAllCode as $code) {
+            $name = $code . '.png';
+            Storage::disk('local')->delete($name);
+        }
+
+        return $zipFileName;
+
     }
 }
