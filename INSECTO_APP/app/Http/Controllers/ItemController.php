@@ -147,7 +147,7 @@ class ItemController extends Controller
         $qrcode = QrCode::format('png')->size(200)->generate($urlQR);
         $name = $code . '.png';
         Storage::disk('local')->put($name, $qrcode);
-        return response()->download(storage_path('app\\') . $name)->deleteFileAfterSend();
+        return response()->download(storage_path('app') . '\\' . $name)->deleteFileAfterSend();
     }
 
     // public function getQRCodeZIP()
