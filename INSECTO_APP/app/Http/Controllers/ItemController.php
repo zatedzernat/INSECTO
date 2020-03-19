@@ -144,7 +144,7 @@ class ItemController extends Controller
     {
         $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
         $urlQR = $urlRoot . "/send-problem/code/" . $code;
-        $qrcode = QrCode::format('png')->size(200)->mergeString('test')->generate($urlQR);
+        $qrcode = QrCode::format('png')->size(200)->generate($urlQR);
         $name = $code . '.png';
         Storage::disk('local')->put($name, $qrcode);
         return response()->download(storage_path('app\\') . $name)->deleteFileAfterSend();
