@@ -76,12 +76,12 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/noti_problems">Notification Problems</a>
                             <a class="dropdown-item" href="/history_logs">History Logs</a>
-                            <a class="dropdown-item" href="/problem_descs">Problem Descriptions</a>
                             <a class="dropdown-item" href="/buildings">Building</a>
                             <a class="dropdown-item" href="/rooms">Rooms</a>
-                            <a class="dropdown-item" href="/items">Items</a>
-                            <a class="dropdown-item" href="/item_types">Item Types</a>
                             <a class="dropdown-item" href="/brands">Brands</a>
+                            <a class="dropdown-item" href="/item_types">Item Types</a>
+                            <a class="dropdown-item" href="/problem_descs">Problem Descriptions</a>
+                            <a class="dropdown-item" href="/items">Items</a>
                             <a class="dropdown-item" href="/statuses">Statuses</a>
                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">

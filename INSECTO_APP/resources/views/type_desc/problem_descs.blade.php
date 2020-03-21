@@ -157,19 +157,19 @@ Problem Descriptions
             @endforeach
         </tbody>
     </table>
-    <form action="problem_desc/create" method="POST">
-        @csrf
-        <button type="button" class="btn btn-primary">Import CSV</button>
-        <button type="button" class="btn btn-primary">Export CSV</button>
-        <!-- Button trigger modal Add -->
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
-            Add Item
-        </button>
-        <!-- Modal Add -->
-        <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
+    {{-- <button type="button" class="btn btn-primary">Import CSV</button>
+    <button type="button" class="btn btn-primary">Export CSV</button> --}}
+    <!-- Button trigger modal Add -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
+        Add Item
+    </button>
+    <!-- Modal Add -->
+    <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="problem_desc/create" method="POST">
+                    @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Add Item</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -200,12 +200,12 @@ Problem Descriptions
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Add</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
         <!-- end Modal Add -->
 
-    </form>
     <br><br>
 </div>
 @endsection

@@ -170,19 +170,19 @@ Rooms
             @endforeach
         </tbody>
     </table>
-    <form action="room/create" method="POST">
-        @csrf
-        <button type="button" class="btn btn-primary">Import CSV</button>
-        <button type="button" class="btn btn-primary">Export CSV</button>
-        <!-- Button trigger modal Add -->
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
-            Add Room
-        </button>
-        <!-- Modal Add -->
-        <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
+    {{-- <button type="button" class="btn btn-primary">Import CSV</button>
+    <button type="button" class="btn btn-primary">Export CSV</button> --}}
+    <!-- Button trigger modal Add -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
+        Add Room
+    </button>
+    <!-- Modal Add -->
+    <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="room/create" method="POST">
+                    @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Add Room</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -217,11 +217,11 @@ Rooms
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Add</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-        <!-- end Modal Add -->
+    </div>
+    <!-- end Modal Add -->
 
-    </form>
 </div>
 @endsection

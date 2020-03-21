@@ -141,8 +141,8 @@ Brands
     </tbody>
   </table>
   <br>
-  <button type="button" class="btn btn-primary">Import CSV</button>
-  <button type="button" class="btn btn-primary">Export CSV</button>
+  {{-- <button type="button" class="btn btn-primary">Import CSV</button>
+  <button type="button" class="btn btn-primary">Export CSV</button> --}}
   <!-- Button trigger modal Add -->
   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
     Add Brand

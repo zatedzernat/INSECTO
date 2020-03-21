@@ -148,10 +148,9 @@ Buildings
         </tbody>
     </table>
 
-    <form action="building/create" method="POST" id="frmProduct">
-        @csrf
-        <button type="button" class="btn btn-primary">Import CSV</button>
-        <button type="button" class="btn btn-primary">Export CSV</button>
+    
+        {{-- <button type="button" class="btn btn-primary">Import CSV</button>
+        <button type="button" class="btn btn-primary">Export CSV</button> --}}
         <!-- Button trigger modal Add -->
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
             Add Building
@@ -161,33 +160,36 @@ Buildings
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add Building</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Code:</label>
-                            <input type="text" class="form-control" name="building_code" required>
+                    <form action="building/create" method="POST" id="frmProduct">
+                            @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Building</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" name="building_name" required>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Code:</label>
+                                <input type="text" class="form-control" name="building_code" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" name="building_name" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            id="close-btn">Close</button>
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="close-btn">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
         <!-- end Modal Add -->
 
-    </form>
+    
 </div>
 <script>
     document.getElementById("close-btn").addEventListener("click", function(){ 
