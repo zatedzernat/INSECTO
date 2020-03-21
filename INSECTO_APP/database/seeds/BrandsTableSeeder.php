@@ -54,5 +54,12 @@ class BrandsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
             'update_by' => 'seeder'
         ]);
+        DB::table('brands')->insert([
+            'brand_name' => 'Samsung',
+            'cancel_flag' => 'N',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'update_by' => 'seeder'
+        ]);
     }
 }

@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             BrandsTableSeeder::class,
             Item_TypesTableSeeder::class,
             Problem_DescriptionsTableSeeder::class,
-            ItemsTableSeeder::class,
+            // ItemsTableSeeder::class,
             StatusesTableSeeder::class,
             UsersTableSeeder::class
         ]);
