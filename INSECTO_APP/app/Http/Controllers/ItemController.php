@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ItemsExport;
 use App\Http\Models\Brand;
 use App\Http\Models\Building;
 use App\Http\Models\Item;
 use App\Http\Models\Item_Type;
 use App\Http\Models\Room;
+use App\Http\Requests\ImportRequest;
 use App\Http\Requests\ItemFormRequest;
+use App\Imports\ItemsImport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
@@ -159,4 +163,24 @@ class ItemController extends Controller
             return redirect()->route('items')->withErrors($errors);
         }
     }
+
+    public function importItems(ImportRequest $request)
+    {
+        try {
+            $import = new ItemsImport();
+            $import->onlySheets('Items');
+            Excel::import($import, $request->file('import_file'));
+            return redirect()->route('items')->with('imp_suc', 'Import data success');
+        } catch (SheetNotFoundException $ex) {
+            $errors = new MessageBag();
+            $errors->add('sheetName', 'Please name your sheetname to \'Items\'');
+            return redirect()->route('items')->withErrors($errors);
+        }
+    }
+
+    public function exportItems()
+    {
+        return Excel::download(new ItemsExport, 'items.xlsx');
+    }
+
 }

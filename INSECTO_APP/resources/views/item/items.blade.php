@@ -32,6 +32,14 @@ Items
         <span aria-hidden="true">&times;</span>
     </button>
     @endif
+    @if (session('imp_suc'))
+    <div class="alert alert-success" role="alert">
+        {{ session('imp_suc') }}
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    @endif
     {{-- <div class="table-responsive"></div> --}}
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
@@ -272,8 +280,15 @@ Items
         </tbody>
     </table>
     <br>
-    <button type="button" class="btn btn-primary">Import CSV</button>
-    <button type="button" class="btn btn-primary">Export CSV</button>
+    <!-- Button trigger modal -->
+    @if (count($items) == 0)
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ImportItems">
+        Import Excel
+    </button>
+    @endif
+    <a href="item/export">
+        <button type="button" class="btn btn-primary">Export Excel</button>
+    </a>
     <!-- Button trigger modal Add -->
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
         Add Item
@@ -390,6 +405,31 @@ Items
         </div>
     </div>
     <!-- end Modal Add -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="ImportItems" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="/item/import" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Import data to <span style="color: red">INSERT</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <label for="message-text" class="col-form-label">Excel File <span style="color: red">(.xls, .xlsx)*</span>: </label>
+                    <input type="file" name="import_file" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
 
 </div>
 <br>

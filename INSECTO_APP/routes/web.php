@@ -57,6 +57,8 @@ Route::group(['prefix' => 'item'], function () {
     Route::post('create', 'ItemController@store');
     Route::post('edit', 'ItemController@update');
     Route::post('del/{item_id}', 'ItemController@destroy');
+    Route::post('import', 'ItemController@importItems');
+    Route::get('export', 'ItemController@exportItems');
 });
 
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');
@@ -87,5 +89,5 @@ Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
 Auth::routes();
 Route::get('/home', 'HomeController@index');
 
-Route::get('/getqr/{code}','ItemController@getQRCode');
+Route::get('/getqr/{code}', 'ItemController@getQRCode');
 Route::post('/getqr-zip', 'ItemController@getQRCodeZIP');
