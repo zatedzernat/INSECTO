@@ -32,7 +32,7 @@ class ImportRequest extends FormRequest
     {
         return [
             'required' => 'Please :attribute !!',
-            'mime' => 'Please select only .xls and .xlsx',
+            'mimetypes' => 'Please select only .xls and .xlsx',
         ];
     }
 

@@ -180,7 +180,14 @@ class ItemController extends Controller
 
     public function exportItems()
     {
-        return Excel::download(new ItemsExport, 'items.xlsx');
+        $items = $this->item->getALL();
+        if ($items->isEmpty()) {
+            $errors = new MessageBag();
+            $errors->add('noitems', 'Please add item before export');
+            return redirect()->route('items')->withErrors($errors);
+        } else {
+            return Excel::download(new ItemsExport, 'items.xlsx');
+        }
     }
 
 }

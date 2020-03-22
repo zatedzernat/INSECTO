@@ -52,6 +52,11 @@ class Item extends Model implements Auditable
         return $this->hasMany('App\Http\Models\Notification_Problem', 'item_id', 'item_id');
     }
 
+    public function getALL()
+    {
+        return Item::all();
+    }
+
     public function findByCancelFlag($string)
     {
         return Item::where('cancel_flag', $string)->get();

@@ -28,7 +28,7 @@ class NotiUpdateFormRequest extends FormRequest
             return [
                 'help_desk_code' => 'required',
             ];
-        } else if (Request::input('next_status') == 'closed') {
+        } else if (Request::input('next_status') == 'resolved') {
             return [
                 'note' => 'required',
             ];
