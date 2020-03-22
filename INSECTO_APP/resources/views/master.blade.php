@@ -70,7 +70,7 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/noti_problems">Notification Problems</a>
                             <a class="dropdown-item" href="/history_logs">History Logs</a>
-                            <a class="dropdown-item" href="/buildings">Building</a>
+                            <a class="dropdown-item" href="/buildings">Buildings</a>
                             <a class="dropdown-item" href="/rooms">Rooms</a>
                             <a class="dropdown-item" href="/brands">Brands</a>
                             <a class="dropdown-item" href="/item_types">Item Types</a>
