@@ -50,12 +50,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ml-auto">
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
-                    </li> --}}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{'/send-problem'}}">Send Problem</a>
-                    </li>
                     <!-- Authentication Links -->
                     @guest
                     <li class="nav-item">
