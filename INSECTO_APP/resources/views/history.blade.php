@@ -72,7 +72,7 @@ History Logs
                     {{ $log->updated_at }}
                 </td>
                 <td>
-                    {{ $log->user->name }}
+                    {{ $log->user->name ?? 'problem sender'}}
                 </td>
                 <td>
                     {{ $log->ip_address }}
