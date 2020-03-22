@@ -58,7 +58,7 @@ class ItemTypeController extends Controller
         $name = $request->type_name;
         $createFail = $this->item_type->createNewItemType($name);
         if ($createFail) {
-            $errors->add('dupItemType', 'Already have this ItemType!!!');
+            $errors->add('dupItemType', 'Add duplicate type name');
         }
         return redirect()->route('item_types')->withErrors($errors);
     }
@@ -100,7 +100,7 @@ class ItemTypeController extends Controller
         $name = $request->input('type_name');
         $updateSuccess = $this->item_type->updateItemType($id, $name);
         if (!$updateSuccess) {
-            $errors->add('upDupItemType', 'Duplicate Type Name!!!');
+            $errors->add('upDupItemType', 'Update duplicate type name');
         }
         //todo set update_by ตาม LDAP
         // $temType->setUpdateBy('ชื่อ user ตามLDAP');
@@ -118,6 +118,6 @@ class ItemTypeController extends Controller
         $item_type = $this->item_type->deleteItemType($type_id);
         $items = $this->item->deleteItems('item_type', $item_type);
         $problem_desc = $this->problem_desc->deleteProblemDescs($item_type);
-        return redirect()->route('item_types')->with('del_itemType', 'Delete type ' . $item_type->type_name . ' success');
+        return redirect()->route('item_types')->with('del_itemType', 'Delete type \'' . $item_type->type_name . '\', items and problem descriptions success');
     }
 }

@@ -12,24 +12,24 @@ Buildings
 <br>
 <div class="container">
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         <ul>
             @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+            <li><strong>System: </strong>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
     @endif
     @if (session('del_building'))
-    <div class="alert alert-success" role="alert">
-        {{ session('del_building') }}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>System: </strong> {{ session('del_building') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
     @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
@@ -87,12 +87,14 @@ Buildings
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">ID: &nbsp; {{ $building->building_id }}</label>
+                                            <label for="message-text" class="col-form-label">ID: &nbsp;
+                                                {{ $building->building_id }}</label>
                                             <input type="hidden" class="form-control" name="building_id"
                                                 value="{{ $building->building_id }}" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Code: &nbsp; {{ $building->building_code  }}</label>
+                                            <label for="message-text" class="col-form-label">Code: &nbsp;
+                                                {{ $building->building_code  }}</label>
                                             <input type="hidden" class="form-control" name="building_code"
                                                 value="{{ $building->building_code  }}" readonly>
                                         </div>
@@ -148,48 +150,48 @@ Buildings
         </tbody>
     </table>
 
-    
-        {{-- <button type="button" class="btn btn-primary">Import CSV</button>
+
+    {{-- <button type="button" class="btn btn-primary">Import CSV</button>
         <button type="button" class="btn btn-primary">Export CSV</button> --}}
-        <!-- Button trigger modal Add -->
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
-            Add Building
-        </button>
-        <!-- Modal Add -->
-        <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <form action="building/create" method="POST" id="frmProduct">
-                            @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add Building</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+    <!-- Button trigger modal Add -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddItem">
+        Add Building
+    </button>
+    <!-- Modal Add -->
+    <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="building/create" method="POST" id="frmProduct">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Building</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Code:</label>
+                            <input type="text" class="form-control" name="building_code" required>
                         </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Code:</label>
-                                <input type="text" class="form-control" name="building_code" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Name:</label>
-                                <input type="text" class="form-control" name="building_name" required>
-                            </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" name="building_name" required>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                id="close-btn">Close</button>
-                            <button type="submit" class="btn btn-primary">Add</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            id="close-btn">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <!-- end Modal Add -->
+    </div>
+    <!-- end Modal Add -->
 
-    
+
 </div>
 <script>
     document.getElementById("close-btn").addEventListener("click", function(){ 

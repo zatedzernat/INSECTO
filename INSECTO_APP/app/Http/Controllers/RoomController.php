@@ -63,7 +63,7 @@ class RoomController extends Controller
         $building_id = $request->building_id;
         $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id);
         if ($createFail) {
-            $errors->add('dupRoom', 'Already have this Room!!!');
+            $errors->add('dupRoom', 'Add duplicate room code');
         }
         return redirect()->route('rooms')->withErrors($errors);
     }
@@ -120,6 +120,6 @@ class RoomController extends Controller
     {
         $room = $this->room->deleteRoom($room_id);
         $items = $this->item->deleteItems('room', $room);
-        return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_code. '-'. $room->room_name . ' success');
+        return redirect()->route('rooms')->with('del_room', 'Delete room \'' . $room->room_code . '-' . $room->room_name . '\' and items success');
     }
 }

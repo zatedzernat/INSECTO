@@ -59,7 +59,7 @@ class BuildingController extends Controller
         $building_name = $request->building_name;
         $createFail = $this->building->createNewBuilding($building_code, $building_name);
         if ($createFail) {
-            $errors->add('dupBuilding', 'Already have this Building!!!');
+            $errors->add('dupBuilding', 'Add duplicate building code');
         }
         return redirect()->route('buildings')->withErrors($errors);
     }
@@ -100,7 +100,7 @@ class BuildingController extends Controller
         $name = $request->input('building_name');
         $updateSuccess = $this->building->updateBuilding($id, $name);
         if (!$updateSuccess) {
-            $errors->add('upDupBuilding', 'Duplicate Building Name!!!');
+            $errors->add('upDupBuilding', 'Update duplicate building name');
         }
         return redirect()->route('buildings')->withErrors($errors);
     }
@@ -116,7 +116,7 @@ class BuildingController extends Controller
         $building = $this->building->deleteBuilding($building_id);
         $rooms = $this->room->deleteRooms($building);
         $items = $this->item->deleteItems('rooms', $rooms);
-        return redirect()->route('buildings')->with('del_building', 'Delete building ' . $building->building_code . ' success');
+        return redirect()->route('buildings')->with('del_building', 'Delete building \'' . $building->building_code . '\', rooms and items success');
     }
 
     public function getRooms($building_id)

@@ -12,10 +12,10 @@ Notication Problems
 <br>
 <div class="container">
     @if (count($errors)>0)
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <ul>
             @foreach ($errors->all() as $error)
-            <li>{{$error}}</li>
+            <li><strong>System: </strong>{{$error}}</li>
             @endforeach
         </ul>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -24,8 +24,8 @@ Notication Problems
     </div>
     @endif
     @if (session('changeComplete'))
-    <div class="alert alert-success" role="alert">
-        {{ session('changeComplete') }}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>System: </strong> {{ session('changeComplete') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -198,7 +198,8 @@ Notication Problems
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Help Desk Code<span
                                             style="color: red">*</span>:</label>
-                                    <input type="text" id="HDC" class="form-control" name="help_desk_code" value="{{ $noti_problem->help_desk_code }}" required>
+                                    <input type="text" id="HDC" class="form-control" name="help_desk_code"
+                                        value="{{ $noti_problem->help_desk_code }}" required>
                                     <input type="hidden" name="next_status" value="open">
                                 </div>
                             </div>
@@ -227,7 +228,8 @@ Notication Problems
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Note<span
                                             style="color: red">*</span>:</label>
-                                    <input type="text" id="NOTE" class="form-control" name="note" value="{{ $noti_problem->note }}" required>
+                                    <input type="text" id="NOTE" class="form-control" name="note"
+                                        value="{{ $noti_problem->note }}" required>
                                     <input type="hidden" name="next_status" value="resolved">
                                 </div>
                             </div>

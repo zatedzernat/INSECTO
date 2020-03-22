@@ -12,24 +12,24 @@ Problem Descriptions
 <br>
 <div class="container">
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         <ul>
             @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+            <li><strong>System: </strong>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
     @endif
     @if (session('del_problem_desc'))
-    <div class="alert alert-success" role="alert">
-        {{ session('del_problem_desc') }}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>System: </strong> {{ session('del_problem_desc') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
     @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
@@ -86,7 +86,8 @@ Problem Descriptions
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">ID: &nbsp; {{ $problem_desc->problem_des_id }}</label>
+                                            <label for="message-text" class="col-form-label">ID: &nbsp;
+                                                {{ $problem_desc->problem_des_id }}</label>
                                             <input type="hidden" class="form-control" name="problem_des_id"
                                                 value="{{ $problem_desc->problem_des_id }}" readonly>
                                         </div>
@@ -165,7 +166,7 @@ Problem Descriptions
     </button>
     <!-- Modal Add -->
     <div class="modal fade" id="AddItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <form action="problem_desc/create" method="POST">
@@ -204,7 +205,7 @@ Problem Descriptions
             </div>
         </div>
     </div>
-        <!-- end Modal Add -->
+    <!-- end Modal Add -->
 
     <br><br>
 </div>

@@ -80,7 +80,7 @@ class ItemController extends Controller
         $model = $request->item_model;
         $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
         if ($createFail) {
-            $errors->add('dupItem', 'Already have this Item!!!');
+            $errors->add('dupItem', 'Add duplicate item code');
         }
         return redirect()->route('items')->withErrors($errors);
     }
@@ -140,7 +140,7 @@ class ItemController extends Controller
     public function destroy(Request $request, $item_id)
     {
         $item = $this->item->deleteItem($item_id);
-        return redirect()->route('items')->with('del_item', 'Delete item ' . $item->item_code . ' success');
+        return redirect()->route('items')->with('del_item', 'Delete item \'' . $item->item_code . '\' success');
     }
 
     public function getQRCode(Request $request, $code)
@@ -159,7 +159,7 @@ class ItemController extends Controller
         if ($zipFileName) {
             return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
         } else {
-            $errors->add('NoItems', 'Please add Item first!!!');
+            $errors->add('NoItems', 'Please add item before get QR-Code');
             return redirect()->route('items')->withErrors($errors);
         }
     }

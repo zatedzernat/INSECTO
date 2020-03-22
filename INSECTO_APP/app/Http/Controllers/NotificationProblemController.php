@@ -70,7 +70,7 @@ class NotificationProblemController extends Controller
         }
 
         $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $sender_ip);
-        return redirect()->route('home')->with('status', 'Send Problem Success');
+        return redirect()->route('home')->with('status', 'Send problem success');
     }
 
     // check is it the same problem before store
@@ -146,7 +146,7 @@ class NotificationProblemController extends Controller
         $note = $request->note;
         $status = $this->noti_problem->checkStatus($next_status, $help_desk_code, $id, $note);
         return redirect()->route('noti_problems')
-            ->with('changeComplete', 'change status to \'' . $status . '\' complete');
+            ->with('changeComplete', 'change status to \'' . $status . '\' success');
     }
 
     /**

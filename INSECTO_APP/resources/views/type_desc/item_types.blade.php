@@ -12,25 +12,25 @@ Item Types
 <br>
 <div class="container">
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         <ul>
             @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+            <li><strong>System: </strong>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
     @endif
 
     @if (session('del_itemType'))
-    <div class="alert alert-success" role="alert">
-        {{ session('del_itemType') }}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>System: </strong> {{ session('del_itemType') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
     @endif
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
         <thead>
@@ -127,7 +127,8 @@ Item Types
                         <div class="modal-body">
                             <input type="hidden" name="delID" value="{{ $item_type->type_id }}">
                             Do you confirm to delete "{{ $item_type->type_name }}"? <br>
-                            <span style="color: red;">*** All items and problem_descriptions that relate to {{ $item_type->type_name}} will be deleted too ***</span>
+                            <span style="color: red;">*** All items and problem_descriptions that relate to
+                                {{ $item_type->type_name}} will be deleted too ***</span>
                         </div>
                         <div class="modal-footer">
                             <form action="item_type/del/{{ $item_type->type_id }}" method="POST">

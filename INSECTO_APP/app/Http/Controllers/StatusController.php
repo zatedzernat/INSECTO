@@ -51,7 +51,7 @@ class StatusController extends Controller
         $description = $request->status_description;
         $createFail = $this->status->createNewStatus($name, $description);
         if ($createFail) {
-            $errors->add('dupStatus', 'Already have this status!!!');
+            $errors->add('dupStatus', 'Add duplicate status name');
         }
         return redirect()->route('statuses')->withErrors($errors);
     }
@@ -94,7 +94,7 @@ class StatusController extends Controller
         $status_description = $request->input('status_description');
         $updateSuccess = $this->status->updateStatus($id, $status_name, $status_description);
         if (!$updateSuccess) {
-            $errors->add('upDupStatus', 'Duplicate Status Name!!!');
+            $errors->add('upDupStatus', 'Update duplicate status name');
         }
         return redirect()->route('statuses')->withErrors($errors);
     }

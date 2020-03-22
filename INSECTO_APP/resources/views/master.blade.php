@@ -107,12 +107,12 @@
     </div>
     @endisset --}}
     @if (session('status'))
-    <div class="alert alert-success">
-        <p>{{session('status')}}</p>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>System: </strong> {{ session('status') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
     @endif
 </body>
 

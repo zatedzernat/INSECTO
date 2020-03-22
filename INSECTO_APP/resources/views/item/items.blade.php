@@ -12,33 +12,33 @@ Items
 <br>
 <div class="container">
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         <ul>
             @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+            <li><strong>System: </strong>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
     @endif
 
     @if (session('del_item'))
-    <div class="alert alert-success" role="alert">
-        {{ session('del_item') }}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>System: </strong> {{ session('del_item') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
     @endif
     @if (session('imp_suc'))
-    <div class="alert alert-success" role="alert">
-        {{ session('imp_suc') }}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>System: </strong> {{ session('imp_suc') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
     @endif
     {{-- <div class="table-responsive"></div> --}}
     <table id="example" class="table table-striped table-borderedv table-dark" style="width:100%">
@@ -153,23 +153,6 @@ Items
                                         value="{{ $item->item_name }}" required>
                                     {{-- <input type="hidden" name="brand_id" value="{{ $brand->brand_id }}"> --}}
                                 </div>
-                                {{-- <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Building Code:</label>
-                                    @isset($buildings)
-                                    @if (!empty($buildings))
-                                    <select name="building_id" id="selectBuilding-{{ $item->item_id }}" class="form-control" onchange="test()">
-                                        @foreach ($buildings as $building)
-                                        <option
-                                            {{ $item->room->building_id == $building->building_id ? "selected" : "" }}
-                                            value="{{ $building->building_id }}">
-                                            {{ $building->building_code }}</option>
-                                        @endforeach
-                                    </select>
-                                    @endif
-                                    @else
-                                    <label for="message-text" class="col-form-label">Please add building first</label>
-                                    @endisset
-                                </div> --}}
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Room Name:</label>
                                     @isset($rooms)
@@ -406,30 +389,34 @@ Items
     </div>
     <!-- end Modal Add -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="ImportItems" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- import Modal -->
+    <div class="modal fade" id="ImportItems" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form action="/item/import" method="POST" enctype="multipart/form-data">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Import data to <span style="color: red">INSERT</span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                    @csrf
-                    <label for="message-text" class="col-form-label">Excel File <span style="color: red">(.xls, .xlsx)*</span>: </label>
-                    <input type="file" name="import_file" class="form-control" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Import</button>
-                </div>
-            </form>
-        </div>
+            <div class="modal-content">
+                <form action="/item/import" method="POST" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Import data to <span
+                                style="color: red">INSERT</span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <label for="message-text" class="col-form-label">Excel File <span style="color: red">(.xls,
+                                .xlsx)*</span>: </label>
+                        <input type="file" name="import_file" class="form-control" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+    <!-- end Modal import -->
 
 </div>
 <br>

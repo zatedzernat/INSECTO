@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\Problem_Description;
 use App\Http\Models\Item_Type;
+use App\Http\Models\Problem_Description;
+use App\Http\Requests\ProblemDescriptionFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
-use App\Http\Requests\ProblemDescriptionFormRequest;
 
 class ProblemDescriptionController extends Controller
 {
@@ -32,7 +32,7 @@ class ProblemDescriptionController extends Controller
         $types = $this->type->findByCancelFlag('N');
 
         return view('type_desc.problem_descs')
-            ->with(compact('problems_descs','types'));
+            ->with(compact('problems_descs', 'types'));
     }
 
     /**
@@ -59,7 +59,7 @@ class ProblemDescriptionController extends Controller
         $type_id = $request->type_id;
         $createFail = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
         if ($createFail) {
-            $errors->add('dupProblem_Description','Already have this Problem Description!!!');
+            $errors->add('dupProblem_Description', 'add duplicate problem description and type name');
         }
         return redirect()->route('problem_descs')->withErrors($errors);
     }
@@ -97,11 +97,11 @@ class ProblemDescriptionController extends Controller
     {
         $errors = new MessageBag();
         $id = $request->input('problem_des_id');
-        $description= $request->input('problem_description');
-        $type_id= $request->input('type_id');
+        $description = $request->input('problem_description');
+        $type_id = $request->input('type_id');
         $updateSuccess = $this->problem_desc->updateProblemDesc($id, $description, $type_id);
         if (!$updateSuccess) {
-            $errors->add('upDupProbDesc','Duplicate Description and Type!!!');
+            $errors->add('upDupProbDesc', 'Update duplicate problem description and type name');
         }
         return redirect()->route('problem_descs')->withErrors($errors);
     }
@@ -115,6 +115,6 @@ class ProblemDescriptionController extends Controller
     public function destroy(Request $request, $problem_des_id)
     {
         $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
-        return redirect()->route('problem_descs')->with('del_problem_desc','Delete problem_descs '.$problem_desc->problem_description.' in '.$problem_desc->item_type->type_name. ' success');
+        return redirect()->route('problem_descs')->with('del_problem_desc', 'Delete problem_descs \'' . $problem_desc->problem_description . '\' in ' . $problem_desc->item_type->type_name . ' type success');
     }
 }

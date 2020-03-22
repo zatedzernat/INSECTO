@@ -40,7 +40,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -55,7 +55,7 @@ class BrandController extends Controller
         $name = $request->brand_name;
         $createFail = $this->brand->createNewBrand($name);
         if ($createFail) {
-            $errors->add('dupBrand','Already have this Brand!!!');
+            $errors->add('dupBrand', 'Add duplicate brand name');
         }
         return redirect()->route('brands')->withErrors($errors);
     }
@@ -96,9 +96,9 @@ class BrandController extends Controller
         $name = $request->input('brand_name');
         $updateSuccess = $this->brand->updateBrand($id, $name);
         if (!$updateSuccess) {
-            $errors->add('upDupBrand','Duplicate Brand Name!!!');
+            $errors->add('upDupBrand', 'Update duplicate brand name');
         }
-        
+
         return redirect()->route('brands')->withErrors($errors);
     }
 
@@ -112,6 +112,6 @@ class BrandController extends Controller
     {
         $brand = $this->brand->deleteBrand($brand_id);
         $items = $this->item->setNullInItem($brand);
-        return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
+        return redirect()->route('brands')->with('del_brand', 'Delete brand \'' . $brand->brand_name . '\' success');
     }
 }
