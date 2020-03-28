@@ -9,7 +9,6 @@ use App\Http\Models\Status;
 use App\Http\Requests\NotiUpdateFormRequest;
 use App\Http\Requests\SendProblemRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 
 class NotificationProblemController extends Controller
 {
@@ -38,7 +37,7 @@ class NotificationProblemController extends Controller
         $statuses = $this->status->getAll();
         return compact('noti_problems', 'statuses');
         /* return view('noti_problem.noti_problems')
-            ->with(compact('noti_problems', 'statuses')); */
+    ->with(compact('noti_problems', 'statuses')); */
     }
 
     /**
@@ -75,18 +74,26 @@ class NotificationProblemController extends Controller
     }
 
     // check is it the same problem before store
-    public function check(SendProblemRequest $request)
+    public function check(Request $request/*SendProblemRequest $request*/)
     {
         $item_id = $request->input('item_id');
-        $problem_des_id = $request->input('problem_des_id');
-        $problem_description = $request->input('problem_description');
-        $noti_prob = $this->noti_problem->checkSameProblem($item_id, $problem_des_id);
+        // $problem_des_id = $request->input('problem_des_id');
+        // $problem_description = $request->input('problem_description');
 
-        if ($noti_prob) {
-            return view('checkProblem')->with(compact('noti_prob', 'problem_description'));
-        } else {
-            return $this->store($request);
-        }
+        return response()->json([
+            'item_id_from_laravel' => $item_id,
+            // 'problem_des_id' => $problem_des_id,
+            // 'problem)description' => $problem_description,
+        ]);
+
+        //* comment to check input from react
+        // $noti_prob = $this->noti_problem->checkSameProblem($item_id, $problem_des_id);
+
+        // if ($noti_prob) {
+        //     return view('checkProblem')->with(compact('noti_prob', 'problem_description'));
+        // } else {
+        //     return $this->store($request);
+        // }
     }
 
     /**
@@ -100,12 +107,14 @@ class NotificationProblemController extends Controller
         $item = $this->item->findByCode($code);
 
         if (empty($item)) {
-            $errors = new MessageBag();
-            $errors->add('itemnotfound', 'Item Not Found');
-            return redirect()->route('send')->withErrors($errors);
+            return null;
+            // $errors = new MessageBag();
+            // $errors->add('itemnotfound', 'Item Not Found');
+            // return redirect()->route('send')->withErrors($errors);
         } else {
-            return view('noti_problem.send_problem')
-                ->with('item', $item);
+            return $item;
+            // return view('noti_problem.send_problem')
+            //     ->with('item', $item);
         }
     }
 

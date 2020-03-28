@@ -69,3 +69,12 @@ Route::group(['prefix' => 'status'], function () {
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
 
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
+
+//temporary api for develop in react js (need edit and merge from master)
+
+Route::group(['prefix' => 'send-problem'], function () {
+    Route::get('/', 'NotificationProblemController@create')->name('send');
+    Route::get('{code}', 'NotificationProblemController@show')->where('code', '[A-Za-z0-9-.]+');
+    Route::post('check', 'NotificationProblemController@check');
+    // Route::post('create', 'NotificationProblemController@store');
+});
