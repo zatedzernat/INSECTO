@@ -4,21 +4,21 @@ import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
-export default function Statuses() {
+export default function ProblemDescriptions() {
   return (
     <div>
       <Content
-        title="Statuses"
-        content={<Card title="All Statuses" body={statusTable()} />}
+        title="Problem Descriptions"
+        content={<Card title="All Problem Descriptions" body={problemDesTable()} />}
       />
     </div>
   );
 }
 
-const statusTable = () => {
+const problemDesTable = () => {
   const heads = [
     "#",
-    "Name",
+    "Problem Description",
     "Created At",
     "Updated At",
     "Update By",
@@ -27,15 +27,15 @@ const statusTable = () => {
 
   const data = [
     {
-      status_id: 1,
-      status_name: "on hold",
+      problemDes_id: 1,
+      problemDes_name: "ไฟดับ",
       created_at: "test",
       updated_at: "test",
       update_by: "seeder",
     },
     {
-      status_id: 2,
-      status_name: "in progress",
+      problemDes_id: 2,
+      problemDes_name: "คอมมดขึ้น",
       created_at: "test2",
       updated_at: "test2",
       update_by: "seeder2",
@@ -51,13 +51,13 @@ const statusTable = () => {
         </tr>
       </thead>
       <tbody>
-        {_.map(data, (status) => (
-          <tr key={status.status_id}>
-            <td>{status.status_id}</td>
-            <td>{status.status_name}</td>
-            <td>{status.created_at}</td>
-            <td>{status.updated_at}</td>
-            <td>{status.update_by}</td>
+        {_.map(data, (problemDes) => (
+          <tr key={problemDes.problemDes_id}>
+            <td>{problemDes.problemDes_id}</td>
+            <td>{problemDes.problemDes_name}</td>
+            <td>{problemDes.created_at}</td>
+            <td>{problemDes.updated_at}</td>
+            <td>{problemDes.update_by}</td>
             <td>
               <i className="fa fa-edit" />
             </td>

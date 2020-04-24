@@ -2,26 +2,27 @@ import React from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
-var _ = require("lodash");
+import _ from "lodash";
 
 export default function Brands() {
   return (
     <div>
       <Content
         title="Brands"
-        content={<Card title="Brand" body={brandtable()} />}
+        content={<Card title="All Brands" body={brandTable()} />}
       />
     </div>
   );
 }
 
-function brandtable() {
+const brandTable = () => {
   const heads = [
-    "Brand ID",
+    "#",
     "Brand Name",
     "Created At",
     "Updated At",
     "Update By",
+    "Action",
   ]; //get from api
 
   const data = [
@@ -57,10 +58,12 @@ function brandtable() {
             <td>{brand.created_at}</td>
             <td>{brand.updated_at}</td>
             <td>{brand.update_by}</td>
+            <td>
+              <i className="fa fa-edit" />
+            </td>
           </tr>
         ))}
       </tbody>
     </Table>
   );
-}
-
+};
