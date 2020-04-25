@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState, useEffect }  from "react";
+import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
 export default function Rooms() {
+  const [rooms, setRooms] = useState({})
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/rooms').then(response => {
+      setRooms(response.data)
+    }).catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  });
+
   return (
     <div>
       <Content
@@ -16,7 +27,7 @@ export default function Rooms() {
                 <h6>รายการห้องทั้งหมด</h6>
               </div>
             }
-            body={roomTable()}
+            body={roomTable(rooms)}
           />
         }
       />
@@ -24,7 +35,7 @@ export default function Rooms() {
   );
 }
 
-const roomTable = () => {
+const roomTable = (data) => {
   const heads = [
     <input type="checkbox" />,
     "#",
@@ -37,26 +48,26 @@ const roomTable = () => {
     "Action",
   ];
 
-  const data = [
-    {
-      room_id: 1,
-      room_code: "T03",
-      room_name: "Train 3",
-      building_name: "ตึกเทคโนโลยีสารสนเทศ",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-    {
-      room_id: 1,
-      room_code: "T05",
-      room_name: "Train 5",
-      building_name: "ตึกเทคโนโลยีสารสนเทศ",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-  ];
+  // const data = [
+  //   {
+  //     room_id: 1,
+  //     room_code: "T03",
+  //     room_name: "Train 3",
+  //     building_name: "ตึกเทคโนโลยีสารสนเทศ",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  //   {
+  //     room_id: 1,
+  //     room_code: "T05",
+  //     room_name: "Train 5",
+  //     building_name: "ตึกเทคโนโลยีสารสนเทศ",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  // ];
   return (
     <Table striped hover>
       <thead>

@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState, useEffect }  from "react";
+import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
 export default function Items() {
+  const [items, setItems] = useState({})
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/items').then(response => {
+      setItems(response.data)
+    }).catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  });
+  
   return (
     <div>
       <Content
@@ -16,7 +27,7 @@ export default function Items() {
                 <h6>รายการครุภัณฑ์ทั้งหมด</h6>
               </div>
             }
-            body={itemTable()}
+            body={itemTable(items)}
           />
         }
       />
@@ -24,7 +35,7 @@ export default function Items() {
   );
 }
 
-const itemTable = () => {
+const itemTable = (data) => {
   const heads = [
     <input type="checkbox" />,
     "#",
@@ -41,21 +52,21 @@ const itemTable = () => {
     "Action",
   ];
 
-  const data = [
-    {
-      item_id: 1,
-      item_code: "111",
-      item_name: "หลอดไฟ",
-      building_name: "ตึกเทคโนโลยีสารสนเทศ",
-      room_name: "Lab L",
-      brand_name: "Philip",
-      serial_number: "-",
-      model: "-",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-  ];
+  // const data = [
+  //   {
+  //     item_id: 1,
+  //     item_code: "111",
+  //     item_name: "หลอดไฟ",
+  //     building_name: "ตึกเทคโนโลยีสารสนเทศ",
+  //     room_name: "Lab L",
+  //     brand_name: "Philip",
+  //     serial_number: "-",
+  //     model: "-",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  // ];
   return (
     <Table striped hover>
       <thead>

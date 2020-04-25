@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
 export default function ProblemDescriptions() {
+  const [problemDescs, setProblemDescs] = useState({})
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/problem_descs').then(response => {
+      setProblemDescs(response.data)
+    }).catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  });
+
   return (
     <div>
       <Content
@@ -16,7 +27,7 @@ export default function ProblemDescriptions() {
                 <h6>รายการคำอธิบายปัญหาทั้งหมด</h6>
               </div>
             }
-            body={problemDesTable()}
+            body={problemDesTable(problemDescs)}
           />
         }
       />
@@ -24,7 +35,7 @@ export default function ProblemDescriptions() {
   );
 }
 
-const problemDesTable = () => {
+const problemDesTable = (data) => {
   const heads = [
     <input type="checkbox" />,
     "#",
@@ -35,22 +46,22 @@ const problemDesTable = () => {
     "Action",
   ]; //get from api
 
-  const data = [
-    {
-      problemDes_id: 1,
-      problemDes_name: "ไฟดับ",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-    {
-      problemDes_id: 2,
-      problemDes_name: "คอมมดขึ้น",
-      created_at: "test2",
-      updated_at: "test2",
-      update_by: "seeder2",
-    },
-  ]; //get from api
+  // const data = [
+  //   {
+  //     problemDes_id: 1,
+  //     problemDes_name: "ไฟดับ",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  //   {
+  //     problemDes_id: 2,
+  //     problemDes_name: "คอมมดขึ้น",
+  //     created_at: "test2",
+  //     updated_at: "test2",
+  //     update_by: "seeder2",
+  //   },
+  // ]; //get from api
   return (
     <Table striped hover>
       <thead>

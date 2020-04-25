@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState, useEffect }  from "react";
+import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
 export default function ItemTypes() {
+  const [itemTypes, setItemTypes] = useState({})
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/item_types').then(response => {
+      setItemTypes(response.data)
+    }).catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  });
+
   return (
     <div>
       <Content
@@ -16,7 +27,7 @@ export default function ItemTypes() {
                 <h6>รายการประเภทของครุภัณฑ์ทั้งหมด</h6>
               </div>
             }
-            body={itemTypeTable()}
+            body={itemTypeTable(itemTypes)}
           />
         }
       />
@@ -24,7 +35,7 @@ export default function ItemTypes() {
   );
 }
 
-const itemTypeTable = () => {
+const itemTypeTable = (data) => {
   const heads = [
     <input type="checkbox" />,
     "#",
@@ -35,22 +46,22 @@ const itemTypeTable = () => {
     "Action",
   ]; //get from api
 
-  const data = [
-    {
-      type_id: 1,
-      type_name: "ไฟ",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-    {
-      type_id: 2,
-      type_name: "คอม",
-      created_at: "test2",
-      updated_at: "test2",
-      update_by: "seeder2",
-    },
-  ]; //get from api
+  // const data = [
+  //   {
+  //     type_id: 1,
+  //     type_name: "ไฟ",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  //   {
+  //     type_id: 2,
+  //     type_name: "คอม",
+  //     created_at: "test2",
+  //     updated_at: "test2",
+  //     update_by: "seeder2",
+  //   },
+  // ]; //get from api
   return (
     <Table striped hover>
       <thead>

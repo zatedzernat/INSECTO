@@ -1,25 +1,21 @@
 import React , { useState, useEffect } from "react";
-// import axios from "axios";
-// import _ from "lodash";
+import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
 export default function Brands() {
-  /*
-todo มันยังมี error อยู่ จะเกิดกับ file header & slidbar ด้วย
   const [brands, setBrands] = useState({})
-  const getAllBrands = () => axios.get('http://127.0.0.1:8000/api/brands');
-  ?useEffect(() => {
-  !  getAllBrands.then(response => {
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/brands').then(response => {
       setBrands(response.data)
-  ?  }).catch(function (error) {
+    }).catch(function (error) {
       // handle error
       console.log(error);
     })
   });
-*/
+
   return (
     <div>
       <Content
@@ -31,7 +27,7 @@ todo มันยังมี error อยู่ จะเกิดกับ fil
                 <h6>รายการการแบรนด์ทั้งหมด</h6>
               </div>
             }
-            body={brandTable()}
+            body={brandTable(brands)}
           />
         }
       />
@@ -39,7 +35,7 @@ todo มันยังมี error อยู่ จะเกิดกับ fil
   );
 }
 
-const brandTable = () => {
+const brandTable = (data) => {
   const heads = [
     <input type="checkbox" />,
     "#",
@@ -50,22 +46,22 @@ const brandTable = () => {
     "Action",
   ]; //get from api
 
-  const data = [
-    {
-      brand_id: 1,
-      brand_name: "HP",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-    {
-      brand_id: 2,
-      brand_name: "HONG",
-      created_at: "test2",
-      updated_at: "test2",
-      update_by: "seeder2",
-    }
-  ]; //get from api
+  // const data = [
+  //   {
+  //     brand_id: 1,
+  //     brand_name: "HP",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  //   {
+  //     brand_id: 2,
+  //     brand_name: "HONG",
+  //     created_at: "test2",
+  //     updated_at: "test2",
+  //     update_by: "seeder2",
+  //   }
+  // ]; //get from api
   return (
     <Table striped hover>
       <thead>

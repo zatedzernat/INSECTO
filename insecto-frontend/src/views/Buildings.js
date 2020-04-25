@@ -1,9 +1,21 @@
-import React from "react";
+import React , { useState, useEffect }  from "react";
+import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
+
 export default function Buildings() {
+  const [buildings, setBuildings] = useState({})
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/buildings').then(response => {
+      setBuildings(response.data)
+    }).catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  });
+  
   return (
     <div>
       <Content
@@ -15,7 +27,7 @@ export default function Buildings() {
                 <h6>รายการตึกทั้งหมด</h6>
               </div>
             }
-            body={buildingTable()}
+            body={buildingTable(buildings)}
           />
         }
       />
@@ -23,7 +35,7 @@ export default function Buildings() {
   );
 }
 
-const buildingTable = () => {
+const buildingTable = (data) => {
   const heads = [
     <input type="checkbox" />,
     "#",
@@ -35,24 +47,24 @@ const buildingTable = () => {
     "Action",
   ];
 
-  const data = [
-    {
-      building_id: 1,
-      building_code: "SIT",
-      building_name: "ตึกเทคโนโลยีสารสนเทศ",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-    {
-      building_id: 2,
-      building_code: "CB2",
-      building_name: "อาคารเรียนรวม 2",
-      created_at: "test",
-      updated_at: "test",
-      update_by: "seeder",
-    },
-  ];
+  // const data = [
+  //   {
+  //     building_id: 1,
+  //     building_code: "SIT",
+  //     building_name: "ตึกเทคโนโลยีสารสนเทศ",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  //   {
+  //     building_id: 2,
+  //     building_code: "CB2",
+  //     building_name: "อาคารเรียนรวม 2",
+  //     created_at: "test",
+  //     updated_at: "test",
+  //     update_by: "seeder",
+  //   },
+  // ];
   return (
     <Table striped hover>
       <thead>
