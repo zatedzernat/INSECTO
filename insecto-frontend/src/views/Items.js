@@ -8,8 +8,17 @@ export default function Items() {
   return (
     <div>
       <Content
-        title="Items"
-        content={<Card title="All Items" body={itemTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>Items</h2>
+                <h6>รายการครุภัณฑ์ทั้งหมด</h6>
+              </div>
+            }
+            body={itemTable()}
+          />
+        }
       />
     </div>
   );
@@ -17,6 +26,7 @@ export default function Items() {
 
 const itemTable = () => {
   const heads = [
+    <input type="checkbox" />,
     "#",
     "Code",
     "Name",
@@ -45,7 +55,6 @@ const itemTable = () => {
       updated_at: "test",
       update_by: "seeder",
     },
-    
   ];
   return (
     <Table striped hover>
@@ -59,6 +68,9 @@ const itemTable = () => {
       <tbody>
         {_.map(data, (item) => (
           <tr key={item.item_id}>
+            <td>
+              <input type="checkbox" />
+            </td>
             <td>{item.item_id}</td>
             <td>{item.item_code}</td>
             <td>{item.item_name}</td>
@@ -72,6 +84,8 @@ const itemTable = () => {
             <td>{item.update_by}</td>
             <td>
               <i className="fa fa-edit" />
+              &emsp;
+              <i className="fa fa-times" />
             </td>
           </tr>
         ))}

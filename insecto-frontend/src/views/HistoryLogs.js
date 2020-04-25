@@ -8,23 +8,24 @@ export default function HistoryLogs() {
   return (
     <div>
       <Content
-        title="History Logs"
-        content={<Card title="All History Logs" body={historyLogTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>History Logs</h2>
+                <h6>รายการบันทึกประวัติทั้งหมด</h6>
+              </div>
+            }
+            body={historyLogTable()}
+          />
+        }
       />
     </div>
   );
 }
 
 const historyLogTable = () => {
-  const heads = [
-    "#",
-    "Time",
-    "Action",
-    "Last",
-    "Present",
-    "From",
-    "By",
-  ]; //get from api
+  const heads = ["#", "Time", "Action", "Last", "Present", "From", "By"]; //get from api
 
   const data = [
     {
@@ -36,7 +37,6 @@ const historyLogTable = () => {
       log_from: "Item Types",
       log_by: "Hong",
     },
-    
   ]; //get from api
   return (
     <Table striped hover>

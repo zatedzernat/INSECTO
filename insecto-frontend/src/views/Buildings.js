@@ -3,13 +3,21 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
-
 export default function Buildings() {
   return (
     <div>
       <Content
-        title="Buildings"
-        content={<Card title="All Buildings" body={buildingTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>Buildings</h2>
+                <h6>รายการตึกทั้งหมด</h6>
+              </div>
+            }
+            body={buildingTable()}
+          />
+        }
       />
     </div>
   );
@@ -17,6 +25,7 @@ export default function Buildings() {
 
 const buildingTable = () => {
   const heads = [
+    <input type="checkbox" />,
     "#",
     "Code",
     "Name",
@@ -56,6 +65,9 @@ const buildingTable = () => {
       <tbody>
         {_.map(data, (building) => (
           <tr key={building.building_id}>
+            <td>
+              <input type="checkbox" />
+            </td>
             <td>{building.building_id}</td>
             <td>{building.building_code}</td>
             <td>{building.building_name}</td>
@@ -64,6 +76,8 @@ const buildingTable = () => {
             <td>{building.update_by}</td>
             <td>
               <i className="fa fa-edit" />
+              &emsp;
+              <i className="fa fa-times" />
             </td>
           </tr>
         ))}

@@ -8,22 +8,24 @@ export default function Statuses() {
   return (
     <div>
       <Content
-        title="Statuses"
-        content={<Card title="All Statuses" body={statusTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>Statuses</h2>
+                <h6>รายการสถานะทั้งหมด</h6>
+              </div>
+            }
+            body={statusTable()}
+          />
+        }
       />
     </div>
   );
 }
 
 const statusTable = () => {
-  const heads = [
-    "#",
-    "Name",
-    "Created At",
-    "Updated At",
-    "Update By",
-    "Action",
-  ]; //get from api
+  const heads = ["#", "Name", "Created At", "Updated At", "Update By"]; //get from api
 
   const data = [
     {
@@ -58,9 +60,6 @@ const statusTable = () => {
             <td>{status.created_at}</td>
             <td>{status.updated_at}</td>
             <td>{status.update_by}</td>
-            <td>
-              <i className="fa fa-edit" />
-            </td>
           </tr>
         ))}
       </tbody>

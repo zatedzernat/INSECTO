@@ -8,8 +8,17 @@ export default function Brands() {
   return (
     <div>
       <Content
-        title="Brands"
-        content={<Card title="All Brands" body={brandTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>Brands</h2>
+                <h6>รายการการแบรนด์ทั้งหมด</h6>
+              </div>
+            }
+            body={brandTable()}
+          />
+        }
       />
     </div>
   );
@@ -17,6 +26,7 @@ export default function Brands() {
 
 const brandTable = () => {
   const heads = [
+    <input type="checkbox" />,
     "#",
     "Brand Name",
     "Created At",
@@ -53,6 +63,9 @@ const brandTable = () => {
       <tbody>
         {_.map(data, (brand) => (
           <tr key={brand.brand_id}>
+            <td>
+              <input type="checkbox" />
+            </td>
             <td>{brand.brand_id}</td>
             <td>{brand.brand_name}</td>
             <td>{brand.created_at}</td>
@@ -60,6 +73,8 @@ const brandTable = () => {
             <td>{brand.update_by}</td>
             <td>
               <i className="fa fa-edit" />
+              &emsp;
+              <i className="fa fa-times" />
             </td>
           </tr>
         ))}

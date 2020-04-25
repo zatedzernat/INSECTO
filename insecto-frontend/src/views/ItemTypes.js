@@ -8,8 +8,17 @@ export default function ItemTypes() {
   return (
     <div>
       <Content
-        title="ItemTypes"
-        content={<Card title="All ItemTypes" body={itemTypeTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>Item Types</h2>
+                <h6>รายการประเภทของครุภัณฑ์ทั้งหมด</h6>
+              </div>
+            }
+            body={itemTypeTable()}
+          />
+        }
       />
     </div>
   );
@@ -17,6 +26,7 @@ export default function ItemTypes() {
 
 const itemTypeTable = () => {
   const heads = [
+    <input type="checkbox" />,
     "#",
     "Name",
     "Created At",
@@ -53,6 +63,9 @@ const itemTypeTable = () => {
       <tbody>
         {_.map(data, (itemType) => (
           <tr key={itemType.type_id}>
+            <td>
+              <input type="checkbox" />
+            </td>
             <td>{itemType.type_id}</td>
             <td>{itemType.type_name}</td>
             <td>{itemType.created_at}</td>
@@ -60,6 +73,8 @@ const itemTypeTable = () => {
             <td>{itemType.update_by}</td>
             <td>
               <i className="fa fa-edit" />
+              &emsp;
+              <i className="fa fa-times" />
             </td>
           </tr>
         ))}

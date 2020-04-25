@@ -8,8 +8,17 @@ export default function Rooms() {
   return (
     <div>
       <Content
-        title="Rooms"
-        content={<Card title="All Rooms" body={roomTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>Rooms</h2>
+                <h6>รายการห้องทั้งหมด</h6>
+              </div>
+            }
+            body={roomTable()}
+          />
+        }
       />
     </div>
   );
@@ -17,6 +26,7 @@ export default function Rooms() {
 
 const roomTable = () => {
   const heads = [
+    <input type="checkbox" />,
     "#",
     "Code",
     "Name",
@@ -46,7 +56,6 @@ const roomTable = () => {
       updated_at: "test",
       update_by: "seeder",
     },
-   
   ];
   return (
     <Table striped hover>
@@ -60,6 +69,9 @@ const roomTable = () => {
       <tbody>
         {_.map(data, (room) => (
           <tr key={room.room_id}>
+            <td>
+              <input type="checkbox" />
+            </td>
             <td>{room.room_id}</td>
             <td>{room.room_code}</td>
             <td>{room.room_name}</td>
@@ -69,6 +81,8 @@ const roomTable = () => {
             <td>{room.update_by}</td>
             <td>
               <i className="fa fa-edit" />
+              &emsp;
+              <i className="fa fa-times" />
             </td>
           </tr>
         ))}

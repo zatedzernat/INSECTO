@@ -8,8 +8,17 @@ export default function ProblemDescriptions() {
   return (
     <div>
       <Content
-        title="Problem Descriptions"
-        content={<Card title="All Problem Descriptions" body={problemDesTable()} />}
+        content={
+          <Card
+            title={
+              <div>
+                <h2>Problem Descriptions</h2>
+                <h6>รายการคำอธิบายปัญหาทั้งหมด</h6>
+              </div>
+            }
+            body={problemDesTable()}
+          />
+        }
       />
     </div>
   );
@@ -17,6 +26,7 @@ export default function ProblemDescriptions() {
 
 const problemDesTable = () => {
   const heads = [
+    <input type="checkbox" />,
     "#",
     "Problem Description",
     "Created At",
@@ -53,6 +63,9 @@ const problemDesTable = () => {
       <tbody>
         {_.map(data, (problemDes) => (
           <tr key={problemDes.problemDes_id}>
+            <td>
+              <input type="checkbox" />
+            </td>
             <td>{problemDes.problemDes_id}</td>
             <td>{problemDes.problemDes_name}</td>
             <td>{problemDes.created_at}</td>
@@ -60,6 +73,8 @@ const problemDesTable = () => {
             <td>{problemDes.update_by}</td>
             <td>
               <i className="fa fa-edit" />
+              &emsp;
+              <i className="fa fa-times" />
             </td>
           </tr>
         ))}
