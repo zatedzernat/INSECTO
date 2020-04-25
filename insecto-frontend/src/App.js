@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import Content from "./components/Content";
 import { Route, Switch } from "react-router-dom";
 import Footer from "./components/Footer";
 import Brands from "./views/Brands";

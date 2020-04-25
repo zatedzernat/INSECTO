@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -54,7 +54,7 @@ export default function Sidebar() {
               </NavLink>
             </li>
             <li className="nav-item has-treeview menu-close">
-              <a href="#" className="nav-link">
+              <a href="#section" className="nav-link">
                 <i className="nav-icon fas fa-database" />
                 <p>
                   Data
