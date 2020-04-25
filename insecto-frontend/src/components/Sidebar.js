@@ -1,11 +1,12 @@
 import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Sidebar() {
   return (
     //   sidebar from adminLTE-3.0.4 - indexedDB.html
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
       {/* Brand Logo */}
-      <a href="#" className="brand-link">
+      <a href="/" className="brand-link">
         <img
           src="images/bug.png"
           alt="insecto logo"
@@ -26,73 +27,106 @@ export default function Sidebar() {
             {/* Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library */}
             <li className="nav-item">
-              <a href="#" className="nav-link active">
-                <i className="nav-icon fas fa-th" />
+              <NavLink
+                exact
+                to="/"
+                activeClassName="active"
+                className="nav-link"
+              >
+                <i className="nav-icon fas fa-bell" />
                 <p>
                   Notification Problems
                   <span className="right badge badge-danger">1</span>
                 </p>
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a href="#" className="nav-link">
-                <i className="nav-icon fas fa-th" />
+              <NavLink
+                to="/history_logs"
+                activeClassName="active"
+                className="nav-link"
+              >
+                <i className="nav-icon fas fa-history" />
                 <p>
                   History Logs
                   <span className="right badge badge-danger">New</span>
                 </p>
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item has-treeview menu-close">
               <a href="#" className="nav-link">
-                <i className="nav-icon fas ion-bug" />
+                <i className="nav-icon fas fa-database" />
                 <p>
-                  Admin
+                  Data
                   <i className="right fas fa-angle-left" />
                 </p>
               </a>
               <ul className="nav nav-treeview">
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <NavLink
+                    to="/buildings"
+                    activeClassName="active"
+                    className="nav-link"
+                  >
                     <i className="far fa-circle nav-icon" />
                     <p>Buildings</p>
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <NavLink
+                    to="/rooms"
+                    activeClassName="active"
+                    className="nav-link"
+                  >
                     <i className="far fa-circle nav-icon" />
                     <p>Rooms</p>
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link active">
+                  <NavLink
+                    to="/items"
+                    activeClassName="active"
+                    className="nav-link"
+                  >
                     <i className="far fa-circle nav-icon" />
                     <p>Item</p>
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <NavLink
+                    to="/item_types"
+                    activeClassName="active"
+                    className="nav-link"
+                  >
                     <i className="far fa-circle nav-icon" />
                     <p>Item Types</p>
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <NavLink
+                    to="/problem_descriptions"
+                    activeClassName="active"
+                    className="nav-link"
+                  >
                     <i className="far fa-circle nav-icon" />
                     <p>Problem Descriptions</p>
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <NavLink
+                    to="/brands"
+                    activeClassName="active"
+                    className="nav-link"
+                  >
                     <i className="far fa-circle nav-icon" />
                     <p>Brands</p>
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <NavLink to="/status" className="nav-link">
                     <i className="far fa-circle nav-icon" />
                     <p>Status</p>
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </li>
@@ -101,90 +135,6 @@ export default function Sidebar() {
               <a href="https://adminlte.io/docs/3.0" className="nav-link">
                 <i className="nav-icon fas fa-file" />
                 <p>Documentation</p>
-              </a>
-            </li>
-            <li className="nav-header">MULTI LEVEL EXAMPLE</li>
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                <i className="fas fa-circle nav-icon" />
-                <p>Level 1</p>
-              </a>
-            </li>
-            <li className="nav-item has-treeview">
-              <a href="#" className="nav-link">
-                <i className="nav-icon fas fa-circle" />
-                <p>
-                  Level 1
-                  <i className="right fas fa-angle-left" />
-                </p>
-              </a>
-              <ul className="nav nav-treeview">
-                <li className="nav-item">
-                  <a href="#" className="nav-link">
-                    <i className="far fa-circle nav-icon" />
-                    <p>Level 2</p>
-                  </a>
-                </li>
-                <li className="nav-item has-treeview">
-                  <a href="#" className="nav-link">
-                    <i className="far fa-circle nav-icon" />
-                    <p>
-                      Level 2
-                      <i className="right fas fa-angle-left" />
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <a href="#" className="nav-link">
-                        <i className="far fa-dot-circle nav-icon" />
-                        <p>Level 3</p>
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="#" className="nav-link">
-                        <i className="far fa-dot-circle nav-icon" />
-                        <p>Level 3</p>
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="#" className="nav-link">
-                        <i className="far fa-dot-circle nav-icon" />
-                        <p>Level 3</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link">
-                    <i className="far fa-circle nav-icon" />
-                    <p>Level 2</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                <i className="fas fa-circle nav-icon" />
-                <p>Level 1</p>
-              </a>
-            </li>
-            <li className="nav-header">LABELS</li>
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                <i className="nav-icon far fa-circle text-danger" />
-                <p className="text">Important</p>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                <i className="nav-icon far fa-circle text-warning" />
-                <p>Warning</p>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                <i className="nav-icon far fa-circle text-info" />
-                <p>Informational</p>
               </a>
             </li>
           </ul>

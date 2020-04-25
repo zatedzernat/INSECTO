@@ -65,15 +65,15 @@
                             Admin
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/noti_problems">Notification Problems</a>
-                            <a class="dropdown-item" href="/history_logs">History Logs</a>
-                            <a class="dropdown-item" href="/problem_descs">Problem Descriptions</a>
-                            <a class="dropdown-item" href="/buildings">Building</a>
-                            <a class="dropdown-item" href="/rooms">Rooms</a>
-                            <a class="dropdown-item" href="/items">Items</a>
-                            <a class="dropdown-item" href="/item_types">Item Types</a>
-                            <a class="dropdown-item" href="/brands">Brands</a>
-                            <a class="dropdown-item" href="/statuses">Statuses</a>
+                            <a class="dropdown-item" href="api/noti_problems">Notification Problems</a>
+                            <a class="dropdown-item" href="api/history_logs">History Logs</a>
+                            <a class="dropdown-item" href="api/problem_descs">Problem Descriptions</a>
+                            <a class="dropdown-item" href="api/buildings">Building</a>
+                            <a class="dropdown-item" href="api/rooms">Rooms</a>
+                            <a class="dropdown-item" href="api/items">Items</a>
+                            <a class="dropdown-item" href="api/item_types">Item Types</a>
+                            <a class="dropdown-item" href="api/brands">Brands</a>
+                            <a class="dropdown-item" href="api/statuses">Statuses</a>
                         </div>
                     </li>
                 </ul>

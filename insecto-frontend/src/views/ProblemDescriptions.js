@@ -1,25 +1,10 @@
-import React , { useState, useEffect } from "react";
-// import axios from "axios";
-// import _ from "lodash";
+import React from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
-export default function Brands() {
-  /*
-todo มันยังมี error อยู่ จะเกิดกับ file header & slidbar ด้วย
-  const [brands, setBrands] = useState({})
-  const getAllBrands = () => axios.get('http://127.0.0.1:8000/api/brands');
-  ?useEffect(() => {
-  !  getAllBrands.then(response => {
-      setBrands(response.data)
-  ?  }).catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-  });
-*/
+export default function ProblemDescriptions() {
   return (
     <div>
       <Content
@@ -27,11 +12,11 @@ todo มันยังมี error อยู่ จะเกิดกับ fil
           <Card
             title={
               <div>
-                <h2>Brands</h2>
-                <h6>รายการการแบรนด์ทั้งหมด</h6>
+                <h2>Problem Descriptions</h2>
+                <h6>รายการคำอธิบายปัญหาทั้งหมด</h6>
               </div>
             }
-            body={brandTable()}
+            body={problemDesTable()}
           />
         }
       />
@@ -39,11 +24,11 @@ todo มันยังมี error อยู่ จะเกิดกับ fil
   );
 }
 
-const brandTable = () => {
+const problemDesTable = () => {
   const heads = [
     <input type="checkbox" />,
     "#",
-    "Brand Name",
+    "Problem Description",
     "Created At",
     "Updated At",
     "Update By",
@@ -52,19 +37,19 @@ const brandTable = () => {
 
   const data = [
     {
-      brand_id: 1,
-      brand_name: "HP",
+      problemDes_id: 1,
+      problemDes_name: "ไฟดับ",
       created_at: "test",
       updated_at: "test",
       update_by: "seeder",
     },
     {
-      brand_id: 2,
-      brand_name: "HONG",
+      problemDes_id: 2,
+      problemDes_name: "คอมมดขึ้น",
       created_at: "test2",
       updated_at: "test2",
       update_by: "seeder2",
-    }
+    },
   ]; //get from api
   return (
     <Table striped hover>
@@ -76,16 +61,16 @@ const brandTable = () => {
         </tr>
       </thead>
       <tbody>
-        {_.map(data, (brand) => (
-          <tr key={brand.brand_id}>
+        {_.map(data, (problemDes) => (
+          <tr key={problemDes.problemDes_id}>
             <td>
               <input type="checkbox" />
             </td>
-            <td>{brand.brand_id}</td>
-            <td>{brand.brand_name}</td>
-            <td>{brand.created_at}</td>
-            <td>{brand.updated_at}</td>
-            <td>{brand.update_by}</td>
+            <td>{problemDes.problemDes_id}</td>
+            <td>{problemDes.problemDes_name}</td>
+            <td>{problemDes.created_at}</td>
+            <td>{problemDes.updated_at}</td>
+            <td>{problemDes.update_by}</td>
             <td>
               <i className="fa fa-edit" />
               &emsp;
