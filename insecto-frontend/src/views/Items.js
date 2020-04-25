@@ -1,21 +1,25 @@
-import React, { useState, useEffect }  from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
+import { Button } from "react-bootstrap";
 
 export default function Items() {
-  const [items, setItems] = useState({})
+  const [items, setItems] = useState({});
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/items').then(response => {
-      setItems(response.data)
-    }).catch(function (error) {
-      // handle error
-      console.log(error);
-    })
+    axios
+      .get("http://127.0.0.1:8000/api/items")
+      .then((response) => {
+        setItems(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   });
-  
+
   return (
     <div>
       <Content
@@ -25,6 +29,13 @@ export default function Items() {
               <div>
                 <h2>Items</h2>
                 <h6>รายการครุภัณฑ์ทั้งหมด</h6>
+              </div>
+            }
+            badge={
+              <div>
+                <Button variant="info">Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
               </div>
             }
             body={itemTable(items)}

@@ -1,19 +1,23 @@
-import React, { useState, useEffect }  from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
+import { Button } from "react-bootstrap";
 
 export default function ItemTypes() {
-  const [itemTypes, setItemTypes] = useState({})
+  const [itemTypes, setItemTypes] = useState({});
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/item_types').then(response => {
-      setItemTypes(response.data)
-    }).catch(function (error) {
-      // handle error
-      console.log(error);
-    })
+    axios
+      .get("http://127.0.0.1:8000/api/item_types")
+      .then((response) => {
+        setItemTypes(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   });
 
   return (
@@ -25,6 +29,13 @@ export default function ItemTypes() {
               <div>
                 <h2>Item Types</h2>
                 <h6>รายการประเภทของครุภัณฑ์ทั้งหมด</h6>
+              </div>
+            }
+            badge={
+              <div>
+                <Button variant="info">Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
               </div>
             }
             body={itemTypeTable(itemTypes)}

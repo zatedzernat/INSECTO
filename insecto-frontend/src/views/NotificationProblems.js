@@ -16,6 +16,13 @@ export default function NotificationProblems() {
                 <h6>รายการการแจ้งปัญหาทั้งหมด</h6>
               </div>
             }
+            badge={
+              <div>
+                <Button variant="info">Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
+              </div>
+            }
             body={notiProblemTable()}
           />
         }
@@ -77,16 +84,14 @@ const notiProblemTable = () => {
                 size="sm"
                 variant="warning"
               >
-                <Dropdown.Item eventKey="1">open</Dropdown.Item>
+              <Dropdown.Item eventKey="1">open</Dropdown.Item>
               </DropdownButton>
             </td>
             <td>{notiProblem.created_at}</td>
             <td>{notiProblem.updated_at}</td>
             <td>{notiProblem.update_by}</td>
             <td>
-              <Button type="button" size="sm">
-                Detail
-              </Button>
+              <Button variant="link">Detail</Button>
             </td>
           </tr>
         ))}

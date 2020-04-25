@@ -4,6 +4,7 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
+import { Button } from "react-bootstrap";
 
 export default function ProblemDescriptions() {
   const [problemDescs, setProblemDescs] = useState({})
@@ -27,6 +28,13 @@ export default function ProblemDescriptions() {
                 <h6>รายการคำอธิบายปัญหาทั้งหมด</h6>
               </div>
             }
+            badge={
+              <div>
+              <Button variant="info">Add</Button>
+              &emsp;
+              <Button variant="danger">Delete</Button>
+              </div>
+            } 
             body={problemDesTable(problemDescs)}
           />
         }

@@ -5,10 +5,13 @@ export default function Card(props) {
     <div className="card">
       <div className="card-header">
         <h3 className="card-title">{props.title}</h3>
+
         <div className="card-tools">
           {/* Buttons, labels, and many other things can be placed here! */}
           {/* Here is a label for example */}
-          <span className="badge badge-primary">{props.badge}</span>
+          <span className="badge">
+            {props.badge}
+          </span>
         </div>
         {/* /.card-tools */}
       </div>
