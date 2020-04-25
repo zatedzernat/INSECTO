@@ -1,10 +1,25 @@
-import React from "react";
+import React , { useState, useEffect } from "react";
+// import axios from "axios";
+// import _ from "lodash";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 var _ = require("lodash");
 
 export default function Brands() {
+  /*
+todo มันยังมี error อยู่ จะเกิดกับ file header & slidbar ด้วย
+  const [brands, setBrands] = useState({})
+  const getAllBrands = () => axios.get('http://127.0.0.1:8000/api/brands');
+  ?useEffect(() => {
+  !  getAllBrands.then(response => {
+      setBrands(response.data)
+  ?  }).catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  });
+*/
   return (
     <div>
       <Content
@@ -38,7 +53,7 @@ function brandtable() {
       created_at: "test2",
       updated_at: "test2",
       update_by: "seeder2",
-    },
+    }
   ]; //get from api
   return (
     <Table striped hover>
