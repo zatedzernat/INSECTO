@@ -1,30 +1,36 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table } from "react-bootstrap";
-import _ from "lodash";
-import { Button } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import axios from "axios";
+import _ from "lodash";
+import Modal from "../components/MyModal";
 
 export default function Brands() {
   const [brands, setBrands] = useState([]);
-  console.log("test" + process.env.API_URL);
+  const [modalShow, setModalShow] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
+      setBrands(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}brands`)
-      .then((response) => {
-        setBrands(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    fetchData();
   }, []);
 
+  const handleAdd = (event) => {
+    alert(555);
+  };
+
   return (
-    <div>
-      <Content
-        content={
+    <Content
+      content={
+        <div>
           <Card
             title={
               <div>
@@ -34,37 +40,55 @@ export default function Brands() {
             }
             badge={
               <div>
-                <Button variant="info">Add</Button>
+                <Button variant="info" onClick={() => setModalShow(true)}>
+                  Add
+                </Button>
                 &emsp;
                 <Button variant="danger">Delete</Button>
               </div>
             }
             body={brandTable(brands)}
           />
-        }
-      />
-    </div>
+
+          <form method="post">
+            <Modal
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+              onSubmit={() => handleAdd()}
+              title="Add Brand"
+              body={
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Brand Name:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="brand_name"
+                    />
+                  </div>
+                </div>
+              }
+            />
+          </form>
+        </div>
+      }
+    />
   );
 }
 
 const brandTable = (data) => {
-  const heads = [
-    <input type="checkbox" />,
-    "#",
-    "Brand Name",
-    "Created At",
-    "Updated At",
-    "Update By",
-    "Action",
-  ]; //get from api
-
   return (
     <Table striped hover>
       <thead>
         <tr>
-          {heads.map((item, i) => (
-            <th key={i}>{item}</th>
-          ))}
+          <th>
+            <input type="checkbox" />
+          </th>
+          <th>#</th>
+          <th>Brand Name</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
