@@ -41,13 +41,15 @@ class BrandController extends Controller
      */
     public function store(BrandFormRequest $request)
     {
-        $errors = new MessageBag();
         $name = $request->brand_name;
         $createFail = $this->brand->createNewBrand($name);
         if ($createFail) {
-            $errors->add('dupBrand','Already have this Brand!!!');
+            return response()->json([
+                'error' => true,
+                'message' => 'add duplicate brand name'
+            ]);
         }
-        return redirect()->route('brands')->withErrors($errors);
+        return response()->json(['error' => false]);
     }
 
     /**
@@ -92,6 +94,6 @@ class BrandController extends Controller
     {
         $brand = $this->brand->deleteBrand($brand_id);
         $items = $this->item->setNullInItem($brand);
-        return redirect()->route('brands')->with('del_brand','Delete brand '.$brand->brand_name.' success');
+        return redirect()->route('brands')->with('del_brand', 'Delete brand ' . $brand->brand_name . ' success');
     }
 }
