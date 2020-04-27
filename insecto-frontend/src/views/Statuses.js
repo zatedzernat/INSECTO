@@ -1,20 +1,22 @@
-import React, { useState, useEffect }  from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
+import API from "../API";
 
 export default function Statuses() {
-  const [statuses, setStatuses] = useState({})
+  const [statuses, setStatuses] = useState([]);
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/statuses').then(response => {
-      setStatuses(response.data)
-    }).catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-  });
+    API.get(`statuses`)
+      .then((response) => {
+        setStatuses(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
 
   return (
     <div>
@@ -36,24 +38,8 @@ export default function Statuses() {
 }
 
 const statusTable = (data) => {
-  const heads = ["#", "Name", "Created At", "Updated At", "Update By"]; //get from api
+  const heads = ["#", "Name", "Description"]; //get from api
 
-  // const data = [
-  //   {
-  //     status_id: 1,
-  //     status_name: "on hold",
-  //     created_at: "test",
-  //     updated_at: "test",
-  //     update_by: "seeder",
-  //   },
-  //   {
-  //     status_id: 2,
-  //     status_name: "in progress",
-  //     created_at: "test2",
-  //     updated_at: "test2",
-  //     update_by: "seeder2",
-  //   },
-  // ]; //get from api
   return (
     <Table striped hover>
       <thead>
@@ -68,9 +54,7 @@ const statusTable = (data) => {
           <tr key={status.status_id}>
             <td>{status.status_id}</td>
             <td>{status.status_name}</td>
-            <td>{status.created_at}</td>
-            <td>{status.updated_at}</td>
-            <td>{status.update_by}</td>
+            <td>{status.status_description}</td>
           </tr>
         ))}
       </tbody>

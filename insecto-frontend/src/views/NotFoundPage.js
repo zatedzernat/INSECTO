@@ -1,6 +1,5 @@
 import React from "react";
 import Content from "../components/Content";
-import Card from "../components/Card";
 
 export default function NotFoundPage() {
   return (

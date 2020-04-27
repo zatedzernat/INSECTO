@@ -1,21 +1,23 @@
-import React, { useState, useEffect }  from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
+import API from "../API";
 import { Button } from "react-bootstrap";
 
 export default function Rooms() {
-  const [rooms, setRooms] = useState({})
+  const [rooms, setRooms] = useState([]);
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/rooms').then(response => {
-      setRooms(response.data)
-    }).catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-  });
+    API.get(`rooms`)
+      .then((response) => {
+        setRooms(response.data.rooms);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
 
   return (
     <div>
@@ -56,26 +58,6 @@ const roomTable = (data) => {
     "Action",
   ];
 
-  // const data = [
-  //   {
-  //     room_id: 1,
-  //     room_code: "T03",
-  //     room_name: "Train 3",
-  //     building_name: "ตึกเทคโนโลยีสารสนเทศ",
-  //     created_at: "test",
-  //     updated_at: "test",
-  //     update_by: "seeder",
-  //   },
-  //   {
-  //     room_id: 1,
-  //     room_code: "T05",
-  //     room_name: "Train 5",
-  //     building_name: "ตึกเทคโนโลยีสารสนเทศ",
-  //     created_at: "test",
-  //     updated_at: "test",
-  //     update_by: "seeder",
-  //   },
-  // ];
   return (
     <Table striped hover>
       <thead>

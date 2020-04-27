@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 import { Button } from "react-bootstrap";
+import API from "../API";
 
 export default function ItemTypes() {
-  const [itemTypes, setItemTypes] = useState({});
+  const [itemTypes, setItemTypes] = useState([]);
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/item_types")
+    API.get(`item_types`)
       .then((response) => {
         setItemTypes(response.data);
       })
@@ -18,7 +17,7 @@ export default function ItemTypes() {
         // handle error
         console.log(error);
       });
-  });
+  }, []);
 
   return (
     <div>
@@ -57,22 +56,6 @@ const itemTypeTable = (data) => {
     "Action",
   ]; //get from api
 
-  // const data = [
-  //   {
-  //     type_id: 1,
-  //     type_name: "ไฟ",
-  //     created_at: "test",
-  //     updated_at: "test",
-  //     update_by: "seeder",
-  //   },
-  //   {
-  //     type_id: 2,
-  //     type_name: "คอม",
-  //     created_at: "test2",
-  //     updated_at: "test2",
-  //     update_by: "seeder2",
-  //   },
-  // ]; //get from api
   return (
     <Table striped hover>
       <thead>

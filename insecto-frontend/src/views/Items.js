@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 import { Button } from "react-bootstrap";
+import API from "../API";
 
 export default function Items() {
-  const [items, setItems] = useState({});
+  const [items, setItems] = useState([]);
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/items")
+    API.get(`items`)
       .then((response) => {
-        setItems(response.data);
+        setItems(response.data.items);
       })
       .catch(function (error) {
         // handle error
         console.log(error);
       });
-  });
+  }, []);
 
   return (
     <div>
@@ -63,21 +62,6 @@ const itemTable = (data) => {
     "Action",
   ];
 
-  // const data = [
-  //   {
-  //     item_id: 1,
-  //     item_code: "111",
-  //     item_name: "หลอดไฟ",
-  //     building_name: "ตึกเทคโนโลยีสารสนเทศ",
-  //     room_name: "Lab L",
-  //     brand_name: "Philip",
-  //     serial_number: "-",
-  //     model: "-",
-  //     created_at: "test",
-  //     updated_at: "test",
-  //     update_by: "seeder",
-  //   },
-  // ];
   return (
     <Table striped hover>
       <thead>
