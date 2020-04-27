@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import _ from "lodash";
-import Modal from "../components/MyModal";
+import FormModal from "../components/FormModal";
 
 export default function Brands() {
   const [brands, setBrands] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [isError, setIsError] = useState({
+    error: false,
+    message: "",
+  });
+  const [brand, setBrand] = useState({
+    brand_id: 0,
+    brand_name: "",
+  });
 
   const fetchData = async () => {
     try {
@@ -21,16 +29,41 @@ export default function Brands() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [modalShow]);
 
-  const handleAdd = (event) => {
-    alert(555);
+  const addHandleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}brand/create`,
+        brand
+      );
+      //set error and loading
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setModalShow(false);
   };
 
   return (
     <Content
       content={
         <div>
+          {isError.error && (
+            <Alert
+              variant="danger"
+              onClose={() => setIsError(false)}
+              dismissible
+            >
+              {isError.message}
+            </Alert>
+          )}
           <Card
             title={
               <div>
@@ -50,26 +83,31 @@ export default function Brands() {
             body={brandTable(brands)}
           />
 
-          <form method="post">
-            <Modal
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-              onSubmit={() => handleAdd()}
-              title="Add Brand"
-              body={
-                <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Brand Name:</label>
-                  <div className="col-sm-9">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="brand_name"
-                    />
-                  </div>
+          <FormModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            title="Add Brand"
+            body={
+              <div className="form-group row">
+                <label className="col-sm-3 col-form-label">Brand Name:</label>
+                <div className="col-sm-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="brand_name"
+                    onChange={(event) =>
+                      setBrand({ brand_name: event.target.value })
+                    }
+                    required
+                    autoFocus
+                  />
                 </div>
-              }
-            />
-          </form>
+              </div>
+            }
+            method="POST"
+            onSubmit={addHandleSubmit}
+            button="Add"
+          />
         </div>
       }
     />
