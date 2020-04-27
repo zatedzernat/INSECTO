@@ -23,28 +23,26 @@ export default function ItemTypes() {
   }, []);
 
   return (
-    <div>
-      <Content
-        content={
-          <Card
-            title={
-              <div>
-                <h2>Item Types</h2>
-                <h6>รายการประเภทของครุภัณฑ์ทั้งหมด</h6>
-              </div>
-            }
-            badge={
-              <div>
-                <Button variant="info">Add</Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
-              </div>
-            }
-            body={itemTypeTable(itemTypes)}
-          />
-        }
-      />
-    </div>
+    <Content
+      content={
+        <Card
+          title={
+            <div>
+              <h2>Item Types</h2>
+              <h6>รายการประเภทของครุภัณฑ์ทั้งหมด</h6>
+            </div>
+          }
+          badge={
+            <div>
+              <Button variant="info">Add</Button>
+              &emsp;
+              <Button variant="danger">Delete</Button>
+            </div>
+          }
+          body={itemTypeTable(itemTypes)}
+        />
+      }
+    />
   );
 }
 

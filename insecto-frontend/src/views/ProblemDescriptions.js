@@ -25,28 +25,26 @@ export default function ProblemDescriptions() {
   }, []);
 
   return (
-    <div>
-      <Content
-        content={
-          <Card
-            title={
-              <div>
-                <h2>Problem Descriptions</h2>
-                <h6>รายการคำอธิบายปัญหาทั้งหมด</h6>
-              </div>
-            }
-            badge={
-              <div>
-                <Button variant="info">Add</Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
-              </div>
-            }
-            body={problemDesTable(problemDescs)}
-          />
-        }
-      />
-    </div>
+    <Content
+      content={
+        <Card
+          title={
+            <div>
+              <h2>Problem Descriptions</h2>
+              <h6>รายการคำอธิบายปัญหาทั้งหมด</h6>
+            </div>
+          }
+          badge={
+            <div>
+              <Button variant="info">Add</Button>
+              &emsp;
+              <Button variant="danger">Delete</Button>
+            </div>
+          }
+          body={problemDesTable(problemDescs)}
+        />
+      }
+    />
   );
 }
 

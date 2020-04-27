@@ -6,28 +6,26 @@ import _ from "lodash";
 import { Button, DropdownButton, ButtonGroup, Dropdown } from "react-bootstrap";
 export default function NotificationProblems() {
   return (
-    <div>
-      <Content
-        content={
-          <Card
-            title={
-              <div>
-                <h2>Notification Problems</h2>
-                <h6>รายการการแจ้งปัญหาทั้งหมด</h6>
-              </div>
-            }
-            badge={
-              <div>
-                <Button variant="info">Add</Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
-              </div>
-            }
-            body={notiProblemTable()}
-          />
-        }
-      />
-    </div>
+    <Content
+      content={
+        <Card
+          title={
+            <div>
+              <h2>Notification Problems</h2>
+              <h6>รายการการแจ้งปัญหาทั้งหมด</h6>
+            </div>
+          }
+          badge={
+            <div>
+              <Button variant="info">Add</Button>
+              &emsp;
+              <Button variant="danger">Delete</Button>
+            </div>
+          }
+          body={notiProblemTable()}
+        />
+      }
+    />
   );
 }
 

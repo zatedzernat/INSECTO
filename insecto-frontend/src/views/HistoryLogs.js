@@ -6,21 +6,19 @@ import _ from "lodash";
 
 export default function HistoryLogs() {
   return (
-    <div>
-      <Content
-        content={
-          <Card
-            title={
-              <div>
-                <h2>History Logs</h2>
-                <h6>รายการบันทึกประวัติทั้งหมด</h6>
-              </div>
-            }
-            body={historyLogTable()}
-          />
-        }
-      />
-    </div>
+    <Content
+      content={
+        <Card
+          title={
+            <div>
+              <h2>History Logs</h2>
+              <h6>รายการบันทึกประวัติทั้งหมด</h6>
+            </div>
+          }
+          body={historyLogTable()}
+        />
+      }
+    />
   );
 }
 

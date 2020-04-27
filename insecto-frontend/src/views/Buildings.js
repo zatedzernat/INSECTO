@@ -23,28 +23,26 @@ export default function Buildings() {
   }, []);
 
   return (
-    <div>
-      <Content
-        content={
-          <Card
-            title={
-              <div>
-                <h2>Buildings</h2>
-                <h6>รายการตึกทั้งหมด</h6>
-              </div>
-            }
-            badge={
-              <div>
-                <Button variant="info">Add</Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
-              </div>
-            }
-            body={buildingTable(buildings)}
-          />
-        }
-      />
-    </div>
+    <Content
+      content={
+        <Card
+          title={
+            <div>
+              <h2>Buildings</h2>
+              <h6>รายการตึกทั้งหมด</h6>
+            </div>
+          }
+          badge={
+            <div>
+              <Button variant="info">Add</Button>
+              &emsp;
+              <Button variant="danger">Delete</Button>
+            </div>
+          }
+          body={buildingTable(buildings)}
+        />
+      }
+    />
   );
 }
 

@@ -23,28 +23,26 @@ export default function Rooms() {
   }, []);
 
   return (
-    <div>
-      <Content
-        content={
-          <Card
-            title={
-              <div>
-                <h2>Rooms</h2>
-                <h6>รายการห้องทั้งหมด</h6>
-              </div>
-            }
-            badge={
-              <div>
-                <Button variant="info">Add</Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
-              </div>
-            }
-            body={roomTable(rooms)}
-          />
-        }
-      />
-    </div>
+    <Content
+      content={
+        <Card
+          title={
+            <div>
+              <h2>Rooms</h2>
+              <h6>รายการห้องทั้งหมด</h6>
+            </div>
+          }
+          badge={
+            <div>
+              <Button variant="info">Add</Button>
+              &emsp;
+              <Button variant="danger">Delete</Button>
+            </div>
+          }
+          body={roomTable(rooms)}
+        />
+      }
+    />
   );
 }
 

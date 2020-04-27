@@ -22,21 +22,19 @@ export default function Statuses() {
   }, []);
 
   return (
-    <div>
-      <Content
-        content={
-          <Card
-            title={
-              <div>
-                <h2>Statuses</h2>
-                <h6>รายการสถานะทั้งหมด</h6>
-              </div>
-            }
-            body={statusTable(statuses)}
-          />
-        }
-      />
-    </div>
+    <Content
+      content={
+        <Card
+          title={
+            <div>
+              <h2>Statuses</h2>
+              <h6>รายการสถานะทั้งหมด</h6>
+            </div>
+          }
+          body={statusTable(statuses)}
+        />
+      }
+    />
   );
 }
 
