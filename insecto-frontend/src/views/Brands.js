@@ -20,7 +20,7 @@ export default function Brands() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`); // set isLoading
       setBrands(res.data);
     } catch (error) {
       console.log(error);
@@ -38,7 +38,6 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brand/create`,
         brand
       );
-      //set error and loading
       if (res.data.error) {
         setIsError({
           error: true,
