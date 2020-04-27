@@ -8,16 +8,18 @@ import axios from "axios";
 
 export default function ItemTypes() {
   const [itemTypes, setItemTypes] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}item_types`);
+      setItemTypes(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}item_types`)
-      .then((response) => {
-        setItemTypes(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    fetchData();
   }, []);
 
   return (
@@ -47,23 +49,19 @@ export default function ItemTypes() {
 }
 
 const itemTypeTable = (data) => {
-  const heads = [
-    <input type="checkbox" />,
-    "#",
-    "Name",
-    "Created At",
-    "Updated At",
-    "Update By",
-    "Action",
-  ]; //get from api
-
   return (
     <Table striped hover>
       <thead>
         <tr>
-          {heads.map((item, i) => (
-            <th key={i}>{item}</th>
-          ))}
+          <th>
+            <input type="checkbox" />
+          </th>
+          <th>#</th>
+          <th>Name</th>
+          <th>Created At</th>
+          <th>Updated at</th>
+          <th>Update By</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>

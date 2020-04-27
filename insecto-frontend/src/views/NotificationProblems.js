@@ -32,19 +32,6 @@ export default function NotificationProblems() {
 }
 
 const notiProblemTable = () => {
-  const heads = [
-    "#",
-    "Item Code",
-    "Item Name",
-    "Problem Description",
-    "Room Code",
-    "Status",
-    "Created At",
-    "Updated At",
-    "Update By",
-    "Detail",
-  ];
-
   const data = [
     {
       item_id: 1,
@@ -62,9 +49,16 @@ const notiProblemTable = () => {
     <Table striped hover>
       <thead>
         <tr>
-          {heads.map((item, i) => (
-            <th key={i}>{item}</th>
-          ))}
+          <th>#</th>
+          <th>Item Code</th>
+          <th>Item Name</th>
+          <th>Problem Description</th>
+          <th>Room Code</th>
+          <th>Status</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Update By</th>
+          <th>Detail</th>
         </tr>
       </thead>
       <tbody>
@@ -84,7 +78,7 @@ const notiProblemTable = () => {
                 size="sm"
                 variant="warning"
               >
-              <Dropdown.Item eventKey="1">open</Dropdown.Item>
+                <Dropdown.Item eventKey="1">open</Dropdown.Item>
               </DropdownButton>
             </td>
             <td>{notiProblem.created_at}</td>

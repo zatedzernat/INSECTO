@@ -7,16 +7,18 @@ import axios from "axios";
 
 export default function Statuses() {
   const [statuses, setStatuses] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}statuses`);
+      setStatuses(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}statuses`)
-      .then((response) => {
-        setStatuses(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    fetchData();
   }, []);
 
   return (
@@ -39,15 +41,13 @@ export default function Statuses() {
 }
 
 const statusTable = (data) => {
-  const heads = ["#", "Name", "Description"]; //get from api
-
   return (
     <Table striped hover>
       <thead>
         <tr>
-          {heads.map((item, i) => (
-            <th key={i}>{item}</th>
-          ))}
+          <th>#</th>
+          <th>Name</th>
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>

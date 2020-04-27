@@ -8,16 +8,18 @@ import axios from "axios";
 
 export default function Items() {
   const [items, setItems] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}items`);
+      setItems(res.data.items);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}items`)
-      .then((response) => {
-        setItems(response.data.items);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    fetchData();
   }, []);
 
   return (
@@ -47,29 +49,25 @@ export default function Items() {
 }
 
 const itemTable = (data) => {
-  const heads = [
-    <input type="checkbox" />,
-    "#",
-    "Code",
-    "Name",
-    "Building",
-    "Room Name",
-    "Brand",
-    "Serial Number",
-    "Model",
-    "Created At",
-    "Updated At",
-    "Update By",
-    "Action",
-  ];
-
   return (
     <Table striped hover>
       <thead>
         <tr>
-          {heads.map((item, i) => (
-            <th key={i}>{item}</th>
-          ))}
+          <th>
+            <input type="checkbox" />
+          </th>
+          <th>#</th>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Building</th>
+          <th>Room Name</th>
+          <th>Brand</th>
+          <th>Serial Number</th>
+          <th>Model</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Update By</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>

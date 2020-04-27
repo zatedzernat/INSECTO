@@ -8,16 +8,18 @@ import { Button } from "react-bootstrap";
 
 export default function Rooms() {
   const [rooms, setRooms] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}rooms`);
+      setRooms(res.data.rooms);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}rooms`)
-      .then((response) => {
-        setRooms(response.data.rooms);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    fetchData();
   }, []);
 
   return (
@@ -47,25 +49,21 @@ export default function Rooms() {
 }
 
 const roomTable = (data) => {
-  const heads = [
-    <input type="checkbox" />,
-    "#",
-    "Code",
-    "Name",
-    "Building",
-    "Created At",
-    "Updated At",
-    "Update By",
-    "Action",
-  ];
-
   return (
     <Table striped hover>
       <thead>
         <tr>
-          {heads.map((item, i) => (
-            <th key={i}>{item}</th>
-          ))}
+          <th>
+            <input type="checkbox" />
+          </th>
+          <th>#</th>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Building</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Update By</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
