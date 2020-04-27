@@ -1,10 +1,11 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-export default function MyModal(props) {
+export default function FormModal(props) {
   return (
     <Modal
-      {...props}
+      show={props.show}
+      onHide={props.onHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
       animation={false} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
@@ -14,15 +15,17 @@ export default function MyModal(props) {
           {props.title}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>{props.body}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={props.onHide}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={props.onSubmit}>
-          Add
-        </Button>
-      </Modal.Footer>
+      <form method={props.method} onSubmit={props.onSubmit}>
+        <Modal.Body>{props.body}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={props.onHide}>
+            Close
+          </Button>
+          <Button type="submit" variant="primary">
+            {props.button}
+          </Button>
+        </Modal.Footer>
+      </form>
     </Modal>
   );
 }
