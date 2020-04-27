@@ -4,12 +4,13 @@ import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 import { Button } from "react-bootstrap";
-import API from "../API";
+import axios from "axios";
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([]);
   useEffect(() => {
-    API.get(`buildings`)
+    axios
+      .get(`${process.env.REACT_APP_API_URL}buildings`)
       .then((response) => {
         setBuildings(response.data);
       })
@@ -32,11 +33,11 @@ export default function Buildings() {
             }
             badge={
               <div>
-              <Button variant="info">Add</Button>
-              &emsp;
-              <Button variant="danger">Delete</Button>
+                <Button variant="info">Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
               </div>
-            } 
+            }
             body={buildingTable(buildings)}
           />
         }

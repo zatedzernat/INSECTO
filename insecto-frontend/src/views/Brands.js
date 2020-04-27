@@ -4,12 +4,14 @@ import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 import { Button } from "react-bootstrap";
-import API from "../API";
+import axios from "axios";
 
 export default function Brands() {
   const [brands, setBrands] = useState([]);
+  console.log("test" + process.env.API_URL);
   useEffect(() => {
-    API.get(`brands`)
+    axios
+      .get(`${process.env.REACT_APP_API_URL}brands`)
       .then((response) => {
         setBrands(response.data);
       })
@@ -32,11 +34,11 @@ export default function Brands() {
             }
             badge={
               <div>
-              <Button variant="info">Add</Button>
-              &emsp;
-              <Button variant="danger">Delete</Button>
+                <Button variant="info">Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
               </div>
-            } 
+            }
             body={brandTable(brands)}
           />
         }

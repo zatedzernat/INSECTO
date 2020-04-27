@@ -3,13 +3,14 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
-import API from "../API";
+import axios from "axios";
 import { Button } from "react-bootstrap";
 
 export default function ProblemDescriptions() {
   const [problemDescs, setProblemDescs] = useState([]);
   useEffect(() => {
-    API.get(`problem_descs`)
+    axios
+      .get(`${process.env.REACT_APP_API_URL}problem_descs`)
       .then((response) => {
         setProblemDescs(response.data.problems_descs);
       })
@@ -32,11 +33,11 @@ export default function ProblemDescriptions() {
             }
             badge={
               <div>
-              <Button variant="info">Add</Button>
-              &emsp;
-              <Button variant="danger">Delete</Button>
+                <Button variant="info">Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
               </div>
-            } 
+            }
             body={problemDesTable(problemDescs)}
           />
         }

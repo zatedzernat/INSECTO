@@ -3,12 +3,13 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
-import API from "../API";
+import axios from "axios";
 
 export default function Statuses() {
   const [statuses, setStatuses] = useState([]);
   useEffect(() => {
-    API.get(`statuses`)
+    axios
+      .get(`${process.env.REACT_APP_API_URL}statuses`)
       .then((response) => {
         setStatuses(response.data);
       })

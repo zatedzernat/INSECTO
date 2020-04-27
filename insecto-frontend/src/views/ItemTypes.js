@@ -4,12 +4,13 @@ import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 import { Button } from "react-bootstrap";
-import API from "../API";
+import axios from "axios";
 
 export default function ItemTypes() {
   const [itemTypes, setItemTypes] = useState([]);
   useEffect(() => {
-    API.get(`item_types`)
+    axios
+      .get(`${process.env.REACT_APP_API_URL}item_types`)
       .then((response) => {
         setItemTypes(response.data);
       })

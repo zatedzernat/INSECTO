@@ -3,13 +3,14 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
-import API from "../API";
+import axios from "axios";
 import { Button } from "react-bootstrap";
 
 export default function Rooms() {
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
-    API.get(`rooms`)
+    axios
+      .get(`${process.env.REACT_APP_API_URL}rooms`)
       .then((response) => {
         setRooms(response.data.rooms);
       })
@@ -32,11 +33,11 @@ export default function Rooms() {
             }
             badge={
               <div>
-              <Button variant="info">Add</Button>
-              &emsp;
-              <Button variant="danger">Delete</Button>
+                <Button variant="info">Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
               </div>
-            } 
+            }
             body={roomTable(rooms)}
           />
         }
