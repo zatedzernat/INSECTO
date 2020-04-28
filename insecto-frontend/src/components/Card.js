@@ -9,9 +9,7 @@ export default function Card(props) {
         <div className="card-tools">
           {/* Buttons, labels, and many other things can be placed here! */}
           {/* Here is a label for example */}
-          <span className="badge">
-            {props.badge}
-          </span>
+          <span className="badge">{props.badge}</span>
         </div>
         {/* /.card-tools */}
       </div>
@@ -19,6 +17,13 @@ export default function Card(props) {
       <div className="card-body ">{props.body}</div>
       {/* /.card-body */}
       <div className="card-footer">{props.footer}</div>
+      {props.loading === "overlay" ? (
+        <div className="overlay dark">
+          <i className="fas fa-2x fa-sync-alt fa-spin" />
+        </div>
+      ) : (
+        ""
+      )}
       {/* /.card-footer */}
     </div>
     // {/* /.card */}
