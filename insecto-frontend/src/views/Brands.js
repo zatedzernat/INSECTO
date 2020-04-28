@@ -13,15 +13,19 @@ export default function Brands() {
     error: false,
     message: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
   const [brand, setBrand] = useState({
     brand_id: 0,
     brand_name: "",
   });
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`); // set isLoading
       setBrands(res.data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +33,7 @@ export default function Brands() {
 
   useEffect(() => {
     fetchData();
-  }, [modalShow]);
+  }, [lastUpdate]);
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
@@ -43,6 +47,8 @@ export default function Brands() {
           error: true,
           message: res.data.message,
         });
+      } else {
+        setLastUpdate(res.data.time);
       }
     } catch (error) {
       console.log(error);
@@ -80,6 +86,7 @@ export default function Brands() {
               </div>
             }
             body={brandTable(brands)}
+            loading={isLoading ? "overlay" : ""}
           />
 
           <FormModal
@@ -125,6 +132,7 @@ const brandTable = (data) => {
           <th>Brand Name</th>
           <th>Created At</th>
           <th>Updated At</th>
+          <th>Update By</th>
           <th>Action</th>
         </tr>
       </thead>
