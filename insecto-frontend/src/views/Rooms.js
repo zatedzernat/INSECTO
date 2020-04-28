@@ -8,11 +8,14 @@ import { Button } from "react-bootstrap";
 
 export default function Rooms() {
   const [rooms, setRooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}rooms`);
       setRooms(res.data.rooms);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -40,6 +43,7 @@ export default function Rooms() {
             </div>
           }
           body={roomTable(rooms)}
+          loading={isLoading ? "overlay" : ""}
         />
       }
     />

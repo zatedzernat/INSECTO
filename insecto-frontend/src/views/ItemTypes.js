@@ -8,11 +8,14 @@ import axios from "axios";
 
 export default function ItemTypes() {
   const [itemTypes, setItemTypes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}item_types`);
       setItemTypes(res.data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -40,6 +43,7 @@ export default function ItemTypes() {
             </div>
           }
           body={itemTypeTable(itemTypes)}
+          loading={isLoading ? "overlay" : ""}
         />
       }
     />

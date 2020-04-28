@@ -7,11 +7,14 @@ import axios from "axios";
 
 export default function Statuses() {
   const [statuses, setStatuses] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}statuses`);
       setStatuses(res.data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -32,6 +35,7 @@ export default function Statuses() {
             </div>
           }
           body={statusTable(statuses)}
+          loading={isLoading ? "overlay" : ""}
         />
       }
     />

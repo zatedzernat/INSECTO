@@ -23,7 +23,7 @@ export default function Brands() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`); // set isLoading
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
       setBrands(res.data);
       setIsLoading(false);
     } catch (error) {

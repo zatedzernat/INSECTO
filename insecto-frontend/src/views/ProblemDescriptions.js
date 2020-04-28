@@ -8,13 +8,16 @@ import { Button } from "react-bootstrap";
 
 export default function ProblemDescriptions() {
   const [problemDescs, setProblemDescs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}problem_descs`
       );
       setProblemDescs(res.data.problems_descs);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -42,6 +45,7 @@ export default function ProblemDescriptions() {
             </div>
           }
           body={problemDesTable(problemDescs)}
+          loading={isLoading ? "overlay" : ""}
         />
       }
     />

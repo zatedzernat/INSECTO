@@ -8,11 +8,14 @@ import axios from "axios";
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}buildings`);
       setBuildings(res.data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -40,6 +43,7 @@ export default function Buildings() {
             </div>
           }
           body={buildingTable(buildings)}
+          loading={isLoading ? "overlay" : ""}
         />
       }
     />
