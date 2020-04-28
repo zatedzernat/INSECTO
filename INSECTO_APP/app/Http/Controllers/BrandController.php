@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Brand;
 use App\Http\Models\Item;
 use App\Http\Requests\BrandFormRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -46,10 +47,14 @@ class BrandController extends Controller
         if ($createFail) {
             return response()->json([
                 'error' => true,
-                'message' => 'add duplicate brand name'
+                'message' => 'add duplicate brand name',
+                'time' => Carbon::now()->format('H:i:s'),
             ]);
         }
-        return response()->json(['error' => false]);
+        return response()->json([
+            'error' => false,
+            'time' => Carbon::now()->format('H:i:s'),
+        ]);
     }
 
     /**
