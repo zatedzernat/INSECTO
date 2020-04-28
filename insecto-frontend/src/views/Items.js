@@ -21,7 +21,6 @@ export default function Items() {
   useEffect(() => {
     fetchData();
   }, []);
-
   return (
     <Content
       content={
@@ -77,11 +76,11 @@ const itemTable = (data) => {
             <td>{item.item_id}</td>
             <td>{item.item_code}</td>
             <td>{item.item_name}</td>
-            <td>{item.building_name}</td>
-            <td>{item.room_name}</td>
-            <td>{item.brand_name}</td>
-            <td>{item.serial_number}</td>
-            <td>{item.model}</td>
+            <td>{item.room.building.building_name}</td>
+            <td>{item.room.room_name}</td>
+            <td>{item.brand?.brand_name || "-"}</td>
+            <td>{item.serial_number ?? "-"}</td>
+            <td>{item.model ?? "-"}</td>
             <td>{item.created_at}</td>
             <td>{item.updated_at}</td>
             <td>{item.update_by}</td>

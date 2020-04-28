@@ -73,7 +73,7 @@ const roomTable = (data) => {
             <td>{room.room_id}</td>
             <td>{room.room_code}</td>
             <td>{room.room_name}</td>
-            <td>{room.building_name}</td>
+            <td>{room.building.building_name}</td>
             <td>{room.created_at}</td>
             <td>{room.updated_at}</td>
             <td>{room.update_by}</td>

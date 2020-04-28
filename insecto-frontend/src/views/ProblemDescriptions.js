@@ -60,7 +60,7 @@ const problemDesTable = (data) => {
           <th>Problem Description</th>
           <th>Created At</th>
           <th>Updated At</th>
-          <th>Updated By</th>
+          <th>Update By</th>
           <th>Action</th>
         </tr>
       </thead>
