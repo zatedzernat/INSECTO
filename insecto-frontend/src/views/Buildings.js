@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table } from "react-bootstrap";
 import _ from "lodash";
-import { Button } from "react-bootstrap";
+import { Table, Button, Alert } from "react-bootstrap";
 import axios from "axios";
+import FormModal from "../components/FormModal";
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([]);
+  const [modalShowAdd, setModalShowAdd] = useState(false);
+  const [isError, setIsError] = useState({
+    error: false,
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
+  const [building, setBuilding] = useState({
+    // building_id: 0,
+    building_code: 0,
+    building_name: "",
+  });
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -23,28 +34,109 @@ export default function Buildings() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [lastUpdate]);
 
+  const addHandleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}building/create`,
+        building
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setModalShowAdd(false);
+  };
   return (
     <Content
       content={
-        <Card
-          title={
-            <div>
-              <h2>Buildings</h2>
-              <h6>รายการตึกทั้งหมด</h6>
-            </div>
-          }
-          badge={
-            <div>
-              <Button variant="info">Add</Button>
-              &emsp;
-              <Button variant="danger">Delete</Button>
-            </div>
-          }
-          body={buildingTable(buildings)}
-          loading={isLoading ? "overlay" : ""}
-        />
+        <div>
+          {isError.error && (
+            <Alert
+              variant="danger"
+              onClose={() => setIsError(false)}
+              dismissible
+            >
+              {isError.message}
+            </Alert>
+          )}
+          <Card
+            title={
+              <div>
+                <h2>Buildings</h2>
+                <h6>รายการตึกทั้งหมด</h6>
+              </div>
+            }
+            badge={
+              <div>
+                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                  Add
+                </Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
+              </div>
+            }
+            body={buildingTable(buildings)}
+            loading={isLoading ? "overlay" : ""}
+          />
+          <FormModal
+            show={modalShowAdd}
+            onHide={() => setModalShowAdd(false)}
+            title="Add Building"
+            body={
+              <div className="form-group row">
+                <label className="col-sm-3 col-form-label">
+                  Building Code:
+                </label>
+                <div className="col-sm-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="building_code"
+                    onChange={(event) =>
+                      setBuilding({
+                        ...building,
+                        building_code: event.target.value,
+                      })
+                    }
+                    required
+                    autoFocus
+                  />
+                </div>
+
+                <label className="col-sm-3 col-form-label">
+                  Building Name:
+                </label>
+                <div className="col-sm-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="building_name"
+                    onChange={(event) =>
+                      setBuilding({
+                        ...building,
+                        building_name: event.target.value,
+                      })
+                    }
+                    required
+                  />
+                </div>
+              </div>
+            }
+            method="POST"
+            onSubmit={addHandleSubmit}
+            button="Add"
+          />
+        </div>
       }
     />
   );

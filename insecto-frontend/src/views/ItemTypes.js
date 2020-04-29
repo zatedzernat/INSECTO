@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table } from "react-bootstrap";
 import _ from "lodash";
-import { Button } from "react-bootstrap";
+import { Table, Button, Alert } from "react-bootstrap";
 import axios from "axios";
+import FormModal from "../components/FormModal";
 
 export default function ItemTypes() {
   const [itemTypes, setItemTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [modalShowAdd, setModalShowAdd] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
+  const [isError, setIsError] = useState({
+    error: false,
+    message: "",
+  });
+  const [itemType, setItemType] = useState({
+    type_name: "",
+  });
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -23,28 +31,89 @@ export default function ItemTypes() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [lastUpdate]);
+
+  const addHandleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}item_type/create`,
+        itemType
+      );
+      if (res.data.error) {
+        setIsError({
+          error: res.data.error,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setModalShowAdd(false);
+  };
 
   return (
     <Content
       content={
-        <Card
-          title={
-            <div>
-              <h2>Item Types</h2>
-              <h6>รายการประเภทของครุภัณฑ์ทั้งหมด</h6>
-            </div>
-          }
-          badge={
-            <div>
-              <Button variant="info">Add</Button>
-              &emsp;
-              <Button variant="danger">Delete</Button>
-            </div>
-          }
-          body={itemTypeTable(itemTypes)}
-          loading={isLoading ? "overlay" : ""}
-        />
+        <div>
+          {isError.error && (
+            <Alert
+              variant="danger"
+              onClose={() => setIsError(false)}
+              dismissible
+            >
+              {isError.message}
+            </Alert>
+          )}
+          <Card
+            title={
+              <div>
+                <h2>Item Types</h2>
+                <h6>รายการประเภทของครุภัณฑ์ทั้งหมด</h6>
+              </div>
+            }
+            badge={
+              <div>
+                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                  Add
+                </Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
+              </div>
+            }
+            body={itemTypeTable(itemTypes)}
+            loading={isLoading ? "overlay" : ""}
+          />
+          <FormModal
+            show={modalShowAdd}
+            onHide={() => setModalShowAdd(false)}
+            title="Add Item Type"
+            method="POST"
+            onSubmit={addHandleSubmit}
+            body={
+              <div className="form-group row">
+                <label className="col-sm-3 col-form-label">
+                  Item Type Name:
+                </label>
+                <div className="col-sm-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="type_name"
+                    onChange={(event) =>
+                      setItemType({ type_name: event.target.value })
+                    }
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+            }
+            button="Add"
+          />
+        </div>
       }
     />
   );
