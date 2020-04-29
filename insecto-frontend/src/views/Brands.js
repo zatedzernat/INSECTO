@@ -8,7 +8,7 @@ import FormModal from "../components/FormModal";
 
 export default function Brands() {
   const [brands, setBrands] = useState([]);
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShowAdd, setModalShowAdd] = useState(false);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -53,7 +53,7 @@ export default function Brands() {
     } catch (error) {
       console.log(error);
     }
-    setModalShow(false);
+    setModalShowAdd(false);
   };
 
   return (
@@ -78,7 +78,7 @@ export default function Brands() {
             }
             badge={
               <div>
-                <Button variant="info" onClick={() => setModalShow(true)}>
+                <Button variant="info" onClick={() => setModalShowAdd(true)}>
                   Add
                 </Button>
                 &emsp;
@@ -90,8 +90,8 @@ export default function Brands() {
           />
 
           <FormModal
-            show={modalShow}
-            onHide={() => setModalShow(false)}
+            show={modalShowAdd}
+            onHide={() => setModalShowAdd(false)}
             title="Add Brand"
             body={
               <div className="form-group row">
