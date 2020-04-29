@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Building;
 use App\Http\Models\Item;
 use App\Http\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuildingFormRequest;
 use Illuminate\Support\MessageBag;
@@ -32,8 +33,6 @@ class BuildingController extends Controller
     {
         $buildings = $this->building->findByCancelFlag('N');
         return $buildings;
-        /* return view('location.buildings')
-            ->with(compact('buildings')); */
     }
 
     /**
@@ -44,14 +43,20 @@ class BuildingController extends Controller
      */
     public function store(BuildingFormRequest $request)
     {
-        $errors = new MessageBag();
         $building_code = $request->building_code;
         $building_name = $request->building_name;
         $createFail = $this->building->createNewBuilding($building_code, $building_name);
         if ($createFail) {
-            $errors->add('dupBuilding','Already have this Building!!!');
+            return response()->json([
+                'error' => true,
+                'message' => 'Add Duplicate Building Name',
+                'time' => Carbon::now()->format('H:i:s'),
+            ]);
         }
-        return redirect()->route('buildings')->withErrors($errors);
+        return response()->json([
+            'error' => false,
+            'time' => Carbon::now()->format('H:i:s'),
+        ]);
     }
 
     /**
@@ -76,10 +81,10 @@ class BuildingController extends Controller
     {
         $errors = new MessageBag();
         $id = $request->input('building_id');
-        $name= $request->input('building_name');
+        $name = $request->input('building_name');
         $updateSuccess = $this->building->updateBuilding($id, $name);
         if (!$updateSuccess) {
-            $errors->add('upDupBuilding','Duplicate Building Name!!!');
+            $errors->add('upDupBuilding', 'Duplicate Building Name!!!');
         }
         return redirect()->route('buildings')->withErrors($errors);
     }
@@ -95,6 +100,6 @@ class BuildingController extends Controller
         $building = $this->building->deleteBuilding($building_id);
         $rooms = $this->room->deleteRooms($building);
         $items = $this->item->deleteItems('rooms', $rooms);
-        return redirect()->route('buildings')->with('del_building','Delete building '.$building->building_code.' success');
+        return redirect()->route('buildings')->with('del_building', 'Delete building ' . $building->building_code . ' success');
     }
 }

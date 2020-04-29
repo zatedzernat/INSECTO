@@ -6,6 +6,7 @@ use App\Http\Models\Item;
 use App\Http\Models\Item_Type;
 use App\Http\Models\Problem_Description;
 use App\Http\Requests\ItemTypeFormRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -44,13 +45,19 @@ class ItemTypeController extends Controller
      */
     public function store(ItemTypeFormRequest $request)
     {
-        $errors = new MessageBag();
         $name = $request->type_name;
         $createFail = $this->item_type->createNewItemType($name);
         if ($createFail) {
-            $errors->add('dupItemType', 'Already have this ItemType!!!');
+            return response()->json([
+                'error' => true,
+                'message' => 'Add Duplicate Type Name',
+                'time' => Carbon::now()->format('H:i:s'),
+            ]);
         }
-        return redirect()->route('item_types')->withErrors($errors);
+        return response()->json([
+            'error' => false,
+            'time' => Carbon::now()->format('H:i:s'),
+        ]);
     }
 
     /**
