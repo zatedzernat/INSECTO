@@ -40,14 +40,14 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BrandFormRequest $request)
+    public function store(BrandFormRequest $request) //todo check form validate to return error to frontend
     {
         $name = $request->brand_name;
         $createFail = $this->brand->createNewBrand($name);
         if ($createFail) {
             return response()->json([
                 'error' => true,
-                'message' => 'add duplicate brand name',
+                'message' => 'Add Duplicate Brand Name',
                 'time' => Carbon::now()->format('H:i:s'),
             ]);
         }
