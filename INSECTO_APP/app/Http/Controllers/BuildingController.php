@@ -16,6 +16,10 @@ class BuildingController extends Controller
     private $building;
     private $room;
     private $item;
+    private $error;
+    private $success;
+    private $message;
+    private $time;
 
     public function __construct()
     {
@@ -32,7 +36,7 @@ class BuildingController extends Controller
     public function index()
     {
         $buildings = $this->building->findByCancelFlag('N');
-        return $buildings;
+        return compact('buildings');
     }
 
     /**
@@ -47,15 +51,18 @@ class BuildingController extends Controller
         $building_name = $request->building_name;
         $createFail = $this->building->createNewBuilding($building_code, $building_name);
         if ($createFail) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Add Duplicate Building Name',
-                'time' => Carbon::now()->format('H:i:s'),
-            ]);
+            $this->error = true;
+            $this->message = 'Add Duplicate Building Name';
+        } else {
+            $this->success = true;
+            $this->message = 'Add Building \'' . $building_name . '\' Success';
         }
+        $this->time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => false,
-            'time' => Carbon::now()->format('H:i:s'),
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
         ]);
     }
 

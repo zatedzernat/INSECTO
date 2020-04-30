@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Status;
 use App\Http\Requests\StatusFormRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
 class StatusController extends Controller
 {
     private $status;
+    private $error;
+    private $success;
+    private $message;
+    private $time;
 
     public function __construct()
     {
@@ -23,9 +28,7 @@ class StatusController extends Controller
     public function index()
     {
         $statuses = $this->status->getAll();
-        return $statuses;
-        /* return view('noti_problem.statuses')
-            ->with(compact('statuses')); */
+        return compact('statuses');
     }
 
     /**
@@ -41,9 +44,19 @@ class StatusController extends Controller
         $description = $request->status_description;
         $createFail = $this->status->createNewStatus($name, $description);
         if ($createFail) {
-            $errors->add('dupStatus', 'Already have this status!!!');
+            $this->error = true;
+            $this->message = 'Add Duplicate Status Name';
+        } else {
+            $this->success = true;
+            $this->message = 'Add Status \'' . $name . '\' Success';
         }
-        return redirect()->route('statuses')->withErrors($errors);
+        $this->time = Carbon::now()->format('H:i:s');
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 
     /**

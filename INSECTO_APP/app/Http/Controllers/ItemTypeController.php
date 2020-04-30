@@ -16,6 +16,10 @@ class ItemTypeController extends Controller
     private $item_type;
     private $item;
     private $problem_desc;
+    private $error;
+    private $success;
+    private $message;
+    private $time;
 
     public function __construct()
     {
@@ -32,9 +36,7 @@ class ItemTypeController extends Controller
     public function index()
     {
         $item_types = $this->item_type->findByCancelFlag('N');
-        return $item_types;
-        /* return view('type_desc.item_types')
-            ->with(compact('item_types')); */
+        return compact('item_types');
     }
 
     /**
@@ -48,15 +50,18 @@ class ItemTypeController extends Controller
         $name = $request->type_name;
         $createFail = $this->item_type->createNewItemType($name);
         if ($createFail) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Add Duplicate Type Name',
-                'time' => Carbon::now()->format('H:i:s'),
-            ]);
+            $this->error = true;
+            $this->message = 'Add Duplicate Type Name';
+        } else {
+            $this->success = true;
+            $this->message = 'Add Type \'' . $name . '\' Success';
         }
+        $this->time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => false,
-            'time' => Carbon::now()->format('H:i:s'),
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
         ]);
     }
 

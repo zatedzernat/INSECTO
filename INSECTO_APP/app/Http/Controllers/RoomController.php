@@ -6,6 +6,7 @@ use App\Http\Models\Building;
 use App\Http\Models\Item;
 use App\Http\Models\Room;
 use App\Http\Requests\RoomFormRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -15,6 +16,10 @@ class RoomController extends Controller
     private $room;
     private $building;
     private $item;
+    private $error;
+    private $success;
+    private $message;
+    private $time;
 
     public function __construct()
     {
@@ -34,8 +39,6 @@ class RoomController extends Controller
         $rooms = $this->room->findByCancelFlag('N');
         $buildings = $this->building->findByCancelFlag('N');
         return compact('rooms', 'buildings');
-        /* return view('location.rooms')
-            ->with(compact('rooms', 'buildings')); */
     }
 
     /**
@@ -47,14 +50,24 @@ class RoomController extends Controller
     public function store(RoomFormRequest $request)
     {
         $errors = new MessageBag();
-        $room_name = $request->room_name;
         $room_code = $request->room_code;
+        $room_name = $request->room_name;
         $building_id = $request->building_id;
         $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id);
         if ($createFail) {
-            $errors->add('dupRoom', 'Already have this Room!!!');
+            $this->error = true;
+            $this->message = 'Add Duplicate Room Code';
+        } else {
+            $this->success = true;
+            $this->message = 'Add Room \'' . $room_name . '\' Success';
         }
-        return redirect()->route('rooms')->withErrors($errors);
+        $this->time = Carbon::now()->format('H:i:s');
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 
     /**
@@ -98,6 +111,6 @@ class RoomController extends Controller
     {
         $room = $this->room->deleteRoom($room_id);
         $items = $this->item->deleteItems('room', $room);
-        return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_code. '-'. $room->room_name . ' success');
+        return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_code . '-' . $room->room_name . ' success');
     }
 }

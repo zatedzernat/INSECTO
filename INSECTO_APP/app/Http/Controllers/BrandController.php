@@ -14,6 +14,10 @@ class BrandController extends Controller
 
     private $brand;
     private $item;
+    private $error;
+    private $success;
+    private $message;
+    private $time;
 
     public function __construct()
     {
@@ -29,9 +33,7 @@ class BrandController extends Controller
     public function index()
     {
         $brands = $this->brand->findByCancelFlag('N');
-        return $brands;
-        /* return view('item.brands')
-             ->with(compact('brands')); */
+        return compact('brands');
     }
 
     /**
@@ -45,15 +47,18 @@ class BrandController extends Controller
         $name = $request->brand_name;
         $createFail = $this->brand->createNewBrand($name);
         if ($createFail) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Add Duplicate Brand Name',
-                'time' => Carbon::now()->format('H:i:s'),
-            ]);
+            $this->error = true;
+            $this->message = 'Add Duplicate Brand Name';
+        } else {
+            $this->success = true;
+            $this->message = 'Add Brand \'' . $name . '\' Success';
         }
+        $this->time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => false,
-            'time' => Carbon::now()->format('H:i:s'),
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
         ]);
     }
 

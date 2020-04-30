@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Problem_Description;
 use App\Http\Models\Item_Type;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use App\Http\Requests\ProblemDescriptionFormRequest;
@@ -13,6 +14,10 @@ class ProblemDescriptionController extends Controller
 
     private $problem_desc;
     private $type;
+    private $error;
+    private $success;
+    private $message;
+    private $time;
 
     public function __construct()
     {
@@ -29,9 +34,7 @@ class ProblemDescriptionController extends Controller
     {
         $problems_descs = $this->problem_desc->findByCancelFlag('N');
         $types = $this->type->findByCancelFlag('N');
-        return compact('problems_descs','types');
-        /* return view('type_desc.problem_descs')
-            ->with(compact('problems_descs','types')); */
+        return compact('problems_descs', 'types');
     }
 
     /**
@@ -42,15 +45,23 @@ class ProblemDescriptionController extends Controller
      */
     public function store(ProblemDescriptionFormRequest $request)
     {
-        //todo check null or spacebar
-        $errors = new MessageBag();
         $problem_description = $request->problem_description;
         $type_id = $request->type_id;
         $createFail = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
         if ($createFail) {
-            $errors->add('dupProblem_Description','Already have this Problem Description!!!');
+            $this->error = true;
+            $this->message = 'Add Duplicate Problem Description and Type';
+        } else {
+            $this->success = true;
+            $this->message = 'Add Problem \'' . $problem_description . '\' Success';
         }
-        return redirect()->route('problem_descs')->withErrors($errors);
+        $this->time = Carbon::now()->format('H:i:s');
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 
     /**
@@ -75,11 +86,11 @@ class ProblemDescriptionController extends Controller
     {
         $errors = new MessageBag();
         $id = $request->input('problem_des_id');
-        $description= $request->input('problem_description');
-        $type_id= $request->input('type_id');
+        $description = $request->input('problem_description');
+        $type_id = $request->input('type_id');
         $updateSuccess = $this->problem_desc->updateProblemDesc($id, $description, $type_id);
         if (!$updateSuccess) {
-            $errors->add('upDupProbDesc','Duplicate Description and Type!!!');
+            $errors->add('upDupProbDesc', 'Duplicate Description and Type!!!');
         }
         return redirect()->route('problem_descs')->withErrors($errors);
     }
@@ -93,6 +104,6 @@ class ProblemDescriptionController extends Controller
     public function destroy(Request $request, $problem_des_id)
     {
         $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
-        return redirect()->route('problem_descs')->with('del_problem_desc','Delete problem_descs '.$problem_desc->problem_description.' in '.$problem_desc->item_type->type_name. ' success');
+        return redirect()->route('problem_descs')->with('del_problem_desc', 'Delete problem_descs ' . $problem_desc->problem_description . ' in ' . $problem_desc->item_type->type_name . ' success');
     }
 }

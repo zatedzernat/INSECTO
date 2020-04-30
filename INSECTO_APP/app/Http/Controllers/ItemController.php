@@ -8,6 +8,7 @@ use App\Http\Models\Item;
 use App\Http\Models\Item_Type;
 use App\Http\Models\Room;
 use App\Http\Requests\ItemFormRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -19,6 +20,10 @@ class ItemController extends Controller
     private $itemType;
     private $brand;
     private $building;
+    private $error;
+    private $success;
+    private $message;
+    private $time;
 
     public function __construct()
     {
@@ -43,8 +48,6 @@ class ItemController extends Controller
         $buildings = $this->building->findByCancelFlag('N');
 
         return compact('items', 'rooms', 'itemTypes', 'brands', 'buildings');
-        /* return view('item.items')
-            ->with(compact('items', 'rooms', 'itemTypes', 'brands', 'buildings')); */
     }
 
     /**
@@ -65,9 +68,19 @@ class ItemController extends Controller
         $model = $request->item_model;
         $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
         if ($createFail) {
-            $errors->add('dupItem', 'Already have this Item!!!');
+            $this->error = true;
+            $this->message = 'Add Duplicate Item Code';
+        } else {
+            $this->success = true;
+            $this->message = 'Add Item \'' . $itemName . '\' Success';
         }
-        return redirect()->route('items')->withErrors($errors);
+        $this->time = Carbon::now()->format('H:i:s');
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 
     /**
@@ -101,7 +114,7 @@ class ItemController extends Controller
         $serial = $request->input('serial_number');
         $model = $request->input('item_model');
         $updateSuccess = $this->item->updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial, $model);
-        
+
         return redirect()->route('items')->withErrors($errors);
     }
 
