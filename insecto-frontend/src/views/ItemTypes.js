@@ -35,6 +35,7 @@ export default function ItemTypes() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowAdd(false);
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}item_type/create`,
@@ -51,7 +52,6 @@ export default function ItemTypes() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowAdd(false);
   };
 
   return (
