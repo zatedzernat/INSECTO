@@ -38,7 +38,7 @@ export default function ItemTypes() {
     setModalShowAdd(false);
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}item_type/create`,
+        `${process.env.REACT_APP_API_URL}item_types`,
         itemType
       );
       if (res.data.error) {

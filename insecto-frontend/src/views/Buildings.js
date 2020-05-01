@@ -43,7 +43,7 @@ export default function Buildings() {
     setModalShowAdd(false);
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}building/create`,
+        `${process.env.REACT_APP_API_URL}buildings`,
         building
       );
       if (res.data.error) {

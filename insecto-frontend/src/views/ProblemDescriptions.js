@@ -54,7 +54,6 @@ export default function ProblemDescriptions() {
     setSelectType("- select type name -")
     setModalShowAdd(false);
     try {
-      console.log(JSON.stringify(problemDesc));
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}problem_descs`,
         problemDesc
