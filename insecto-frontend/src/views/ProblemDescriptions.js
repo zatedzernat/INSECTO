@@ -71,6 +71,47 @@ export default function ProblemDescriptions() {
     }
   };
 
+  const problemDesTable = (data) => {
+    return (
+      <Table striped hover>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
+            <th>#</th>
+            <th>Problem Description</th>
+            <th>Type</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Update By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_.map(data.problem_descs, (problem_desc) => (
+            <tr key={problem_desc.problem_des_id}>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td>{problem_desc.problem_des_id}</td>
+              <td>{problem_desc.problem_description}</td>
+              <td>{problem_desc.item_type.type_name}</td>
+              <td>{problem_desc.created_at}</td>
+              <td>{problem_desc.updated_at}</td>
+              <td>{problem_desc.update_by}</td>
+              <td>
+                <i className="fa fa-edit" />
+                &emsp;
+                <i className="fa fa-times" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+  
   return (
     <Content
       content={
@@ -108,6 +149,7 @@ export default function ProblemDescriptions() {
             onHide={() => setModalShowAdd(false)}
             title="Add Problem Description"
             method="POST"
+            close="Close"
             onSubmit={addHandleSubmit}
             body={
               <div>
@@ -167,43 +209,3 @@ export default function ProblemDescriptions() {
   );
 }
 
-const problemDesTable = (data) => {
-  return (
-    <Table striped hover>
-      <thead>
-        <tr>
-          <th>
-            <input type="checkbox" />
-          </th>
-          <th>#</th>
-          <th>Problem Description</th>
-          <th>Type</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-          <th>Update By</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {_.map(data.problem_descs, (problem_desc) => (
-          <tr key={problem_desc.problem_des_id}>
-            <td>
-              <input type="checkbox" />
-            </td>
-            <td>{problem_desc.problem_des_id}</td>
-            <td>{problem_desc.problem_description}</td>
-            <td>{problem_desc.item_type.type_name}</td>
-            <td>{problem_desc.created_at}</td>
-            <td>{problem_desc.updated_at}</td>
-            <td>{problem_desc.update_by}</td>
-            <td>
-              <i className="fa fa-edit" />
-              &emsp;
-              <i className="fa fa-times" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-  );
-};

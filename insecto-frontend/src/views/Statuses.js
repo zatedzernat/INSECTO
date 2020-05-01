@@ -23,6 +23,29 @@ export default function Statuses() {
     fetchData();
   }, []);
 
+  const statusTable = (data) => {
+    return (
+      <Table striped hover>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_.map(data.statuses, (status) => (
+            <tr key={status.status_id}>
+              <td>{status.status_id}</td>
+              <td>{status.status_name}</td>
+              <td>{status.status_description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+  
   return (
     <Content
       content={
@@ -41,26 +64,3 @@ export default function Statuses() {
     />
   );
 }
-
-const statusTable = (data) => {
-  return (
-    <Table striped hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {_.map(data.statuses, (status) => (
-          <tr key={status.status_id}>
-            <td>{status.status_id}</td>
-            <td>{status.status_name}</td>
-            <td>{status.status_description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-  );
-};

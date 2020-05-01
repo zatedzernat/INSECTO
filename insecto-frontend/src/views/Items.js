@@ -75,6 +75,60 @@ export default function Items() {
       console.log(error);
     }
   };
+
+  const itemTable = (data) => {
+    return (
+      <Table striped hover>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Building</th>
+            <th>Room</th>
+            <th>Brand</th>
+            <th>Serial Number</th>
+            <th>Model</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Update By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_.map(data.items, (item) => (
+            <tr key={item.item_id}>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td>{item.item_id}</td>
+              <td>{item.item_code}</td>
+              <td>{item.item_name}</td>
+              <td>{item.item_type.type_name}</td>
+              <td>{item.room.building.building_name}</td>
+              <td>{item.room.room_name}</td>
+              <td>{item.brand?.brand_name || "-"}</td>
+              <td>{item.serial_number ?? "-"}</td>
+              <td>{item.model ?? "-"}</td>
+              <td>{item.created_at}</td>
+              <td>{item.updated_at}</td>
+              <td>{item.update_by}</td>
+              <td>
+                <i className="fa fa-edit" />
+                &emsp;
+                <i className="fa fa-times" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+  
   return (
     <Content
       content={
@@ -112,6 +166,7 @@ export default function Items() {
             show={modalShowAdd}
             onHide={() => setModalShowAdd(false)}
             title="Add Brand"
+            close="Close"
             body={
               <>
                 <div className="form-group row">
@@ -297,56 +352,3 @@ export default function Items() {
     />
   );
 }
-
-const itemTable = (data) => {
-  return (
-    <Table striped hover>
-      <thead>
-        <tr>
-          <th>
-            <input type="checkbox" />
-          </th>
-          <th>#</th>
-          <th>Code</th>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Building</th>
-          <th>Room</th>
-          <th>Brand</th>
-          <th>Serial Number</th>
-          <th>Model</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-          <th>Update By</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {_.map(data.items, (item) => (
-          <tr key={item.item_id}>
-            <td>
-              <input type="checkbox" />
-            </td>
-            <td>{item.item_id}</td>
-            <td>{item.item_code}</td>
-            <td>{item.item_name}</td>
-            <td>{item.item_type.type_name}</td>
-            <td>{item.room.building.building_name}</td>
-            <td>{item.room.room_name}</td>
-            <td>{item.brand?.brand_name || "-"}</td>
-            <td>{item.serial_number ?? "-"}</td>
-            <td>{item.model ?? "-"}</td>
-            <td>{item.created_at}</td>
-            <td>{item.updated_at}</td>
-            <td>{item.update_by}</td>
-            <td>
-              <i className="fa fa-edit" />
-              &emsp;
-              <i className="fa fa-times" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-  );
-};

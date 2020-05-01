@@ -67,6 +67,49 @@ export default function Rooms() {
     }
   };
 
+  const roomTable = (data) => {
+    return (
+      <Table striped hover>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Building</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Update By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_.map(data.rooms, (room) => (
+            <tr key={room.room_id}>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td>{room.room_id}</td>
+              <td>{room.room_code}</td>
+              <td>{room.room_name}</td>
+              <td>{room.building.building_name}</td>
+              <td>{room.created_at}</td>
+              <td>{room.updated_at}</td>
+              <td>{room.update_by}</td>
+              <td>
+                <i className="fa fa-edit" />
+                &emsp;
+                <i className="fa fa-times" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+  
   return (
     <Content
       content={
@@ -91,6 +134,7 @@ export default function Rooms() {
           <FormModal
             show={modalShowAdd}
             onHide={() => setModalShowAdd(false)}
+            close="Close"
             title="Add Room"
             body={
               <>
@@ -163,46 +207,3 @@ export default function Rooms() {
     />
   );
 }
-
-const roomTable = (data) => {
-  return (
-    <Table striped hover>
-      <thead>
-        <tr>
-          <th>
-            <input type="checkbox" />
-          </th>
-          <th>#</th>
-          <th>Code</th>
-          <th>Name</th>
-          <th>Building</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-          <th>Update By</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {_.map(data.rooms, (room) => (
-          <tr key={room.room_id}>
-            <td>
-              <input type="checkbox" />
-            </td>
-            <td>{room.room_id}</td>
-            <td>{room.room_code}</td>
-            <td>{room.room_name}</td>
-            <td>{room.building.building_name}</td>
-            <td>{room.created_at}</td>
-            <td>{room.updated_at}</td>
-            <td>{room.update_by}</td>
-            <td>
-              <i className="fa fa-edit" />
-              &emsp;
-              <i className="fa fa-times" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-  );
-};
