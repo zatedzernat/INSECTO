@@ -18,53 +18,39 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('buildings', 'BuildingController@index')->name('buildings');
-Route::group(['prefix' => 'building'], function () {
-    Route::post('create', 'BuildingController@store');
-    Route::post('edit', 'BuildingController@update');
-    Route::post('del/{building_id}', 'BuildingController@destroy');
-});
+Route::post('buildings', 'BuildingController@store');
+Route::put('buildings/{building_id}', 'BuildingController@update');
+Route::delete('buildings/{building_id}', 'BuildingController@destroy');
 
 Route::get('rooms', 'RoomController@index')->name('rooms');
-Route::group(['prefix' => 'room'], function () {
-    Route::post('create', 'RoomController@store');
-    Route::post('edit', 'RoomController@update');
-    Route::post('del/{room_id}', 'RoomController@destroy');
-});
+Route::post('rooms', 'RoomController@store');
+Route::put('rooms/{room_id}', 'RoomController@update');
+Route::delete('rooms/{room_id}', 'RoomController@destroy');
 
 Route::get('brands', 'BrandController@index')->name('brands');
-Route::group(['prefix' => 'brand'], function () {
-    Route::post('create', 'BrandController@store');
-    Route::post('edit', 'BrandController@update');
-    Route::post('del/{brand_id}', 'BrandController@destroy');
-});
+Route::post('brands', 'BrandController@store');
+Route::put('brands/{brand_id}', 'BrandController@update');
+Route::delete('brands/{brand_id}', 'BrandController@destroy');
 
 Route::get('problem_descs', 'ProblemDescriptionController@index')->name('problem_descs');
-Route::group(['prefix' => 'problem_desc'], function () {
-    Route::post('create', 'ProblemDescriptionController@store');
-    Route::post('edit', 'ProblemDescriptionController@update');
-    Route::post('del/{problem_des_id}', 'ProblemDescriptionController@destroy');
-});
+Route::post('problem_descs', 'ProblemDescriptionController@store');
+Route::put('problem_descs/{problem_des_id}', 'ProblemDescriptionController@update');
+Route::delete('problem_descs/{problem_des_id}', 'ProblemDescriptionController@destroy');
 
 Route::get('items', 'ItemController@index')->name('items');
-Route::group(['prefix' => 'item'], function () {
-    Route::post('create', 'ItemController@store');
-    Route::post('edit', 'ItemController@update');
-    Route::post('del/{item_id}', 'ItemController@destroy');
-});
+Route::post('items', 'ItemController@store');
+Route::put('items/{item_id}', 'ItemController@update');
+Route::delete('items/{item_id}', 'ItemController@destroy');
 
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');
-Route::group(['prefix' => 'item_type'], function () {
-    Route::post('create', 'ItemTypeController@store');
-    Route::post('edit', 'ItemTypeController@update');
-    Route::post('del/{type_id}', 'ItemTypeController@destroy');
-});
+Route::post('item_types', 'ItemTypeController@store');
+Route::put('item_types/{type_id}', 'ItemTypeController@update');
+Route::delete('item_types/{type_id}', 'ItemTypeController@destroy');
 
 Route::get('statuses', 'StatusController@index')->name('statuses');
-Route::group(['prefix' => 'status'], function () {
-    Route::post('create', 'StatusController@store');
-    Route::post('edit', 'StatusController@update');
-    Route::post('del/{status_id}', 'StatusController@destroy');
-});
+Route::post('statuses', 'StatusController@store');
+Route::put('statuses/{status_id}', 'StatusController@update');
+Route::delete('statuses/{status_id}', 'StatusController@destroy');
 
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
 
