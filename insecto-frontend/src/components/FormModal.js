@@ -19,7 +19,7 @@ export default function FormModal(props) {
         <Modal.Body>{props.body}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.onHide}>
-            Close
+            {props.close}
           </Button>
           <Button type="submit" variant="primary">
             {props.button}
