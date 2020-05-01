@@ -106,11 +106,11 @@ class Problem_Description extends Model implements Auditable
             $prob_desc->problem_description = $desc;
             $prob_desc->type_id = $type_id;
             $prob_desc->save();
-            return true;
+            return false;
         }
         //todo set updateby ตาม LDAP
         // $brand->setUpdateBy('ชื่อ user ตามLDAP');
-        return false;
+        return true;
     }
 
     public function deleteProblemDesc($problem_des_id)

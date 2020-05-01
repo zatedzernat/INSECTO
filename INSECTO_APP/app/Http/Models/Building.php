@@ -93,9 +93,9 @@ class Building extends Model implements Auditable
             $building = $this->findByID($building_id);
             $building->building_name = $name;
             $building->save();
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public function deleteBuilding($building_id)
