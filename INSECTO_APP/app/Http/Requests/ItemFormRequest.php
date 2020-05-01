@@ -27,7 +27,7 @@ class ItemFormRequest extends FormRequest
             'item_code' => 'required',
             'item_name' => 'required',
             'room_id' => 'required',
-            'item_type_id' => 'required'
+            'type_id' => 'required'
         ];
     }
 
@@ -37,7 +37,7 @@ class ItemFormRequest extends FormRequest
             'item_code.required' => 'Item Code is required!',
             'item_name.required' => 'Item Name is required!',
             'room_id.required' => 'Room ID is required!',
-            'item_type_id.required' => 'Type ID is required!',
+            'type_id.required' => 'Type ID is required!',
         ];
     }
 }
