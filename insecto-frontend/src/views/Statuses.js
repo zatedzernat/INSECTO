@@ -13,7 +13,7 @@ export default function Statuses() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}statuses`);
-      setStatuses(res.data);
+      setStatuses(res.data.statuses);
       setIsLoading(false);
     } catch (error) {
       console.log(error);

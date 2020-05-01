@@ -22,7 +22,7 @@ export default function ItemTypes() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}item_types`);
-      setItemTypes(res.data);
+      setItemTypes(res.data.item_types);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
