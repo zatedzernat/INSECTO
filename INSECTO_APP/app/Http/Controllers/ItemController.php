@@ -10,7 +10,6 @@ use App\Http\Models\Room;
 use App\Http\Requests\ItemFormRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 
 class ItemController extends Controller
 {
@@ -32,6 +31,9 @@ class ItemController extends Controller
         $this->itemType = new Item_Type();
         $this->brand = new Brand();
         $this->building = new Building();
+        $this->error = false;
+        $this->success = false;
+        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -58,14 +60,13 @@ class ItemController extends Controller
      */
     public function store(ItemFormRequest $request)
     {
-        $errors = new MessageBag();
         $itemCode = $request->item_code;
         $itemName = $request->item_name;
         $roomID = $request->room_id;
-        $typeID = $request->item_type_id;
+        $typeID = $request->type_id;
         $brand_id = $request->brand_id;
         $serial = $request->serial_number;
-        $model = $request->item_model;
+        $model = $request->model;
         $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
         if ($createFail) {
             $this->error = true;
@@ -74,13 +75,7 @@ class ItemController extends Controller
             $this->success = true;
             $this->message = 'Add Item \'' . $itemName . '\' Success';
         }
-        $this->time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
-        ]);
+        return  $this->serverResponse();
     }
 
     /**
@@ -101,21 +96,20 @@ class ItemController extends Controller
      * @param  \App\Http\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(ItemFormRequest $request/*, Item $item*/)
+    public function update(ItemFormRequest $request, $item_id)
     {
-        $errors = new MessageBag();
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('item_id');
-        // $code = $request->input('item_code');
         $item_name = $request->input('item_name');
         $room_id = $request->input('room_id');
-        $type_id = $request->input('item_type_id');
+        $type_id = $request->input('type_id');
         $brand_id = $request->input('brand_id');
         $serial = $request->input('serial_number');
-        $model = $request->input('item_model');
-        $updateSuccess = $this->item->updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial, $model);
-
-        return redirect()->route('items')->withErrors($errors);
+        $model = $request->input('model');
+        $updateFail = $this->item->updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial, $model);
+        $this->success = true;
+        $this->messgae = 'Update item \'' . $item_name . '\' success';
+        return  $this->serverResponse();
     }
 
     /**
@@ -127,6 +121,18 @@ class ItemController extends Controller
     public function destroy(Request $request, $item_id)
     {
         $item = $this->item->deleteItem($item_id);
-        return redirect()->route('items')->with('del_item', 'Delete item ' . $item->item_code . ' success');
+        $this->message = 'Delete item \'' . $item->item_code . '\' success';
+        $this->success = true;
+        return $this->serverResponse();
+    }
+
+    public function serverResponse()
+    {
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 }

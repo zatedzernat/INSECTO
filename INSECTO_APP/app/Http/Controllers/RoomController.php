@@ -8,7 +8,6 @@ use App\Http\Models\Room;
 use App\Http\Requests\RoomFormRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 
 class RoomController extends Controller
 {
@@ -26,6 +25,9 @@ class RoomController extends Controller
         $this->room = new Room();
         $this->building = new Building();
         $this->item = new Item();
+        $this->error = false;
+        $this->success = false;
+        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -49,7 +51,6 @@ class RoomController extends Controller
      */
     public function store(RoomFormRequest $request)
     {
-        $errors = new MessageBag();
         $room_code = $request->room_code;
         $room_name = $request->room_name;
         $building_id = $request->building_id;
@@ -61,13 +62,7 @@ class RoomController extends Controller
             $this->success = true;
             $this->message = 'Add Room \'' . $room_name . '\' Success';
         }
-        $this->time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
-        ]);
+        return $this->serverResponse();
     }
 
     /**
@@ -88,17 +83,15 @@ class RoomController extends Controller
      * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function update(RoomFormRequest $request, Room $room)
+    public function update(RoomFormRequest $request, $room_id)
     {
-        $errors = new MessageBag();
-        //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('room_id');
-        // $room_code = $request->input('room_code');
         $room_name = $request->input('room_name');
         $building_id = $request->input('building_id');
-        $updateSuccess = $this->room->updateRoom($id, $room_name, $building_id);
-
-        return redirect()->route('rooms')->withErrors($errors);
+        $updateFail = $this->room->updateRoom($id, $room_name, $building_id);
+        $this->success = true;
+        $this->message = 'Update room \'' . $room_name . '\' success';
+        return  $this->serverResponse();
     }
 
     /**
@@ -111,6 +104,17 @@ class RoomController extends Controller
     {
         $room = $this->room->deleteRoom($room_id);
         $items = $this->item->deleteItems('room', $room);
-        return redirect()->route('rooms')->with('del_room', 'Delete room ' . $room->room_code . '-' . $room->room_name . ' success');
+        $this->message = 'Delete room \'' . $room->room_name . '\' success';
+        return $this->serverResponse();
+    }
+
+    public function serverResponse()
+    {
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 }

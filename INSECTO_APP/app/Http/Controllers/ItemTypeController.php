@@ -8,7 +8,6 @@ use App\Http\Models\Problem_Description;
 use App\Http\Requests\ItemTypeFormRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 
 class ItemTypeController extends Controller
 {
@@ -26,6 +25,9 @@ class ItemTypeController extends Controller
         $this->item_type = new Item_Type();
         $this->item = new Item();
         $this->problem_desc = new Problem_Description();
+        $this->error = false;
+        $this->success = false;
+        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -56,13 +58,7 @@ class ItemTypeController extends Controller
             $this->success = true;
             $this->message = 'Add Type \'' . $name . '\' Success';
         }
-        $this->time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
-        ]);
+        return  $this->serverResponse();
     }
 
     /**
@@ -83,19 +79,19 @@ class ItemTypeController extends Controller
      * @param  \App\Http\Models\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
-    public function update(ItemTypeFormRequest $request)
+    public function update(ItemTypeFormRequest $request, $type_id)
     {
-        $errors = new MessageBag();
-        //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('type_id');
         $name = $request->input('type_name');
-        $updateSuccess = $this->item_type->updateItemType($id, $name);
-        if (!$updateSuccess) {
-            $errors->add('upDupItemType', 'Duplicate Type Name!!!');
+        $updateFail = $this->item_type->updateItemType($id, $name);
+        if ($updateFail) {
+            $this->error = true;
+            $this->message = 'Edit duplicate type name';
+        } else {
+            $this->success = true;
+            $this->message = 'Update type \'' . $name . '\' success';
         }
-        //todo set update_by ตาม LDAP
-        // $temType->setUpdateBy('ชื่อ user ตามLDAP');
-        return redirect()->route('item_types')->withErrors($errors);
+        return  $this->serverResponse();
     }
 
     /**
@@ -109,6 +105,18 @@ class ItemTypeController extends Controller
         $item_type = $this->item_type->deleteItemType($type_id);
         $items = $this->item->deleteItems('item_type', $item_type);
         $problem_desc = $this->problem_desc->deleteProblemDescs($item_type);
-        return redirect()->route('item_types')->with('del_itemType', 'Delete type ' . $item_type->type_name . ' success');
+        $this->message = 'Delete type \'' . $item_type->type_name . '\' success';
+        $this->success = true;
+        return $this->serverResponse();
+    }
+
+    public function serverResponse()
+    {
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 }

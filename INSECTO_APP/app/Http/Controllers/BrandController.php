@@ -7,7 +7,6 @@ use App\Http\Models\Item;
 use App\Http\Requests\BrandFormRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 
 class BrandController extends Controller
 {
@@ -23,6 +22,9 @@ class BrandController extends Controller
     {
         $this->brand = new Brand();
         $this->item = new Item();
+        $this->error = false;
+        $this->success = false;
+        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -42,24 +44,18 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BrandFormRequest $request) //todo check form validate to return error to frontend
+    public function store(BrandFormRequest $request)
     {
         $name = $request->brand_name;
         $createFail = $this->brand->createNewBrand($name);
         if ($createFail) {
             $this->error = true;
-            $this->message = 'Add Duplicate Brand Name';
+            $this->message = 'Add duplicate brand name!';
         } else {
             $this->success = true;
-            $this->message = 'Add Brand \'' . $name . '\' Success';
+            $this->message = 'Add brand \'' . $name . '\' success';
         }
-        $this->time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
-        ]);
+        return  $this->serverResponse();
     }
 
     /**
@@ -80,18 +76,19 @@ class BrandController extends Controller
      * @param  \App\Http\Models\Brand $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(BrandFormRequest $request)
+    public function update(BrandFormRequest $request, $brand_id)
     {
-        $errors = new MessageBag();
-        //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('brand_id');
         $name = $request->input('brand_name');
-        $updateSuccess = $this->brand->updateBrand($id, $name);
-        if (!$updateSuccess) {
-            $errors->add('upDupBrand', 'Duplicate Brand Name!!!');
+        $updateFail = $this->brand->updateBrand($id, $name);
+        if ($updateFail) {
+            $this->error = true;
+            $this->message = 'Edit duplicate brand name!';
+        } else {
+            $this->success = true;
+            $this->message = 'Update brand \'' . $name . '\' success';
         }
-
-        return redirect()->route('brands')->withErrors($errors);
+        return  $this->serverResponse();
     }
 
     /**
@@ -104,6 +101,18 @@ class BrandController extends Controller
     {
         $brand = $this->brand->deleteBrand($brand_id);
         $items = $this->item->setNullInItem($brand);
-        return redirect()->route('brands')->with('del_brand', 'Delete brand ' . $brand->brand_name . ' success');
+        $this->message = 'Delete brand \'' . $brand->brand_name . '\' success';
+        $this->success = true;
+        return $this->serverResponse();
+    }
+
+    public function serverResponse()
+    {
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 }

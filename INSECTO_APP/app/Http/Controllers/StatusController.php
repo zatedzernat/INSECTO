@@ -19,6 +19,9 @@ class StatusController extends Controller
     public function __construct()
     {
         $this->status = new Status();
+        $this->error = false;
+        $this->success = false;
+        $this->time = Carbon::now()->format('H:i:s');
     }
     /**
      * Display a listing of the resource.
@@ -50,13 +53,7 @@ class StatusController extends Controller
             $this->success = true;
             $this->message = 'Add Status \'' . $name . '\' Success';
         }
-        $this->time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
-        ]);
+        return $this->serverResponse();
     }
 
     /**
@@ -84,11 +81,15 @@ class StatusController extends Controller
         $id = $request->input('status_id');
         $status_name = $request->input('status_name');
         $status_description = $request->input('status_description');
-        $updateSuccess = $this->status->updateStatus($id, $status_name, $status_description);
-        if (!$updateSuccess) {
-            $errors->add('upDupStatus', 'Duplicate Status Name!!!');
+        $updateFail = $this->status->updateStatus($id, $status_name, $status_description);
+        if ($updateFail) {
+            $this->error = true;
+            $this->message = 'Edit duplicate status name!';
+        } else {
+            $this->success = true;
+            $this->message = 'Update statue \'' . $status_name . '\' success';
         }
-        return redirect()->route('statuses')->withErrors($errors);
+        return $this->serverResponse();
     }
 
     /**
@@ -99,10 +100,21 @@ class StatusController extends Controller
      */
     public function destroy(Status $status, $status_id)
     {
-        // * not real delete but change cancel flag to Y
         $status = $this->status->findByID($status_id);
         $name = $status->status_name;
         $status->delete();
-        return redirect()->route('statuses')->with('del_status', 'Delete status ' . $name . ' success');
+        $this->message = 'Delete status \'' . $name . '\' success';
+        $this->success = true;
+        return $this->serverResponse();
+    }
+
+    public function serverResponse()
+    {
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 }
