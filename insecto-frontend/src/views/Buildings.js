@@ -7,7 +7,7 @@ import axios from "axios";
 import FormModal from "../components/FormModal";
 
 export default function Buildings() {
-  const [buildings, setBuildings] = useState([]);
+  const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [idDel, setIdDel] = useState("");
@@ -27,7 +27,7 @@ export default function Buildings() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}buildings`);
-      setBuildings(res.data.buildings);
+      setData(res.data.buildings);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -40,9 +40,10 @@ export default function Buildings() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowAdd(false);
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}building/create`,
+        `${process.env.REACT_APP_API_URL}buildings`,
         building
       );
       if (res.data.error) {
@@ -56,14 +57,13 @@ export default function Buildings() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowAdd(false);
   };
 
   const deleteHandleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}building/${idDel}`,
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}buildings/${idDel}`,
         idDel
       );
       if (res.data.error) {
@@ -152,13 +152,14 @@ export default function Buildings() {
                 <Button variant="danger">Delete</Button>
               </div>
             }
-            body={buildingTable(buildings)}
+            body={buildingTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal
             show={modalShowAdd}
             onHide={() => setModalShowAdd(false)}
             title="Add Building"
+            close="Close"
             body={
               <div className="form-group row">
                 <label className="col-sm-3 col-form-label">

@@ -89,12 +89,12 @@ class Brand extends Model implements Auditable
             $brand = $this->findByID($brand_id);
             $brand->brand_name = $brand_name;
             $brand->save();
-            return true;
+            return false;
         }
         //todo set updateby ตาม LDAP
         // $brand->setUpdateBy('ชื่อ user ตามLDAP');
 
-        return false;
+        return true;
     }
 
     public function deleteBrand($brand_id)

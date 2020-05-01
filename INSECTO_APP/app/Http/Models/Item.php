@@ -146,7 +146,8 @@ class Item extends Model implements Auditable
 
     public function updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial_number, $model)
     {
-
+        // $findName = Item::where('item_name', $item_name)->first();
+        // if(is_null($findName) || $findName->item_id = $id) {
         $item = $this->findByID($id);
         $item->item_name = $item_name;
         $item->room_id = $room_id;
@@ -157,8 +158,9 @@ class Item extends Model implements Auditable
         $item->save();
         //todo set updateby ตาม LDAP
         // $item->setUpdateBy('ชื่อ user ตามLDAP');
-
-        return true;
+        return false;
+        // }
+        // return true;
     }
 
     public function setNullInItem($brand)

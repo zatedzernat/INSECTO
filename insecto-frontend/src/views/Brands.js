@@ -7,7 +7,7 @@ import _ from "lodash";
 import FormModal from "../components/FormModal";
 
 export default function Brands() {
-  const [brands, setBrands] = useState([]);
+  const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [isError, setIsError] = useState({
@@ -26,7 +26,7 @@ export default function Brands() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
-      setBrands(res.data.brands);
+      setData(res.data.brands);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -39,9 +39,10 @@ export default function Brands() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowAdd(false);
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}brand/create`,
+        `${process.env.REACT_APP_API_URL}brands`,
         brand
       );
       if (res.data.error) {
@@ -55,14 +56,13 @@ export default function Brands() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowAdd(false);
   };
 
   const deleteHandleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}brand/del/${idDel}`,
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}brands/${idDel}`,
         idDel
       );
       if (res.data.error) {
@@ -149,7 +149,7 @@ export default function Brands() {
                 <Button variant="danger">Delete</Button>
               </div>
             }
-            body={brandTable(brands)}
+            body={brandTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
 
@@ -202,5 +202,4 @@ export default function Brands() {
     />
   );
 }
-
 

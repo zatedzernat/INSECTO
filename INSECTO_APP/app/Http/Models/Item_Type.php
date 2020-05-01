@@ -92,9 +92,9 @@ class Item_Type extends Model implements Auditable
             $itemtype = $this->findByID($type_id);
             $itemtype->type_name = $name;
             $itemtype->save();
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public function deleteItemType($type_id)

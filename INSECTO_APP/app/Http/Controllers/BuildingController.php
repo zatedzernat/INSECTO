@@ -8,7 +8,6 @@ use App\Http\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuildingFormRequest;
-use Illuminate\Support\MessageBag;
 
 class BuildingController extends Controller
 {
@@ -26,6 +25,9 @@ class BuildingController extends Controller
         $this->building = new Building();
         $this->room = new Room();
         $this->item = new Item();
+        $this->error = false;
+        $this->success = false;
+        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -57,13 +59,7 @@ class BuildingController extends Controller
             $this->success = true;
             $this->message = 'Add Building \'' . $building_name . '\' Success';
         }
-        $this->time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
-        ]);
+        return  $this->serverResponse();
     }
 
     /**
@@ -86,14 +82,17 @@ class BuildingController extends Controller
      */
     public function update(BuildingFormRequest $request, Building $building)
     {
-        $errors = new MessageBag();
         $id = $request->input('building_id');
         $name = $request->input('building_name');
-        $updateSuccess = $this->building->updateBuilding($id, $name);
-        if (!$updateSuccess) {
-            $errors->add('upDupBuilding', 'Duplicate Building Name!!!');
+        $updateFail = $this->building->updateBuilding($id, $name);
+        if ($updateFail) {
+            $this->error = true;
+            $this->message = 'Edit duplicate building name';
+        } else {
+            $this->success = true;
+            $this->message = 'Update building \'' . $name . '\' success';
         }
-        return redirect()->route('buildings')->withErrors($errors);
+        return  $this->serverResponse();
     }
 
     /**
@@ -107,6 +106,18 @@ class BuildingController extends Controller
         $building = $this->building->deleteBuilding($building_id);
         $rooms = $this->room->deleteRooms($building);
         $items = $this->item->deleteItems('rooms', $rooms);
-        return redirect()->route('buildings')->with('del_building', 'Delete building ' . $building->building_code . ' success');
+        $this->message = 'Delete building \'' . $building->building_name . '\' success';
+        $this->success = true;
+        return $this->serverResponse();
+    }
+
+    public function serverResponse()
+    {
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 }

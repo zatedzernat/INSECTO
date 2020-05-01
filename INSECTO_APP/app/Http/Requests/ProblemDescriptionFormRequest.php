@@ -32,15 +32,8 @@ class ProblemDescriptionFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'problem_description' => 'enter problem description',
-            'type_id' => 'enter type'
+            'problem_description.required' => 'Problem Description is required!',
+            'type_id.required' => 'Type ID is required!',
         ];
     }
 }

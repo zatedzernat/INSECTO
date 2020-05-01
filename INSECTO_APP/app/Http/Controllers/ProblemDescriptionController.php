@@ -6,7 +6,6 @@ use App\Http\Models\Problem_Description;
 use App\Http\Models\Item_Type;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 use App\Http\Requests\ProblemDescriptionFormRequest;
 
 class ProblemDescriptionController extends Controller
@@ -23,6 +22,9 @@ class ProblemDescriptionController extends Controller
     {
         $this->problem_desc = new Problem_Description();
         $this->type = new Item_Type();
+        $this->error = false;
+        $this->success = false;
+        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -55,13 +57,7 @@ class ProblemDescriptionController extends Controller
             $this->success = true;
             $this->message = 'Add Problem \'' . $problem_description . '\' Success';
         }
-        $this->time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
-        ]);
+        return  $this->serverResponse();
     }
 
     /**
@@ -82,17 +78,20 @@ class ProblemDescriptionController extends Controller
      * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
-    public function update(ProblemDescriptionFormRequest $request, Problem_Description $problem_desc)
+    public function update(ProblemDescriptionFormRequest $request, $problem_des_id)
     {
-        $errors = new MessageBag();
         $id = $request->input('problem_des_id');
         $description = $request->input('problem_description');
         $type_id = $request->input('type_id');
-        $updateSuccess = $this->problem_desc->updateProblemDesc($id, $description, $type_id);
-        if (!$updateSuccess) {
-            $errors->add('upDupProbDesc', 'Duplicate Description and Type!!!');
+        $updateFail = $this->problem_desc->updateProblemDesc($id, $description, $type_id);
+        if ($updateFail) {
+            $this->error = true;
+            $this->message = 'Edit duplicate description and type';
+        } else {
+            $this->success = true;
+            $this->message = 'Update description \'' . $description . '\' success';
         }
-        return redirect()->route('problem_descs')->withErrors($errors);
+        return  $this->serverResponse();
     }
 
     /**
@@ -104,6 +103,18 @@ class ProblemDescriptionController extends Controller
     public function destroy(Request $request, $problem_des_id)
     {
         $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
-        return redirect()->route('problem_descs')->with('del_problem_desc', 'Delete problem_descs ' . $problem_desc->problem_description . ' in ' . $problem_desc->item_type->type_name . ' success');
+        $this->message = 'Delete description \'' . $problem_desc->problem_description . '\' success';
+        $this->success = true;
+        return $this->serverResponse();
+    }
+
+    public function serverResponse()
+    {
+        return response()->json([
+            'error' => $this->error,
+            'success' => $this->success,
+            'message' => $this->message,
+            'time' => $this->time
+        ]);
     }
 }

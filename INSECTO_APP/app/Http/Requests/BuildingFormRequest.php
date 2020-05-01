@@ -32,15 +32,7 @@ class BuildingFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'building_code' => 'enter building code',
-            'building_name' => 'enter building name',
+            'building_code.required' => 'Building Code is required!',
         ];
     }
 }

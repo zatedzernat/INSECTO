@@ -7,22 +7,25 @@ import axios from "axios";
 import FormModal from "../components/FormModal";
 
 export default function ItemTypes() {
-  const [itemTypes, setItemTypes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(0);
+  const [modalShowDel, setModalShowDel] = useState(false);
+  const [idDel, setIdDel] = useState("");
   const [isError, setIsError] = useState({
     error: false,
     message: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
   const [itemType, setItemType] = useState({
     type_name: "",
   });
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}item_types`);
-      setItemTypes(res.data.item_types);
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -38,7 +41,7 @@ export default function ItemTypes() {
     setModalShowAdd(false);
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}item_type/create`,
+        `${process.env.REACT_APP_API_URL}item_types`,
         itemType
       );
       if (res.data.error) {
@@ -53,6 +56,69 @@ export default function ItemTypes() {
       console.log(error);
     }
   };
+
+  const deleteHandleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}item_types/${idDel}`,
+        idDel
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setModalShowDel(false);
+  };
+
+  const itemTypeTable = (data) => {
+    return (
+      <Table striped hover>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
+            <th>#</th>
+            <th>Name</th>
+            <th>Created At</th>
+            <th>Updated at</th>
+            <th>Update By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_.map(data.item_types, (itemType) => (
+            <tr key={itemType.type_id}>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td>{itemType.type_id}</td>
+              <td>{itemType.type_name}</td>
+              <td>{itemType.created_at}</td>
+              <td>{itemType.updated_at}</td>
+              <td>{itemType.update_by}</td>
+              <td>
+                <i className="fa fa-edit" />
+                &emsp;
+                <span  onClick={ () => {setModalShowDel(true); setIdDel(itemType.type_id);}}>
+                <i className="fa fa-times" />
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+  
 
   return (
     <Content
@@ -83,7 +149,7 @@ export default function ItemTypes() {
                 <Button variant="danger">Delete</Button>
               </div>
             }
-            body={itemTypeTable(itemTypes)}
+            body={itemTypeTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal
@@ -91,6 +157,7 @@ export default function ItemTypes() {
             onHide={() => setModalShowAdd(false)}
             title="Add Item Type"
             method="POST"
+            close="Close"
             onSubmit={addHandleSubmit}
             body={
               <div className="form-group row">
@@ -113,47 +180,24 @@ export default function ItemTypes() {
             }
             button="Add"
           />
+          <FormModal
+            show={modalShowDel}
+            onHide={() => setModalShowDel(false)}
+            title="Are you sure that you want to delete?"
+            body={
+              <div className="form-group row">
+                <label className="col-sm-3 col-form-label">{idDel}</label>
+                <div className="col-sm-9">
+                </div>
+              </div>
+            }
+            method="POST"
+            onSubmit={deleteHandleSubmit}
+            button="Yes"
+            close="No"
+          />
         </div>
       }
     />
   );
 }
-
-const itemTypeTable = (data) => {
-  return (
-    <Table striped hover>
-      <thead>
-        <tr>
-          <th>
-            <input type="checkbox" />
-          </th>
-          <th>#</th>
-          <th>Name</th>
-          <th>Created At</th>
-          <th>Updated at</th>
-          <th>Update By</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {_.map(data, (itemType) => (
-          <tr key={itemType.type_id}>
-            <td>
-              <input type="checkbox" />
-            </td>
-            <td>{itemType.type_id}</td>
-            <td>{itemType.type_name}</td>
-            <td>{itemType.created_at}</td>
-            <td>{itemType.updated_at}</td>
-            <td>{itemType.update_by}</td>
-            <td>
-              <i className="fa fa-edit" />
-              &emsp;
-              <i className="fa fa-times" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-  );
-};
