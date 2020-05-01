@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table } from "react-bootstrap";
+import { Table} from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
 
 export default function Statuses() {
-  const [statuses, setStatuses] = useState([]);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}statuses`);
-      setStatuses(res.data);
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -34,10 +33,11 @@ export default function Statuses() {
               <h6>รายการสถานะทั้งหมด</h6>
             </div>
           }
-          body={statusTable(statuses)}
+          body={statusTable(data)}
           loading={isLoading ? "overlay" : ""}
         />
       }
+
     />
   );
 }
@@ -53,7 +53,7 @@ const statusTable = (data) => {
         </tr>
       </thead>
       <tbody>
-        {_.map(data, (status) => (
+        {_.map(data.statuses, (status) => (
           <tr key={status.status_id}>
             <td>{status.status_id}</td>
             <td>{status.status_name}</td>

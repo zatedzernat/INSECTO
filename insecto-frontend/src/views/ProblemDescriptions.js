@@ -7,7 +7,6 @@ import {
   Alert,
   DropdownButton,
   Dropdown,
-  ButtonGroup,
 } from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
@@ -20,7 +19,7 @@ export default function ProblemDescriptions() {
   const [lastUpdate, setLastUpdate] = useState(0);
   const [selectType, setSelectType] = useState("- select type name -");
   const [problemDesc, setProblemDesc] = useState({
-    // problem_des_id: 0,
+    problem_des_id: 0,
     problem_description: "",
     type_id: "",
   });
@@ -52,11 +51,12 @@ export default function ProblemDescriptions() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
+    setSelectType("- select type name -")
     setModalShowAdd(false);
     try {
       console.log(JSON.stringify(problemDesc));
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}problem_desc/create`,
+        `${process.env.REACT_APP_API_URL}problem_descs`,
         problemDesc
       );
       if (res.data.error) {

@@ -7,7 +7,7 @@ import _ from "lodash";
 import FormModal from "../components/FormModal";
 
 export default function Brands() {
-  const [brands, setBrands] = useState([]);
+  const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [isError, setIsError] = useState({
     error: false,
@@ -24,7 +24,7 @@ export default function Brands() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
-      setBrands(res.data);
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -37,9 +37,10 @@ export default function Brands() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowAdd(false);
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}brand/create`,
+        `${process.env.REACT_APP_API_URL}brands`,
         brand
       );
       if (res.data.error) {
@@ -53,7 +54,6 @@ export default function Brands() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowAdd(false);
   };
 
   return (
@@ -85,7 +85,7 @@ export default function Brands() {
                 <Button variant="danger">Delete</Button>
               </div>
             }
-            body={brandTable(brands)}
+            body={brandTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
 
@@ -137,7 +137,7 @@ const brandTable = (data) => {
         </tr>
       </thead>
       <tbody>
-        {_.map(data, (brand) => (
+        {_.map(data.brands, (brand) => (
           <tr key={brand.brand_id}>
             <td>
               <input type="checkbox" />

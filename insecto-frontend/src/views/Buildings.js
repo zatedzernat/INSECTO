@@ -7,7 +7,7 @@ import axios from "axios";
 import FormModal from "../components/FormModal";
 
 export default function Buildings() {
-  const [buildings, setBuildings] = useState([]);
+  const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [isError, setIsError] = useState({
     error: false,
@@ -25,7 +25,9 @@ export default function Buildings() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}buildings`);
-      setBuildings(res.data);
+      setData({
+        buildings: res.data.buildings
+      });
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -38,6 +40,7 @@ export default function Buildings() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowAdd(false);
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}building/create`,
@@ -54,7 +57,6 @@ export default function Buildings() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowAdd(false);
   };
   return (
     <Content
@@ -85,7 +87,7 @@ export default function Buildings() {
                 <Button variant="danger">Delete</Button>
               </div>
             }
-            body={buildingTable(buildings)}
+            body={buildingTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal
@@ -160,7 +162,7 @@ const buildingTable = (data) => {
         </tr>
       </thead>
       <tbody>
-        {_.map(data, (building) => (
+        {_.map(data.buildings, (building) => (
           <tr key={building.building_id}>
             <td>
               <input type="checkbox" />

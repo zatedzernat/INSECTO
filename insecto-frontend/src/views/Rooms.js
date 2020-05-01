@@ -1,50 +1,164 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table } from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import {
+  Table,
+  Button,
+  Alert,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
+import FormModal from "../components/FormModal";
 
 export default function Rooms() {
-  const [rooms, setRooms] = useState([]);
+  const [data, setData] = useState([]);
+  const [modalShowAdd, setModalShowAdd] = useState(false);
+  const [isError, setIsError] = useState({
+    error: false,
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
+  const [selectBuilding, setSelectBuilding] = useState(
+    "- select building name -"
+  );
+  const [lastUpdate, setLastUpdate] = useState(0);
+  const [room, setRoom] = useState({
+    room_id: 0,
+    room_code: "",
+    room_name: "",
+    building_id: 0,
+  });
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}rooms`);
-      setRooms(res.data.rooms);
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [lastUpdate]);
+
+  const addHandleSubmit = async (event) => {
+    event.preventDefault();
+    setSelectBuilding("- select building name -")
+    setModalShowAdd(false);
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}rooms`,
+        room
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Content
       content={
-        <Card
-          title={
-            <div>
-              <h2>Rooms</h2>
-              <h6>รายการห้องทั้งหมด</h6>
-            </div>
-          }
-          badge={
-            <div>
-              <Button variant="info">Add</Button>
-              &emsp;
-              <Button variant="danger">Delete</Button>
-            </div>
-          }
-          body={roomTable(rooms)}
-          loading={isLoading ? "overlay" : ""}
-        />
+        <div>
+          <Card
+            title={
+              <div>
+                <h2>Rooms</h2>
+                <h6>รายการห้องทั้งหมด</h6>
+              </div>
+            }
+            badge={
+              <div>
+                <Button variant="info" onClick={() => setModalShowAdd(true)}>Add</Button>
+                &emsp;
+                <Button variant="danger">Delete</Button>
+              </div>
+            }
+            body={roomTable(data)}
+            loading={isLoading ? "overlay" : ""}
+          />
+          <FormModal
+            show={modalShowAdd}
+            onHide={() => setModalShowAdd(false)}
+            title="Add Room"
+            body={
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Room Code:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="room_code"
+                      onChange={(event) =>
+                        setRoom({ room_code: event.target.value })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Room Name:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="room_name"
+                      onChange={(event) =>
+                        setRoom({ ...room, room_name: event.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Building:</label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectBuilding}
+                      id="building"
+                      size="sm"
+                      variant="warning"
+                    >
+                      {_.map(data.buildings, (building) => (
+                        <Dropdown.Item
+                          key={building.building_id}
+                          eventKey={building.building_id}
+                          onSelect={(eventKey) => (
+                            setRoom({
+                              ...room,
+                              building_id: eventKey,
+                            }),
+                            setSelectBuilding(building.building_name)
+                          )}
+                        >
+                          {building.building_name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  </div>
+                </div>
+              </>
+            }
+            method="POST"
+            onSubmit={addHandleSubmit}
+            button="Add"
+          />
+        </div>
       }
     />
   );
@@ -69,7 +183,7 @@ const roomTable = (data) => {
         </tr>
       </thead>
       <tbody>
-        {_.map(data, (room) => (
+        {_.map(data.rooms, (room) => (
           <tr key={room.room_id}>
             <td>
               <input type="checkbox" />

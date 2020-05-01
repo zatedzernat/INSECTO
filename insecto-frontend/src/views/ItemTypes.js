@@ -7,7 +7,7 @@ import axios from "axios";
 import FormModal from "../components/FormModal";
 
 export default function ItemTypes() {
-  const [itemTypes, setItemTypes] = useState([]);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
@@ -22,7 +22,7 @@ export default function ItemTypes() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}item_types`);
-      setItemTypes(res.data);
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -83,7 +83,7 @@ export default function ItemTypes() {
                 <Button variant="danger">Delete</Button>
               </div>
             }
-            body={itemTypeTable(itemTypes)}
+            body={itemTypeTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal
@@ -136,7 +136,7 @@ const itemTypeTable = (data) => {
         </tr>
       </thead>
       <tbody>
-        {_.map(data, (itemType) => (
+        {_.map(data.item_types, (itemType) => (
           <tr key={itemType.type_id}>
             <td>
               <input type="checkbox" />
