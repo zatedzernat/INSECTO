@@ -39,15 +39,8 @@ class SendProblemRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'problem_des_id' => 'select problem',
-            'problem_description' => 'enter problem description',
+            'problem_des_id.required' => 'Probelm Des ID is required!',
+            'problem_description.required' => 'Probelm Description is required!',
         ];
     }
 }

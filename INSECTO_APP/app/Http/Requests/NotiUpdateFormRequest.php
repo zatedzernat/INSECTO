@@ -40,15 +40,8 @@ class NotiUpdateFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'help_desk_code' => 'enter Help Desk Code',
-            'note' => 'enter Note',
+            'help_desk_code.required' => 'Help Desk Code is required!',
+            'note.required' => 'Note is required!',
         ];
     }
 }

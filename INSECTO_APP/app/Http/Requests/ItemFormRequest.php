@@ -34,17 +34,10 @@ class ItemFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'item_code' => 'enter item code',
-            'item_name' => 'enter item name',
-            'room_id' => 'enter room name',
-            'item_type_id' => 'enter type name'
+            'item_code.required' => 'Item Code is required!',
+            'item_name.required' => 'Item Name is required!',
+            'room_id.required' => 'Room ID is required!',
+            'item_type_id.required' => 'Type ID is required!',
         ];
     }
 }

@@ -31,14 +31,7 @@ class StatusFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'status_name' => 'enter status name',
+            'status_name.required' => 'Status Name is required!',
         ];
     }
 }

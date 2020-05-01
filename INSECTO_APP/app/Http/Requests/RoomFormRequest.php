@@ -33,16 +33,9 @@ class RoomFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'room_code' => 'enter room code',
-            'room_name' => 'enter room name',
-            'building_id' => 'enter building name',
+            'room_code.required' => 'Room Code is required!',
+            'room_name.required' => 'Room Name is required!',
+            'building_id.required' => 'Building ID is required!',
         ];
     }
 }

@@ -31,14 +31,7 @@ class ItemTypeFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'type_name' => 'enter type name',
+            'type_name.required' => 'Type Name is required!',
         ];
     }
 }

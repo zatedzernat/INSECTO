@@ -31,14 +31,7 @@ class BrandFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Please :attribute !!',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'brand_name' => 'enter brand name',
+            'brand_name.required' => 'Brand Name is required!',
         ];
     }
 }
