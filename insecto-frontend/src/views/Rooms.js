@@ -6,7 +6,6 @@ import axios from "axios";
 import {
   Table,
   Button,
-  Alert,
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
@@ -15,14 +14,13 @@ import FormModal from "../components/FormModal";
 export default function Rooms() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
+  const [modalShowDel, setModalShowDel] = useState(false);
+  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [selectBuilding, setSelectBuilding] = useState(
-    "- select building name -"
-  );
   const [lastUpdate, setLastUpdate] = useState(0);
   const [room, setRoom] = useState({
     room_id: 0,
@@ -30,6 +28,9 @@ export default function Rooms() {
     room_name: "",
     building_id: 0,
   });
+  const [selectBuilding, setSelectBuilding] = useState(
+    "- select building name -"
+  );
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -53,6 +54,27 @@ export default function Rooms() {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}rooms`,
         room
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}items/${objectDel.room_id}`,
+        objectDel.room_id
       );
       if (res.data.error) {
         setIsError({
@@ -101,7 +123,12 @@ export default function Rooms() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <i className="fa fa-times" />
+                <span  onClick={ () => {
+                  setModalShowDel(true); 
+                  setObjectDel(room);}}
+                >
+                  <i className="fa fa-times" />
+                </span>
               </td>
             </tr>
           ))}
@@ -201,6 +228,21 @@ export default function Rooms() {
             method="POST"
             onSubmit={addHandleSubmit}
             button="Add"
+          />
+          <FormModal
+            show={modalShowDel}
+            onHide={() => setModalShowDel(false)}
+            title="Do you confirm to delete?"
+            body={
+              <div className="form-group col-form-label">
+                <p>"{objectDel.room_code} - {objectDel.room_name}"</p>
+                <p className="text-danger">*** All items that relate to {objectDel.room_code} will be delete too ***</p>
+              </div>
+            }
+            method="POST"
+            onSubmit={deleteHandleSubmit}
+            button="Yes"
+            close="No"
           />
         </div>
       }

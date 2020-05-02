@@ -10,13 +10,13 @@ export default function Brands() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
+  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [idDel, setIdDel] = useState("");
   const [brand, setBrand] = useState({
     brand_id: 0,
     brand_name: "",
@@ -60,10 +60,11 @@ export default function Brands() {
 
   const deleteHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}brands/${idDel}`,
-        idDel
+        `${process.env.REACT_APP_API_URL}brands/${objectDel.brand_id}`,
+        objectDel.brand_id
       );
       if (res.data.error) {
         setIsError({
@@ -76,7 +77,6 @@ export default function Brands() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowDel(false);
   };
 
   const brandTable = (data) => {
@@ -109,7 +109,10 @@ export default function Brands() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {setModalShowDel(true); setIdDel(brand.brand_id);}}>
+                <span  onClick={ () => {
+                  setModalShowDel(true); 
+                  setObjectDel(brand);}}
+                >
                   <i className="fa fa-times" />
                 </span>
               </td>
@@ -185,10 +188,9 @@ export default function Brands() {
             onHide={() => setModalShowDel(false)}
             title="Are you sure that you want to delete?"
             body={
-              <div className="form-group row">
-                <label className="col-sm-3 col-form-label">{idDel}</label>
-                <div className="col-sm-9">
-                </div>
+              <div className="form-group col-form-label">
+                <p>"{objectDel.brand_name}"</p>
+                <p className="text-danger">*** All items which are {objectDel.brand_name} be set to null ***</p>
               </div>
             }
             method="POST"

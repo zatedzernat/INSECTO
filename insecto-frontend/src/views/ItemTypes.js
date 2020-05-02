@@ -10,7 +10,7 @@ export default function ItemTypes() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
-  const [idDel, setIdDel] = useState("");
+  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -59,10 +59,11 @@ export default function ItemTypes() {
 
   const deleteHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}item_types/${idDel}`,
-        idDel
+        `${process.env.REACT_APP_API_URL}item_types/${objectDel.type_id}`,
+        objectDel.type_id
       );
       if (res.data.error) {
         setIsError({
@@ -75,7 +76,6 @@ export default function ItemTypes() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowDel(false);
   };
 
   const itemTypeTable = (data) => {
@@ -108,8 +108,11 @@ export default function ItemTypes() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {setModalShowDel(true); setIdDel(itemType.type_id);}}>
-                <i className="fa fa-times" />
+                <span  onClick={ () => {
+                  setModalShowDel(true); 
+                  setObjectDel(itemType);}}
+                >
+                  <i className="fa fa-times" />
                 </span>
               </td>
             </tr>
@@ -183,12 +186,11 @@ export default function ItemTypes() {
           <FormModal
             show={modalShowDel}
             onHide={() => setModalShowDel(false)}
-            title="Are you sure that you want to delete?"
+            title="Do you confirm to delete?"
             body={
-              <div className="form-group row">
-                <label className="col-sm-3 col-form-label">{idDel}</label>
-                <div className="col-sm-9">
-                </div>
+              <div className="form-group col-form-label">
+                <p>"{objectDel.type_name}"</p>
+                <p className="text-danger">*** All items and problem descriptions that relate {objectDel.type_name} will be delete too ***</p>
               </div>
             }
             method="POST"

@@ -8,6 +8,7 @@ import axios from "axios";
 export default function Statuses() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -45,7 +46,7 @@ export default function Statuses() {
       </Table>
     );
   };
-  
+
   return (
     <Content
       content={

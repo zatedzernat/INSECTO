@@ -10,7 +10,7 @@ export default function Buildings() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
-  const [idDel, setIdDel] = useState("");
+  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -61,10 +61,11 @@ export default function Buildings() {
 
   const deleteHandleSubmit = async (event) => {
     event.preventDefault();
+    setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}buildings/${idDel}`,
-        idDel
+        `${process.env.REACT_APP_API_URL}buildings/${objectDel.building_id}`,
+        objectDel.building_id
       );
       if (res.data.error) {
         setIsError({
@@ -77,7 +78,6 @@ export default function Buildings() {
     } catch (error) {
       console.log(error);
     }
-    setModalShowDel(false);
   };
 
   const buildingTable = (data) => {
@@ -112,7 +112,10 @@ export default function Buildings() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {setModalShowDel(true); setIdDel(building.building_id);}}>
+                <span  onClick={ () => {
+                  setModalShowDel(true); 
+                  setObjectDel(building);}}
+                >
                   <i className="fa fa-times" />
                 </span>
                 </td>
@@ -207,12 +210,11 @@ export default function Buildings() {
           <FormModal
             show={modalShowDel}
             onHide={() => setModalShowDel(false)}
-            title="Are you sure that you want to delete?"
+            title="Do you confirm to delete?"
             body={
-              <div className="form-group row">
-                <label className="col-sm-3 col-form-label">{idDel}</label>
-                <div className="col-sm-9">
-                </div>
+              <div className="form-group col-form-label">
+                <p>"{objectDel.building_code} - {objectDel.building_name}"</p>
+                <p className="text-danger">*** All rooms and items that relate to {objectDel.building_name} will be delete too ***</p>
               </div>
             }
             method="POST"

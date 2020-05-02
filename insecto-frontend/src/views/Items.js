@@ -15,6 +15,8 @@ import FormModal from "../components/FormModal";
 export default function Items() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
+  const [modalShowDel, setModalShowDel] = useState(false);
+  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -50,6 +52,7 @@ export default function Items() {
   useEffect(() => {
     fetchData();
   }, [lastUpdate]);
+
   const addHandleSubmit = async (event) => {
     console.log(JSON.stringify(item));
     event.preventDefault();
@@ -62,6 +65,27 @@ export default function Items() {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}items`,
         item
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}items/${objectDel.item_id}`,
+        objectDel.item_id
       );
       if (res.data.error) {
         setIsError({
@@ -120,7 +144,12 @@ export default function Items() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <i className="fa fa-times" />
+                <span  onClick={ () => {
+                  setModalShowDel(true); 
+                  setObjectDel(item);}}
+                >
+                  <i className="fa fa-times" />
+                </span>
               </td>
             </tr>
           ))}
@@ -168,7 +197,7 @@ export default function Items() {
             title="Add Brand"
             close="Close"
             body={
-              <>
+              <div>
                 <div className="form-group row">
                   <label className="col-sm-3 col-form-label">Item Code:</label>
                   <div className="col-sm-9">
@@ -341,11 +370,25 @@ export default function Items() {
                     />
                   </div>
                 </div>
-              </>
+              </div>
             }
             method="POST"
             onSubmit={addHandleSubmit}
             button="Add"
+          />
+          <FormModal
+            show={modalShowDel}
+            onHide={() => setModalShowDel(false)}
+            title="Do you confirm to delete?"
+            body={
+              <div className="form-group col-form-label">
+                <p>"{objectDel.item_code} - {objectDel.item_name}"</p>
+              </div>
+            }
+            method="POST"
+            onSubmit={deleteHandleSubmit}
+            button="Yes"
+            close="No"
           />
         </div>
       }

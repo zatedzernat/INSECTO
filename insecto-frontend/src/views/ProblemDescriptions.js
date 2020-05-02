@@ -14,21 +14,24 @@ import FormModal from "../components/FormModal";
 
 export default function ProblemDescriptions() {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [modalShowAdd, setModalShowAdd] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(0);
-  const [selectType, setSelectType] = useState("- select type name -");
-  const [problemDesc, setProblemDesc] = useState({
-    problem_des_id: 0,
-    problem_description: "",
-    type_id: "",
-  });
+  const [modalShowDel, setModalShowDel] = useState(false);
+  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     success: false,
     message: "",
     time: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
+  const [problemDesc, setProblemDesc] = useState({
+    problem_des_id: 0,
+    problem_description: "",
+    type_id: "",
+  });
+  const [selectType, setSelectType] = useState("- select type name -");
+  
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -54,6 +57,27 @@ export default function ProblemDescriptions() {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}problem_descs`,
         problemDesc
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}items/${objectDel.problem_des_id}`,
+        objectDel.problem_des_id
       );
       if (res.data.error) {
         setIsError({
@@ -100,7 +124,12 @@ export default function ProblemDescriptions() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <i className="fa fa-times" />
+                <span  onClick={ () => {
+                  setModalShowDel(true); 
+                  setObjectDel(problem_desc);}}
+                >
+                  <i className="fa fa-times" />
+                </span>
               </td>
             </tr>
           ))}
@@ -199,6 +228,20 @@ export default function ProblemDescriptions() {
               </div>
             }
             button="Add"
+          />
+          <FormModal
+            show={modalShowDel}
+            onHide={() => setModalShowDel(false)}
+            title="Do you confirm to delete?"
+            body={
+              <div className="form-group col-form-label">
+                <p>"{objectDel.problem_description}"</p>
+              </div>
+            }
+            method="POST"
+            onSubmit={deleteHandleSubmit}
+            button="Yes"
+            close="No"
           />
         </div>
       }
