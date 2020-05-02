@@ -26,7 +26,7 @@ export default function Brands() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
-      setData(res.data.brands);
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -96,7 +96,7 @@ export default function Brands() {
           </tr>
         </thead>
         <tbody>
-          {_.map(data, (brand) => (
+          {_.map(data.brands, (brand) => (
             <tr key={brand.brand_id}>
               <td>
                 <input type="checkbox" />

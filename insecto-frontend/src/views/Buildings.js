@@ -27,7 +27,7 @@ export default function Buildings() {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}buildings`);
-      setData(res.data.buildings);
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -98,7 +98,7 @@ export default function Buildings() {
           </tr>
         </thead>
         <tbody>
-          {_.map(data, (building) => (
+          {_.map(data.buildings, (building) => (
             <tr key={building.building_id}>
               <td>
                 <input type="checkbox" />

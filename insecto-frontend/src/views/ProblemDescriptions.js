@@ -35,10 +35,7 @@ export default function ProblemDescriptions() {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}problem_descs`
       );
-      setData({
-        problem_descs: res.data.problems_descs,
-        types: res.data.types,
-      });
+      setData(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -111,7 +108,7 @@ export default function ProblemDescriptions() {
       </Table>
     );
   };
-  
+
   return (
     <Content
       content={
