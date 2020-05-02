@@ -197,7 +197,7 @@ Items
                                             {{$brand->brand_name}}</option>
                                         @endforeach
                                         @else
-                                        <option>-- select brand --</option>
+                                        <option value="">-- select brand --</option>
                                         @foreach ($brands as $brand)
                                         <option value="{{$brand->brand_id}}"> {{$brand->brand_name}}</option>
                                         @endforeach
