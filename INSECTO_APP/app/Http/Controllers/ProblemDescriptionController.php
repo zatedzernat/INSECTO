@@ -36,7 +36,7 @@ class ProblemDescriptionController extends Controller
     {
         $problems_descs = $this->problem_desc->findByCancelFlag('N');
         $types = $this->type->findByCancelFlag('N');
-        return compact('problems_descs', 'types');
+        return compact('problem_descs', 'types');
     }
 
     /**
