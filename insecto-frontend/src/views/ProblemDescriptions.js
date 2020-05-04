@@ -76,7 +76,7 @@ export default function ProblemDescriptions() {
     setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}items/${objectDel.problem_des_id}`,
+        `${process.env.REACT_APP_API_URL}problem_descs/${objectDel.problem_des_id}`,
         objectDel.problem_des_id
       );
       if (res.data.error) {
