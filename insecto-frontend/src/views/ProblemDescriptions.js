@@ -41,7 +41,7 @@ export default function ProblemDescriptions() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -67,7 +67,7 @@ export default function ProblemDescriptions() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -88,7 +88,7 @@ export default function ProblemDescriptions() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 

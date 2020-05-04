@@ -28,7 +28,7 @@ export default function ItemTypes() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -53,7 +53,7 @@ export default function ItemTypes() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -74,7 +74,7 @@ export default function ItemTypes() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 

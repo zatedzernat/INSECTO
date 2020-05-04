@@ -16,7 +16,7 @@ export default function Statuses() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 

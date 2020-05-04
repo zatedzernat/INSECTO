@@ -46,7 +46,7 @@ export default function Items() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function Items() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+        console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -96,7 +96,7 @@ export default function Items() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+        console.log(JSON.stringify(error.response.data.errors));
     }
   };
 

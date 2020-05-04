@@ -64,7 +64,7 @@ export default function Rooms() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -85,7 +85,7 @@ export default function Rooms() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
