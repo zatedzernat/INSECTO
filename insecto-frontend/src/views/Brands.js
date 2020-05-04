@@ -10,6 +10,7 @@ export default function Brands() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
+  const [modalShowEdit, setModalShowEdit] = useState(false);
   const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
@@ -29,7 +30,7 @@ export default function Brands() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -54,7 +55,7 @@ export default function Brands() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -75,10 +76,32 @@ export default function Brands() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
-
+  const editHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowEdit(false);
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
+        brand
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response.data.errors));
+    }
+  };
+  const styles = {
+    container: { color: "red" },
+  };
   const brandTable = (data) => {
     return (
       <Table striped hover>
@@ -88,7 +111,9 @@ export default function Brands() {
               <input type="checkbox" />
             </th>
             <th>#</th>
-            <th>Brand Name</th>
+            <th>
+              Brand Name <span style={styles.container}>*</span>
+            </th>
             <th>Created At</th>
             <th>Updated At</th>
             <th>Update By</th>
@@ -107,11 +132,20 @@ export default function Brands() {
               <td>{brand.updated_at}</td>
               <td>{brand.update_by}</td>
               <td>
-                <i className="fa fa-edit" />
+                <span
+                  onClick={() => {
+                    setModalShowEdit(true);
+                    setBrand(brand);
+                  }}
+                >
+                  <i className="fa fa-edit" />
+                </span>
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(brand);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(brand);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -162,9 +196,11 @@ export default function Brands() {
             title="Add Brand"
             body={
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">Brand Name:</label>
+                <label className="col-sm-3 col-form-label">
+                  Brand Name: <span style={styles.container}>*</span>
+                </label>
                 <div className="col-sm-9">
-                <input
+                  <input
                     type="text"
                     className="form-control"
                     name="brand_name"
@@ -190,7 +226,10 @@ export default function Brands() {
             body={
               <div className="form-group col-form-label">
                 <p>"{objectDel.brand_name}"</p>
-                <p className="text-danger">*** All items which are {objectDel.brand_name} be set to null ***</p>
+                <p className="text-danger">
+                  *** All items which are {objectDel.brand_name} be set to null
+                  ***
+                </p>
               </div>
             }
             method="POST"
@@ -198,10 +237,40 @@ export default function Brands() {
             button="Yes"
             close="No"
           />
-          
+          <FormModal
+            show={modalShowEdit}
+            onHide={() => setModalShowEdit(false)}
+            title="Edit Brand"
+            body={
+              <div className="form-group row">
+                <label className="col-sm-3 col-form-label">
+                  Brand Name: <span style={styles.container}>*</span>
+                </label>
+                <div className="col-sm-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="brand_name"
+                    defaultValue={brand.brand_name}
+                    onChange={(event) =>
+                      setBrand({
+                        brand_id: brand.brand_id,
+                        brand_name: event.target.value,
+                      })
+                    }
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+            }
+            method="POST"
+            onSubmit={editHandleSubmit}
+            button="Confirm"
+            close="Cancel"
+          />
         </div>
       }
     />
   );
 }
-
