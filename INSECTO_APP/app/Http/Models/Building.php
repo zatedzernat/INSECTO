@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Building extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['building_code', 'building_name', 'cancel_flag', 'update_by'];
+    protected $fillable = ['building_code', 'building_name', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'building_id';
 
     /**
@@ -61,7 +61,7 @@ class Building extends Model implements Auditable
 
     public function setUpdateBy($updateby)
     {
-        $this->update_by = $updateby;
+        $this->updated_by = $updateby;
     }
 
     public function createNewBuilding($building_code, $building_name)

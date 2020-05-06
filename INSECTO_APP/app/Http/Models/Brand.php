@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Brand extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['brand_name', 'cancel_flag', 'update_by'];
+    protected $fillable = ['brand_name', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'brand_id';
 
     /**
@@ -56,7 +56,7 @@ class Brand extends Model implements Auditable
 
     public function setUpdateBy($updateby)
     {
-        $this->update_by = $updateby;
+        $this->updated_by = $updateby;
     }
 
     public function createNewBrand($brand_name)

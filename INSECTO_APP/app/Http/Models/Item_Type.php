@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Item_Type extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['type_name', 'cancel_flag', 'update_by'];
+    protected $fillable = ['type_name', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'type_id';
 
     /**
@@ -56,7 +56,7 @@ class Item_Type extends Model implements Auditable
 
     public function setUpdateBy($updateby)
     {
-        $this->update_by = $updateby;
+        $this->updated_by = $updateby;
     }
 
     public function setCancelFlag($cancelFlag)

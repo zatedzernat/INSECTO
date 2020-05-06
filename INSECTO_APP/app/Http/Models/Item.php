@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Item extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['item_code', 'item_name', 'room_id', 'type_id', 'brand_id', 'serial_number', 'model', 'note', 'cancel_flag', 'update_by'];
+    protected $fillable = ['item_code', 'item_name', 'room_id', 'type_id', 'group', 'brand_id', 'serial_number', 'model', 'note', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'item_id';
 
     /**
@@ -75,7 +75,7 @@ class Item extends Model implements Auditable
 
     public function setUpdateBy($updateby)
     {
-        $this->update_by = $updateby;
+        $this->updated_by = $updateby;
     }
 
     public function setCode($code)
@@ -109,7 +109,7 @@ class Item extends Model implements Auditable
         $this->model = $model;
     }
 
-    public function createNewItem($item_code, $item_name, $room_id, $type_id, $brand_id, $serial_number, $model)
+    public function createNewItem($item_code, $item_name, $room_id, $type_id, $group, $brand_id, $serial_number, $model)
     {
         $item = Item::firstOrCreate(
             ['item_code' => $item_code],
@@ -117,6 +117,7 @@ class Item extends Model implements Auditable
                 'item_name' => $item_name,
                 'room_id' => $room_id,
                 'type_id' => $type_id,
+                'group' => $group,
                 'brand_id' => $brand_id,
                 'serial_number' => $serial_number,
                 'model' => $model,
@@ -132,6 +133,7 @@ class Item extends Model implements Auditable
                 $item->item_name = $item_name;
                 $item->room_id = $room_id;
                 $item->type_id = $type_id;
+                $item->group = $group;
                 $item->brand_id = $brand_id;
                 $item->serial_number = $serial_number;
                 $item->model = $model;
@@ -144,7 +146,7 @@ class Item extends Model implements Auditable
         return false;
     }
 
-    public function updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial_number, $model)
+    public function updateItem($id, $item_name, $room_id, $type_id, $group,  $brand_id, $serial_number, $model)
     {
         // $findName = Item::where('item_name', $item_name)->first();
         // if(is_null($findName) || $findName->item_id = $id) {
@@ -152,6 +154,7 @@ class Item extends Model implements Auditable
         $item->item_name = $item_name;
         $item->room_id = $room_id;
         $item->type_id = $type_id;
+        $item->group = $group;
         $item->brand_id = $brand_id;
         $item->serial_number = $serial_number;
         $item->model = $model;

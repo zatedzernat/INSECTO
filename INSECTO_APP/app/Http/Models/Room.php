@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Room extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['room_code', 'room_name', 'building_id', 'cancel_flag', 'update_by'];
+    protected $fillable = ['room_code', 'room_name', 'building_id', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'room_id';
 
     /**
@@ -71,7 +71,7 @@ class Room extends Model implements Auditable
 
     public function setUpdateBy($updateby)
     {
-        $this->update_by = $updateby;
+        $this->updated_by = $updateby;
     }
 
     public function createNewRoom($room_name, $room_code, $building_id)

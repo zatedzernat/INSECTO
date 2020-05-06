@@ -9,7 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Problem_Description extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['problem_description', 'type_id', 'cancel_flag', 'update_by'];
+    protected $fillable = ['problem_description', 'type_id', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'problem_des_id';
 
     /**
@@ -71,7 +71,7 @@ class Problem_Description extends Model implements Auditable
 
     public function setUpdateBy($updateby)
     {
-        $this->update_by = $updateby;
+        $this->updated_by = $updateby;
     }
 
     public function createNewProblemDesc($problem_description, $type_id)
