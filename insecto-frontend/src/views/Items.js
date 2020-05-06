@@ -75,7 +75,7 @@ export default function Items() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-        console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -96,7 +96,7 @@ export default function Items() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-        console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -144,9 +144,11 @@ export default function Items() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(item);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(item);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -157,7 +159,7 @@ export default function Items() {
       </Table>
     );
   };
-  
+
   return (
     <Content
       content={
@@ -242,13 +244,13 @@ export default function Items() {
                         <Dropdown.Item
                           key={type.type_id}
                           eventKey={type.type_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               ...item,
                               type_id: eventKey,
-                            }),
-                            setSelectType(type.type_name)
-                          )}
+                            });
+                            setSelectType(type.type_name);
+                          }}
                         >
                           {type.type_name}
                         </Dropdown.Item>
@@ -270,13 +272,13 @@ export default function Items() {
                         <Dropdown.Item
                           key={building.building_id}
                           eventKey={building.building_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               ...item,
                               building_id: eventKey,
-                            }),
-                            setSelectBuilding(building.building_name)
-                          )}
+                            });
+                            setSelectBuilding(building.building_name);
+                          }}
                         >
                           {building.building_name}
                         </Dropdown.Item>
@@ -298,13 +300,13 @@ export default function Items() {
                         <Dropdown.Item
                           key={room.room_id}
                           eventKey={room.room_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               ...item,
                               room_id: eventKey,
-                            }),
-                            setSelectRoom(room.room_name)
-                          )}
+                            });
+                            setSelectRoom(room.room_name);
+                          }}
                         >
                           {room.room_name}
                         </Dropdown.Item>
@@ -326,13 +328,13 @@ export default function Items() {
                         <Dropdown.Item
                           key={brand.brand_id}
                           eventKey={brand.brand_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               ...item,
                               brand_id: eventKey,
-                            }),
-                            setSelectBrand(brand.brand_name)
-                          )}
+                            });
+                            setSelectBrand(brand.brand_name);
+                          }}
                         >
                           {brand.brand_name}
                         </Dropdown.Item>
@@ -382,7 +384,9 @@ export default function Items() {
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
-                <p>"{objectDel.item_code} - {objectDel.item_name}"</p>
+                <p>
+                  "{objectDel.item_code} - {objectDel.item_name}"
+                </p>
               </div>
             }
             method="POST"

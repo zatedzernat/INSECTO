@@ -112,13 +112,15 @@ export default function Buildings() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(building);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(building);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
-                </td>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -213,8 +215,13 @@ export default function Buildings() {
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
-                <p>"{objectDel.building_code} - {objectDel.building_name}"</p>
-                <p className="text-danger">*** All rooms and items that relate to {objectDel.building_name} will be delete too ***</p>
+                <p>
+                  "{objectDel.building_code} - {objectDel.building_name}"
+                </p>
+                <p className="text-danger">
+                  *** All rooms and items that relate to{" "}
+                  {objectDel.building_name} will be delete too ***
+                </p>
               </div>
             }
             method="POST"
@@ -227,4 +234,3 @@ export default function Buildings() {
     />
   );
 }
-

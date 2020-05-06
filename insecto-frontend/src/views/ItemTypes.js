@@ -108,9 +108,11 @@ export default function ItemTypes() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(itemType);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(itemType);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -121,7 +123,6 @@ export default function ItemTypes() {
       </Table>
     );
   };
-  
 
   return (
     <Content
@@ -190,7 +191,10 @@ export default function ItemTypes() {
             body={
               <div className="form-group col-form-label">
                 <p>"{objectDel.type_name}"</p>
-                <p className="text-danger">*** All items and problem descriptions that relate {objectDel.type_name} will be delete too ***</p>
+                <p className="text-danger">
+                  *** All items and problem descriptions that relate{" "}
+                  {objectDel.type_name} will be delete too ***
+                </p>
               </div>
             }
             method="POST"

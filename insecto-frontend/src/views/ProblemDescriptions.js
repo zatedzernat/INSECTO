@@ -31,7 +31,7 @@ export default function ProblemDescriptions() {
     type_id: "",
   });
   const [selectType, setSelectType] = useState("- select type name -");
-  
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -51,7 +51,7 @@ export default function ProblemDescriptions() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
-    setSelectType("- select type name -")
+    setSelectType("- select type name -");
     setModalShowAdd(false);
     try {
       const res = await axios.post(
@@ -124,9 +124,11 @@ export default function ProblemDescriptions() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(problem_desc);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(problem_desc);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -211,13 +213,13 @@ export default function ProblemDescriptions() {
                         <Dropdown.Item
                           key={type.type_id}
                           eventKey={type.type_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setProblemDesc({
                               ...problemDesc,
                               type_id: eventKey,
-                            }),
-                            setSelectType(type.type_name)
-                          )}
+                            });
+                            setSelectType(type.type_name);
+                          }}
                         >
                           {type.type_name}
                         </Dropdown.Item>
@@ -248,4 +250,3 @@ export default function ProblemDescriptions() {
     />
   );
 }
-

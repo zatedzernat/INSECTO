@@ -8,6 +8,7 @@ import {
   Button,
   DropdownButton,
   Dropdown,
+  Alert,
 } from "react-bootstrap";
 import FormModal from "../components/FormModal";
 
@@ -48,7 +49,7 @@ export default function Rooms() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
-    setSelectBuilding("- select building name -")
+    setSelectBuilding("- select building name -");
     setModalShowAdd(false);
     try {
       const res = await axios.post(
@@ -123,9 +124,11 @@ export default function Rooms() {
               <td>
                 <i className="fa fa-edit" />
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(room);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(room);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -136,11 +139,20 @@ export default function Rooms() {
       </Table>
     );
   };
-  
+
   return (
     <Content
       content={
         <div>
+          {isError.error && (
+            <Alert
+              variant="danger"
+              onClose={() => setIsError(false)}
+              dismissible
+            >
+              {isError.message}
+            </Alert>
+          )}
           <Card
             title={
               <div>
@@ -150,7 +162,9 @@ export default function Rooms() {
             }
             badge={
               <div>
-                <Button variant="info" onClick={() => setModalShowAdd(true)}>Add</Button>
+                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                  Add
+                </Button>
                 &emsp;
                 <Button variant="danger">Delete</Button>
               </div>
@@ -209,13 +223,13 @@ export default function Rooms() {
                         <Dropdown.Item
                           key={building.building_id}
                           eventKey={building.building_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setRoom({
                               ...room,
                               building_id: eventKey,
-                            }),
-                            setSelectBuilding(building.building_name)
-                          )}
+                            });
+                            setSelectBuilding(building.building_name);
+                          }}
                         >
                           {building.building_name}
                         </Dropdown.Item>
@@ -235,8 +249,13 @@ export default function Rooms() {
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
-                <p>"{objectDel.room_code} - {objectDel.room_name}"</p>
-                <p className="text-danger">*** All items that relate to {objectDel.room_code} will be delete too ***</p>
+                <p>
+                  "{objectDel.room_code} - {objectDel.room_name}"
+                </p>
+                <p className="text-danger">
+                  *** All items that relate to {objectDel.room_code} will be
+                  delete too ***
+                </p>
               </div>
             }
             method="POST"
