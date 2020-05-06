@@ -3,12 +3,11 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-// use OwenIt\Auditing\Contracts\Auditable;
-
-class Notification_Problem extends Model/*implements Auditable*/
+class Notification_Problem extends Model implements Auditable
 {
-    // use \OwenIt\Auditing\Auditable;
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'sender_ip', 'note', 'cancel_flag', 'updated_by'];
     protected $primaryKey = 'noti_id';
 
