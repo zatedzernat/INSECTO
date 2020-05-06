@@ -21,7 +21,7 @@ class CreateRoomsTable extends Migration
             $table->unsignedBigInteger('building_id');
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('update_by', 45)->nullable();
+            $table->string('updated_by', 45)->nullable();
 
             $table->foreign('building_id')
                 ->references('building_id')

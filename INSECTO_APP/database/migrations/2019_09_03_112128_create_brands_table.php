@@ -18,7 +18,7 @@ class CreateBrandsTable extends Migration
             $table->string('brand_name',45)->unique();
             $table->string('cancel_flag',1);
             $table->timestamps();
-            $table->string('update_by',45)->nullable();
+            $table->string('updated_by',45)->nullable();
 
         });
 

@@ -18,7 +18,7 @@ class BuildingsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
         DB::table('buildings')->insert([
             'building_code' => 'CB2',
@@ -26,7 +26,7 @@ class BuildingsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
         DB::table('buildings')->insert([
             'building_code' => 'CB4',
@@ -34,7 +34,7 @@ class BuildingsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
     }
 }

@@ -19,7 +19,7 @@ class RoomsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT-201',
@@ -28,7 +28,7 @@ class RoomsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT/101',
@@ -37,7 +37,7 @@ class RoomsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'CB-2308',
@@ -46,7 +46,7 @@ class RoomsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'CB-2307',
@@ -55,7 +55,7 @@ class RoomsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'updated_by' => 'seeder'
         ]);
     }
 }

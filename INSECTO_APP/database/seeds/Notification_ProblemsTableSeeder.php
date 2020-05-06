@@ -17,11 +17,11 @@ class Notification_ProblemsTableSeeder extends Seeder
             'status_id' => 1,
             'problem_des_id' => 1,
             'problem_description' => 'จอไม่ติด',
-            'sender_ip' => '127.0.0.1',
+            // 'sender_ip' => '127.0.0.1',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'test'
+            'updated_by' => 'test'
         ]);
     }
 }
