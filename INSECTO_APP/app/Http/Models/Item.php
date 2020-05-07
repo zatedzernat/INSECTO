@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Item extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['item_code', 'item_name', 'room_id', 'type_id', 'group', 'brand_id', 'serial_number', 'model', 'note', 'cancel_flag', 'updated_by'];
+    protected $fillable = ['item_code', 'item_name', 'room_id', 'type_id', 'group', 'brand_id', 'serial_number', 'model', 'note', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'item_id';
 
     /**
@@ -49,6 +49,11 @@ class Item extends Model implements Auditable
         return $this->hasMany('App\Http\Models\Notification_Problem', 'item_id', 'item_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
+    }
+
     public function findByCancelFlag($string)
     {
         return Item::with('room.building', 'item_type', 'brand')->where('cancel_flag', $string)->get();
@@ -73,9 +78,9 @@ class Item extends Model implements Auditable
         $this->cancel_flag = $CancelFlag;
     }
 
-    public function setUpdateBy($updateby)
+    public function setUser($user_id)
     {
-        $this->updated_by = $updateby;
+        $this->user_id = $user_id;
     }
 
     public function setCode($code)
@@ -122,14 +127,13 @@ class Item extends Model implements Auditable
                 'serial_number' => $serial_number,
                 'model' => $model,
                 'cancel_flag' => 'N',
-                'update_by' => 'ชื่อ user ตามLDAP',
+                'user_id' => 2,
             ]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$item->wasRecentlyCreated) {
             if ($item->cancel_flag == "Y") {
-                //todo set update by ตาม LDAP
                 $item->item_name = $item_name;
                 $item->room_id = $room_id;
                 $item->type_id = $type_id;
@@ -138,6 +142,8 @@ class Item extends Model implements Auditable
                 $item->serial_number = $serial_number;
                 $item->model = $model;
                 $item->cancel_flag = "N";
+                //todo set update by ตาม LDAP
+                $item->user_id = 2;
                 $item->save();
             } else {
                 return true;
@@ -158,9 +164,9 @@ class Item extends Model implements Auditable
         $item->brand_id = $brand_id;
         $item->serial_number = $serial_number;
         $item->model = $model;
+        $item->user_id = 2;
         $item->save();
         //todo set updateby ตาม LDAP
-        // $item->setUpdateBy('ชื่อ user ตามLDAP');
         return false;
         // }
         // return true;
@@ -172,6 +178,7 @@ class Item extends Model implements Auditable
         $items = $brand->items;
         foreach ($brand->items as $item) {
             $item->brand_id = null;
+            $item->user_id = 2;
             $item->save();
         }
         return $items;
@@ -181,6 +188,7 @@ class Item extends Model implements Auditable
     {
         $item = $this->findByID($item_id);
         $item->setCancelFlag('Y');
+        $item->user_id = 2;
         $item->save();
         return $item;
     }
@@ -195,6 +203,7 @@ class Item extends Model implements Auditable
                 foreach ($items as $item) {
                     $collection->push($item);
                     $item->cancel_flag = 'Y';
+                    $item->user_id = 2;
                     $item->save();
                 }
                 break;
@@ -204,6 +213,7 @@ class Item extends Model implements Auditable
                     foreach ($room->items as $item) {
                         $collection->push($item);
                         $item->cancel_flag = 'Y';
+                        $item->user_id = 2;
                         $item->save();
                     }
                 }
@@ -214,6 +224,7 @@ class Item extends Model implements Auditable
                 foreach ($items as $item) {
                     $collection->push($item);
                     $item->cancel_flag = 'Y';
+                    $item->user_id = 2;
                     $item->save();
                 }
                 break;

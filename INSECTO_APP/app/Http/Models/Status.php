@@ -58,8 +58,6 @@ class Status extends Model implements Auditable
             $status = $this->findByID($status_id);
             $status->status_name = $status_name;
             $status->status_description = $status_description;
-            //todo set updateby ตาม LDAP
-            // $brand->setUpdateBy('ชื่อ user ตามLDAP');
             $status->save();
             return false;
         }

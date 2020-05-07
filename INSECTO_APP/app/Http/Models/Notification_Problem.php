@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Notification_Problem extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'sender_ip', 'note', 'cancel_flag', 'updated_by'];
+    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'sender_ip', 'note', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'noti_id';
 
     public function status()
@@ -28,6 +28,11 @@ class Notification_Problem extends Model implements Auditable
     public function problem_desc()
     {
         return $this->belongsTo('App\Http\Models\Problem_Description', 'problem_des_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
     public function findByCancelFlag($string)
@@ -70,7 +75,7 @@ class Notification_Problem extends Model implements Auditable
         $this->problem_description = $problem_description;
         $this->sender_ip = $sender_ip;
         $this->cancel_flag = 'N';
-        $this->update_by = "std";
+        $this->user_id = 3;
         $this->save();
     }
 
@@ -101,6 +106,7 @@ class Notification_Problem extends Model implements Auditable
             $noti_prob->status_id = 2;
             $status = 'open';
         }
+        $noti_prob->user_id = 3;
         $noti_prob->save();
         return $status;
     }
@@ -121,6 +127,7 @@ class Notification_Problem extends Model implements Auditable
                 $status = 'in progress';
                 break;
         }
+        $noti_prob->user_id = 2;
         $noti_prob->save();
         return $status;
     }
@@ -129,6 +136,7 @@ class Notification_Problem extends Model implements Auditable
     {
         $noti_prob->note = $note;
         $noti_prob->status_id = 8;
+        $noti_prob->user_id = 2;
         $noti_prob->save();
     }
 }

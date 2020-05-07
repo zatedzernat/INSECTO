@@ -9,7 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Problem_Description extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['problem_description', 'type_id', 'cancel_flag', 'updated_by'];
+    protected $fillable = ['problem_description', 'type_id', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'problem_des_id';
 
     /**
@@ -36,6 +36,11 @@ class Problem_Description extends Model implements Auditable
     public function notification_problems()
     {
         return $this->hasMany('App\Http\Models\Notification_Problem', 'problem_des_id', 'problem_des_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
     public function findByCancelFlag($string)
@@ -69,16 +74,16 @@ class Problem_Description extends Model implements Auditable
         $this->cancel_flag = $CancelFlag;
     }
 
-    public function setUpdateBy($updateby)
+    public function setUser($user_id)
     {
-        $this->updated_by = $updateby;
+        $this->user_id = $user_id;
     }
 
     public function createNewProblemDesc($problem_description, $type_id)
     {
         $problem_desc = Problem_Description::firstOrCreate(
             ['problem_description' => $problem_description, 'type_id' => $type_id],
-            ['cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+            ['cancel_flag' => 'N', 'user_id' => 2]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
@@ -86,6 +91,7 @@ class Problem_Description extends Model implements Auditable
             if ($problem_desc->cancel_flag == "Y") {
                 //todo set update by ตาม LDAP
                 $problem_desc->cancel_flag = "N";
+                $problem_desc->user_id = 2;
                 $problem_desc->save();
             } else {
                 return true;
@@ -105,11 +111,11 @@ class Problem_Description extends Model implements Auditable
             $prob_desc = $this->findByID($problem_des_id);
             $prob_desc->problem_description = $desc;
             $prob_desc->type_id = $type_id;
+            //todo set updateby ตาม LDAP
+            $prob_desc->user_id = 2;
             $prob_desc->save();
             return false;
         }
-        //todo set updateby ตาม LDAP
-        // $brand->setUpdateBy('ชื่อ user ตามLDAP');
         return true;
     }
 
@@ -117,6 +123,7 @@ class Problem_Description extends Model implements Auditable
     {
         $problem_desc = $this->findByID($problem_des_id);
         $problem_desc->setCancelFlag('Y');
+        $problem_desc->user_id = 2;
         $problem_desc->save();
         return $problem_desc;
     }
@@ -126,6 +133,7 @@ class Problem_Description extends Model implements Auditable
         $problem_descs = $item_type->problem_descriptions;
         foreach ($problem_descs as $problem_desc) {
             $problem_desc->cancel_flag = 'Y';
+            $problem_desc->user_id = 2;
             $problem_desc->save();
         }
         return $problem_descs;
