@@ -18,7 +18,7 @@ class CreateBrandsTable extends Migration
             $table->string('brand_name', 45)->unique();
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
 
             $table->foreign('user_id')
                 ->references('id')

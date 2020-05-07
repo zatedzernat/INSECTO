@@ -20,7 +20,7 @@ class CreateBuildingsTable extends Migration
             $table->string('building_name', 45);
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
 
             $table->foreign('user_id')
                 ->references('id')
