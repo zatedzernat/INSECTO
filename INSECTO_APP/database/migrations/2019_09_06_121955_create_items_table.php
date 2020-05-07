@@ -27,7 +27,13 @@ class CreateItemsTable extends Migration
             $table->string('note', 50)->nullable();
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('updated_by', 45)->nullable();
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('room_id')
                 ->references('room_id')

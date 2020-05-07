@@ -24,7 +24,13 @@ class CreateNotificationProblemsTable extends Migration
             $table->string('note', 100)->nullable();
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('updated_by', 45)->nullable();
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('item_id')
                 ->references('item_id')

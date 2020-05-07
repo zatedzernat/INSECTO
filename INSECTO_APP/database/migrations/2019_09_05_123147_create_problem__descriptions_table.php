@@ -19,7 +19,13 @@ class CreateProblemDescriptionsTable extends Migration
             $table->unsignedBigInteger('type_id');
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('updated_by', 45);
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('type_id')
                 ->references('type_id')

@@ -21,7 +21,13 @@ class CreateRoomsTable extends Migration
             $table->unsignedBigInteger('building_id');
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('updated_by', 45)->nullable();
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('building_id')
                 ->references('building_id')
@@ -31,7 +37,6 @@ class CreateRoomsTable extends Migration
         });
 
         Schema::enableForeignKeyConstraints();
-
     }
 
     /**

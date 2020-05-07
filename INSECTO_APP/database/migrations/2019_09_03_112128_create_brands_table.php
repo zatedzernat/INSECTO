@@ -15,11 +15,16 @@ class CreateBrandsTable extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->bigIncrements('brand_id');
-            $table->string('brand_name',45)->unique();
-            $table->string('cancel_flag',1);
+            $table->string('brand_name', 45)->unique();
+            $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('updated_by',45)->nullable();
+            $table->unsignedBigInteger('user_id');
 
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
 
         Schema::enableForeignKeyConstraints();
