@@ -18,7 +18,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'เมาส์เสีย',
@@ -26,7 +26,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'คียบอร์ดเสีย',
@@ -34,7 +34,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'เครื่องปรับอากาศมีกลิ่น',
@@ -42,7 +42,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'เครื่องปรับอากาศไม่เย็น',
@@ -50,7 +50,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'เครื่องปรับอากาศไม่ติด',
@@ -58,7 +58,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'หลอดไฟดับ',
@@ -66,7 +66,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'หลอดไฟกระพริบ',
@@ -74,7 +74,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'โถ่ชักโครกชำรุด',
@@ -82,7 +82,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'โถปัสสาวะชำรุด',
@@ -90,7 +90,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'อ่างล้างมือชำรุด',
@@ -98,7 +98,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'ปริ้นเตอร์ชำรุด',
@@ -106,7 +106,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'ประตูชำรุด',
@@ -114,7 +114,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'เก้าอี้ชำรุด',
@@ -122,7 +122,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'โต๊ะชำรุด',
@@ -130,7 +130,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('problem__descriptions')->insert([
             'problem_description' => 'หน้าต่างชำรุด',
@@ -138,7 +138,7 @@ class Problem_DescriptionsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
     }
 }

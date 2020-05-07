@@ -21,7 +21,7 @@ class Notification_ProblemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'test'
+            'user_id' => 1
         ]);
     }
 }

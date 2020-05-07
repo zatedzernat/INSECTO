@@ -17,42 +17,42 @@ class Item_TypesTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder',
+            'user_id' => 1,
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Computer',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder',
+            'user_id' => 1,
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Toilet',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder',
+            'user_id' => 1,
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Air-Condition',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder',
+            'user_id' => 1,
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Printer',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder',
+            'user_id' => 1,
         ]);
         DB::table('item__types')->insert([
             'type_name' => 'Room',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder',
+            'user_id' => 1,
         ]);
     }
 }

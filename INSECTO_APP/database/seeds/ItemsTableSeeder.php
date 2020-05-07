@@ -25,7 +25,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'FCU-10',
@@ -40,7 +40,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'Train1-PC-00',
@@ -55,7 +55,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'Train1-PC-11',
@@ -70,7 +70,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'LIB-LIGHT',
@@ -85,7 +85,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'LIB-LIGHT-01',
@@ -100,7 +100,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'TOL-FLUSH',
@@ -115,7 +115,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'TOL-FLUSH-04',
@@ -130,7 +130,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'ROOM-DOOR',
@@ -145,7 +145,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('items')->insert([
             'item_code' => 'ROOM-CHAIR-02',
@@ -160,7 +160,7 @@ class ItemsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'updated_by' => 'seeder'
+            'user_id' => 1
         ]);
     }
 }
