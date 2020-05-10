@@ -17,6 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
+
+Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
+Route::post('noti_problems',  'NotificationProblemController@store');
+Route::get('sendproblem/{item_code}', 'NotificationProblemController@showproblemNotResolved')->where('item_code', '[A-Za-z0-9-.]+');
+
 Route::get('buildings', 'BuildingController@index')->name('buildings');
 Route::post('buildings', 'BuildingController@store');
 Route::put('buildings/{building_id}', 'BuildingController@update');
@@ -51,15 +57,3 @@ Route::get('statuses', 'StatusController@index')->name('statuses');
 Route::post('statuses', 'StatusController@store');
 Route::put('statuses/{status_id}', 'StatusController@update');
 Route::delete('statuses/{status_id}', 'StatusController@destroy');
-
-Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
-
-Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
-//temporary api for develop in react js (need edit and merge from master)
-
-Route::group(['prefix' => 'send-problem'], function () {
-    Route::get('/', 'NotificationProblemController@create')->name('send');
-    Route::get('{code}', 'NotificationProblemController@show')->where('code', '[A-Za-z0-9-.]+');
-    Route::post('check', 'NotificationProblemController@check');
-    // Route::post('create', 'NotificationProblemController@store');
-});
