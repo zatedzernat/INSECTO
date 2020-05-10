@@ -16,7 +16,7 @@ export default function Rooms() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
-  const [objectDel, setObjectDel] = useState([]);
+  const [modalShowEdit, setModalShowEdit] = useState(false);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -74,8 +74,8 @@ export default function Rooms() {
     setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}rooms/${objectDel.room_id}`,
-        objectDel.room_id
+        `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
+        room.room_id
       );
       if (res.data.error) {
         setIsError({
@@ -89,7 +89,29 @@ export default function Rooms() {
       console.log(JSON.stringify(error.response.data.errors));
     }
   };
-
+  const editHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowEdit(false);
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
+        room
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response.data.errors));
+    }
+  };
+  const styles = {
+    container: { color: "red" },
+  };
   const roomTable = (data) => {
     return (
       <Table striped hover>
@@ -99,7 +121,9 @@ export default function Rooms() {
               <input type="checkbox" />
             </th>
             <th>#</th>
-            <th>Code</th>
+            <th>
+              Code <span style={styles.container}>*</span>
+            </th>
             <th>Name</th>
             <th>Building</th>
             <th>Created At</th>
@@ -122,12 +146,20 @@ export default function Rooms() {
               <td>{room.updated_at}</td>
               <td>{room.update_by}</td>
               <td>
-                <i className="fa fa-edit" />
+                <span
+                  onClick={() => {
+                    setModalShowEdit(true);
+                    setRoom(room);
+                    setSelectBuilding(room.building.building_name); //? google->react hook setstate not updating
+                  }}
+                >
+                  <i className="fa fa-edit" />
+                </span>
                 &emsp;
                 <span
                   onClick={() => {
                     setModalShowDel(true);
-                    setObjectDel(room);
+                    setRoom(room);
                   }}
                 >
                   <i className="fa fa-times" />
@@ -162,7 +194,13 @@ export default function Rooms() {
             }
             badge={
               <div>
-                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                <Button
+                  variant="info"
+                  onClick={() => {
+                    setModalShowAdd(true);
+                    setSelectBuilding("- select building name -");
+                  }}
+                >
                   Add
                 </Button>
                 &emsp;
@@ -180,7 +218,9 @@ export default function Rooms() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Code:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Room Code: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -243,6 +283,7 @@ export default function Rooms() {
             onSubmit={addHandleSubmit}
             button="Add"
           />
+
           <FormModal
             show={modalShowDel}
             onHide={() => setModalShowDel(false)}
@@ -250,10 +291,10 @@ export default function Rooms() {
             body={
               <div className="form-group col-form-label">
                 <p>
-                  "{objectDel.room_code} - {objectDel.room_name}"
+                  "{room.room_code} - {room.room_name}"
                 </p>
                 <p className="text-danger">
-                  *** All items that relate to {objectDel.room_code} will be
+                  *** All items that relate to {room.room_code} will be
                   delete too ***
                 </p>
               </div>
@@ -262,6 +303,85 @@ export default function Rooms() {
             onSubmit={deleteHandleSubmit}
             button="Yes"
             close="No"
+          />
+
+          <FormModal
+            show={modalShowEdit}
+            onHide={() => setModalShowEdit(false)}
+            close="Close"
+            title="Edit Room"
+            body={
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Room Code:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="room_code"
+                      value={room.room_code}
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Room Name:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="room_name"
+                      value={room.room_name}
+                      onChange={(event) =>
+                        setRoom({
+                          room_id: room.room_id,
+                          room_code: room.room_code,
+                          building_id: room.building_id,
+                          room_name: event.target.value,
+                        })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Building:</label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectBuilding}
+                      id="building"
+                      size="sm"
+                      variant="warning"
+                    >
+                      {_.map(data.buildings, (building) => (
+                        <Dropdown.Item
+                          key={building.building_id}
+                          eventKey={building.building_id}
+                          onSelect={(eventKey) => (
+                            setRoom({
+                              room_id: room.room_id,
+                              room_code: room.room_code,
+                              room_name: room.room_name,
+                              building_id: eventKey,
+                            }),
+                            setSelectBuilding(building.building_name)
+                          )}
+                        >
+                          {building.building_name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  </div>
+                </div>
+              </>
+            }
+            method="POST"
+            onSubmit={editHandleSubmit}
+            button="Confirm"
+            close="Cancel"
           />
         </div>
       }

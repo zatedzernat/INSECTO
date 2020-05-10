@@ -11,7 +11,6 @@ export default function Brands() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
-  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -64,8 +63,8 @@ export default function Brands() {
     setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}brands/${objectDel.brand_id}`,
-        objectDel.brand_id
+        `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
+        brand.brand_id
       );
       if (res.data.error) {
         setIsError({
@@ -144,7 +143,7 @@ export default function Brands() {
                 <span
                   onClick={() => {
                     setModalShowDel(true);
-                    setObjectDel(brand);
+                    setBrand(brand);
                   }}
                 >
                   <i className="fa fa-times" />
@@ -225,9 +224,9 @@ export default function Brands() {
             title="Are you sure that you want to delete?"
             body={
               <div className="form-group col-form-label">
-                <p>"{objectDel.brand_name}"</p>
+                <p>"{brand.brand_name}"</p>
                 <p className="text-danger">
-                  *** All items which are {objectDel.brand_name} be set to null
+                  *** All items which are {brand.brand_name} be set to null
                   ***
                 </p>
               </div>
@@ -251,7 +250,7 @@ export default function Brands() {
                     type="text"
                     className="form-control"
                     name="brand_name"
-                    defaultValue={brand.brand_name}
+                    value={brand.brand_name}
                     onChange={(event) =>
                       setBrand({
                         brand_id: brand.brand_id,
