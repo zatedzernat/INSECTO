@@ -43,7 +43,7 @@ class Problem_Description extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
-    public function findByCancelFlag($string)
+    public static function findByCancelFlag($string)
     {
         return Problem_Description::with('item_type')->where('cancel_flag', $string)->get();
     }
@@ -51,6 +51,14 @@ class Problem_Description extends Model implements Auditable
     public function findByID($problem_des_id)
     {
         return Problem_Description::find($problem_des_id);
+    }
+
+    public static function findByTypeID($type_id, $cancel_flag)
+    {
+        return Problem_Description::where([
+            ['type_id', $type_id],
+            ['cancel_flag', $cancel_flag]
+        ])->get();
     }
 
     public function getProblemDescription($problem_des_id)

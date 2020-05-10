@@ -26,11 +26,13 @@ class SendProblemRequest extends FormRequest
     {
         if (Request::input('problem_des_id') == 'etc') {
             return [
+                'item_id' => 'required',
                 'problem_des_id' => 'required',
                 'problem_description' => 'required',
             ];
         } else {
             return [
+                'item_id' => 'required',
                 'problem_des_id' => 'required',
             ];
         }
@@ -39,6 +41,7 @@ class SendProblemRequest extends FormRequest
     public function messages()
     {
         return [
+            'item_id.required' => 'Item ID is required!',
             'problem_des_id.required' => 'Probelm Des ID is required!',
             'problem_description.required' => 'Probelm Description is required!',
         ];

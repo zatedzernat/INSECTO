@@ -61,7 +61,6 @@ class Item extends Model implements Auditable
 
     public function findByCode($code)
     {
-        // return Item::where('item_code', $code)->first();
         return Item::where([
             ['item_code', $code],
             ['cancel_flag', 'N'],

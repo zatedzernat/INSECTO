@@ -14,5 +14,3 @@
 Route::get('/', function () {
     return view('master');
 })->name('home');
-
-Route::post('noti_problem/edit/{noti_id}', 'NotificationProblemController@update');
