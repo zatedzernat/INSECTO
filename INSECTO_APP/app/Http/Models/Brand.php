@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Brand extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['brand_name', 'cancel_flag', 'update_by'];
+    protected $fillable = ['brand_name', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'brand_id';
 
     /**
@@ -34,6 +34,11 @@ class Brand extends Model implements Auditable
         return $this->hasMany('App\Http\Models\Item', 'brand_id', 'brand_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
+    }
+
     public function findByCancelFlag($string)
     {
         return Brand::where('cancel_flag', $string)->get();
@@ -54,9 +59,9 @@ class Brand extends Model implements Auditable
         $this->cancel_flag = $CancelFlag;
     }
 
-    public function setUpdateBy($updateby)
+    public function setUser($user_id)
     {
-        $this->update_by = $updateby;
+        $this->user_id = $user_id;
     }
 
     public function createNewBrand($brand_name)
@@ -65,7 +70,7 @@ class Brand extends Model implements Auditable
             ['brand_name' => $brand_name],
             [
                 'cancel_flag' => 'N',
-                'update_by' => 'ชื่อ user ตามLDAP'
+                'user_id' => 2
             ]
         );
 
@@ -74,6 +79,7 @@ class Brand extends Model implements Auditable
             if ($brand->cancel_flag == "Y") {
                 //todo set update by ตาม LDAP
                 $brand->cancel_flag = "N";
+                $brand->user_id = 2;
                 $brand->save();
             } else {
                 return true;
@@ -88,11 +94,11 @@ class Brand extends Model implements Auditable
         if (is_null($findName) || $findName->brand_id == $brand_id) {
             $brand = $this->findByID($brand_id);
             $brand->brand_name = $brand_name;
+            $brand->user_id = 2;
             $brand->save();
             return false;
         }
         //todo set updateby ตาม LDAP
-        // $brand->setUpdateBy('ชื่อ user ตามLDAP');
 
         return true;
     }
@@ -101,6 +107,7 @@ class Brand extends Model implements Auditable
     {
         $brand = $this->findByID($brand_id);
         $brand->cancel_flag = 'Y';
+        $brand->user_id = 2;
         $brand->save();
         return $brand;
     }

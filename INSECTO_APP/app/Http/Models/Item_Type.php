@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Item_Type extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['type_name', 'cancel_flag', 'update_by'];
+    protected $fillable = ['type_name', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'type_id';
 
     /**
@@ -39,6 +39,11 @@ class Item_Type extends Model implements Auditable
         return $this->hasMany('App\Http\Models\Item', 'type_id', 'type_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
+    }
+
     public function findByCancelFlag($string)
     {
         return Item_Type::where('cancel_flag', $string)->get();
@@ -54,9 +59,9 @@ class Item_Type extends Model implements Auditable
         $this->type_name = $name;
     }
 
-    public function setUpdateBy($updateby)
+    public function setUser($user_id)
     {
-        $this->update_by = $updateby;
+        $this->user_id = $user_id;
     }
 
     public function setCancelFlag($cancelFlag)
@@ -68,13 +73,14 @@ class Item_Type extends Model implements Auditable
     {
         $itemtype = Item_Type::firstOrCreate(
             ['type_name' => $type_name],
-            ['cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+            ['cancel_flag' => 'N', 'user_id' => 1]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$itemtype->wasRecentlyCreated) {
             if ($itemtype->cancel_flag == "Y") {
                 //todo set update by ตาม LDAP
+                $itemtype->user_id = 2;
                 $itemtype->cancel_flag = "N";
                 $itemtype->save();
             } else {
@@ -91,6 +97,7 @@ class Item_Type extends Model implements Auditable
         if (is_null($findName) || $findName->type_id == $type_id) {
             $itemtype = $this->findByID($type_id);
             $itemtype->type_name = $name;
+            $itemtype->user_id = 2;
             $itemtype->save();
             return false;
         }
@@ -101,6 +108,7 @@ class Item_Type extends Model implements Auditable
     {
         $item_type = $this->findByID($type_id);
         $item_type->cancel_flag = 'Y';
+        $item_type->user_id = 2;
         $item_type->save();
         return $item_type;
     }

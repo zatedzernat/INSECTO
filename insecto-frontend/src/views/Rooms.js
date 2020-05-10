@@ -264,13 +264,13 @@ export default function Rooms() {
                         <Dropdown.Item
                           key={building.building_id}
                           eventKey={building.building_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setRoom({
                               ...room,
                               building_id: eventKey,
-                            }),
-                            setSelectBuilding(building.building_name)
-                          )}
+                            });
+                            setSelectBuilding(building.building_name);
+                          }}
                         >
                           {building.building_name}
                         </Dropdown.Item>

@@ -36,8 +36,6 @@ class NotificationProblemController extends Controller
         $noti_problems = $this->noti_problem->getAll();
         $statuses = $this->status->getAll();
         return compact('noti_problems', 'statuses');
-        /* return view('noti_problem.noti_problems')
-    ->with(compact('noti_problems', 'statuses')); */
     }
 
     /**

@@ -16,11 +16,17 @@ class CreateBuildingsTable extends Migration
         Schema::create('buildings', function (Blueprint $table) {
             //if pk is string, it shoukld has primary() function
             $table->bigIncrements('building_id');
-            $table->string('building_code',45)->unique();
-            $table->string('building_name',45);
-            $table->string('cancel_flag',1);
+            $table->string('building_code', 45)->unique();
+            $table->string('building_name', 45);
+            $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('update_by',45)->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
 
         Schema::enableForeignKeyConstraints();

@@ -19,12 +19,18 @@ class CreateNotificationProblemsTable extends Migration
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('problem_des_id')->nullable();
             $table->string('problem_description', 100);
-            $table->ipAddress('sender_ip');
+            // $table->ipAddress('sender_ip');
             $table->string('help_desk_code', 15)->nullable();
             $table->string('note', 100)->nullable();
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('update_by', 45)->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('item_id')
                 ->references('item_id')

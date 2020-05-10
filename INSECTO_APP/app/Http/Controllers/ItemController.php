@@ -64,10 +64,11 @@ class ItemController extends Controller
         $itemName = $request->item_name;
         $roomID = $request->room_id;
         $typeID = $request->type_id;
+        $group = $request->group;
         $brand_id = $request->brand_id;
         $serial = $request->serial_number;
         $model = $request->model;
-        $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $brand_id, $serial, $model);
+        $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $group, $brand_id, $serial, $model);
         if ($createFail) {
             $this->error = true;
             $this->message = 'Add Duplicate Item Code';
@@ -103,10 +104,11 @@ class ItemController extends Controller
         $item_name = $request->input('item_name');
         $room_id = $request->input('room_id');
         $type_id = $request->input('type_id');
+        $group = $request->group;
         $brand_id = $request->input('brand_id');
         $serial = $request->input('serial_number');
         $model = $request->input('model');
-        $updateFail = $this->item->updateItem($id, $item_name, $room_id, $type_id, $brand_id, $serial, $model);
+        $updateFail = $this->item->updateItem($id, $item_name, $room_id, $type_id, $group, $brand_id, $serial, $model);
         $this->success = true;
         $this->messgae = 'Update item \'' . $item_name . '\' success';
         return  $this->serverResponse();

@@ -20,13 +20,20 @@ class CreateItemsTable extends Migration
             $table->string('item_name', 45);
             $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('type_id');
-            $table->unsignedBigInteger('brand_id')->nullable(); // form ของ fk ที่เป็นตัวเลข
+            $table->string('group', 1);
+            $table->unsignedBigInteger('brand_id')->nullable();
             $table->string('serial_number', 45)->nullable();
             $table->string('model', 45)->nullable();
             $table->string('note', 50)->nullable();
             $table->string('cancel_flag', 1);
             $table->timestamps();
-            $table->string('update_by', 45)->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('room_id')
                 ->references('room_id')

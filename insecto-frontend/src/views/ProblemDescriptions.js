@@ -257,13 +257,13 @@ export default function ProblemDescriptions() {
                         <Dropdown.Item
                           key={type.type_id}
                           eventKey={type.type_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setProblemDesc({
                               ...problemDesc,
                               type_id: eventKey,
-                            }),
-                            setSelectType(type.type_name)
-                          )}
+                            });
+                            setSelectType(type.type_name);
+                          }}
                         >
                           {type.type_name}
                         </Dropdown.Item>

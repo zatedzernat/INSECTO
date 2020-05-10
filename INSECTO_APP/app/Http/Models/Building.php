@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Building extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['building_code', 'building_name', 'cancel_flag', 'update_by'];
+    protected $fillable = ['building_code', 'building_name', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'building_id';
 
     /**
@@ -32,6 +32,11 @@ class Building extends Model implements Auditable
     public function rooms()
     {
         return $this->hasMany('App\Http\Models\Room', 'building_id', 'building_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
     public function findByCancelFlag($string)
@@ -59,24 +64,25 @@ class Building extends Model implements Auditable
         $this->cancel_flag = $CancelFlag;
     }
 
-    public function setUpdateBy($updateby)
+    public function setUser($user_id)
     {
-        $this->update_by = $updateby;
+        $this->user_id = $user_id;
     }
 
     public function createNewBuilding($building_code, $building_name)
     {
         $building = Building::firstOrCreate(
             ['building_code' => $building_code],
-            ['building_name' => $building_name, 'cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+            ['building_name' => $building_name, 'cancel_flag' => 'N', 'user_id' => 2]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$building->wasRecentlyCreated) {
             if ($building->cancel_flag == "Y") {
-                //todo set update by ตาม LDAP
                 $building->building_name = $building_name;
                 $building->cancel_flag = "N";
+                //todo set update by ตาม LDAP
+                $building->user_id = 2;
                 $building->save();
             } else {
                 return true;
@@ -92,6 +98,7 @@ class Building extends Model implements Auditable
         if (is_null($findName) || $findName->building_id == $building_id) {
             $building = $this->findByID($building_id);
             $building->building_name = $name;
+            $building->user_id = 2;
             $building->save();
             return false;
         }
@@ -102,6 +109,7 @@ class Building extends Model implements Auditable
     {
         $building = $this->findByID($building_id);
         $building->setCancelFlag('Y');
+        $building->user_id = 2;
         $building->save();
         return $building;
     }

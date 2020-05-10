@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Room extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['room_code', 'room_name', 'building_id', 'cancel_flag', 'update_by'];
+    protected $fillable = ['room_code', 'room_name', 'building_id', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'room_id';
 
     /**
@@ -37,6 +37,11 @@ class Room extends Model implements Auditable
     public function items()
     {
         return $this->hasMany('App\Http\Models\Item', 'room_id', 'room_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
     public function findByCancelFlag($string)
@@ -69,16 +74,16 @@ class Room extends Model implements Auditable
         $this->cancel_flag = $CancelFlag;
     }
 
-    public function setUpdateBy($updateby)
+    public function setUser($user_id)
     {
-        $this->update_by = $updateby;
+        $this->user_id = $user_id;
     }
 
     public function createNewRoom($room_name, $room_code, $building_id)
     {
         $room = Room::firstOrCreate(
             ['room_code' => $room_code],
-            ['room_name' => $room_name, 'building_id' => $building_id, 'cancel_flag' => 'N', 'update_by' => 'ชื่อ user ตามLDAP']
+            ['room_name' => $room_name, 'building_id' => $building_id, 'cancel_flag' => 'N', 'user_id' => 2]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
@@ -88,6 +93,7 @@ class Room extends Model implements Auditable
                 $room->room_name = $room_name;
                 $room->building_id = $building_id;
                 $room->cancel_flag = "N";
+                $room->user_id = 2;
                 $room->save();
             } else {
                 return true;
@@ -102,6 +108,7 @@ class Room extends Model implements Auditable
         $room = $this->findByID($id);
         $room->room_name = $room_name;
         $room->building_id = $building_id;
+        $room->user_id = 2;
         $room->save();
         //todo set updateby ตาม LDAP
 
@@ -112,6 +119,7 @@ class Room extends Model implements Auditable
     {
         $room = $this->findByID($room_id);
         $room->setCancelFlag('Y');
+        $room->user_id = 2;
         $room->save();
         return $room;
     }
@@ -121,6 +129,7 @@ class Room extends Model implements Auditable
         $rooms = $building->rooms;
         foreach ($rooms as $room) {
             $room->cancel_flag = 'Y';
+            $room->user_id = 2;
             $room->save();
         }
         return $rooms;

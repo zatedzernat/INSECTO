@@ -17,42 +17,42 @@ class BrandsTableSeeder extends Seeder
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('brands')->insert([
             'brand_name' => 'Lenovo',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('brands')->insert([
             'brand_name' => 'Saijo-Denki',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('brands')->insert([
             'brand_name' => 'TRANE',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('brands')->insert([
             'brand_name' => 'YORK',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'user_id' => 1
         ]);
         DB::table('brands')->insert([
             'brand_name' => 'StarAir',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'update_by' => 'seeder'
+            'user_id' => 1
         ]);
     }
 }
