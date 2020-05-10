@@ -11,8 +11,6 @@ import {
 } from "react-bootstrap";
 import Content from "../../components/Content";
 import _ from "lodash";
-// import FormInputs from "components/FormInputs/FormInputs.jsx"; //! ยังไม่ได้แก้
-// import FormModal from "../components/FormModal";
 
 export default function MobileSendProblem() {
   const [item, setItem] = useState([]);
@@ -25,6 +23,7 @@ export default function MobileSendProblem() {
   const [lastUpdate, setLastUpdate] = useState(0);
   const [titleDropdown, setTitleDropdown] = useState("Select Problem");
   const [showInputProblem, setShowInputProblem] = useState(false);
+  const [inputProblem, setInputProblem] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
 
   const fetchData = async () => {
@@ -54,16 +53,19 @@ export default function MobileSendProblem() {
   };
 
   const toggleInputProblemHandler = (key) => {
-    if (key === 3) {
-      const doesShow = showInputProblem;
-      setShowInputProblem(!doesShow);
+    console.log("id item" , key)
+    if (key === "3") {
+      setShowInputProblem(true);
+      console.log(showInputProblem)
     } else {
       setShowInputProblem(false);
+      console.log(showInputProblem)
     }
   };
 
   const problemInputChangedHandler = (event) => {
-    console.log(event.target.value);
+    setInputProblem(event.target.value)
+    console.log(inputProblem);
   };
 
   const submitSendHandle = (event) => {
@@ -186,8 +188,7 @@ export default function MobileSendProblem() {
                             name="other"
                             placeholder="ใส่ข้อมูลปัญหาอื่นๆ"
                             class="form-control"
-                            changed={problemInputChangedHandler}
-                            disabled
+                            onChange={problemInputChangedHandler}
                           ></Form.Control>
                         </Form.Group>
                       </Form>
