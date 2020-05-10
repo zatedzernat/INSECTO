@@ -50,30 +50,31 @@ class Notification_Problem extends Model implements Auditable
         return Notification_Problem::where('noti_id', $id)->first();
     }
 
-    public function checkSameProblem($item_id, $problem_des_id)
+    public function findProblemsNotResolvedByItemID($item_id)
     {
-        if ($problem_des_id != 'etc') {
-            $noti_prob = Notification_Problem::where([
-                ['item_id', $item_id],
-                ['problem_des_id', $problem_des_id],
-                ['status_id', '<>', 8],
-            ])->latest()->first();
-        } else {
-            $noti_prob = Notification_Problem::where([
-                ['item_id', $item_id],
-                ['status_id', '<>', 8],
-            ])->latest()->first();
-        }
-        return $noti_prob;
+        return Notification_Problem::where([
+            ['item_id', $item_id],
+            ['status_id', '<>', 6], //6 == closed
+        ])->get();
     }
 
-    public function create($item_id, $problem_des_id, $problem_description, $sender_ip)
+    public function findProblemsThatCanSendByItemID($item)
+    {
+        $sentProblemsID = Notification_Problem::where([
+            ['item_id', $item->item_id],
+            ['status_id', '<>', 6], // where status_id != 6 (closed task)
+        ])->pluck('problem_des_id');
+
+        $problemsCanSend = Problem_Description::findByTypeID($item->type_id, 'N')->whereNotIn('problem_des_id', $sentProblemsID);
+        return $problemsCanSend;
+    }
+
+    public function create($item_id, $problem_des_id, $problem_description)
     {
         $this->item_id = $item_id;
         $this->status_id = 1;
         $this->problem_des_id = $problem_des_id;
         $this->problem_description = $problem_description;
-        $this->sender_ip = $sender_ip;
         $this->cancel_flag = 'N';
         $this->user_id = 3;
         $this->save();

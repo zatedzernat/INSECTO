@@ -9,6 +9,7 @@ use App\Http\Models\Status;
 use App\Http\Requests\NotiUpdateFormRequest;
 use App\Http\Requests\SendProblemRequest;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class NotificationProblemController extends Controller
 {
@@ -38,14 +39,18 @@ class NotificationProblemController extends Controller
         return compact('noti_problems', 'statuses');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function showproblemNotResolved($item_code)
     {
-        return view('noti_problem.send_problem');
+        $item = $this->item->findByCode($item_code);
+
+        if (empty($item)) {
+            $errors[] = "Item not found!";
+            return $this->serverResponse($errors, null);
+        } else {
+            $problemsNotResolved = $this->noti_problem->findProblemsNotResolvedByItemID($item->item_id);
+            $problemsThatCanSend = $this->noti_problem->findProblemsThatCanSendByItemID($item);
+            return compact('problemsNotResolved', 'item', 'problemsThatCanSend');
+        }
     }
 
     /**
@@ -57,63 +62,19 @@ class NotificationProblemController extends Controller
     public function store(SendProblemRequest $request)
     {
         $item_id = $request->item_id;
-        $problem_des_id = $request->problem_des_id;
+        $problem_des_id = $request->problem_des_id; //can be 'etc' (string) and id (integer)
         $problem_description = $request->problem_description;
-        $sender_ip = $request->ip();
 
         if ($problem_des_id == "etc") {
             $problem_des_id = null;
         } else {
-            $problem_description = $this->problem_desc->getProblemDescription($problem_des_id);
+            $problem_description = $this->problem_desc->getProblemDescription($problem_des_id); //this probelm_description exists
         }
 
-        $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $sender_ip);
-        return redirect()->route('home')->with('status', 'Send Problem Success');
-    }
-
-    // check is it the same problem before store
-    public function check(Request $request/*SendProblemRequest $request*/)
-    {
-        $item_id = $request->input('item_id');
-        // $problem_des_id = $request->input('problem_des_id');
-        // $problem_description = $request->input('problem_description');
-
-        return response()->json([
-            'item_id_from_laravel' => $item_id,
-            // 'problem_des_id' => $problem_des_id,
-            // 'problem)description' => $problem_description,
-        ]);
-
-        //* comment to check input from react
-        // $noti_prob = $this->noti_problem->checkSameProblem($item_id, $problem_des_id);
-
-        // if ($noti_prob) {
-        //     return view('checkProblem')->with(compact('noti_prob', 'problem_description'));
-        // } else {
-        //     return $this->store($request);
-        // }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Http\Models\Notification_Problem  $notification_Problem
-     * @return \Illuminate\Http\Response
-     */
-    public function show($code)
-    {
-        $item = $this->item->findByCode($code);
-
-        if (empty($item)) {
-            return null;
-            // $errors = new MessageBag();
-            // $errors->add('itemnotfound', 'Item Not Found');
-            // return redirect()->route('send')->withErrors($errors);
-        } else {
-            return $item;
-            // return view('noti_problem.send_problem')
-            //     ->with('item', $item);
-        }
+        $this->noti_problem->create($item_id, $problem_des_id, $problem_description);
+        
+        $success[] =  "Send Problem Success";
+        return $this->serverResponse(null, $success);
     }
 
     /**
@@ -125,7 +86,6 @@ class NotificationProblemController extends Controller
      */
     public function update(NotiUpdateFormRequest $request, $id)
     {
-        // $errors = new MessageBag();
         $help_desk_code = $request->help_desk_code;
         $next_status = $request->next_status;
         $note = $request->note;
@@ -143,5 +103,15 @@ class NotificationProblemController extends Controller
     public function destroy(Notification_Problem $notification_Problem)
     {
         //
+    }
+
+    public function serverResponse($errors, $success)
+    {
+        $time = Carbon::now()->format('H:i:s');
+        return response()->json([
+            'errors' => $errors,
+            'success' => $success,
+            'time' => $time,
+        ]);
     }
 }
