@@ -294,8 +294,8 @@ export default function Rooms() {
                   "{room.room_code} - {room.room_name}"
                 </p>
                 <p className="text-danger">
-                  *** All items that relate to {room.room_code} will be
-                  delete too ***
+                  *** All items that relate to {room.room_code} will be delete
+                  too ***
                 </p>
               </div>
             }
@@ -308,7 +308,6 @@ export default function Rooms() {
           <FormModal
             show={modalShowEdit}
             onHide={() => setModalShowEdit(false)}
-            close="Close"
             title="Edit Room"
             body={
               <>
@@ -360,15 +359,15 @@ export default function Rooms() {
                         <Dropdown.Item
                           key={building.building_id}
                           eventKey={building.building_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setRoom({
                               room_id: room.room_id,
                               room_code: room.room_code,
                               room_name: room.room_name,
                               building_id: eventKey,
-                            }),
-                            setSelectBuilding(building.building_name)
-                          )}
+                            });
+                            setSelectBuilding(building.building_name);
+                          }}
                         >
                           {building.building_name}
                         </Dropdown.Item>

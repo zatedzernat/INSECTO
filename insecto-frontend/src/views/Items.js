@@ -454,7 +454,6 @@ export default function Items() {
             show={modalShowEdit}
             onHide={() => setModalShowEdit(false)}
             title="Edit Item"
-            close="Close"
             body={
               <div>
                 <div className="form-group row">
@@ -516,7 +515,7 @@ export default function Items() {
                         <Dropdown.Item
                           key={type.type_id}
                           eventKey={type.type_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               item_id: item.item_id,
                               item_code: item.item_code,
@@ -527,9 +526,9 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
-                            }),
-                            setSelectType(type.type_name)
-                          )}
+                            });
+                            setSelectType(type.type_name);
+                          }}
                         >
                           {type.type_name}
                         </Dropdown.Item>
@@ -553,7 +552,7 @@ export default function Items() {
                         <Dropdown.Item
                           key={building.building_id}
                           eventKey={building.building_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               item_id: item.item_id,
                               item_code: item.item_code,
@@ -564,9 +563,9 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
-                            }),
-                            setSelectBuilding(building.building_name)
-                          )}
+                            });
+                            setSelectBuilding(building.building_name);
+                          }}
                         >
                           {building.building_name}
                         </Dropdown.Item>
@@ -590,7 +589,7 @@ export default function Items() {
                         <Dropdown.Item
                           key={room.room_id}
                           eventKey={room.room_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               item_id: item.item_id,
                               item_code: item.item_code,
@@ -601,9 +600,9 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
-                            }),
-                            setSelectRoom(room.room_name)
-                          )}
+                            });
+                            setSelectRoom(room.room_name);
+                          }}
                         >
                           {room.room_name}
                         </Dropdown.Item>
@@ -625,7 +624,7 @@ export default function Items() {
                         <Dropdown.Item
                           key={brand.brand_id}
                           eventKey={brand.brand_id}
-                          onSelect={(eventKey) => (
+                          onSelect={(eventKey) => {
                             setItem({
                               item_id: item.item_id,
                               item_code: item.item_code,
@@ -636,9 +635,9 @@ export default function Items() {
                               brand_id: eventKey,
                               serial_number: item.serial_number,
                               model: item.model,
-                            }),
-                            setSelectBrand(brand.brand_name)
-                          )}
+                            });
+                            setSelectBrand(brand.brand_name);
+                          }}
                         >
                           {brand.brand_name}
                         </Dropdown.Item>

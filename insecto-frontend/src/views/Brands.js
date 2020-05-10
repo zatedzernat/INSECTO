@@ -226,8 +226,7 @@ export default function Brands() {
               <div className="form-group col-form-label">
                 <p>"{brand.brand_name}"</p>
                 <p className="text-danger">
-                  *** All items which are {brand.brand_name} be set to null
-                  ***
+                  *** All items which are {brand.brand_name} be set to null ***
                 </p>
               </div>
             }

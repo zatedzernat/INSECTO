@@ -82,7 +82,6 @@ export default function Buildings() {
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
-    console.log(building)
     try {
       const res = await axios.put(
         `${process.env.REACT_APP_API_URL}buildings/${building.building_id}`,
@@ -116,7 +115,7 @@ export default function Buildings() {
               Code <span style={styles.container}>*</span>
             </th>
             <th>
-              Name <span style={styles.container}>*</span>
+              Name
             </th>
             <th>Created At</th>
             <th>Updated At</th>
@@ -271,7 +270,7 @@ export default function Buildings() {
             body={
               <div className="form-group row">
                 <label className="col-sm-3 col-form-label">
-                  Building Code: 
+                  Building Code:
                 </label>
                 <div className="col-sm-9">
                   <input

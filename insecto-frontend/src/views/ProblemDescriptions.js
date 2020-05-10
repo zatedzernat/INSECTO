@@ -295,7 +295,6 @@ export default function ProblemDescriptions() {
             onHide={() => setModalShowEdit(false)}
             title="Edit Problem Description"
             method="POST"
-            close="Close"
             onSubmit={editHandleSubmit}
             body={
               <div>
@@ -356,7 +355,6 @@ export default function ProblemDescriptions() {
             }
             button="Confirm"
             close="Cancel"
-
           />
         </div>
       }

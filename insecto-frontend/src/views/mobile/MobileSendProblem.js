@@ -91,7 +91,7 @@ export default function MobileSendProblem() {
   return (
     <Content
       content={
-        <fragment>
+        <>
           <div className="content" style={{ backgroundColor: "#EDE7E7" }}>
             <Container>
               <Row>
@@ -110,12 +110,12 @@ export default function MobileSendProblem() {
                   <Col>
                     <Form>
                       <Form.Group className="col-md-5">
-                        <Form.Label for="room">Room :</Form.Label>
+                        <Form.Label htmlFor="room">Room :</Form.Label>
                         <Form.Control
                           type="text"
                           name="room"
                           placeholder="Room"
-                          class="form-control"
+                          className="form-control"
                           value={item.room_id}
                           disabled
                         ></Form.Control>
@@ -127,12 +127,12 @@ export default function MobileSendProblem() {
                   <Col>
                     <Form>
                       <Form.Group className="col-md-5">
-                        <Form.Label for="itemCode">Item Code :</Form.Label>
+                        <Form.Label htmlFor="itemCode">Item Code :</Form.Label>
                         <Form.Control
                           type="text"
                           name="itemCode"
                           placeholder="Item Code"
-                          class="form-control"
+                          className="form-control"
                           value={item.item_code}
                           disabled
                         ></Form.Control>
@@ -144,12 +144,12 @@ export default function MobileSendProblem() {
                   <Col>
                     <Form>
                       <Form.Group className="col-md-5">
-                        <Form.Label for="itemName">Item Name :</Form.Label>
+                        <Form.Label htmlFor="itemName">Item Name :</Form.Label>
                         <Form.Control
                           type="text"
                           name="itemName"
                           placeholder="Item Name"
-                          class="form-control"
+                          className="form-control"
                           value={item.item_name}
                           disabled
                         ></Form.Control>
@@ -159,22 +159,21 @@ export default function MobileSendProblem() {
                 </Row>
                 <Row>
                   <Col>
-                  <Form.Group className="col-md-5">
-                    <Form.Label for="Problem">Problem:*</Form.Label>
-                    <DropdownButton
-                      id="problemSend"
-                      title={titleDropdown}
-                    >
+                    <Form.Group className="col-md-5">
+                      <Form.Label htmlFor="Problem">Problem:*</Form.Label>
+                      <DropdownButton id="problemSend" title={titleDropdown}>
                         {_.map(problemDes, (problem) => (
                           <Dropdown.Item
                             key={problem.key}
                             value={problem.key}
-                            onSelect={() => {dropdownHandel(problem)}}
+                            onSelect={() => {
+                              dropdownHandel(problem);
+                            }}
                           >
                             {problem.value}
                           </Dropdown.Item>
                         ))}
-                    </DropdownButton>
+                      </DropdownButton>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -187,7 +186,7 @@ export default function MobileSendProblem() {
                             type="textarea"
                             name="other"
                             placeholder="ใส่ข้อมูลปัญหาอื่นๆ"
-                            class="form-control"
+                            className="form-control"
                             onChange={problemInputChangedHandler}
                           ></Form.Control>
                         </Form.Group>
@@ -199,8 +198,7 @@ export default function MobileSendProblem() {
                   <Col xs={4} md={4} />
                   <Col xs={4} md={4}>
                     <Button
-                      bsStyle="info"
-                      fill
+                      variant="primary"
                       type="submit"
                       onClick={() => confirmModalHandler()}
                     >
@@ -212,7 +210,7 @@ export default function MobileSendProblem() {
               </form>
             </Container>
           </div>
-        </fragment>
+        </>
       }
     />
   );
