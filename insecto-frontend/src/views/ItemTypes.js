@@ -11,7 +11,6 @@ export default function ItemTypes() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
-  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -63,8 +62,8 @@ export default function ItemTypes() {
     setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}item_types/${objectDel.type_id}`,
-        objectDel.type_id
+        `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
+        itemType.type_id
       );
       if (res.data.error) {
         setIsError({
@@ -143,7 +142,7 @@ export default function ItemTypes() {
                 <span
                   onClick={() => {
                     setModalShowDel(true);
-                    setObjectDel(itemType);
+                    setItemType(itemType);
                   }}
                 >
                   <i className="fa fa-times" />
@@ -222,10 +221,10 @@ export default function ItemTypes() {
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
-                <p>"{objectDel.type_name}"</p>
+                <p>"{itemType.type_name}"</p>
                 <p className="text-danger">
                   *** All items and problem descriptions that relate{" "}
-                  {objectDel.type_name} will be delete too ***
+                  {itemType.type_name} will be delete too ***
                 </p>
               </div>
             }

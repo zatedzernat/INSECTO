@@ -17,7 +17,6 @@ export default function Items() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
-  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -85,8 +84,8 @@ export default function Items() {
     setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}items/${objectDel.item_id}`,
-        objectDel.item_id
+        `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
+        item.item_id
       );
       if (res.data.error) {
         setIsError({
@@ -183,7 +182,7 @@ export default function Items() {
                 <span
                   onClick={() => {
                     setModalShowDel(true);
-                    setObjectDel(item);
+                    setItem(item);
                   }}
                 >
                   <i className="fa fa-times" />
@@ -441,7 +440,7 @@ export default function Items() {
             body={
               <div className="form-group col-form-label">
                 <p>
-                  "{objectDel.item_code} - {objectDel.item_name}"
+                  "{item.item_code} - {item.item_name}"
                 </p>
               </div>
             }

@@ -17,7 +17,6 @@ export default function ProblemDescriptions() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
-  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     success: false,
@@ -77,8 +76,8 @@ export default function ProblemDescriptions() {
     setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}problem_descs/${objectDel.problem_des_id}`,
-        objectDel.problem_des_id
+        `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
+        problemDesc.problem_des_id
       );
       if (res.data.error) {
         setIsError({
@@ -165,7 +164,7 @@ export default function ProblemDescriptions() {
                 <span
                   onClick={() => {
                     setModalShowDel(true);
-                    setObjectDel(problem_desc);
+                    setProblemDesc(problem_desc);
                   }}
                 >
                   <i className="fa fa-times" />
@@ -282,7 +281,7 @@ export default function ProblemDescriptions() {
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
-                <p>"{objectDel.problem_description}"</p>
+                <p>"{problemDesc.problem_description}"</p>
               </div>
             }
             method="POST"

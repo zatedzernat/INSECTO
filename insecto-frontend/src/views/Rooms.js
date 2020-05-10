@@ -17,7 +17,6 @@ export default function Rooms() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
-  const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -75,8 +74,8 @@ export default function Rooms() {
     setModalShowDel(false);
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}rooms/${objectDel.room_id}`,
-        objectDel.room_id
+        `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
+        room.room_id
       );
       if (res.data.error) {
         setIsError({
@@ -160,7 +159,7 @@ export default function Rooms() {
                 <span
                   onClick={() => {
                     setModalShowDel(true);
-                    setObjectDel(room);
+                    setRoom(room);
                   }}
                 >
                   <i className="fa fa-times" />
@@ -292,10 +291,10 @@ export default function Rooms() {
             body={
               <div className="form-group col-form-label">
                 <p>
-                  "{objectDel.room_code} - {objectDel.room_name}"
+                  "{room.room_code} - {room.room_name}"
                 </p>
                 <p className="text-danger">
-                  *** All items that relate to {objectDel.room_code} will be
+                  *** All items that relate to {room.room_code} will be
                   delete too ***
                 </p>
               </div>
