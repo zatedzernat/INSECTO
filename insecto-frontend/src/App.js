@@ -13,6 +13,7 @@ import Statuses from "./views/Statuses";
 import NotiProblems from "./views/NotificationProblems";
 import HistoryLogs from "./views/HistoryLogs";
 import NotFoundPage from "./views/NotFoundPage";
+import SendProblem from "./views/mobile/MobileSendProblem";
 
 export default function App() {
   return (
@@ -29,6 +30,8 @@ export default function App() {
         <Route path="/problem_descriptions" component={ProblemDes} />
         <Route path="/status" component={Statuses} />
         <Route path="/history_logs" component={HistoryLogs} />
+        {/* <Route path="/mobile/:id" render={(props) => <SendProblem {...props}/>} /> */}
+        <Route path="/mobile" component={SendProblem} />
         <Route component={NotFoundPage} />
       </Switch>
       <Footer />
