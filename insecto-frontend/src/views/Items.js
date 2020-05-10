@@ -16,6 +16,7 @@ export default function Items() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
+  const [modalShowEdit, setModalShowEdit] = useState(false);
   const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
@@ -75,7 +76,7 @@ export default function Items() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-        console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
@@ -96,10 +97,32 @@ export default function Items() {
         setLastUpdate(res.data.time);
       }
     } catch (error) {
-        console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
-
+  const editHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowEdit(false);
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
+        item
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response.data.errors));
+    }
+  };
+  const styles = {
+    container: { color: "red" },
+  };
   const itemTable = (data) => {
     return (
       <Table striped hover>
@@ -109,7 +132,9 @@ export default function Items() {
               <input type="checkbox" />
             </th>
             <th>#</th>
-            <th>Code</th>
+            <th>
+              Code <span style={styles.container}>*</span>
+            </th>
             <th>Name</th>
             <th>Type</th>
             <th>Building</th>
@@ -142,11 +167,24 @@ export default function Items() {
               <td>{item.updated_at}</td>
               <td>{item.update_by}</td>
               <td>
-                <i className="fa fa-edit" />
+                <span
+                  onClick={() => {
+                    setModalShowEdit(true);
+                    setItem(item);
+                    setSelectBrand(item.brand.brand_name);
+                    setSelectType(item.item_type.type_name);
+                    setSelectBuilding(item.room.building.building_name);
+                    setSelectRoom(item.room.room_name);
+                  }}
+                >
+                  <i className="fa fa-edit" />
+                </span>
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(item);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(item);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -157,7 +195,7 @@ export default function Items() {
       </Table>
     );
   };
-  
+
   return (
     <Content
       content={
@@ -180,7 +218,16 @@ export default function Items() {
             }
             badge={
               <div>
-                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                <Button
+                  variant="info"
+                  onClick={() => {
+                    setModalShowAdd(true);
+                    setSelectBrand("- select brand name -");
+                    setSelectBuilding("- select building name -");
+                    setSelectRoom("- select room name -");
+                    setSelectType("- select type name -");
+                  }}
+                >
                   Add
                 </Button>
                 &emsp;
@@ -194,12 +241,14 @@ export default function Items() {
           <FormModal
             show={modalShowAdd}
             onHide={() => setModalShowAdd(false)}
-            title="Add Brand"
+            title="Add Item"
             close="Close"
             body={
               <div>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Item Code:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Item Code: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -215,7 +264,9 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Item Name:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Item Name: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -230,7 +281,9 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Type:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Type: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectType}
@@ -258,7 +311,9 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Building:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBuilding}
@@ -286,7 +341,9 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Room: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectRoom}
@@ -376,19 +433,278 @@ export default function Items() {
             onSubmit={addHandleSubmit}
             button="Add"
           />
+
           <FormModal
             show={modalShowDel}
             onHide={() => setModalShowDel(false)}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
-                <p>"{objectDel.item_code} - {objectDel.item_name}"</p>
+                <p>
+                  "{objectDel.item_code} - {objectDel.item_name}"
+                </p>
               </div>
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
             button="Yes"
             close="No"
+          />
+
+          <FormModal
+            show={modalShowEdit}
+            onHide={() => setModalShowEdit(false)}
+            title="Edit Item"
+            close="Close"
+            body={
+              <div>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Item Code: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="item_code"
+                      value={item.item_code}
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Item Name: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="item_name"
+                      value={item.item_name}
+                      onChange={(event) =>
+                        setItem({
+                          item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: event.target.value,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: item.serial_number,
+                          model: item.model,
+                        })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Type: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectType}
+                      id="type"
+                      size="sm"
+                      variant="warning"
+                    >
+                      {_.map(data.itemTypes, (type) => (
+                        <Dropdown.Item
+                          key={type.type_id}
+                          eventKey={type.type_id}
+                          onSelect={(eventKey) => (
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: item.room_id,
+                              type_id: eventKey,
+                              building_id: item.building_id,
+                              brand_id: item.brand_id,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                            }),
+                            setSelectType(type.type_name)
+                          )}
+                        >
+                          {type.type_name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectBuilding}
+                      id="building"
+                      size="sm"
+                      variant="warning"
+                    >
+                      {_.map(data.buildings, (building) => (
+                        <Dropdown.Item
+                          key={building.building_id}
+                          eventKey={building.building_id}
+                          onSelect={(eventKey) => (
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: item.room_id,
+                              type_id: item.type_id,
+                              building_id: eventKey,
+                              brand_id: item.brand_id,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                            }),
+                            setSelectBuilding(building.building_name)
+                          )}
+                        >
+                          {building.building_name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Room: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectRoom}
+                      id="r"
+                      size="sm"
+                      variant="warning"
+                    >
+                      {_.map(data.rooms, (room) => (
+                        <Dropdown.Item
+                          key={room.room_id}
+                          eventKey={room.room_id}
+                          onSelect={(eventKey) => (
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: eventKey,
+                              type_id: item.type_id,
+                              building_id: item.building_id,
+                              brand_id: item.brand_id,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                            }),
+                            setSelectRoom(room.room_name)
+                          )}
+                        >
+                          {room.room_name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Brand:</label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectBrand}
+                      id="bg-nested-dropdown"
+                      size="sm"
+                      variant="warning"
+                    >
+                      {_.map(data.brands, (brand) => (
+                        <Dropdown.Item
+                          key={brand.brand_id}
+                          eventKey={brand.brand_id}
+                          onSelect={(eventKey) => (
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: item.room_id,
+                              type_id: item.type_id,
+                              building_id: item.building_id,
+                              brand_id: eventKey,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                            }),
+                            setSelectBrand(brand.brand_name)
+                          )}
+                        >
+                          {brand.brand_name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Serial Number:
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="serial_number"
+                      value={item.serial_number ?? "-"}
+                      onChange={(event) =>
+                        setItem({
+                          item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: item.item_name,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: event.target.value,
+                          model: item.model,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Model:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="model"
+                      value={item.model ?? "-"}
+                      onChange={(event) =>
+                        setItem({
+                          item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: item.item_name,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: item.serial_number,
+                          model: event.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            }
+            method="POST"
+            onSubmit={editHandleSubmit}
+            button="Confirm"
+            close="Cancel"
           />
         </div>
       }

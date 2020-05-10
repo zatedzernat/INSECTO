@@ -251,7 +251,7 @@ export default function Brands() {
                     type="text"
                     className="form-control"
                     name="brand_name"
-                    defaultValue={brand.brand_name}
+                    value={brand.brand_name}
                     onChange={(event) =>
                       setBrand({
                         brand_id: brand.brand_id,

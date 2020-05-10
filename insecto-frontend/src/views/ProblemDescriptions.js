@@ -16,6 +16,7 @@ export default function ProblemDescriptions() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
+  const [modalShowEdit, setModalShowEdit] = useState(false);
   const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
@@ -31,7 +32,7 @@ export default function ProblemDescriptions() {
     type_id: "",
   });
   const [selectType, setSelectType] = useState("- select type name -");
-  
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -51,7 +52,7 @@ export default function ProblemDescriptions() {
 
   const addHandleSubmit = async (event) => {
     event.preventDefault();
-    setSelectType("- select type name -")
+    setSelectType("- select type name -");
     setModalShowAdd(false);
     try {
       const res = await axios.post(
@@ -92,6 +93,31 @@ export default function ProblemDescriptions() {
     }
   };
 
+  const editHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowEdit(false);
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
+        problemDesc
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response.data.errors));
+    }
+  };
+
+  const styles = {
+    container: { color: "red" },
+  };
+
   const problemDesTable = (data) => {
     return (
       <Table striped hover>
@@ -101,8 +127,12 @@ export default function ProblemDescriptions() {
               <input type="checkbox" />
             </th>
             <th>#</th>
-            <th>Problem Description</th>
-            <th>Type</th>
+            <th>
+              Problem Description <span style={styles.container}>*</span>
+            </th>
+            <th>
+              Type <span style={styles.container}>*</span>
+            </th>
             <th>Created At</th>
             <th>Updated At</th>
             <th>Update By</th>
@@ -122,11 +152,21 @@ export default function ProblemDescriptions() {
               <td>{problem_desc.updated_at}</td>
               <td>{problem_desc.update_by}</td>
               <td>
-                <i className="fa fa-edit" />
+                <span
+                  onClick={() => {
+                    setProblemDesc(problem_desc);
+                    setSelectType(problem_desc.item_type.type_name); //? google->react hook setstate not updating
+                    setModalShowEdit(true);
+                  }}
+                >
+                  <i className="fa fa-edit" />
+                </span>
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(problem_desc);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(problem_desc);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -160,7 +200,13 @@ export default function ProblemDescriptions() {
             }
             badge={
               <div>
-                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                <Button
+                  variant="info"
+                  onClick={() => {
+                    setModalShowAdd(true);
+                    setSelectType("- select type name -");
+                  }}
+                >
                   Add
                 </Button>
                 &emsp;
@@ -229,6 +275,7 @@ export default function ProblemDescriptions() {
             }
             button="Add"
           />
+
           <FormModal
             show={modalShowDel}
             onHide={() => setModalShowDel(false)}
@@ -243,9 +290,77 @@ export default function ProblemDescriptions() {
             button="Yes"
             close="No"
           />
+
+          <FormModal
+            show={modalShowEdit}
+            onHide={() => setModalShowEdit(false)}
+            title="Edit Problem Description"
+            method="POST"
+            close="Close"
+            onSubmit={editHandleSubmit}
+            body={
+              <div>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Problem Description:<span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="problem_description"
+                      value={problemDesc.problem_description}
+                      onChange={(event) =>
+                        setProblemDesc({
+                          problem_des_id: problemDesc.problem_des_id,
+                          problem_description: event.target.value,
+                          type_id: problemDesc.type_id,
+                        })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Type:<span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectType}
+                      id="bg-nested-dropdown"
+                      size="sm"
+                      variant="warning"
+                    >
+                      {_.map(data.types, (type) => (
+                        <Dropdown.Item
+                          key={type.type_id}
+                          eventKey={type.type_id}
+                          onSelect={(eventKey) => {
+                            setProblemDesc({
+                              problem_des_id: problemDesc.problem_des_id,
+                              problem_description:
+                                problemDesc.problem_description,
+                              type_id: eventKey,
+                            });
+                            setSelectType(type.type_name);
+                          }}
+                        >
+                          {type.type_name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  </div>
+                </div>
+              </div>
+            }
+            button="Confirm"
+            close="Cancel"
+
+          />
         </div>
       }
     />
   );
 }
-

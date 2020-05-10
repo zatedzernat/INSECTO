@@ -10,6 +10,7 @@ export default function ItemTypes() {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
+  const [modalShowEdit, setModalShowEdit] = useState(false);
   const [objectDel, setObjectDel] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
@@ -77,7 +78,29 @@ export default function ItemTypes() {
       console.log(JSON.stringify(error.response.data.errors));
     }
   };
-
+  const editHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowEdit(false);
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
+        itemType
+      );
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response.data.errors));
+    }
+  };
+  const styles = {
+    container: { color: "red" },
+  };
   const itemTypeTable = (data) => {
     return (
       <Table striped hover>
@@ -87,7 +110,9 @@ export default function ItemTypes() {
               <input type="checkbox" />
             </th>
             <th>#</th>
-            <th>Name</th>
+            <th>
+              Name <span style={styles.container}>*</span>
+            </th>
             <th>Created At</th>
             <th>Updated at</th>
             <th>Update By</th>
@@ -106,11 +131,20 @@ export default function ItemTypes() {
               <td>{itemType.updated_at}</td>
               <td>{itemType.update_by}</td>
               <td>
-                <i className="fa fa-edit" />
+                <span
+                  onClick={() => {
+                    setModalShowEdit(true);
+                    setItemType(itemType);
+                  }}
+                >
+                  <i className="fa fa-edit" />
+                </span>
                 &emsp;
-                <span  onClick={ () => {
-                  setModalShowDel(true); 
-                  setObjectDel(itemType);}}
+                <span
+                  onClick={() => {
+                    setModalShowDel(true);
+                    setObjectDel(itemType);
+                  }}
                 >
                   <i className="fa fa-times" />
                 </span>
@@ -121,7 +155,6 @@ export default function ItemTypes() {
       </Table>
     );
   };
-  
 
   return (
     <Content
@@ -165,7 +198,7 @@ export default function ItemTypes() {
             body={
               <div className="form-group row">
                 <label className="col-sm-3 col-form-label">
-                  Item Type Name:
+                  Item Type Name: <span style={styles.container}>*</span>
                 </label>
                 <div className="col-sm-9">
                   <input
@@ -190,13 +223,49 @@ export default function ItemTypes() {
             body={
               <div className="form-group col-form-label">
                 <p>"{objectDel.type_name}"</p>
-                <p className="text-danger">*** All items and problem descriptions that relate {objectDel.type_name} will be delete too ***</p>
+                <p className="text-danger">
+                  *** All items and problem descriptions that relate{" "}
+                  {objectDel.type_name} will be delete too ***
+                </p>
               </div>
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
             button="Yes"
             close="No"
+          />
+
+          <FormModal
+            show={modalShowEdit}
+            onHide={() => setModalShowEdit(false)}
+            title="Edit Item Type"
+            body={
+              <div className="form-group row">
+                <label className="col-sm-3 col-form-label">
+                  Item Type Name: <span style={styles.container}>*</span>
+                </label>
+                <div className="col-sm-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="type_name"
+                    defaultValue={itemType.type_name}
+                    onChange={(event) =>
+                      setItemType({
+                        type_id: itemType.type_id,
+                        type_name: event.target.value,
+                      })
+                    }
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+            }
+            method="POST"
+            onSubmit={editHandleSubmit}
+            button="Confirm"
+            close="Cancel"
           />
         </div>
       }
