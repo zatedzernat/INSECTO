@@ -30,8 +30,7 @@ export default function App() {
         <Route path="/problem_descriptions" component={ProblemDes} />
         <Route path="/status" component={Statuses} />
         <Route path="/history_logs" component={HistoryLogs} />
-        {/* <Route path="/mobile/:id" render={(props) => <SendProblem {...props}/>} /> */}
-        <Route path="/mobile" component={SendProblem} />
+        <Route path="/mobile/:code" component={SendProblem} />
         <Route component={NotFoundPage} />
       </Switch>
       <Footer />
