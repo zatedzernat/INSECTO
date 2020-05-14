@@ -15,6 +15,10 @@ export default function Brands() {
     error: false,
     message: "",
   });
+  const [isSuccess, setIsSuccess] = useState({
+    success: false,
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const [brand, setBrand] = useState({
@@ -29,7 +33,7 @@ export default function Brands() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error));
     }
   };
 
@@ -45,16 +49,25 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands`,
         brand
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        setIsError({
+          error: true,
+          message: error.response.data.errors.brand_name,
+        });
+      }
     }
   };
 
@@ -73,11 +86,16 @@ export default function Brands() {
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error));
     }
   };
+
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
@@ -86,21 +104,32 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         brand
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        setIsError({
+          error: true,
+          message: error.response.data.errors.brand_name,
+        });
+      }
     }
   };
+
   const styles = {
     container: { color: "red" },
   };
+
   const brandTable = (data) => {
     return (
       <Table striped hover>
@@ -129,7 +158,7 @@ export default function Brands() {
               <td>{brand.brand_name}</td>
               <td>{brand.created_at}</td>
               <td>{brand.updated_at}</td>
-              <td>{brand.update_by}</td>
+              <td>{brand.user.name}</td>
               <td>
                 <span
                   onClick={() => {
@@ -167,6 +196,15 @@ export default function Brands() {
               dismissible
             >
               {isError.message}
+            </Alert>
+          )}
+          {isSuccess.success && (
+            <Alert
+              variant="success"
+              onClose={() => setIsSuccess(false)}
+              dismissible
+            >
+              {isSuccess.message}
             </Alert>
           )}
           <Card

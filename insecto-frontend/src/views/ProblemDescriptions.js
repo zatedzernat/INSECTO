@@ -23,6 +23,10 @@ export default function ProblemDescriptions() {
     message: "",
     time: "",
   });
+  const [isSuccess, setIsSuccess] = useState({
+    success: false,
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const [problemDesc, setProblemDesc] = useState({
@@ -58,16 +62,31 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs`,
         problemDesc
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.problem_description
+          ? error.response.data.errors.problem_description
+          : "";
+        let mess2 = error.response.data.errors.type_id
+          ? error.response.data.errors.type_id
+          : "";
+        setIsError({
+          error: true,
+          message: mess1 + " " + mess2,
+        });
+      }
     }
   };
 
@@ -86,9 +105,13 @@ export default function ProblemDescriptions() {
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response));
     }
   };
 
@@ -100,16 +123,25 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
         problemDesc
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        setIsError({
+          error: true,
+          message: error.response.data.errors.problem_description,
+        });
+      }
     }
   };
 
@@ -149,7 +181,7 @@ export default function ProblemDescriptions() {
               <td>{problem_desc.item_type.type_name}</td>
               <td>{problem_desc.created_at}</td>
               <td>{problem_desc.updated_at}</td>
-              <td>{problem_desc.update_by}</td>
+              <td>{problem_desc.user.name}</td>
               <td>
                 <span
                   onClick={() => {
@@ -188,6 +220,15 @@ export default function ProblemDescriptions() {
               dismissible
             >
               {isError.message}
+            </Alert>
+          )}
+          {isSuccess.success && (
+            <Alert
+              variant="success"
+              onClose={() => setIsSuccess(false)}
+              dismissible
+            >
+              {isSuccess.message}
             </Alert>
           )}
           <Card
