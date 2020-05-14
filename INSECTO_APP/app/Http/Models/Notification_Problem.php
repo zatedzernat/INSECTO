@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Notification_Problem extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'sender_ip', 'note', 'cancel_flag', 'user_id'];
+    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'note', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'noti_id';
 
     public function status()
@@ -42,7 +42,7 @@ class Notification_Problem extends Model implements Auditable
 
     public function getAll()
     {
-        return Notification_Problem::with('item.room', 'status')->get();
+        return Notification_Problem::with('item.room', 'status', 'user')->get();
     }
 
     public function findByID($id)
