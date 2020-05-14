@@ -44,8 +44,8 @@ class NotificationProblemController extends Controller
         $item = $this->item->findByCode($item_code);
 
         if (empty($item)) {
-            $errors[] = "Item not found!";
-            return $this->serverResponse($errors, null);
+            $error = "Item not found!";
+            return $this->serverResponse($error, null);
         } else {
             $problemsNotResolved = $this->noti_problem->findProblemsNotResolvedByItemID($item->item_id);
             $problemsThatCanSend = $this->noti_problem->findProblemsThatCanSendByItemID($item);
@@ -72,8 +72,8 @@ class NotificationProblemController extends Controller
         }
 
         $this->noti_problem->create($item_id, $problem_des_id, $problem_description);
-        
-        $success[] =  "Send Problem Success";
+
+        $success =  "Send Problem Success";
         return $this->serverResponse(null, $success);
     }
 
@@ -84,14 +84,14 @@ class NotificationProblemController extends Controller
      * @param  \App\Http\Models\Notification_Problem  $notification_Problem
      * @return \Illuminate\Http\Response
      */
-    public function update(NotiUpdateFormRequest $request, $id)
+    public function update(NotiUpdateFormRequest $request, $noti_id)
     {
+        $next_status_id = $request->next_status_id;
         $help_desk_code = $request->help_desk_code;
-        $next_status = $request->next_status;
         $note = $request->note;
-        $status = $this->noti_problem->checkStatus($next_status, $help_desk_code, $id, $note);
-        return redirect()->route('noti_problems')
-            ->with('changeComplete', 'change status to \'' . $status . '\' complete');
+        $status = $this->noti_problem->checkStatus($noti_id, $next_status_id, $help_desk_code, $note);
+        $success = 'change status to \'' . $status . '\' complete';
+        return $this->serverResponse(null, $success);
     }
 
     /**
@@ -105,11 +105,11 @@ class NotificationProblemController extends Controller
         //
     }
 
-    public function serverResponse($errors, $success)
+    public function serverResponse($error, $success)
     {
         $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'errors' => $errors,
+            'errors' => $error,
             'success' => $success,
             'time' => $time,
         ]);

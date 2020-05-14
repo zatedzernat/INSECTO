@@ -44,7 +44,7 @@ class StatusesTableSeeder extends Seeder
         ]);
         DB::table('statuses')->insert([
             'status_name' => 'closed',
-            'status_description' => 'Request Completed',
+            'status_description' => 'will close in 7 days, INSECTO aren\'t relevant',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
