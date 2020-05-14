@@ -24,11 +24,11 @@ class NotiUpdateFormRequest extends FormRequest
      */
     public function rules()
     {
-        if (Request::input('next_status') == 'open') {
+        if (Request::input('next_status_id') == 2) { // status_id = 2 = open
             return [
                 'help_desk_code' => 'required',
             ];
-        } else if (Request::input('next_status') == 'closed') {
+        } else if (Request::input('next_status_id') == 8) { //status_id = 8 = resolved
             return [
                 'note' => 'required',
             ];

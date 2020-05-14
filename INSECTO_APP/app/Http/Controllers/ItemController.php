@@ -19,10 +19,6 @@ class ItemController extends Controller
     private $itemType;
     private $brand;
     private $building;
-    private $error;
-    private $success;
-    private $message;
-    private $time;
 
     public function __construct()
     {
@@ -31,9 +27,6 @@ class ItemController extends Controller
         $this->itemType = new Item_Type();
         $this->brand = new Brand();
         $this->building = new Building();
-        $this->error = false;
-        $this->success = false;
-        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -70,13 +63,12 @@ class ItemController extends Controller
         $model = $request->model;
         $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $group, $brand_id, $serial, $model);
         if ($createFail) {
-            $this->error = true;
-            $this->message = 'Add Duplicate Item Code';
+            $error =  'Add Duplicate Item Code';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Add Item \'' . $itemName . '\' Success';
+            $success = 'Add Item \'' . $itemName . '\' Success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -109,9 +101,8 @@ class ItemController extends Controller
         $serial = $request->input('serial_number');
         $model = $request->input('model');
         $updateFail = $this->item->updateItem($id, $item_name, $room_id, $type_id, $group, $brand_id, $serial, $model);
-        $this->success = true;
-        $this->messgae = 'Update item \'' . $item_name . '\' success';
-        return  $this->serverResponse();
+        $success = 'Update item \'' . $item_name . '\' success';
+        return  $this->serverResponse(null, $success);
     }
 
     /**
@@ -123,18 +114,17 @@ class ItemController extends Controller
     public function destroy(Request $request, $item_id)
     {
         $item = $this->item->deleteItem($item_id);
-        $this->message = 'Delete item \'' . $item->item_code . '\' success';
-        $this->success = true;
-        return $this->serverResponse();
+        $success = 'Delete item \'' . $item->item_code . '\' success';
+        return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse()
+    public function serverResponse($error, $success)
     {
+        $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
         ]);
     }
 }

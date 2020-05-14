@@ -15,19 +15,12 @@ class BuildingController extends Controller
     private $building;
     private $room;
     private $item;
-    private $error;
-    private $success;
-    private $message;
-    private $time;
 
     public function __construct()
     {
         $this->building = new Building();
         $this->room = new Room();
         $this->item = new Item();
-        $this->error = false;
-        $this->success = false;
-        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -53,13 +46,12 @@ class BuildingController extends Controller
         $building_name = $request->building_name;
         $createFail = $this->building->createNewBuilding($building_code, $building_name);
         if ($createFail) {
-            $this->error = true;
-            $this->message = 'Add Duplicate Building Name';
+            $error = 'Add Duplicate Building Name';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Add Building \'' . $building_name . '\' Success';
+            $success =  'Add Building \'' . $building_name . '\' Success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -86,13 +78,12 @@ class BuildingController extends Controller
         $name = $request->input('building_name');
         $updateFail = $this->building->updateBuilding($id, $name);
         if ($updateFail) {
-            $this->error = true;
-            $this->message = 'Edit duplicate building name';
+            $error = 'Edit duplicate building name';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Update building \'' . $name . '\' success';
+            $success = 'Update building \'' . $name . '\' success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -106,18 +97,17 @@ class BuildingController extends Controller
         $building = $this->building->deleteBuilding($building_id);
         $rooms = $this->room->deleteRooms($building);
         $items = $this->item->deleteItems('rooms', $rooms);
-        $this->message = 'Delete building \'' . $building->building_name . '\' success';
-        $this->success = true;
-        return $this->serverResponse();
+        $success = 'Delete building \'' . $building->building_name . '\' success';
+        return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse()
+    public function serverResponse($error, $success)
     {
+        $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
         ]);
     }
 }

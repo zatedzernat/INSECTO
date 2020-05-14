@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Notification_Problem extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'sender_ip', 'note', 'cancel_flag', 'user_id'];
+    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'note', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'noti_id';
 
     public function status()
@@ -42,7 +42,7 @@ class Notification_Problem extends Model implements Auditable
 
     public function getAll()
     {
-        return Notification_Problem::with('item.room', 'status')->get();
+        return Notification_Problem::with('item.room', 'status', 'user')->get();
     }
 
     public function findByID($id)
@@ -54,7 +54,7 @@ class Notification_Problem extends Model implements Auditable
     {
         return Notification_Problem::where([
             ['item_id', $item_id],
-            ['status_id', '<>', 6], //6 == closed
+            ['status_id', '<>', 8], //status_id = 8 = resolved
         ])->get();
     }
 
@@ -62,7 +62,7 @@ class Notification_Problem extends Model implements Auditable
     {
         $sentProblemsID = Notification_Problem::where([
             ['item_id', $item->item_id],
-            ['status_id', '<>', 6], // where status_id != 6 (closed task)
+            ['status_id', '<>', 8], //status_id = 8 = resolved
         ])->pluck('problem_des_id');
 
         $problemsCanSend = Problem_Description::findByTypeID($item->type_id, 'N')->whereNotIn('problem_des_id', $sentProblemsID);
@@ -80,31 +80,31 @@ class Notification_Problem extends Model implements Auditable
         $this->save();
     }
 
-    public function checkStatus($next_status, $help_desk_code, $id, $note)
+    public function checkStatus($noti_id, $next_status_id, $help_desk_code, $note)
     {
-        $noti_prob = $this->findByID($id);
+        $noti_prob = $this->findByID($noti_id);
         if ($noti_prob) {
-            if ($next_status == 'open') {
-                $status = $this->openTask($help_desk_code, $noti_prob);
+            if ($next_status_id == 2) { // status_id = 2 = open
+                $status = $this->openTask($noti_prob, $help_desk_code);
                 return $status;
-            } else if ($next_status == 'resolved') {
-                $this->closeTask($note, $noti_prob);
-                return 'resolved';
+            } else if ($next_status_id == 8) { // status_id = 8 = resolved
+                $status = $this->resolvedTask($noti_prob, $note);
+                return $status;
             } else {
-                $status = $this->changeStatus($next_status, $noti_prob);
+                $status = $this->changeStatus($noti_prob, $next_status_id);
                 return $status;
             }
         }
     }
 
-    public function openTask($help_desk_code, $noti_prob)
+    public function openTask($noti_prob, $help_desk_code)
     {
         $noti_prob->help_desk_code = $help_desk_code;
         if ($noti_prob->note) {
-            $noti_prob->status_id = 7;
+            $noti_prob->status_id = 7; // status_id = 7 = reopen
             $status = 'reopen';
         } else {
-            $noti_prob->status_id = 2;
+            $noti_prob->status_id = 2; // status_id = 2 = open
             $status = 'open';
         }
         $noti_prob->user_id = 3;
@@ -112,19 +112,19 @@ class Notification_Problem extends Model implements Auditable
         return $status;
     }
 
-    public function changeStatus($next_status, $noti_prob)
+    public function changeStatus($noti_prob, $next_status_id)
     {
-        switch ($next_status) {
-            case 'on hold':
-                $noti_prob->status_id = 3;
+        switch ($next_status_id) {
+            case 3: // status_id = 3 = on hold
+                $noti_prob->status_id = $next_status_id;
                 $status = 'on hold';
                 break;
-            case 'queue':
-                $noti_prob->status_id = 4;
+            case 4: // status_id = 4 = queue
+                $noti_prob->status_id = $next_status_id;
                 $status = 'queue';
                 break;
-            case 'in progress':
-                $noti_prob->status_id = 5;
+            case 5: // status_id = 5 = in progress
+                $noti_prob->status_id = $next_status_id;
                 $status = 'in progress';
                 break;
         }
@@ -133,11 +133,12 @@ class Notification_Problem extends Model implements Auditable
         return $status;
     }
 
-    public function closeTask($note, $noti_prob)
+    public function resolvedTask($noti_prob, $note)
     {
         $noti_prob->note = $note;
-        $noti_prob->status_id = 8;
+        $noti_prob->status_id = 8; //status_id = 8 = resolved
         $noti_prob->user_id = 2;
         $noti_prob->save();
+        return 'resolved';
     }
 }

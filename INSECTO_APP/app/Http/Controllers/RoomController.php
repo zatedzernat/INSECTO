@@ -15,19 +15,12 @@ class RoomController extends Controller
     private $room;
     private $building;
     private $item;
-    private $error;
-    private $success;
-    private $message;
-    private $time;
 
     public function __construct()
     {
         $this->room = new Room();
         $this->building = new Building();
         $this->item = new Item();
-        $this->error = false;
-        $this->success = false;
-        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -56,13 +49,12 @@ class RoomController extends Controller
         $building_id = $request->building_id;
         $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id);
         if ($createFail) {
-            $this->error = true;
-            $this->message = 'Add Duplicate Room Code';
+            $error = 'Add Duplicate Room Code';
+            return $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Add Room \'' . $room_name . '\' Success';
+            $success = 'Add Room \'' . $room_name . '\' Success';
+            return $this->serverResponse(null, $success);
         }
-        return $this->serverResponse();
     }
 
     /**
@@ -89,9 +81,8 @@ class RoomController extends Controller
         $room_name = $request->input('room_name');
         $building_id = $request->input('building_id');
         $updateFail = $this->room->updateRoom($id, $room_name, $building_id);
-        $this->success = true;
-        $this->message = 'Update room \'' . $room_name . '\' success';
-        return  $this->serverResponse();
+        $success = 'Update room \'' . $room_name . '\' success';
+        return  $this->serverResponse(null, $success);
     }
 
     /**
@@ -104,17 +95,17 @@ class RoomController extends Controller
     {
         $room = $this->room->deleteRoom($room_id);
         $items = $this->item->deleteItems('room', $room);
-        $this->message = 'Delete room \'' . $room->room_name . '\' success';
-        return $this->serverResponse();
+        $success = 'Delete room \'' . $room->room_name . '\' success';
+        return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse()
+    public function serverResponse($error, $success)
     {
+        $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
         ]);
     }
 }

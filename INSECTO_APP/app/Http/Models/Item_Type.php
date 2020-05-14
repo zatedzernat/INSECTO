@@ -46,7 +46,7 @@ class Item_Type extends Model implements Auditable
 
     public function findByCancelFlag($string)
     {
-        return Item_Type::where('cancel_flag', $string)->get();
+        return Item_Type::with('user')->where('cancel_flag', $string)->get();
     }
 
     public function findByID($int)

@@ -41,7 +41,7 @@ class Brand extends Model implements Auditable
 
     public function findByCancelFlag($string)
     {
-        return Brand::where('cancel_flag', $string)->get();
+        return Brand::with('user')->where('cancel_flag', $string)->get();
     }
 
     public function findByID($int)

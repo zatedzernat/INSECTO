@@ -21,6 +21,10 @@ export default function Rooms() {
     error: false,
     message: "",
   });
+  const [isSuccess, setIsSuccess] = useState({
+    success: false,
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const [room, setRoom] = useState({
@@ -56,16 +60,34 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms`,
         room
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.room_code
+          ? error.response.data.errors.room_code
+          : "";
+        let mess2 = error.response.data.errors.room_name
+          ? error.response.data.errors.room_name
+          : "";
+        let mess3 = error.response.data.errors.building_id
+          ? error.response.data.errors.building_id
+          : "";
+        setIsError({
+          error: true,
+          message: mess1 + " " + mess2 + " " + mess3,
+        });
+      }
     }
   };
 
@@ -84,11 +106,16 @@ export default function Rooms() {
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response));
     }
   };
+
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
@@ -97,21 +124,32 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         room
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        setIsError({
+          error: true,
+          message: error.response.data.errors.room_name,
+        });
+      }
     }
   };
+
   const styles = {
     container: { color: "red" },
   };
+
   const roomTable = (data) => {
     return (
       <Table striped hover>
@@ -144,7 +182,7 @@ export default function Rooms() {
               <td>{room.building.building_name}</td>
               <td>{room.created_at}</td>
               <td>{room.updated_at}</td>
-              <td>{room.update_by}</td>
+              <td>{room.user.name}</td>
               <td>
                 <span
                   onClick={() => {
@@ -183,6 +221,15 @@ export default function Rooms() {
               dismissible
             >
               {isError.message}
+            </Alert>
+          )}
+          {isSuccess.success && (
+            <Alert
+              variant="success"
+              onClose={() => setIsSuccess(false)}
+              dismissible
+            >
+              {isSuccess.message}
             </Alert>
           )}
           <Card
