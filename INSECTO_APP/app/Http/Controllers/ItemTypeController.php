@@ -15,19 +15,12 @@ class ItemTypeController extends Controller
     private $item_type;
     private $item;
     private $problem_desc;
-    private $error;
-    private $success;
-    private $message;
-    private $time;
 
     public function __construct()
     {
         $this->item_type = new Item_Type();
         $this->item = new Item();
         $this->problem_desc = new Problem_Description();
-        $this->error = false;
-        $this->success = false;
-        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -52,13 +45,12 @@ class ItemTypeController extends Controller
         $name = $request->type_name;
         $createFail = $this->item_type->createNewItemType($name);
         if ($createFail) {
-            $this->error = true;
-            $this->message = 'Add Duplicate Type Name';
+            $error = 'Add Duplicate Type Name';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Add Type \'' . $name . '\' Success';
+            $success = 'Add Type \'' . $name . '\' Success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -85,13 +77,12 @@ class ItemTypeController extends Controller
         $name = $request->input('type_name');
         $updateFail = $this->item_type->updateItemType($id, $name);
         if ($updateFail) {
-            $this->error = true;
-            $this->message = 'Edit duplicate type name';
+            $error = 'Edit duplicate type name';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Update type \'' . $name . '\' success';
+            $success =  'Update type \'' . $name . '\' success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -105,18 +96,17 @@ class ItemTypeController extends Controller
         $item_type = $this->item_type->deleteItemType($type_id);
         $items = $this->item->deleteItems('item_type', $item_type);
         $problem_desc = $this->problem_desc->deleteProblemDescs($item_type);
-        $this->message = 'Delete type \'' . $item_type->type_name . '\' success';
-        $this->success = true;
-        return $this->serverResponse();
+        $success = 'Delete type \'' . $item_type->type_name . '\' success';
+        return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse()
+    public function serverResponse($error, $success)
     {
+        $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
         ]);
     }
 }

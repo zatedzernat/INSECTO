@@ -11,17 +11,10 @@ use Illuminate\Support\MessageBag;
 class StatusController extends Controller
 {
     private $status;
-    private $error;
-    private $success;
-    private $message;
-    private $time;
 
     public function __construct()
     {
         $this->status = new Status();
-        $this->error = false;
-        $this->success = false;
-        $this->time = Carbon::now()->format('H:i:s');
     }
     /**
      * Display a listing of the resource.
@@ -47,13 +40,12 @@ class StatusController extends Controller
         $description = $request->status_description;
         $createFail = $this->status->createNewStatus($name, $description);
         if ($createFail) {
-            $this->error = true;
-            $this->message = 'Add Duplicate Status Name';
+            $error = 'Add Duplicate Status Name';
+            return $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Add Status \'' . $name . '\' Success';
+            $success = 'Add Status \'' . $name . '\' Success';
+            return $this->serverResponse(null, $success);
         }
-        return $this->serverResponse();
     }
 
     /**
@@ -76,20 +68,18 @@ class StatusController extends Controller
      */
     public function update(StatusFormRequest $request)
     {
-        $errors = new MessageBag();
         //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
         $id = $request->input('status_id');
         $status_name = $request->input('status_name');
         $status_description = $request->input('status_description');
         $updateFail = $this->status->updateStatus($id, $status_name, $status_description);
         if ($updateFail) {
-            $this->error = true;
-            $this->message = 'Edit duplicate status name!';
+            $error = 'Edit duplicate status name!';
+            return $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Update statue \'' . $status_name . '\' success';
+            $success = 'Update statue \'' . $status_name . '\' success';
+            return $this->serverResponse(null, $success);
         }
-        return $this->serverResponse();
     }
 
     /**
@@ -103,18 +93,17 @@ class StatusController extends Controller
         $status = $this->status->findByID($status_id);
         $name = $status->status_name;
         $status->delete();
-        $this->message = 'Delete status \'' . $name . '\' success';
-        $this->success = true;
-        return $this->serverResponse();
+        $success = 'Delete status \'' . $name . '\' success';
+        return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse()
+    public function serverResponse($error, $success)
     {
+        $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
         ]);
     }
 }

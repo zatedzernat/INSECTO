@@ -13,18 +13,11 @@ class BrandController extends Controller
 
     private $brand;
     private $item;
-    private $error;
-    private $success;
-    private $message;
-    private $time;
 
     public function __construct()
     {
         $this->brand = new Brand();
         $this->item = new Item();
-        $this->error = false;
-        $this->success = false;
-        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -49,13 +42,12 @@ class BrandController extends Controller
         $name = $request->brand_name;
         $createFail = $this->brand->createNewBrand($name);
         if ($createFail) {
-            $this->error = true;
-            $this->message = 'Add duplicate brand name!';
+            $error = 'Add duplicate brand name!';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Add brand \'' . $name . '\' success';
+            $success = 'Add brand \'' . $name . '\' success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -82,13 +74,12 @@ class BrandController extends Controller
         $name = $request->input('brand_name');
         $updateFail = $this->brand->updateBrand($id, $name);
         if ($updateFail) {
-            $this->error = true;
-            $this->message = 'Edit duplicate brand name!';
+            $error = 'Edit duplicate brand name!';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Update brand \'' . $name . '\' success';
+            $success = 'Update brand \'' . $name . '\' success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -101,18 +92,17 @@ class BrandController extends Controller
     {
         $brand = $this->brand->deleteBrand($brand_id);
         $items = $this->item->setNullInItem($brand);
-        $this->message = 'Delete brand \'' . $brand->brand_name . '\' success';
-        $this->success = true;
-        return $this->serverResponse();
+        $success =  'Delete brand \'' . $brand->brand_name . '\' success';
+        return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse()
+    public function serverResponse($error, $success)
     {
+        $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
         ]);
     }
 }
