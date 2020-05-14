@@ -114,8 +114,8 @@ export default function Buildings() {
             <th>
               Code <span style={styles.container}>*</span>
             </th>
-            <th>
-              Name
+            <th> 
+              Name <span style={styles.container}>*</span>
             </th>
             <th>Created At</th>
             <th>Updated At</th>

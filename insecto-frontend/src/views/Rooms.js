@@ -236,7 +236,7 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Name:</label>
+                  <label className="col-sm-3 col-form-label">Room Name: <span style={styles.container}>*</span></label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -251,7 +251,7 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Building:</label>
+                  <label className="col-sm-3 col-form-label">Building: <span style={styles.container}>*</span></label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBuilding}
@@ -312,7 +312,7 @@ export default function Rooms() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Code:</label>
+                  <label className="col-sm-3 col-form-label">Room Code: <span style={styles.container}>*</span></label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -325,7 +325,7 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Name:</label>
+                  <label className="col-sm-3 col-form-label">Room Name: <span style={styles.container}>*</span></label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -347,7 +347,7 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Building:</label>
+                  <label className="col-sm-3 col-form-label">Building: <span style={styles.container}>*</span></label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBuilding}
