@@ -41,7 +41,7 @@ class Building extends Model implements Auditable
 
     public function findByCancelFlag($string)
     {
-        return Building::with('user')->where('cancel_flag', $string)->get();
+        return Building::with('user', 'rooms')->where('cancel_flag', $string)->get();
     }
 
     public function findByID($int)
