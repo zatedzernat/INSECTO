@@ -21,6 +21,10 @@ export default function Items() {
     error: false,
     message: "",
   });
+  const [isSuccess, setIsSuccess] = useState({
+    success: false,
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const [item, setItem] = useState({
@@ -48,14 +52,14 @@ export default function Items() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error));
     }
   };
+
   useEffect(() => {
     fetchData();
   }, [lastUpdate]);
 
-  console.log(JSON.stringify(item));
   const addHandleSubmit = async (event) => {
     console.log(JSON.stringify(item));
     event.preventDefault();
@@ -69,16 +73,41 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items`,
         item
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.item_code
+          ? error.response.data.errors.item_code
+          : "";
+        let mess2 = error.response.data.errors.item_name
+          ? error.response.data.errors.item_name
+          : "";
+        let mess3 = error.response.data.errors.type_id
+          ? error.response.data.errors.type_id
+          : "";
+        let mess4 = error.response.data.errors.room_id
+          ? error.response.data.errors.room_id
+          : "";
+        let mess5 = error.response.data.errors.group
+          ? error.response.data.errors.group
+          : "";
+        setIsError({
+          error: true,
+          message:
+            mess1 + " " + mess2 + " " + mess3 + " " + mess4 + " " + mess5,
+        });
+      }
     }
   };
 
@@ -90,18 +119,23 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item.item_id
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response));
     }
   };
+
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
@@ -110,21 +144,32 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        setIsError({
+          error: true,
+          message: error.response.data.errors.item_name,
+        });
+      }
     }
   };
+
   const styles = {
     container: { color: "red" },
   };
+
   const itemTable = (data) => {
     return (
       <Table striped hover>
@@ -169,13 +214,15 @@ export default function Items() {
               <td>{item.group}</td>
               <td>{item.created_at}</td>
               <td>{item.updated_at}</td>
-              <td>{item.update_by}</td>
+              <td>{item.user.name}</td>
               <td>
                 <span
                   onClick={() => {
                     setModalShowEdit(true);
                     setItem(item);
-                    setSelectBrand(item.brand?.brand_name || "- select brand name -");
+                    setSelectBrand(
+                      item.brand?.brand_name || "- select brand name -"
+                    );
                     setSelectType(item.item_type.type_name);
                     setSelectBuilding(item.room.building.building_name);
                     setSelectRoom(item.room.room_name);
@@ -212,6 +259,15 @@ export default function Items() {
               dismissible
             >
               {isError.message}
+            </Alert>
+          )}
+          {isSuccess.success && (
+            <Alert
+              variant="success"
+              onClose={() => setIsSuccess(false)}
+              dismissible
+            >
+              {isSuccess.message}
             </Alert>
           )}
           <Card
@@ -381,7 +437,7 @@ export default function Items() {
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBrand}
-                      id="bg-nested-dropdown"
+                      id="bg-nested-dropdown-brand"
                       size="sm"
                       variant="warning"
                     >
@@ -435,11 +491,13 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Group:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectGroup}
-                      id="bg-nested-dropdown"
+                      id="bg-nested-dropdown-group"
                       size="sm"
                       variant="warning"
                     >
@@ -664,7 +722,7 @@ export default function Items() {
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBrand}
-                      id="bg-nested-dropdown"
+                      id="bg-nested-dropdown-brand"
                       size="sm"
                       variant="warning"
                     >
@@ -750,11 +808,13 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Group:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={item.group}
-                      id="bg-nested-dropdown"
+                      id="bg-nested-dropdown-g"
                       size="sm"
                       variant="warning"
                     >
@@ -763,15 +823,15 @@ export default function Items() {
                         onSelect={(eventKey) => {
                           setItem({
                             item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
-                          model: item.model,
-                          group: eventKey,
+                            item_code: item.item_code,
+                            item_name: item.item_name,
+                            room_id: item.room_id,
+                            type_id: item.type_id,
+                            building_id: item.building_id,
+                            brand_id: item.brand_id,
+                            serial_number: item.serial_number,
+                            model: item.model,
+                            group: eventKey,
                           });
                           setSelectGroup("Y");
                         }}
@@ -784,15 +844,15 @@ export default function Items() {
                         onSelect={(eventKey) => {
                           setItem({
                             item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
-                          model: item.model,
-                          group: eventKey,
+                            item_code: item.item_code,
+                            item_name: item.item_name,
+                            room_id: item.room_id,
+                            type_id: item.type_id,
+                            building_id: item.building_id,
+                            brand_id: item.brand_id,
+                            serial_number: item.serial_number,
+                            model: item.model,
+                            group: eventKey,
                           });
                           setSelectGroup("N");
                         }}
@@ -802,36 +862,6 @@ export default function Items() {
                     </DropdownButton>
                   </div>
                 </div>
-
-
-                {/* <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
-                    Group: <span style={styles.container}>*</span>
-                  </label>
-                  <div className="col-sm-9">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="group"
-                      value={item.group}
-                      onChange={(event) =>
-                        setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
-                          model: item.model,
-                          group: event.target.value,
-                        })
-                      }
-                      required
-                    />
-                  </div>
-                </div> */}
               </div>
             }
             method="POST"
