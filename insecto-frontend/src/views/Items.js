@@ -33,11 +33,12 @@ export default function Items() {
     item_name: "",
     building_id: 0,
     room_id: 0,
-    brand_id: 0,
+    // brand_id: 0,
     serial_number: "",
     model: "",
     group: "",
   });
+  const [rooms, setRooms] = useState({});
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
   );
@@ -159,9 +160,15 @@ export default function Items() {
       }
     } catch (error) {
       if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.item_name
+          ? error.response.data.errors.item_name
+          : "";
+        let mess2 = error.response.data.errors.room_id
+          ? error.response.data.errors.room_id
+          : "";
         setIsError({
           error: true,
-          message: error.response.data.errors.item_name,
+          message: mess1 + " " + mess2,
         });
       }
     }
@@ -228,6 +235,10 @@ export default function Items() {
                     setSelectBuilding(item.room.building.building_name);
                     setSelectRoom(item.room.room_name);
                     setSelectGroup(item.group);
+                    {
+                      let mybd = _.find(data.buildings, item.building_id);
+                      setRooms(mybd.rooms);
+                    }
                   }}
                 >
                   <i className="fa fa-edit" />
@@ -289,6 +300,7 @@ export default function Items() {
                     setSelectRoom("- select room name -");
                     setSelectType("- select type name -");
                     setSelectGroup("- select group -");
+                    setRooms(data.rooms);
                   }}
                 >
                   Add
@@ -389,11 +401,13 @@ export default function Items() {
                           key={building.building_id}
                           eventKey={building.building_id}
                           onSelect={(eventKey) => {
+                            setRooms(building.rooms);
+                            setSelectBuilding(building.building_name);
+                            setSelectRoom("- select room name -");
                             setItem({
                               ...item,
-                              building_id: eventKey,
+                              room_id: null,
                             });
-                            setSelectBuilding(building.building_name);
                           }}
                         >
                           {building.building_name}
@@ -414,7 +428,7 @@ export default function Items() {
                       size="sm"
                       variant="warning"
                     >
-                      {_.map(data.rooms, (room) => (
+                      {_.map(rooms, (room) => (
                         <Dropdown.Item
                           key={room.room_id}
                           eventKey={room.room_id}
@@ -442,6 +456,28 @@ export default function Items() {
                       size="sm"
                       variant="warning"
                     >
+                      {item.brand_id && (
+                        <DropdownItem
+                          eventKey={null}
+                          onSelect={(eventKey) => {
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: item.room_id,
+                              type_id: item.type_id,
+                              building_id: item.building_id,
+                              brand_id: eventKey,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                              group: item.group,
+                            });
+                            setSelectBrand("no brand");
+                          }}
+                        >
+                          no brand
+                        </DropdownItem>
+                      )}
                       {_.map(data.brands, (brand) => (
                         <Dropdown.Item
                           key={brand.brand_id}
@@ -658,19 +694,13 @@ export default function Items() {
                           key={building.building_id}
                           eventKey={building.building_id}
                           onSelect={(eventKey) => {
-                            setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: eventKey,
-                              brand_id: item.brand_id,
-                              serial_number: item.serial_number,
-                              model: item.model,
-                              group: item.group,
-                            });
+                            setRooms(building.rooms);
                             setSelectBuilding(building.building_name);
+                            setSelectRoom("- select room name -");
+                            setItem({
+                              ...item,
+                              room_id: null,
+                            });
                           }}
                         >
                           {building.building_name}
@@ -691,7 +721,7 @@ export default function Items() {
                       size="sm"
                       variant="warning"
                     >
-                      {_.map(data.rooms, (room) => (
+                      {_.map(rooms, (room) => (
                         <Dropdown.Item
                           key={room.room_id}
                           eventKey={room.room_id}
