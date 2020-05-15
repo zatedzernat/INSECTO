@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
+import DropdownItem from "react-bootstrap/DropdownItem";
 
 export default function Items() {
   const [data, setData] = useState([]);
@@ -726,6 +727,28 @@ export default function Items() {
                       size="sm"
                       variant="warning"
                     >
+                      {item.brand_id && (
+                        <DropdownItem
+                          eventKey={null}
+                          onSelect={(eventKey) => {
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: item.room_id,
+                              type_id: item.type_id,
+                              building_id: item.building_id,
+                              brand_id: eventKey,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                              group: item.group,
+                            });
+                            setSelectBrand("no brand");
+                          }}
+                        >
+                          no brand
+                        </DropdownItem>
+                      )}
                       {_.map(data.brands, (brand) => (
                         <Dropdown.Item
                           key={brand.brand_id}
