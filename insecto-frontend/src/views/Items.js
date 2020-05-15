@@ -39,6 +39,7 @@ export default function Items() {
   const [selectRoom, setSelectRoom] = useState("- select room name -");
   const [selectType, setSelectType] = useState("- select type name -");
   const [selectBrand, setSelectBrand] = useState("- select brand name -");
+  const [selectGroup, setSelectGroup] = useState("- select group -");
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -54,7 +55,7 @@ export default function Items() {
     fetchData();
   }, [lastUpdate]);
 
-  console.log(JSON.stringify(item))
+  console.log(JSON.stringify(item));
   const addHandleSubmit = async (event) => {
     console.log(JSON.stringify(item));
     event.preventDefault();
@@ -174,10 +175,11 @@ export default function Items() {
                   onClick={() => {
                     setModalShowEdit(true);
                     setItem(item);
-                    setSelectBrand(item.brand.brand_name);
+                    setSelectBrand(item.brand?.brand_name || "- select brand name -");
                     setSelectType(item.item_type.type_name);
                     setSelectBuilding(item.room.building.building_name);
                     setSelectRoom(item.room.room_name);
+                    setSelectGroup(item.group);
                   }}
                 >
                   <i className="fa fa-edit" />
@@ -229,6 +231,7 @@ export default function Items() {
                     setSelectBuilding("- select building name -");
                     setSelectRoom("- select room name -");
                     setSelectType("- select type name -");
+                    setSelectGroup("- select group -");
                   }}
                 >
                   Add
@@ -432,19 +435,39 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
-                    Group: <span style={styles.container}>*</span>
-                  </label>
+                  <label className="col-sm-3 col-form-label">Group:</label>
                   <div className="col-sm-9">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="group"
-                      onChange={(event) =>
-                        setItem({ ...item, group: event.target.value })
-                      }
-                      required
-                    />
+                    <DropdownButton
+                      title={selectGroup}
+                      id="bg-nested-dropdown"
+                      size="sm"
+                      variant="warning"
+                    >
+                      <Dropdown.Item
+                        eventKey="Y"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            ...item,
+                            group: eventKey,
+                          });
+                          setSelectGroup("Y");
+                        }}
+                      >
+                        Y
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        eventKey="N"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            ...item,
+                            group: eventKey,
+                          });
+                          setSelectGroup("N");
+                        }}
+                      >
+                        N
+                      </Dropdown.Item>
+                    </DropdownButton>
                   </div>
                 </div>
               </div>
@@ -727,6 +750,61 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Group:</label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={item.group}
+                      id="bg-nested-dropdown"
+                      size="sm"
+                      variant="warning"
+                    >
+                      <Dropdown.Item
+                        eventKey="Y"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: item.item_name,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: item.serial_number,
+                          model: item.model,
+                          group: eventKey,
+                          });
+                          setSelectGroup("Y");
+                        }}
+                      >
+                        Y
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
+                        eventKey="N"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: item.item_name,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: item.serial_number,
+                          model: item.model,
+                          group: eventKey,
+                          });
+                          setSelectGroup("N");
+                        }}
+                      >
+                        N
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </div>
+                </div>
+
+
+                {/* <div className="form-group row">
                   <label className="col-sm-3 col-form-label">
                     Group: <span style={styles.container}>*</span>
                   </label>
@@ -753,7 +831,7 @@ export default function Items() {
                       required
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
             }
             method="POST"
