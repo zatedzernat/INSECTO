@@ -31,6 +31,7 @@ export default function Items() {
     brand_id: 0,
     serial_number: "",
     model: "",
+    group: "",
   });
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
@@ -53,6 +54,7 @@ export default function Items() {
     fetchData();
   }, [lastUpdate]);
 
+  console.log(JSON.stringify(item))
   const addHandleSubmit = async (event) => {
     console.log(JSON.stringify(item));
     event.preventDefault();
@@ -141,6 +143,7 @@ export default function Items() {
             <th>Brand</th>
             <th>Serial Number</th>
             <th>Model</th>
+            <th>Group</th>
             <th>Created At</th>
             <th>Updated At</th>
             <th>Update By</th>
@@ -162,6 +165,7 @@ export default function Items() {
               <td>{item.brand?.brand_name || "-"}</td>
               <td>{item.serial_number ?? "-"}</td>
               <td>{item.model ?? "-"}</td>
+              <td>{item.group}</td>
               <td>{item.created_at}</td>
               <td>{item.updated_at}</td>
               <td>{item.update_by}</td>
@@ -426,6 +430,23 @@ export default function Items() {
                     />
                   </div>
                 </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="group"
+                      onChange={(event) =>
+                        setItem({ ...item, group: event.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                </div>
               </div>
             }
             method="POST"
@@ -492,6 +513,7 @@ export default function Items() {
                           brand_id: item.brand_id,
                           serial_number: item.serial_number,
                           model: item.model,
+                          group: item.group,
                         })
                       }
                       required
@@ -526,6 +548,7 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
+                              group: item.group,
                             });
                             setSelectType(type.type_name);
                           }}
@@ -563,6 +586,7 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
+                              group: item.group,
                             });
                             setSelectBuilding(building.building_name);
                           }}
@@ -600,6 +624,7 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
+                              group: item.group,
                             });
                             setSelectRoom(room.room_name);
                           }}
@@ -635,6 +660,7 @@ export default function Items() {
                               brand_id: eventKey,
                               serial_number: item.serial_number,
                               model: item.model,
+                              group: item.group,
                             });
                             setSelectBrand(brand.brand_name);
                           }}
@@ -667,6 +693,7 @@ export default function Items() {
                           brand_id: item.brand_id,
                           serial_number: event.target.value,
                           model: item.model,
+                          group: item.group,
                         })
                       }
                     />
@@ -692,8 +719,38 @@ export default function Items() {
                           brand_id: item.brand_id,
                           serial_number: item.serial_number,
                           model: event.target.value,
+                          group: item.group,
                         })
                       }
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="group"
+                      value={item.group}
+                      onChange={(event) =>
+                        setItem({
+                          item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: item.item_name,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: item.serial_number,
+                          model: item.model,
+                          group: event.target.value,
+                        })
+                      }
+                      required
                     />
                   </div>
                 </div>
