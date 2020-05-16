@@ -264,9 +264,9 @@ export default function Items() {
         }}
       >
         Building: {data.room.building.building_code} &emsp; Brand:{" "}
-        {data.brand?.brand_name ?? "-"} &emsp; Serial Number:
-        {data?.serial_number ?? "-"} &emsp; Model: {data?.model ?? "-"} &emsp;
-        Note: {data?.note ?? "-"}
+        {data.brand?.brand_name ?? "-"} &emsp; Serial Number: &nbsp;
+        {data.serial_number ?? "-"} &emsp; Model: {data.model ?? "-"} &emsp;
+        Group: {data.group} &emsp; Note: {data.note ?? "-"}
       </div>
     );
     return (
@@ -591,6 +591,22 @@ export default function Items() {
                     </DropdownButton>
                   </div>
                 </div>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Note:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="note"
+                      onChange={(event) =>
+                        setItem({
+                          ...item,
+                          note: event.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
               </div>
             }
             method="POST"
@@ -658,6 +674,7 @@ export default function Items() {
                           serial_number: item.serial_number,
                           model: item.model,
                           group: item.group,
+                          note: item.note,
                         })
                       }
                       required
@@ -693,6 +710,7 @@ export default function Items() {
                               serial_number: item.serial_number,
                               model: item.model,
                               group: item.group,
+                              note: item.note,
                             });
                             setSelectType(type.type_name);
                           }}
@@ -763,6 +781,7 @@ export default function Items() {
                               serial_number: item.serial_number,
                               model: item.model,
                               group: item.group,
+                              note: item.note,
                             });
                             setSelectRoom(room.room_name);
                           }}
@@ -798,6 +817,7 @@ export default function Items() {
                               serial_number: item.serial_number,
                               model: item.model,
                               group: item.group,
+                              note: item.note,
                             });
                             setSelectBrand("no brand");
                           }}
@@ -821,6 +841,7 @@ export default function Items() {
                               serial_number: item.serial_number,
                               model: item.model,
                               group: item.group,
+                              note: item.note,
                             });
                             setSelectBrand(brand.brand_name);
                           }}
@@ -854,6 +875,7 @@ export default function Items() {
                           serial_number: event.target.value,
                           model: item.model,
                           group: item.group,
+                          note: item.note,
                         })
                       }
                     />
@@ -880,6 +902,7 @@ export default function Items() {
                           serial_number: item.serial_number,
                           model: event.target.value,
                           group: item.group,
+                          note: item.note,
                         })
                       }
                     />
@@ -911,6 +934,7 @@ export default function Items() {
                             serial_number: item.serial_number,
                             model: item.model,
                             group: eventKey,
+                            note: item.note,
                           });
                           setSelectGroup("Y");
                         }}
@@ -932,6 +956,7 @@ export default function Items() {
                             serial_number: item.serial_number,
                             model: item.model,
                             group: eventKey,
+                            note: item.note,
                           });
                           setSelectGroup("N");
                         }}
@@ -939,6 +964,32 @@ export default function Items() {
                         N
                       </Dropdown.Item>
                     </DropdownButton>
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Note:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="note"
+                      value={item.note ?? "-"}
+                      onChange={(event) =>
+                        setItem({
+                          item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: item.item_name,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: item.serial_number,
+                          model: item.model,
+                          group: item.group,
+                          note: event.target.value,
+                        })
+                      }
+                    />
                   </div>
                 </div>
               </div>
