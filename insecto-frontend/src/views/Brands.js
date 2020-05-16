@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table, Button, Alert } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import axios from "axios";
-import _ from "lodash";
 import FormModal from "../components/FormModal";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function Brands() {
   const [data, setData] = useState([]);
@@ -131,57 +132,71 @@ export default function Brands() {
   };
 
   const brandTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "brand_id",
+        sortable: true,
+      },
+      {
+        name: "Brand Name*",
+        selector: "brand_name",
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: "created_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "Updated At",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "User",
+        selector: "user.name",
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            <span
+              onClick={() => {
+                setModalShowEdit(true);
+                setBrand(row);
+              }}
+            >
+              <i className="fa fa-edit" />
+            </span>
+            &emsp;
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setBrand(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
+    ];
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>#</th>
-            <th>
-              Brand Name <span style={styles.container}>*</span>
-            </th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Update By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.brands, (brand) => (
-            <tr key={brand.brand_id}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>{brand.brand_id}</td>
-              <td>{brand.brand_name}</td>
-              <td>{brand.created_at}</td>
-              <td>{brand.updated_at}</td>
-              <td>{brand.user.name}</td>
-              <td>
-                <span
-                  onClick={() => {
-                    setModalShowEdit(true);
-                    setBrand(brand);
-                  }}
-                >
-                  <i className="fa fa-edit" />
-                </span>
-                &emsp;
-                <span
-                  onClick={() => {
-                    setModalShowDel(true);
-                    setBrand(brand);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.brands}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+      />
     );
   };
 

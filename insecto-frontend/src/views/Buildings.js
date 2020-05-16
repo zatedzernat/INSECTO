@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import _ from "lodash";
-import { Table, Button, Alert } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function Buildings() {
   const [data, setData] = useState([]);
@@ -138,61 +139,76 @@ export default function Buildings() {
   };
 
   const buildingTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "building_id",
+        sortable: true,
+      },
+      {
+        name: "Building Code*",
+        selector: "building_code",
+        sortable: true,
+      },
+      {
+        name: "Building Name",
+        selector: "building_name",
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: "created_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "Updated At",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "User",
+        selector: "user.name",
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            <span
+              onClick={() => {
+                setModalShowEdit(true);
+                setBuilding(row);
+              }}
+            >
+              <i className="fa fa-edit" />
+            </span>
+            &emsp;
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setBuilding(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
+    ];
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>#</th>
-            <th>
-              Code <span style={styles.container}>*</span>
-            </th>
-            <th> 
-              Name <span style={styles.container}>*</span>
-            </th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Update By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.buildings, (building) => (
-            <tr key={building.building_id}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>{building.building_id}</td>
-              <td>{building.building_code}</td>
-              <td>{building.building_name}</td>
-              <td>{building.created_at}</td>
-              <td>{building.updated_at}</td>
-              <td>{building.user.name}</td>
-              <td>
-                <span
-                  onClick={() => {
-                    setModalShowEdit(true);
-                    setBuilding(building);
-                  }}
-                >
-                  <i className="fa fa-edit" />
-                </span>
-                &emsp;
-                <span
-                  onClick={() => {
-                    setModalShowDel(true);
-                    setBuilding(building);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.buildings}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+      />
     );
   };
 

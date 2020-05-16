@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Table} from "react-bootstrap";
-import _ from "lodash";
 import axios from "axios";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function Statuses() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -25,25 +25,35 @@ export default function Statuses() {
   }, []);
 
   const statusTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "status_id",
+        sortable: true,
+      },
+      {
+        name: "Status Name*",
+        selector: "status_name",
+        sortable: true,
+      },
+      {
+        name: "Description",
+        selector: "status_description",
+        sortable: true,
+      },
+    ];
+
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.statuses, (status) => (
-            <tr key={status.status_id}>
-              <td>{status.status_id}</td>
-              <td>{status.status_name}</td>
-              <td>{status.status_description}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.statuses}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+      />
     );
   };
 
@@ -61,7 +71,6 @@ export default function Statuses() {
           loading={isLoading ? "overlay" : ""}
         />
       }
-
     />
   );
 }

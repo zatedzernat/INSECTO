@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import _ from "lodash";
-import { Table, Button, Alert } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function ItemTypes() {
   const [data, setData] = useState([]);
@@ -130,57 +131,71 @@ export default function ItemTypes() {
   };
 
   const itemTypeTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "type_id",
+        sortable: true,
+      },
+      {
+        name: "Type Name*",
+        selector: "type_name",
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: "created_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "Updated At",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "User",
+        selector: "user.name",
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            <span
+              onClick={() => {
+                setModalShowEdit(true);
+                setItemType(row);
+              }}
+            >
+              <i className="fa fa-edit" />
+            </span>
+            &emsp;
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setItemType(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
+    ];
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>#</th>
-            <th>
-              Name <span style={styles.container}>*</span>
-            </th>
-            <th>Created At</th>
-            <th>Updated at</th>
-            <th>Update By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.item_types, (itemType) => (
-            <tr key={itemType.type_id}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>{itemType.type_id}</td>
-              <td>{itemType.type_name}</td>
-              <td>{itemType.created_at}</td>
-              <td>{itemType.updated_at}</td>
-              <td>{itemType.user.name}</td>
-              <td>
-                <span
-                  onClick={() => {
-                    setModalShowEdit(true);
-                    setItemType(itemType);
-                  }}
-                >
-                  <i className="fa fa-edit" />
-                </span>
-                &emsp;
-                <span
-                  onClick={() => {
-                    setModalShowDel(true);
-                    setItemType(itemType);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.item_types}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+      />
     );
   };
 

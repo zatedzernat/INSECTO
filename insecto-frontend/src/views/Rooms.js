@@ -3,14 +3,10 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import {
-  Table,
-  Button,
-  DropdownButton,
-  Dropdown,
-  Alert,
-} from "react-bootstrap";
+import { Button, DropdownButton, Dropdown, Alert } from "react-bootstrap";
 import FormModal from "../components/FormModal";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function Rooms() {
   const [data, setData] = useState([]);
@@ -151,62 +147,82 @@ export default function Rooms() {
   };
 
   const roomTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "room_id",
+        sortable: true,
+      },
+      {
+        name: "Room Code*",
+        selector: "room_code",
+        sortable: true,
+      },
+      {
+        name: "Room Name",
+        selector: "room_name",
+        sortable: true,
+      },
+      {
+        name: "Building Name",
+        selector: "building.building_name",
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: "created_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "Updated At",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "User",
+        selector: "user.name",
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            <span
+              onClick={() => {
+                setModalShowEdit(true);
+                setRoom(row);
+                setSelectBuilding(row.building.building_name); //? google->react hook setstate not updating
+              }}
+            >
+              <i className="fa fa-edit" />
+            </span>
+            &emsp;
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setRoom(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
+    ];
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>#</th>
-            <th>
-              Code <span style={styles.container}>*</span>
-            </th>
-            <th>Name</th>
-            <th>Building</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Update By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.rooms, (room) => (
-            <tr key={room.room_id}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>{room.room_id}</td>
-              <td>{room.room_code}</td>
-              <td>{room.room_name}</td>
-              <td>{room.building.building_name}</td>
-              <td>{room.created_at}</td>
-              <td>{room.updated_at}</td>
-              <td>{room.user.name}</td>
-              <td>
-                <span
-                  onClick={() => {
-                    setModalShowEdit(true);
-                    setRoom(room);
-                    setSelectBuilding(room.building.building_name); //? google->react hook setstate not updating
-                  }}
-                >
-                  <i className="fa fa-edit" />
-                </span>
-                &emsp;
-                <span
-                  onClick={() => {
-                    setModalShowDel(true);
-                    setRoom(room);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.rooms}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+      />
     );
   };
 
@@ -283,7 +299,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Name: <span style={styles.container}>*</span></label>
+                  <label className="col-sm-3 col-form-label">
+                    Room Name: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -298,7 +316,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Building: <span style={styles.container}>*</span></label>
+                  <label className="col-sm-3 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBuilding}
@@ -359,7 +379,9 @@ export default function Rooms() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Code: <span style={styles.container}>*</span></label>
+                  <label className="col-sm-3 col-form-label">
+                    Room Code: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -372,7 +394,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Name: <span style={styles.container}>*</span></label>
+                  <label className="col-sm-3 col-form-label">
+                    Room Name: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -394,7 +418,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Building: <span style={styles.container}>*</span></label>
+                  <label className="col-sm-3 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBuilding}

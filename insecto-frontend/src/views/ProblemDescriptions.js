@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import {
-  Table,
-  Button,
-  Alert,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
+import { Button, Alert, DropdownButton, Dropdown } from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
 import FormModal from "../components/FormModal";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function ProblemDescriptions() {
   const [data, setData] = useState([]);
@@ -150,62 +146,77 @@ export default function ProblemDescriptions() {
   };
 
   const problemDesTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "problem_des_id",
+        sortable: true,
+      },
+      {
+        name: "Problem Description*",
+        selector: "problem_description",
+        sortable: true,
+      },
+      {
+        name: "Type*",
+        selector: "item_type.type_name",
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: "created_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "Updated At",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "User",
+        selector: "user.name",
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            <span
+              onClick={() => {
+                setProblemDesc(row);
+                setSelectType(row.item_type.type_name); //? google->react hook setstate not updating
+                setModalShowEdit(true);
+              }}
+            >
+              <i className="fa fa-edit" />
+            </span>
+            &emsp;
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setProblemDesc(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
+    ];
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>#</th>
-            <th>
-              Problem Description <span style={styles.container}>*</span>
-            </th>
-            <th>
-              Type <span style={styles.container}>*</span>
-            </th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Update By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.problem_descs, (problem_desc) => (
-            <tr key={problem_desc.problem_des_id}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>{problem_desc.problem_des_id}</td>
-              <td>{problem_desc.problem_description}</td>
-              <td>{problem_desc.item_type.type_name}</td>
-              <td>{problem_desc.created_at}</td>
-              <td>{problem_desc.updated_at}</td>
-              <td>{problem_desc.user.name}</td>
-              <td>
-                <span
-                  onClick={() => {
-                    setProblemDesc(problem_desc);
-                    setSelectType(problem_desc.item_type.type_name); //? google->react hook setstate not updating
-                    setModalShowEdit(true);
-                  }}
-                >
-                  <i className="fa fa-edit" />
-                </span>
-                &emsp;
-                <span
-                  onClick={() => {
-                    setModalShowDel(true);
-                    setProblemDesc(problem_desc);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.problem_descs}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+      />
     );
   };
 
