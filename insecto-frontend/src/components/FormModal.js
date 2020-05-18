@@ -18,12 +18,12 @@ export default function FormModal(props) {
       <form method={props.method} onSubmit={props.onSubmit}>
         <Modal.Body>{props.body}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.onHide}>
+          {props.close && <Button variant="secondary" onClick={props.onHide}>
             {props.close}
-          </Button>
-          <Button type="submit" variant="primary">
+          </Button>}
+          {props.button && <Button type="submit" variant="primary">
             {props.button}
-          </Button>
+          </Button>}
         </Modal.Footer>
       </form>
     </Modal>
