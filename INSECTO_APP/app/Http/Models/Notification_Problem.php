@@ -84,7 +84,7 @@ class Notification_Problem extends Model implements Auditable
     {
         $noti_prob = $this->findByID($noti_id);
         if ($noti_prob) {
-            if ($next_status_id == 2) { // status_id = 2 = open
+            if ($next_status_id == 2 || $next_status_id == 7) { // status_id = 2 = open
                 $status = $this->openTask($noti_prob, $help_desk_code);
                 return $status;
             } else if ($next_status_id == 8) { // status_id = 8 = resolved
