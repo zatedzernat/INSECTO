@@ -4,6 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 export default function FormModal(props) {
   return (
     <Modal
+    size={props.size}
       show={props.show}
       onHide={props.onHide}
       aria-labelledby="contained-modal-title-vcenter"
@@ -28,6 +29,7 @@ export default function FormModal(props) {
           {props.button && <Button type="submit" variant="primary">
             {props.button}
           </Button>}
+          {props.custom}
         </Modal.Footer>
       </form>
     </Modal>
