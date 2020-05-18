@@ -56,7 +56,7 @@ class Item extends Model implements Auditable
 
     public function findByCancelFlag($string)
     {
-        return Item::with('room.building', 'item_type', 'brand')->where('cancel_flag', $string)->get();
+        return Item::with('room.building', 'item_type', 'brand', 'user')->where('cancel_flag', $string)->get();
     }
 
     public function findByCode($code)
@@ -113,7 +113,7 @@ class Item extends Model implements Auditable
         $this->model = $model;
     }
 
-    public function createNewItem($item_code, $item_name, $room_id, $type_id, $group, $brand_id, $serial_number, $model)
+    public function createNewItem($item_code, $item_name, $room_id, $type_id, $group, $brand_id, $serial_number, $model, $note)
     {
         $item = Item::firstOrCreate(
             ['item_code' => $item_code],
@@ -125,6 +125,7 @@ class Item extends Model implements Auditable
                 'brand_id' => $brand_id,
                 'serial_number' => $serial_number,
                 'model' => $model,
+                'note' => $note,
                 'cancel_flag' => 'N',
                 'user_id' => 2,
             ]
@@ -140,6 +141,7 @@ class Item extends Model implements Auditable
                 $item->brand_id = $brand_id;
                 $item->serial_number = $serial_number;
                 $item->model = $model;
+                $item->note = $note;
                 $item->cancel_flag = "N";
                 //todo set update by ตาม LDAP
                 $item->user_id = 2;
@@ -151,7 +153,7 @@ class Item extends Model implements Auditable
         return false;
     }
 
-    public function updateItem($id, $item_name, $room_id, $type_id, $group,  $brand_id, $serial_number, $model)
+    public function updateItem($id, $item_name, $room_id, $type_id, $group,  $brand_id, $serial_number, $model, $note)
     {
         // $findName = Item::where('item_name', $item_name)->first();
         // if(is_null($findName) || $findName->item_id = $id) {
@@ -163,6 +165,7 @@ class Item extends Model implements Auditable
         $item->brand_id = $brand_id;
         $item->serial_number = $serial_number;
         $item->model = $model;
+        $item->note = $note;
         $item->user_id = 2;
         $item->save();
         //todo set updateby ตาม LDAP

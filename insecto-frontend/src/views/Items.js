@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
-import {
-  Table,
-  Button,
-  Alert,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
+import { Button, Alert, DropdownButton, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
+import DropdownItem from "react-bootstrap/DropdownItem";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function Items() {
   const [data, setData] = useState([]);
@@ -21,6 +18,10 @@ export default function Items() {
     error: false,
     message: "",
   });
+  const [isSuccess, setIsSuccess] = useState({
+    success: false,
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const [item, setItem] = useState({
@@ -28,16 +29,19 @@ export default function Items() {
     item_name: "",
     building_id: 0,
     room_id: 0,
-    brand_id: 0,
+    // brand_id: 0,
     serial_number: "",
     model: "",
+    group: "",
   });
+  const [rooms, setRooms] = useState({});
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
   );
   const [selectRoom, setSelectRoom] = useState("- select room name -");
   const [selectType, setSelectType] = useState("- select type name -");
   const [selectBrand, setSelectBrand] = useState("- select brand name -");
+  const [selectGroup, setSelectGroup] = useState("- select group -");
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -46,9 +50,10 @@ export default function Items() {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error));
     }
   };
+
   useEffect(() => {
     fetchData();
   }, [lastUpdate]);
@@ -66,16 +71,41 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items`,
         item
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.item_code
+          ? error.response.data.errors.item_code
+          : "";
+        let mess2 = error.response.data.errors.item_name
+          ? error.response.data.errors.item_name
+          : "";
+        let mess3 = error.response.data.errors.type_id
+          ? error.response.data.errors.type_id
+          : "";
+        let mess4 = error.response.data.errors.room_id
+          ? error.response.data.errors.room_id
+          : "";
+        let mess5 = error.response.data.errors.group
+          ? error.response.data.errors.group
+          : "";
+        setIsError({
+          error: true,
+          message:
+            mess1 + " " + mess2 + " " + mess3 + " " + mess4 + " " + mess5,
+        });
+      }
     }
   };
 
@@ -87,18 +117,23 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item.item_id
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response));
     }
   };
+
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
@@ -107,91 +142,147 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.item_name
+          ? error.response.data.errors.item_name
+          : "";
+        let mess2 = error.response.data.errors.room_id
+          ? error.response.data.errors.room_id
+          : "";
+        setIsError({
+          error: true,
+          message: mess1 + " " + mess2,
+        });
+      }
     }
   };
+
   const styles = {
     container: { color: "red" },
   };
+
   const itemTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "item_id",
+        sortable: true,
+      },
+      {
+        name: "Item Code*",
+        selector: "item_code",
+        sortable: true,
+      },
+      {
+        name: "Item Name",
+        selector: "item_name",
+        sortable: true,
+      },
+      {
+        name: "Type",
+        selector: "item_type.type_name",
+        sortable: true,
+      },
+      {
+        name: "Room",
+        selector: "room.room_name",
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: "created_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "Updated At",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "User",
+        selector: "user.name",
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            <span
+              onClick={() => {
+                setModalShowEdit(true);
+                setItem(row);
+                setSelectBrand(
+                  row.brand?.brand_name || "- select brand name -"
+                );
+                setSelectType(row.item_type.type_name);
+                setSelectBuilding(row.room.building.building_name);
+                setSelectRoom(row.room.room_name);
+                setSelectGroup(row.group);
+                {
+                  let mybd = _.find(data.buildings, row.building_id);
+                  setRooms(mybd.rooms);
+                }
+              }}
+            >
+              <i className="fa fa-edit" />
+            </span>
+            &emsp;
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setItem(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
+    ];
+    const ExpandedComponent = ({ data }) => (
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: 14,
+          backgroundColor: "#A7D3D8",
+        }}
+      >
+        Building: {data.room.building.building_code} &emsp; Brand:{" "}
+        {data.brand?.brand_name ?? "-"} &emsp; Serial Number: &nbsp;
+        {data.serial_number ?? "-"} &emsp; Model: {data.model ?? "-"} &emsp;
+        Group: {data.group} &emsp; Note: {data.note ?? "-"}
+      </div>
+    );
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>#</th>
-            <th>
-              Code <span style={styles.container}>*</span>
-            </th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Building</th>
-            <th>Room</th>
-            <th>Brand</th>
-            <th>Serial Number</th>
-            <th>Model</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Update By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.items, (item) => (
-            <tr key={item.item_id}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>{item.item_id}</td>
-              <td>{item.item_code}</td>
-              <td>{item.item_name}</td>
-              <td>{item.item_type.type_name}</td>
-              <td>{item.room.building.building_name}</td>
-              <td>{item.room.room_name}</td>
-              <td>{item.brand?.brand_name || "-"}</td>
-              <td>{item.serial_number ?? "-"}</td>
-              <td>{item.model ?? "-"}</td>
-              <td>{item.created_at}</td>
-              <td>{item.updated_at}</td>
-              <td>{item.update_by}</td>
-              <td>
-                <span
-                  onClick={() => {
-                    setModalShowEdit(true);
-                    setItem(item);
-                    setSelectBrand(item.brand.brand_name);
-                    setSelectType(item.item_type.type_name);
-                    setSelectBuilding(item.room.building.building_name);
-                    setSelectRoom(item.room.room_name);
-                  }}
-                >
-                  <i className="fa fa-edit" />
-                </span>
-                &emsp;
-                <span
-                  onClick={() => {
-                    setModalShowDel(true);
-                    setItem(item);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.items}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+        expandableRows
+        expandOnRowClicked
+        expandableRowsComponent={<ExpandedComponent />}
+      />
     );
   };
 
@@ -206,6 +297,15 @@ export default function Items() {
               dismissible
             >
               {isError.message}
+            </Alert>
+          )}
+          {isSuccess.success && (
+            <Alert
+              variant="success"
+              onClose={() => setIsSuccess(false)}
+              dismissible
+            >
+              {isSuccess.message}
             </Alert>
           )}
           <Card
@@ -225,6 +325,8 @@ export default function Items() {
                     setSelectBuilding("- select building name -");
                     setSelectRoom("- select room name -");
                     setSelectType("- select type name -");
+                    setSelectGroup("- select group -");
+                    setRooms(data.rooms);
                   }}
                 >
                   Add
@@ -325,11 +427,13 @@ export default function Items() {
                           key={building.building_id}
                           eventKey={building.building_id}
                           onSelect={(eventKey) => {
+                            setRooms(building.rooms);
+                            setSelectBuilding(building.building_name);
+                            setSelectRoom("- select room name -");
                             setItem({
                               ...item,
-                              building_id: eventKey,
+                              room_id: null,
                             });
-                            setSelectBuilding(building.building_name);
                           }}
                         >
                           {building.building_name}
@@ -350,7 +454,7 @@ export default function Items() {
                       size="sm"
                       variant="warning"
                     >
-                      {_.map(data.rooms, (room) => (
+                      {_.map(rooms, (room) => (
                         <Dropdown.Item
                           key={room.room_id}
                           eventKey={room.room_id}
@@ -374,10 +478,32 @@ export default function Items() {
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBrand}
-                      id="bg-nested-dropdown"
+                      id="bg-nested-dropdown-brand"
                       size="sm"
                       variant="warning"
                     >
+                      {item.brand_id && (
+                        <DropdownItem
+                          eventKey={null}
+                          onSelect={(eventKey) => {
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: item.room_id,
+                              type_id: item.type_id,
+                              building_id: item.building_id,
+                              brand_id: eventKey,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                              group: item.group,
+                            });
+                            setSelectBrand("no brand");
+                          }}
+                        >
+                          no brand
+                        </DropdownItem>
+                      )}
                       {_.map(data.brands, (brand) => (
                         <Dropdown.Item
                           key={brand.brand_id}
@@ -422,6 +548,61 @@ export default function Items() {
                       name="model"
                       onChange={(event) =>
                         setItem({ ...item, model: event.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectGroup}
+                      id="bg-nested-dropdown-group"
+                      size="sm"
+                      variant="warning"
+                    >
+                      <Dropdown.Item
+                        eventKey="Y"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            ...item,
+                            group: eventKey,
+                          });
+                          setSelectGroup("Y");
+                        }}
+                      >
+                        Y
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        eventKey="N"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            ...item,
+                            group: eventKey,
+                          });
+                          setSelectGroup("N");
+                        }}
+                      >
+                        N
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Note:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="note"
+                      onChange={(event) =>
+                        setItem({
+                          ...item,
+                          note: event.target.value,
+                        })
                       }
                     />
                   </div>
@@ -492,6 +673,8 @@ export default function Items() {
                           brand_id: item.brand_id,
                           serial_number: item.serial_number,
                           model: item.model,
+                          group: item.group,
+                          note: item.note,
                         })
                       }
                       required
@@ -526,6 +709,8 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
+                              group: item.group,
+                              note: item.note,
                             });
                             setSelectType(type.type_name);
                           }}
@@ -553,18 +738,13 @@ export default function Items() {
                           key={building.building_id}
                           eventKey={building.building_id}
                           onSelect={(eventKey) => {
-                            setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: eventKey,
-                              brand_id: item.brand_id,
-                              serial_number: item.serial_number,
-                              model: item.model,
-                            });
+                            setRooms(building.rooms);
                             setSelectBuilding(building.building_name);
+                            setSelectRoom("- select room name -");
+                            setItem({
+                              ...item,
+                              room_id: null,
+                            });
                           }}
                         >
                           {building.building_name}
@@ -585,7 +765,7 @@ export default function Items() {
                       size="sm"
                       variant="warning"
                     >
-                      {_.map(data.rooms, (room) => (
+                      {_.map(rooms, (room) => (
                         <Dropdown.Item
                           key={room.room_id}
                           eventKey={room.room_id}
@@ -600,6 +780,8 @@ export default function Items() {
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
+                              group: item.group,
+                              note: item.note,
                             });
                             setSelectRoom(room.room_name);
                           }}
@@ -616,10 +798,33 @@ export default function Items() {
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBrand}
-                      id="bg-nested-dropdown"
+                      id="bg-nested-dropdown-brand"
                       size="sm"
                       variant="warning"
                     >
+                      {item.brand_id && (
+                        <DropdownItem
+                          eventKey={null}
+                          onSelect={(eventKey) => {
+                            setItem({
+                              item_id: item.item_id,
+                              item_code: item.item_code,
+                              item_name: item.item_name,
+                              room_id: item.room_id,
+                              type_id: item.type_id,
+                              building_id: item.building_id,
+                              brand_id: eventKey,
+                              serial_number: item.serial_number,
+                              model: item.model,
+                              group: item.group,
+                              note: item.note,
+                            });
+                            setSelectBrand("no brand");
+                          }}
+                        >
+                          no brand
+                        </DropdownItem>
+                      )}
                       {_.map(data.brands, (brand) => (
                         <Dropdown.Item
                           key={brand.brand_id}
@@ -635,6 +840,8 @@ export default function Items() {
                               brand_id: eventKey,
                               serial_number: item.serial_number,
                               model: item.model,
+                              group: item.group,
+                              note: item.note,
                             });
                             setSelectBrand(brand.brand_name);
                           }}
@@ -667,6 +874,8 @@ export default function Items() {
                           brand_id: item.brand_id,
                           serial_number: event.target.value,
                           model: item.model,
+                          group: item.group,
+                          note: item.note,
                         })
                       }
                     />
@@ -692,6 +901,92 @@ export default function Items() {
                           brand_id: item.brand_id,
                           serial_number: item.serial_number,
                           model: event.target.value,
+                          group: item.group,
+                          note: item.note,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={item.group}
+                      id="bg-nested-dropdown-g"
+                      size="sm"
+                      variant="warning"
+                    >
+                      <Dropdown.Item
+                        eventKey="Y"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            item_id: item.item_id,
+                            item_code: item.item_code,
+                            item_name: item.item_name,
+                            room_id: item.room_id,
+                            type_id: item.type_id,
+                            building_id: item.building_id,
+                            brand_id: item.brand_id,
+                            serial_number: item.serial_number,
+                            model: item.model,
+                            group: eventKey,
+                            note: item.note,
+                          });
+                          setSelectGroup("Y");
+                        }}
+                      >
+                        Y
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
+                        eventKey="N"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            item_id: item.item_id,
+                            item_code: item.item_code,
+                            item_name: item.item_name,
+                            room_id: item.room_id,
+                            type_id: item.type_id,
+                            building_id: item.building_id,
+                            brand_id: item.brand_id,
+                            serial_number: item.serial_number,
+                            model: item.model,
+                            group: eventKey,
+                            note: item.note,
+                          });
+                          setSelectGroup("N");
+                        }}
+                      >
+                        N
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">Note:</label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="note"
+                      value={item.note ?? "-"}
+                      onChange={(event) =>
+                        setItem({
+                          item_id: item.item_id,
+                          item_code: item.item_code,
+                          item_name: item.item_name,
+                          room_id: item.room_id,
+                          type_id: item.type_id,
+                          building_id: item.building_id,
+                          brand_id: item.brand_id,
+                          serial_number: item.serial_number,
+                          model: item.model,
+                          group: item.group,
+                          note: event.target.value,
                         })
                       }
                     />

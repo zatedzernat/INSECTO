@@ -3,14 +3,10 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import {
-  Table,
-  Button,
-  DropdownButton,
-  Dropdown,
-  Alert,
-} from "react-bootstrap";
+import { Button, DropdownButton, Dropdown, Alert } from "react-bootstrap";
 import FormModal from "../components/FormModal";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 export default function Rooms() {
   const [data, setData] = useState([]);
@@ -19,6 +15,10 @@ export default function Rooms() {
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [isError, setIsError] = useState({
     error: false,
+    message: "",
+  });
+  const [isSuccess, setIsSuccess] = useState({
+    success: false,
     message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -56,16 +56,34 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms`,
         room
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.room_code
+          ? error.response.data.errors.room_code
+          : "";
+        let mess2 = error.response.data.errors.room_name
+          ? error.response.data.errors.room_name
+          : "";
+        let mess3 = error.response.data.errors.building_id
+          ? error.response.data.errors.building_id
+          : "";
+        setIsError({
+          error: true,
+          message: mess1 + " " + mess2 + " " + mess3,
+        });
+      }
     }
   };
 
@@ -84,11 +102,16 @@ export default function Rooms() {
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error.response));
     }
   };
+
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
@@ -97,78 +120,109 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         room
       );
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      if (error.response.status === 422) {
+        setIsError({
+          error: true,
+          message: error.response.data.errors.room_name,
+        });
+      }
     }
   };
+
   const styles = {
     container: { color: "red" },
   };
+
   const roomTable = (data) => {
+    const columns = [
+      {
+        name: "#",
+        selector: "room_id",
+        sortable: true,
+      },
+      {
+        name: "Room Code*",
+        selector: "room_code",
+        sortable: true,
+      },
+      {
+        name: "Room Name",
+        selector: "room_name",
+        sortable: true,
+      },
+      {
+        name: "Building Name",
+        selector: "building.building_name",
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: "created_at",
+        sortable: true,
+        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "Updated At",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+      },
+      {
+        name: "User",
+        selector: "user.name",
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            <span
+              onClick={() => {
+                setModalShowEdit(true);
+                setRoom(row);
+                setSelectBuilding(row.building.building_name); //? google->react hook setstate not updating
+              }}
+            >
+              <i className="fa fa-edit" />
+            </span>
+            &emsp;
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setRoom(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
+    ];
     return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>#</th>
-            <th>
-              Code <span style={styles.container}>*</span>
-            </th>
-            <th>Name</th>
-            <th>Building</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Update By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_.map(data.rooms, (room) => (
-            <tr key={room.room_id}>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>{room.room_id}</td>
-              <td>{room.room_code}</td>
-              <td>{room.room_name}</td>
-              <td>{room.building.building_name}</td>
-              <td>{room.created_at}</td>
-              <td>{room.updated_at}</td>
-              <td>{room.update_by}</td>
-              <td>
-                <span
-                  onClick={() => {
-                    setModalShowEdit(true);
-                    setRoom(room);
-                    setSelectBuilding(room.building.building_name); //? google->react hook setstate not updating
-                  }}
-                >
-                  <i className="fa fa-edit" />
-                </span>
-                &emsp;
-                <span
-                  onClick={() => {
-                    setModalShowDel(true);
-                    setRoom(room);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={data.rooms}
+        striped
+        responsive
+        selectableRows
+        selectableRowsHighlight
+        highlightOnHover
+        pagination
+      />
     );
   };
 
@@ -183,6 +237,15 @@ export default function Rooms() {
               dismissible
             >
               {isError.message}
+            </Alert>
+          )}
+          {isSuccess.success && (
+            <Alert
+              variant="success"
+              onClose={() => setIsSuccess(false)}
+              dismissible
+            >
+              {isSuccess.message}
             </Alert>
           )}
           <Card
@@ -236,7 +299,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Name:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Room Name: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -251,7 +316,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Building:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBuilding}
@@ -312,7 +379,9 @@ export default function Rooms() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Code:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Room Code: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -325,7 +394,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Room Name:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Room Name: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -347,7 +418,9 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Building:</label>
+                  <label className="col-sm-3 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-9">
                     <DropdownButton
                       title={selectBuilding}

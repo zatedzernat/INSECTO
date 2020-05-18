@@ -32,5 +32,25 @@ class Notification_ProblemsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
+        DB::table('notification__problems')->insert([
+            'item_id' => 2,
+            'status_id' => 1,
+            'problem_des_id' => 6,
+            'problem_description' => 'เครื่องปรับอากาศไม่ติด',
+            'cancel_flag' => 'N',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'user_id' => 1
+        ]);
+        DB::table('notification__problems')->insert([
+            'item_id' => 2,
+            'status_id' => 1,
+            'problem_des_id' => 5,
+            'problem_description' => 'เครื่องปรับอากาศไม่เย็น',
+            'cancel_flag' => 'N',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'user_id' => 1
+        ]);
     }
 }

@@ -22,12 +22,12 @@ export default function FormModal(props) {
           </Modal.Body>
         <h6 className="m-3 text-right">{props.subBody}</h6>
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.onHide}>
+          {props.close && <Button variant="secondary" onClick={props.onHide}>
             {props.close}
-          </Button>
-          <Button type="submit" variant="primary">
+          </Button>}
+          {props.button && <Button type="submit" variant="primary">
             {props.button}
-          </Button>
+          </Button>}
         </Modal.Footer>
       </form>
     </Modal>

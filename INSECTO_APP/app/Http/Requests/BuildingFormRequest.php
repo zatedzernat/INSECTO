@@ -33,6 +33,7 @@ class BuildingFormRequest extends FormRequest
     {
         return [
             'building_code.required' => 'Building Code is required!',
+            'building_name.required' => 'Building Name is required!',
         ];
     }
 }

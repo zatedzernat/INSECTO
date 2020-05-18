@@ -13,18 +13,11 @@ class ProblemDescriptionController extends Controller
 
     private $problem_desc;
     private $type;
-    private $error;
-    private $success;
-    private $message;
-    private $time;
 
     public function __construct()
     {
         $this->problem_desc = new Problem_Description();
         $this->type = new Item_Type();
-        $this->error = false;
-        $this->success = false;
-        $this->time = Carbon::now()->format('H:i:s');
     }
 
     /**
@@ -51,13 +44,12 @@ class ProblemDescriptionController extends Controller
         $type_id = $request->type_id;
         $createFail = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
         if ($createFail) {
-            $this->error = true;
-            $this->message = 'Add Duplicate Problem Description and Type';
+            $error =  'Add Duplicate Problem Description and Type';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Add Problem \'' . $problem_description . '\' Success';
+            $success = 'Add Problem \'' . $problem_description . '\' Success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -85,13 +77,12 @@ class ProblemDescriptionController extends Controller
         $type_id = $request->input('type_id');
         $updateFail = $this->problem_desc->updateProblemDesc($id, $description, $type_id);
         if ($updateFail) {
-            $this->error = true;
-            $this->message = 'Edit duplicate description and type';
+            $error = 'Edit duplicate description and type';
+            return  $this->serverResponse($error, null);
         } else {
-            $this->success = true;
-            $this->message = 'Update description \'' . $description . '\' success';
+            $success = 'Update description \'' . $description . '\' success';
+            return  $this->serverResponse(null, $success);
         }
-        return  $this->serverResponse();
     }
 
     /**
@@ -103,18 +94,17 @@ class ProblemDescriptionController extends Controller
     public function destroy(Request $request, $problem_des_id)
     {
         $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
-        $this->message = 'Delete description \'' . $problem_desc->problem_description . '\' success';
-        $this->success = true;
-        return $this->serverResponse();
+        $success = 'Delete description \'' . $problem_desc->problem_description . '\' success';
+        return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse()
+    public function serverResponse($error, $success)
     {
+        $time = Carbon::now()->format('H:i:s');
         return response()->json([
-            'error' => $this->error,
-            'success' => $this->success,
-            'message' => $this->message,
-            'time' => $this->time
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
         ]);
     }
 }
