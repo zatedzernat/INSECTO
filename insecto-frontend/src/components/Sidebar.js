@@ -6,7 +6,7 @@ export default function Sidebar() {
     //   sidebar from adminLTE-3.0.4 - indexedDB.html
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
       {/* Brand Logo */}
-      <a href="/" className="brand-link">
+      <a href="/admin" className="brand-link">
         <img
           src="images/bug.png"
           alt="insecto logo"
@@ -29,7 +29,7 @@ export default function Sidebar() {
             <li className="nav-item">
               <NavLink
                 exact
-                to="/"
+                to="/admin"
                 activeClassName="active"
                 className="nav-link"
               >
@@ -42,7 +42,7 @@ export default function Sidebar() {
             </li>
             <li className="nav-item">
               <NavLink
-                to="/history_logs"
+                to="/admin/history_logs"
                 activeClassName="active"
                 className="nav-link"
               >
@@ -54,7 +54,7 @@ export default function Sidebar() {
               </NavLink>
             </li>
             <li className="nav-item has-treeview menu-close">
-              <a href="#section" className="nav-link">
+              <a href="admin/#section" className="nav-link">
                 <i className="nav-icon fas fa-database" />
                 <p>
                   Data
@@ -64,7 +64,7 @@ export default function Sidebar() {
               <ul className="nav nav-treeview">
                 <li className="nav-item">
                   <NavLink
-                    to="/buildings"
+                    to="/admin/buildings"
                     activeClassName="active"
                     className="nav-link"
                   >
@@ -74,7 +74,7 @@ export default function Sidebar() {
                 </li>
                 <li className="nav-item">
                   <NavLink
-                    to="/rooms"
+                    to="/admin/rooms"
                     activeClassName="active"
                     className="nav-link"
                   >
@@ -84,7 +84,7 @@ export default function Sidebar() {
                 </li>
                 <li className="nav-item">
                   <NavLink
-                    to="/items"
+                    to="/admin/items"
                     activeClassName="active"
                     className="nav-link"
                   >
@@ -94,7 +94,7 @@ export default function Sidebar() {
                 </li>
                 <li className="nav-item">
                   <NavLink
-                    to="/item_types"
+                    to="/admin/item_types"
                     activeClassName="active"
                     className="nav-link"
                   >
@@ -104,7 +104,7 @@ export default function Sidebar() {
                 </li>
                 <li className="nav-item">
                   <NavLink
-                    to="/problem_descriptions"
+                    to="/admin/problem_descriptions"
                     activeClassName="active"
                     className="nav-link"
                   >
@@ -114,7 +114,7 @@ export default function Sidebar() {
                 </li>
                 <li className="nav-item">
                   <NavLink
-                    to="/brands"
+                    to="/admin/brands"
                     activeClassName="active"
                     className="nav-link"
                   >
@@ -123,7 +123,7 @@ export default function Sidebar() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/status" className="nav-link">
+                  <NavLink to="/admin/status" className="nav-link">
                     <i className="far fa-circle nav-icon" />
                     <p>Status</p>
                   </NavLink>
