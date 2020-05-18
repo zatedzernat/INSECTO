@@ -15,6 +15,7 @@ import {
   Form,
   Alert,
   Modal,
+  Card,
 } from "react-bootstrap";
 import _ from "lodash";
 
@@ -23,7 +24,7 @@ export default function MobileSendProblem(props) {
   const [item, setItem] = useState({
     item_code: "Item Code",
     room_id: 0,
-    item_name: "Item name"
+    item_name: "Item name",
   });
   const [allproblemDes, setAllProblemDes] = useState([]);
   const [problemDes, setProblemDes] = useState({
@@ -62,7 +63,7 @@ export default function MobileSendProblem(props) {
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -70,7 +71,6 @@ export default function MobileSendProblem(props) {
     fetchData();
   }, [lastUpdate]);
 
-  
   const dropdownHandel = (problem) => {
     const valuePro = problem;
     toggleInputProblemHandler(valuePro.problem_des_id, valuePro);
@@ -86,8 +86,8 @@ export default function MobileSendProblem(props) {
       setShowInputProblem(false);
     }
   };
-  
-  const problemInputChangedHandler =  (event) => {
+
+  const problemInputChangedHandler = (event) => {
     setInputProblem(event.target.value);
     setProblemDes({
       problem_description: event.target.value,
@@ -121,7 +121,6 @@ export default function MobileSendProblem(props) {
       } else {
         setLastUpdate(res.data.time);
       }
-      
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
@@ -143,179 +142,205 @@ export default function MobileSendProblem(props) {
     setModalShowComplete(false);
   };
 
-  const buildingTable = (data) => {
+  const historyProblemCard = (data) => {
     return (
-      <Table striped bordered size="sm">
-        <tbody>
-          {_.map(data, (historyProblem) => (
-            <tr key={historyProblem.noti_id}>
-              <td>- {historyProblem.problem_description}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <div>
+        {_.map(data, (historyProblem) => (
+          <Card style={{ width: "18rem" }}>
+            <Card.Header className="text-center">
+              {historyProblem.problem_description}
+            </Card.Header>
+            <Card.Body>
+              <Card.Text>
+                <small>Status: {historyProblem.status_id}</small>
+              </Card.Text>
+              <Card.Text>
+                <small>Date: {historyProblem.created_at}</small>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
+      // <Table striped bordered size="sm">
+      //   <tbody>
+      //     {_.map(data, (historyProblem) => (
+      //       <tr key={historyProblem.noti_id}>
+      //         <td>- {historyProblem.problem_description}</td>
+      //       </tr>
+      //     ))}
+      //   </tbody>
+      // </Table>
     );
   };
   return (
-      <>
-          {isError.error && (
-            <Alert
-              variant="danger"
-              onClose={() => setIsError(false)}
-              dismissible
-            >
-              {isError.message}
-            </Alert>
-          )}
-          
-          <Modal
-            show={modalShowComplete}
-            onHide={modalShowCompleteHandler}
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-            animation={false} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
+    <>
+      {isError.error && (
+        <Alert variant="danger" onClose={() => setIsError(false)} dismissible>
+          {isError.message}
+        </Alert>
+      )}
+
+      <Modal
+        show={modalShowComplete}
+        onHide={modalShowCompleteHandler}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        animation={false} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
+      >
+        <Modal.Header closeButton />
+        <Modal.Body closeButton className="text-center m-3">
+          <h3>THANK YOU!!</h3>
+          <h6>ปัญหาของคุณถูกส่งแล้ว</h6>
+          <h6>สามารถติดตามสถานะได้ที่</h6>
+          <h6>www</h6>
+        </Modal.Body>
+      </Modal>
+
+      <FormModal
+        show={historyProblem}
+        onHide={historyProblemHandler}
+        title={"ปัญหาของ "+item.item_code+" ที่ถูกแจ้ง"}
+        body={historyProblemCard(problemsNotResolved)}
+        method="POST"
+        onSubmit={historyProblemHandler}
+        custom={
+          <Button
+            variant="light"
+            type="submit"
+            className="text-light"
+            block
+            style={{ backgroundColor: "#5091ff" }}
           >
-            <Modal.Header closeButton/>
-            <Modal.Body closeButton className="text-center m-3">
-              <h3>THANK YOU!!</h3>
-              <h6>ปัญหาของคุณถูกส่งแล้ว</h6>
-              <h6>สามารถติดตามสถานะได้ที่</h6>
-              <h6>www</h6>
-            </Modal.Body>
-          </Modal>
-          <FormModal
-            show={historyProblem}
-            onHide={historyProblemHandler}
-            title="อุปกรณ์นี้ถูกส่งปัญหาไว้แล้ว"
-            subTitle="ตามรายละเอียดด้านล่างดังนี้"
-            body={buildingTable(problemsNotResolved)}
-            method="POST"
-            onSubmit={historyProblemHandler}
-            button="แจ้งปัญหาอื่น"
-            close="ปิด"
-          />
-          <div className="content" style={{ backgroundColor: "#EDE7E7" }}>
-            <Container>
+            แจ้งปัญหาอื่น
+          </Button>
+        }
+      />
+      <div className="content m-3">
+        <Container>
+          <Row>
+            <Col>
+              <h1>Send Problem</h1>
+            </Col>
+          </Row>
+          <Row className="border-bottom">
+            <Col>
+              <h6>แจ้งปัญหาการใช้งานครุภัณฑ์ชำรุด</h6>
+            </Col>
+          </Row>
+          <Row className="mt-4">
+            <Col>
+              <div className="col-md-5 form-group">
+                <Form.Label htmlFor="room">Room :</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="room"
+                  className="form-control"
+                  placeholder="Room"
+                  value={item?.room_id ?? ""}
+                  disabled
+                  size="sm"
+                ></Form.Control>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className="col-md-5 form-group">
+                <Form.Label htmlFor="itemCode">Item Code :</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="itemCode"
+                  className="form-control"
+                  placeholder="Item Code"
+                  value={item?.item_code ?? ""}
+                  disabled
+                  size="sm"
+                ></Form.Control>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className="col-md-5 form-group">
+                <Form.Label htmlFor="itemName">Item Name :</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="itemName"
+                  className="form-control"
+                  placeholder="Item Name"
+                  value={item?.item_name ?? ""}
+                  disabled
+                  size="sm"
+                ></Form.Control>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className="col-md-5 form-group">
+                <Form.Label htmlFor="Problem">Problem:*</Form.Label>
+                <DropdownButton
+                  id="allproblemDescription"
+                  title={titleDropdown}
+                  variant="outline-primary"
+                >
+                  {_.map(allproblemDes, (problem) => (
+                    <Dropdown.Item
+                      key={problem.problem_des_id}
+                      value={problem.problem_des_id}
+                      onSelect={() => {
+                        dropdownHandel(problem);
+                      }}
+                    >
+                      {problem.problem_description}
+                    </Dropdown.Item>
+                  ))}
+                  <Dropdown.Item
+                    key="0"
+                    value="etc"
+                    onSelect={() => {
+                      dropdownHandel({
+                        problem_description: "อื่นๆ",
+                        problem_des_id: 0,
+                      });
+                    }}
+                  >
+                    อื่นๆ
+                  </Dropdown.Item>
+                </DropdownButton>
+              </div>
+            </Col>
+          </Row>
+          <form method="POST" onSubmit={(event) => submitSendHandle(event)}>
+            {showInputProblem === true ? (
               <Row>
                 <Col>
-                  <h1>Send Problem</h1>
+                  <div className="col-md-12 form-group">
+                    <Form.Control
+                      type="text"
+                      placeholder="ใส่ข้อมูลปัญหาอื่นๆ"
+                      className="form-control"
+                      value={inputProblem}
+                      onChange={problemInputChangedHandler}
+                    ></Form.Control>
+                  </div>
                 </Col>
               </Row>
-              <Row className="border-bottom">
-                <Col>
-                  <h5>แจ้งปัญหาการใช้งานครุภัณฑ์ชำรุด</h5>
-                </Col>
-              </Row>
-                <Row className="mt-4">
-                  <Col>
-                    <div className="col-md-5 form-group">
-                      <label htmlFor="room">Room :</label>
-                      <Form.Control
-                        type="text"
-                        name="room"
-                        className="form-control"
-                        placeholder="Room"
-                        value={item?.room_id ?? ""}
-                        disabled
-                      ></Form.Control>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div className="col-md-5 form-group">
-                      <label htmlFor="itemCode">Item Code :</label>
-                      <Form.Control
-                        type="text"
-                        name="itemCode"
-                        className="form-control"
-                        placeholder="Item Code"
-                        value={item?.item_code ?? ""}
-                        disabled
-                      ></Form.Control>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div className="col-md-5 form-group">
-                      <label htmlFor="itemName">Item Name :</label>
-                      <Form.Control
-                        type="text"
-                        name="itemName"
-                        className="form-control"
-                        placeholder="Item Name"
-                        value={item?.item_name ?? ""}
-                        disabled
-                      ></Form.Control>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div className="col-md-5 form-group">
-                      <label htmlFor="Problem">Problem:*</label>
-                      <DropdownButton
-                        id="allproblemDescription"
-                        title={titleDropdown}
-                      >
-                        {_.map(allproblemDes, (problem) => (
-                          <Dropdown.Item
-                            key={problem.problem_des_id}
-                            value={problem.problem_des_id}
-                            onSelect={() => {
-                              dropdownHandel(problem);
-                            }}
-                          >
-                            {problem.problem_description}
-                          </Dropdown.Item>
-                        ))}
-                        <Dropdown.Item
-                          key="0"
-                          value="etc"
-                          onSelect={() => {
-                            dropdownHandel({
-                              problem_description: "อื่นๆ",
-                              problem_des_id: 0,
-                            });
-                          }}
-                        >
-                          อื่นๆ
-                        </Dropdown.Item>
-                      </DropdownButton>
-                    </div>
-                  </Col>
-                </Row>
-                <form method="POST" onSubmit={(event) => submitSendHandle(event)}>
-                {showInputProblem === true ? (
-                  <Row>
-                    <Col>
-                      <div className="col-md-12 form-group">
-                        <input
-                          type="text"
-                          placeholder="ใส่ข้อมูลปัญหาอื่นๆ"
-                          className="form-control"
-                          value={inputProblem}
-                          onChange={problemInputChangedHandler}
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
-                <Row style={{ marginTop: 50 }}>
-                  <Col xs={4} md={4} />
-                  <Col xs={4} md={4}>
-                    <Button variant="primary" type="submit">
-                      Submit
-                    </Button>
-                  </Col>
-                  <Col xs={4} md={4} />
-                </Row>
-              </form>
-            </Container>
-          </div>
-          
-        </>
-
+            ) : null}
+            <Row style={{ marginTop: 50 }}>
+              <Button
+                variant="light"
+                type="submit"
+                className="text-light"
+                block
+                style={{ backgroundColor: "#5091ff" }}
+              >
+                Submit
+              </Button>
+            </Row>
+          </form>
+        </Container>
+      </div>
+    </>
   );
 }
