@@ -16,7 +16,11 @@ export default function FormModal(props) {
         </Modal.Title>
       </Modal.Header>
       <form method={props.method} onSubmit={props.onSubmit}>
-        <Modal.Body>{props.body}</Modal.Body>
+        <Modal.Body>
+          <h6>{props.subTitle}</h6>
+          {props.body}
+          </Modal.Body>
+        <h6 className="m-3 text-right">{props.subBody}</h6>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.onHide}>
             {props.close}
