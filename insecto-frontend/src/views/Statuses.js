@@ -3,7 +3,6 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import axios from "axios";
 import DataTable from "react-data-table-component";
-import moment from "moment";
 
 export default function Statuses() {
   const [data, setData] = useState([]);
@@ -48,8 +47,8 @@ export default function Statuses() {
         columns={columns}
         data={data.statuses}
         striped
+        noHeader
         responsive
-        selectableRows
         selectableRowsHighlight
         highlightOnHover
         pagination

@@ -211,7 +211,7 @@ export default function Items() {
         name: "Updated At",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
       },
       {
         name: "User",
