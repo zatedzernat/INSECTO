@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import * as yup from "yup";
-import { Formik, Form, Field, ErrorMessage  } from "formik";
+// import * as yup from "yup";
+// import { Formik, Form, Field, ErrorMessage } from "formik";
+import FormModal from "../../components/FormModal";
 
 import {
   Container,
@@ -10,34 +11,58 @@ import {
   DropdownButton,
   Dropdown,
   Button,
+  Table,
+  Form,
+  Alert,
+  Modal,
 } from "react-bootstrap";
-import Content from "../../components/Content";
 import _ from "lodash";
 
 export default function MobileSendProblem(props) {
-  const [item, setItem] = useState([]);
-  const [problemDes, setProblemDes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [data, setData] = useState([]);
+  const [item, setItem] = useState({
+    item_code: "Item Code",
+    room_id: 0,
+    item_name: "Item name"
+  });
+  const [allproblemDes, setAllProblemDes] = useState([]);
+  const [problemDes, setProblemDes] = useState({
+    problem_des_id: 0,
+    problem_description: "",
+  });
+  const [problemsNotResolved, setProblemsNotResolved] = useState([]);
+  const [isError, setIsError] = useState({
+    error: false,
+    message: "",
+  });
   const [lastUpdate, setLastUpdate] = useState(0);
   const [titleDropdown, setTitleDropdown] = useState("Select Problem");
   const [showInputProblem, setShowInputProblem] = useState(false);
-  const [inputProblem, setInputProblem] = useState(false);
-  const [confirmModal, setConfirmModal] = useState(false);
+  const [inputProblem, setInputProblem] = useState("");
+  const [historyProblem, setHistoryProblem] = useState(false);
+  const [modalShowComplete, setModalShowComplete] = useState(false);
   const code = props.match.params.code;
-  
+
   const fetchData = async () => {
-    
-    setIsLoading(true);
     try {
       const res = await axios.get(
-        // `${process.env.REACT_APP_API_URL}sendproblem/ROOM-DOOR`
-        `${process.env.REACT_APP_API_URL}sendproblem/`+code
-        );
-      setItem(res.data.item);
-      setProblemDes(res.data.problemsThatCanSend, ...problemDes);
-      setIsLoading(false);
+        `${process.env.REACT_APP_API_URL}sendproblem/` + code
+      );
+      if (res.data.errors) {
+        setIsError({
+          error: true,
+          message: res.data.errors,
+        });
+      } else {
+        setItem(res.data.item);
+        setAllProblemDes(res.data.problemsThatCanSend);
+        setProblemsNotResolved(res.data.problemsNotResolved);
+        if (res.data.problemsNotResolved.length !== 0 && !modalShowComplete) {
+          setHistoryProblem(true);
+        }
+      }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   };
 
@@ -45,65 +70,130 @@ export default function MobileSendProblem(props) {
     fetchData();
   }, [lastUpdate]);
 
+  
   const dropdownHandel = (problem) => {
     const valuePro = problem;
-    setTitleDropdown(valuePro.problem_description);
-    toggleInputProblemHandler(valuePro.problem_des_id);
+    toggleInputProblemHandler(valuePro.problem_des_id, valuePro);
   };
 
-  const toggleInputProblemHandler = (key) => {
-    console.log("id item", key);
+  const toggleInputProblemHandler = (key, problem) => {
     if (key === 0) {
-      //? อื่นๆ
+      setTitleDropdown("อื่นๆ");
       setShowInputProblem(true);
-      console.log(showInputProblem);
     } else {
+      setProblemDes(problem);
+      setTitleDropdown(problem.problem_description);
       setShowInputProblem(false);
-      console.log(showInputProblem);
+    }
+  };
+  
+  const problemInputChangedHandler =  (event) => {
+    setInputProblem(event.target.value);
+    setProblemDes({
+      problem_description: event.target.value,
+      problem_des_id: "etc",
+    });
+  };
+
+  const submitSendHandle = async (event) => {
+    event.preventDefault();
+    console.log(
+      "submit",
+      item.item_id,
+      problemDes.problem_des_id,
+      problemDes.problem_description
+    );
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}noti_problems/`,
+        {
+          item_id: item.item_id,
+          problem_des_id: problemDes.problem_des_id,
+          problem_description: problemDes.problem_description,
+        }
+      );
+      setModalShowComplete(true);
+      if (res.data.error) {
+        setIsError({
+          error: true,
+          message: res.data.message,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+      }
+      
+    } catch (error) {
+      console.log(JSON.stringify(error.response.data.errors));
     }
   };
 
-  const problemInputChangedHandler = (event) => {
-    setInputProblem(event.target.value);
-    console.log(inputProblem);
+  // const SendProblemSchema = yup.object().shape({
+  //   room: yup.string(),
+  //   itemCode: yup.string(),
+  //   itemName: yup.string(),
+  //   allproblemDescription: yup.string(),
+  //   other: yup.string(),
+  // });
+
+  const historyProblemHandler = () => {
+    setHistoryProblem(false);
   };
 
-  const submitSendHandle = (event) => {
-    event.preventDefault();
-    const id = {
-      item_id: item.item_id,
-    };
-    console.log("submit", titleDropdown, id);
-    axios
-      .post("http://127.0.0.1:8000/api/noti_problems/", {
-        item_id: item.item_id,
-        problem_des_id: problemDes.problem_des_id,
-        problem_description: problemDes.problem_description,
-      })
-      .then((response) => {
-        console.log("post : ", response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const modalShowCompleteHandler = () => {
+    setModalShowComplete(false);
   };
 
-  const SendProblemSchema = yup.object().shape({
-    room: yup.string().required("Required"),
-    itemCode: yup.string().required("Required"),
-    itemName: yup.string().required("Required"),
-    problemDescription: yup.string().required("Required"),
-    other: yup.string()
-  });
-
-  const confirmModalHandler = (event) => {
-    setConfirmModal(true);
+  const buildingTable = (data) => {
+    return (
+      <Table striped bordered size="sm">
+        <tbody>
+          {_.map(data, (historyProblem) => (
+            <tr key={historyProblem.noti_id}>
+              <td>- {historyProblem.problem_description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
   };
-
   return (
-    <Content
-      content={
-        <>
+      <>
+          {isError.error && (
+            <Alert
+              variant="danger"
+              onClose={() => setIsError(false)}
+              dismissible
+            >
+              {isError.message}
+            </Alert>
+          )}
+          
+          <Modal
+            show={modalShowComplete}
+            onHide={modalShowCompleteHandler}
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            animation={false} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
+          >
+            <Modal.Header closeButton/>
+            <Modal.Body closeButton className="text-center m-3">
+              <h3>THANK YOU!!</h3>
+              <h6>ปัญหาของคุณถูกส่งแล้ว</h6>
+              <h6>สามารถติดตามสถานะได้ที่</h6>
+              <h6>www</h6>
+            </Modal.Body>
+          </Modal>
+          <FormModal
+            show={historyProblem}
+            onHide={historyProblemHandler}
+            title="อุปกรณ์นี้ถูกส่งปัญหาไว้แล้ว"
+            subTitle="ตามรายละเอียดด้านล่างดังนี้"
+            body={buildingTable(problemsNotResolved)}
+            method="POST"
+            onSubmit={historyProblemHandler}
+            button="แจ้งปัญหาอื่น"
+            close="ปิด"
+          />
           <div className="content" style={{ backgroundColor: "#EDE7E7" }}>
             <Container>
               <Row>
@@ -116,136 +206,116 @@ export default function MobileSendProblem(props) {
                   <h5>แจ้งปัญหาการใช้งานครุภัณฑ์ชำรุด</h5>
                 </Col>
               </Row>
-              {/* onSubmit={event => submitSendHandle(event)} */}
-              <Formik
-                validationSchema={SendProblemSchema} //กำหนด validation Schema
-                initialValues={{
-                  room: "",
-                  itemCode: "",
-                  itemName: "",
-                  problemDescription: "",
-                  other: ""
-                }}
-                onSubmit={()=>submitSendHandle()}
-              >
-                {({ errors, touched }) => (
-                <Form>
-                  <Row className="mt-4">
-                    <Col>
-                      <div className="col-md-5 form-group">
-                        <label htmlFor="room">Room :</label>
-                        <Field
-                          type="text"
-                          name="room"
-                          className={`form-control ${touched.room ? errors.room ? 'is-invalid' : 'is-valid' : ''}`}
-                          placeholder="Room"
-                          value={item.room_id}
-                          disabled
-                        ></Field>
-                        <ErrorMessage name="name" className="invalid-feedback" component="div" />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div className="col-md-5" form-group>
-                        <label htmlFor="itemCode">Item Code :</label>
-                        <Field
-                          type="text"
-                          name="itemCode"
-                          className={`form-control ${touched.itemCode ? errors.itemCode ? 'is-invalid' : 'is-valid' : ''}`}
-                          placeholder="Item Code"
-                          value={item.item_code}
-                          disabled
-                        ></Field>
-                        <ErrorMessage name="itemCode" className="invalid-feedback" component="div" />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div className="col-md-5 form-group">
-                        <label htmlFor="itemName">Item Name :</label>
-                        <Field
-                          type="text"
-                          name="itemName"
-                          className={`form-control ${touched.itemName ? errors.itemName ? 'is-invalid' : 'is-valid' : ''}`}
-                          placeholder="Item Name"
-                          value={item.item_name}
-                          disabled
-                        ></Field>
-                        <ErrorMessage name="itemName" className="invalid-feedback" component="div" />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div className="col-md-5 form-group">
-                        <label htmlFor="Problem">Problem:*</label>
-                        <DropdownButton id="problemSend" title={titleDropdown}>
-                          {_.map(problemDes, (problem) => (
-                            <Dropdown.Item
-                              key={problem.problem_des_id}
-                              value={problem.problem_des_id}
-                              name="problemDescription"
-                              className={`form-control ${touched.problemDescription ? errors.problemDescription ? 'is-invalid' : 'is-valid' : ''}`}
-                              onSelect={() => {
-                                dropdownHandel(problem);
-                              }}
-                            >
-                              {problem.problem_description}
-                            </Dropdown.Item>
-                          ))}
+                <Row className="mt-4">
+                  <Col>
+                    <div className="col-md-5 form-group">
+                      <label htmlFor="room">Room :</label>
+                      <Form.Control
+                        type="text"
+                        name="room"
+                        className="form-control"
+                        placeholder="Room"
+                        value={item?.room_id ?? ""}
+                        disabled
+                      ></Form.Control>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className="col-md-5 form-group">
+                      <label htmlFor="itemCode">Item Code :</label>
+                      <Form.Control
+                        type="text"
+                        name="itemCode"
+                        className="form-control"
+                        placeholder="Item Code"
+                        value={item?.item_code ?? ""}
+                        disabled
+                      ></Form.Control>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className="col-md-5 form-group">
+                      <label htmlFor="itemName">Item Name :</label>
+                      <Form.Control
+                        type="text"
+                        name="itemName"
+                        className="form-control"
+                        placeholder="Item Name"
+                        value={item?.item_name ?? ""}
+                        disabled
+                      ></Form.Control>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className="col-md-5 form-group">
+                      <label htmlFor="Problem">Problem:*</label>
+                      <DropdownButton
+                        id="allproblemDescription"
+                        title={titleDropdown}
+                      >
+                        {_.map(allproblemDes, (problem) => (
                           <Dropdown.Item
+                            key={problem.problem_des_id}
+                            value={problem.problem_des_id}
+                            onSelect={() => {
+                              dropdownHandel(problem);
+                            }}
+                          >
+                            {problem.problem_description}
+                          </Dropdown.Item>
+                        ))}
+                        <Dropdown.Item
                           key="0"
                           value="etc"
-                          name="etc"
-                          className={`form-control ${touched.problemDescription ? errors.problemDescription ? 'is-invalid' : 'is-valid' : ''}`}
                           onSelect={() => {
-                            dropdownHandel({problem_description: "อื่นๆ", problem_des_id: 0});
+                            dropdownHandel({
+                              problem_description: "อื่นๆ",
+                              problem_des_id: 0,
+                            });
                           }}
-                          >อื่นๆ
-                          </Dropdown.Item>
-                        </DropdownButton>
-                        <ErrorMessage name="problemDescription" className="invalid-feedback" component="div" />
+                        >
+                          อื่นๆ
+                        </Dropdown.Item>
+                      </DropdownButton>
+                    </div>
+                  </Col>
+                </Row>
+                <form method="POST" onSubmit={(event) => submitSendHandle(event)}>
+                {showInputProblem === true ? (
+                  <Row>
+                    <Col>
+                      <div className="col-md-12 form-group">
+                        <input
+                          type="text"
+                          placeholder="ใส่ข้อมูลปัญหาอื่นๆ"
+                          className="form-control"
+                          value={inputProblem}
+                          onChange={problemInputChangedHandler}
+                        />
                       </div>
                     </Col>
                   </Row>
-                  {showInputProblem === true ? (
-                    <Row>
-                      <Col>
-                        <div className="col-md-12 form-group">
-                          <Field
-                            type="textarea"
-                            name="other"
-                            placeholder="ใส่ข้อมูลปัญหาอื่นๆ"
-                            className={`form-control ${touched.other ? errors.other ? 'is-invalid' : 'is-valid' : ''}`}
-                            onChange={problemInputChangedHandler}
-                          ></Field>
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null}
-                  <Row style={{ marginTop: 50 }}>
-                    <Col xs={4} md={4} />
-                    <Col xs={4} md={4}>
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        onClick={() => submitSendHandle()}
-                      >
-                        Submit
-                      </Button>
-                    </Col>
-                    <Col xs={4} md={4} />
-                  </Row>
-                </Form>
-                )}
-              </Formik>
+                ) : null}
+                <Row style={{ marginTop: 50 }}>
+                  <Col xs={4} md={4} />
+                  <Col xs={4} md={4}>
+                    <Button variant="primary" type="submit">
+                      Submit
+                    </Button>
+                  </Col>
+                  <Col xs={4} md={4} />
+                </Row>
+              </form>
             </Container>
           </div>
+          
         </>
-      }
-    />
+
   );
 }
