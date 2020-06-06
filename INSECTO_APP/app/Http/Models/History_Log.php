@@ -3,6 +3,7 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use OwenIt\Auditing\Models\Audit;
 
 class History_log extends Model
@@ -16,6 +17,10 @@ class History_log extends Model
 
     public function getAll()
     {
-        return Audit::with('user')->get();
+        $audits =  Audit::with('user')->orderBy('created_at', 'desc')->get();
+        $grouped = $audits->groupBy(function ($item) {
+            return date('d-M-Y',strtotime($item->created_at));
+        });
+        return $grouped;
     }
 }

@@ -18,6 +18,7 @@ export default function App() {
   return (
     <div>
       <Switch>
+        <RouteWrapper exact path="/" component={Home} layout={Mobile} />
         <RouteWrapper exact path="/admin" component={NotiProblems} layout={Admin} />
         <RouteWrapper path="/admin/brands" component={Brands} layout={Admin} />
         <RouteWrapper path="/admin/buildings" component={Buildings} layout={Admin} />
@@ -28,8 +29,7 @@ export default function App() {
         <RouteWrapper path="/admin/status" component={Statuses} layout={Admin} />
         <RouteWrapper path="/admin/history_logs" component={HistoryLogs} layout={Admin} />
         <RouteWrapper path="/sendproblem/:code" component={SendProblem} layout={Mobile} />
-        <RouteWrapper path="/" component={Home} layout={Mobile} />
-        <RouteWrapper component={NotFoundPage} />
+        <RouteWrapper component={NotFoundPage} layout={Mobile} />
       </Switch>
     </div>
   );
