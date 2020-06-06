@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import * as yup from "yup";
-// import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import FormModal from "../../components/FormModal";
-
+import moment from "moment";
 import {
   Container,
   Row,
@@ -11,7 +11,6 @@ import {
   DropdownButton,
   Dropdown,
   Button,
-  Table,
   Form,
   Alert,
   Modal,
@@ -20,7 +19,6 @@ import {
 import _ from "lodash";
 
 export default function MobileSendProblem(props) {
-  // const [data, setData] = useState([]);
   const [item, setItem] = useState({
     item_code: "Item Code",
     room_id: 0,
@@ -142,36 +140,37 @@ export default function MobileSendProblem(props) {
     setModalShowComplete(false);
   };
 
-  const historyProblemCard = (data) => {
+  const historyProblemCard = (problemsNotResolved) => {
     return (
       <div>
-        {_.map(data, (historyProblem) => (
-          <Card style={{ width: "18rem" }}>
-            <Card.Header className="text-center">
-              {historyProblem.problem_description}
-            </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                <small>Status: {historyProblem.status_id}</small>
-              </Card.Text>
-              <Card.Text>
-                <small>Date: {historyProblem.created_at}</small>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        ))}
+        {_.map(problemsNotResolved, (problemNotResolved) => {
+          let date = moment(problemNotResolved.created_at).format("D/M/YYYY");
+          let time = moment(problemNotResolved.created_at).format("HH:mm:ss");
+          let fromnow = moment(problemNotResolved.created_at).fromNow();
+          return (
+            <Card
+              key={problemNotResolved.problem_des_id+problemNotResolved.problem_description}
+              className="card card-outline card-primary"
+            >
+              <Card.Header>
+                <label className="col-form-group">
+                  {problemNotResolved.problem_description}
+                </label>
+              </Card.Header>
+              <Card.Body>
+                <div className="form-group">
+                  Status: {problemNotResolved.status.status_name} <br />
+                  Date: {date} <br />
+                  Time: {time} ({fromnow}) 
+                </div>
+              </Card.Body>
+            </Card>
+          );
+        })}
       </div>
-      // <Table striped bordered size="sm">
-      //   <tbody>
-      //     {_.map(data, (historyProblem) => (
-      //       <tr key={historyProblem.noti_id}>
-      //         <td>- {historyProblem.problem_description}</td>
-      //       </tr>
-      //     ))}
-      //   </tbody>
-      // </Table>
     );
   };
+  
   return (
     <>
       {isError.error && (
@@ -199,7 +198,7 @@ export default function MobileSendProblem(props) {
       <FormModal
         show={historyProblem}
         onHide={historyProblemHandler}
-        title={"ปัญหาของ "+item.item_code+" ที่ถูกแจ้ง"}
+        title={"ปัญหาของ " + item.item_code + " ที่ถูกแจ้ง"}
         body={historyProblemCard(problemsNotResolved)}
         method="POST"
         onSubmit={historyProblemHandler}
@@ -215,6 +214,7 @@ export default function MobileSendProblem(props) {
           </Button>
         }
       />
+
       <div className="content m-3">
         <Container>
           <Row>
