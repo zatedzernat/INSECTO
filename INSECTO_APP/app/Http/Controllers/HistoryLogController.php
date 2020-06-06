@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use OwenIt\Auditing\Models\Audit;
+use App\Http\Models\History_Log;
 
 class HistoryLogController extends Controller
 {
+    private $log;
+
+    public function __construct()
+    {
+        $this->log = new History_Log();
+    }
+
     public function index()
     {
-        $a = Audit::all();
-        $b = json_decode($a);
-        return $b;
+        $history_logs = $this->log->getAll();
+        return compact('history_logs');
     }
 }
