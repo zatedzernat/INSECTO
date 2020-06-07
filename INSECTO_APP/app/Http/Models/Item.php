@@ -2,9 +2,11 @@
 
 namespace App\Http\Models;
 
+use QrCode;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Item extends Model implements Auditable
@@ -232,5 +234,13 @@ class Item extends Model implements Auditable
                 break;
         }
         return $collection;
+    }
+
+    public function getQRCode($item_code, $urlQR)
+    {
+        $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+        $fileName = $item_code . '.png';
+        Storage::disk('local')->put($fileName, $qrcode);
+        return $fileName;
     }
 }

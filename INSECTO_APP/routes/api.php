@@ -50,6 +50,8 @@ Route::post('items', 'ItemController@store');
 Route::put('items/{item_id}', 'ItemController@update');
 Route::delete('items/{item_id}', 'ItemController@destroy');
 
+Route::post('getqr/{item_code}', 'ItemController@getQRCode');
+
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');
 Route::post('item_types', 'ItemTypeController@store');
 Route::put('item_types/{type_id}', 'ItemTypeController@update');

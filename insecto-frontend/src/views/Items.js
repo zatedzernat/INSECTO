@@ -170,6 +170,28 @@ export default function Items() {
     }
   };
 
+  const getItemQRCode = async (row) => {
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}getqr/${row.item_code}`,
+        method: "POST",
+        responseType: "blob",
+        data: {
+          url: window.location.origin,
+        }
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${row.item_code}.png`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
   const styles = {
     container: { color: "red" },
   };
@@ -257,15 +279,20 @@ export default function Items() {
       {
         name: "QR Code",
         cell: (row) => (
-          <><Button type="submit" variant="outline-success" size="sm">
+          <>
+            <Button
+              type="submit"
+              variant="outline-success"
+              size="sm"
+              onClick={() => getItemQRCode(row)}
+            >
               <i className="fa fa-qrcode" />
               QR Code
-              </Button>
+            </Button>
           </>
         ),
         button: true,
       },
-     
     ];
     const ExpandedComponent = ({ data }) => (
       <div
