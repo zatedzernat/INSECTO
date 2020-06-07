@@ -44,7 +44,7 @@ class Room extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
-    public function findByCancelFlag($string)
+    public static function findByCancelFlag($string)
     {
         return Room::with('building', 'user')->where('cancel_flag', $string)->get();
     }

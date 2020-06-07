@@ -254,26 +254,32 @@ class Item extends Model implements Auditable
     public function getQRCodeZIP($urlRoot)
     {
         $arrayOfAllCode = $this->getItemsCode();
+        $rooms = Room::findByCancelFlag('N');
         if (!$arrayOfAllCode->isEmpty()) {
             $zipFileName = 'Items-QRcode.zip';
-
             $zip = Zip::create($zipFileName);
-            $zip->setPath(storage_path('app'));
 
-            foreach ($arrayOfAllCode as $item_code) {
-                $urlQR = $urlRoot . "/sendProblem/" . $item_code;
-                $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
-                $name = $item_code . '.png';
-                Storage::disk('local')->put($name, $qrcode);
-                $zip->add($name);
+            foreach ($rooms as $room) {
+                Storage::disk('local')->makeDirectory($room->room_code);
+                foreach ($room->items as $item) {
+                    $urlQR = $urlRoot . "/sendProblem/" . $item->item_code;
+                    $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+                    $name = $item->item_code . '.png';
+                    Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
+                }
+                if (strpos($room->room_code, "/") === false) { // will not add IT/... folder (IT/101, IT/102)
+                    // $folder = storage_path('app\\' . $room->room_code);
+                    $zip->add(storage_path('app\\' . $room->room_code));
+                }
             }
 
+            $zip->add(storage_path('app\\' . 'IT')); // add IT/... folder
             $zip->close();
 
-            // foreach ($arrayOfAllCode as $code) {
-            //     $name = $code . '.png';
-            //     Storage::disk('local')->delete($name);
-            // }
+            foreach ($rooms as $room) {
+                Storage::disk('local')->deleteDirectory($room->room_code);
+            }
+            Storage::disk('local')->deleteDirectory('IT');
         } else {
             $zipFileName = null;
         }

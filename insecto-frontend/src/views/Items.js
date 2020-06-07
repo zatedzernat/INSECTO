@@ -206,7 +206,7 @@ export default function Items() {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `${row.item_code}.png`); //or any other extension
+      link.setAttribute("download", "Items_QRCode.zip"); //or any other extension
       document.body.appendChild(link);
       link.click();
     } catch (error) {

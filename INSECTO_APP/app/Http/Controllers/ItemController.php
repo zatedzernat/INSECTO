@@ -147,8 +147,8 @@ class ItemController extends Controller
         if ($zipFileName) {
             return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
         } else {
-            // $errors->add('NoItems', 'Please add item before get QR-Code');
-            // return redirect()->route('items')->withErrors($errors);
+            $error =  'Please add item before get QR-Code';
+            return  $this->serverResponse($error, null);
         }
     }
 }
