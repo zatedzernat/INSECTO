@@ -13,7 +13,8 @@
         "fruitcake/laravel-cors": "^1.0",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "owen-it/laravel-auditing": "^10.0"
+        "owen-it/laravel-auditing": "^10.0",
+        "simplesoftwareio/simple-qrcode": "~3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
@@ -40,7 +41,8 @@
         },
         "classmap": [
             "database/seeds",
-            "database/factories"
+            "database/factories",
+            "app/"
         ]
     },
     "autoload-dev": {
