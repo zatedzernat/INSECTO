@@ -254,6 +254,18 @@ export default function Items() {
         ),
         button: true,
       },
+      {
+        name: "QR Code",
+        cell: (row) => (
+          <><Button type="submit" variant="outline-success" size="sm">
+              <i className="fa fa-qrcode" />
+              QR Code
+              </Button>
+          </>
+        ),
+        button: true,
+      },
+     
     ];
     const ExpandedComponent = ({ data }) => (
       <div
