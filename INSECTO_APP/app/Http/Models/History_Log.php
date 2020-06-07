@@ -3,7 +3,6 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use OwenIt\Auditing\Models\Audit;
 
 class History_log extends Model
