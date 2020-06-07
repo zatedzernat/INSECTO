@@ -14,7 +14,8 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "owen-it/laravel-auditing": "^10.0",
-        "simplesoftwareio/simple-qrcode": "^2.0"
+        "simplesoftwareio/simple-qrcode": "^2.0",
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
