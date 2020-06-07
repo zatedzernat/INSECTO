@@ -275,11 +275,11 @@ class Item extends Model implements Auditable
 
             $zip->add(storage_path('app\\' . 'IT')); // add IT/... folder
             $zip->close();
-
             foreach ($rooms as $room) {
                 Storage::disk('local')->deleteDirectory($room->room_code);
             }
             Storage::disk('local')->deleteDirectory('IT');
+            // dd($zip);
         } else {
             $zipFileName = null;
         }
