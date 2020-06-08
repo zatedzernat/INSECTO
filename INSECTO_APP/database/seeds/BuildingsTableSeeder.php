@@ -28,13 +28,13 @@ class BuildingsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
-        DB::table('buildings')->insert([
-            'building_code' => 'CB4',
-            'building_name' => 'ตึกCB4',
-            'cancel_flag' => 'N',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-            'user_id' => 1
-        ]);
+        // DB::table('buildings')->insert([
+        //     'building_code' => 'CB4',
+        //     'building_name' => 'ตึกCB4',
+        //     'cancel_flag' => 'N',
+        //     'created_at' => Carbon::now(),
+        //     'updated_at' => Carbon::now(),
+        //     'update_by' => 'seeder'
+        // ]);
     }
 }

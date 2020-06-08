@@ -22,8 +22,8 @@ class RoomsTableSeeder extends Seeder
             'user_id' => 1
         ]);
         DB::table('rooms')->insert([
-            'room_code' => 'IT-201',
-            'room_name' => 'Library',
+            'room_code' => 'IT-102',
+            'room_name' => 'Training_Room2',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -31,8 +31,8 @@ class RoomsTableSeeder extends Seeder
             'user_id' => 1
         ]);
         DB::table('rooms')->insert([
-            'room_code' => 'IT/101',
-            'room_name' => "Men's Toilet",
+            'room_code' => 'IT-103',
+            'room_name' => 'Training_Room3',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -40,26 +40,35 @@ class RoomsTableSeeder extends Seeder
             'user_id' => 1
         ]);
         DB::table('rooms')->insert([
-            'room_code' => 'CB-2308',
-            'room_name' => 'CB_2308',
-            'building_id' => 2,
+            'room_code' => 'IT-104',
+            'room_name' => 'Training_Room4',
+            'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
         DB::table('rooms')->insert([
-            'room_code' => 'CB-2307',
-            'room_name' => 'Common_CB2',
-            'building_id' => 2,
+            'room_code' => 'IT-105',
+            'room_name' => 'Training_Room5',
+            'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
         DB::table('rooms')->insert([
-            'room_code' => 'IT/102',
-            'room_name' => "Women's Toilet",
+            'room_code' => 'IT-108',
+            'room_name' => 'Computer_Lab2',
+            'building_id' => 1,
+            'cancel_flag' => 'N',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'user_id' => 1
+        ]);
+        DB::table('rooms')->insert([
+            'room_code' => 'IT-109',
+            'room_name' => 'Computer_Lab1',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
