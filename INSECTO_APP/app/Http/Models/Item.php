@@ -267,19 +267,19 @@ class Item extends Model implements Auditable
                     $name = $item->item_code . '.png';
                     Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
                 }
-                if (strpos($room->room_code, "/") === false) { // will not add IT/... folder (IT/101, IT/102)
-                    // $folder = storage_path('app\\' . $room->room_code);
-                    $zip->add(storage_path('app\\' . $room->room_code));
+                if (strpos($room->room_code, "/") === false) { // will not add IT folder
+                    // storage_path('app\\' . $room->room_code); for windows
+                    $zip->add(storage_path('app/' . $room->room_code));
                 }
             }
 
-            $zip->add(storage_path('app\\' . 'IT')); // add IT/... folder
+            // storage_path('app\\' . $room->room_code); for windows
+            $zip->add(storage_path('app/' . 'IT')); // add IT folder and subfolder (101, 102)
             $zip->close();
             foreach ($rooms as $room) {
                 Storage::disk('local')->deleteDirectory($room->room_code);
             }
             Storage::disk('local')->deleteDirectory('IT');
-            // dd($zip);
         } else {
             $zipFileName = null;
         }
