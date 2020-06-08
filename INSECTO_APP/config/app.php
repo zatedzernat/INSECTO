@@ -167,6 +167,7 @@ return [
         OwenIt\Auditing\AuditingServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         ZanySoft\Zip\ZipServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -234,6 +235,7 @@ return [
 
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Zip' => ZanySoft\Zip\ZipFacade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

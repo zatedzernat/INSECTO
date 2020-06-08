@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ItemsExport;
 use App\Http\Models\Brand;
 use App\Http\Models\Building;
 use App\Http\Models\Item;
 use App\Http\Models\Item_Type;
 use App\Http\Models\Room;
+use App\Http\Requests\ImportRequest;
 use App\Http\Requests\ItemFormRequest;
+use App\Imports\ItemsImport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
@@ -36,13 +41,14 @@ class ItemController extends Controller
      */
     public function index()
     {
+        $countItems = $this->item->countItems();
         $items = $this->item->findByCancelFlag('N');
         $rooms = $this->room->findByCancelFlag('N');
         $itemTypes = $this->itemType->findByCancelFlag('N');
         $brands = $this->brand->findByCancelFlag('N');
         $buildings = $this->building->findByCancelFlag('N');
 
-        return compact('items', 'rooms', 'itemTypes', 'brands', 'buildings');
+        return compact('countItems', 'items', 'rooms', 'itemTypes', 'brands', 'buildings');
     }
 
     /**
@@ -120,16 +126,6 @@ class ItemController extends Controller
         return $this->serverResponse(null, $success);
     }
 
-    public function serverResponse($error, $success)
-    {
-        $time = Carbon::now()->format('H:i:s');
-        return response()->json([
-            'errors' => $error,
-            'success' => $success,
-            'time' => $time
-        ]);
-    }
-
     public function getQRCode(Request $request, $item_code)
     {
         // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
@@ -138,7 +134,7 @@ class ItemController extends Controller
         $fileName = $this->item->getQRCode($item_code, $urlQR);
         return response()->download(storage_path('app') . '/' . $fileName)->deleteFileAfterSend();
     }
-
+    
     public function getQRCodeZIP(Request $request)
     {
         // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
@@ -147,8 +143,45 @@ class ItemController extends Controller
         if ($zipFileName) {
             return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
         } else {
+            // dd(1);
             $error =  'Please add item before get QR-Code';
             return  $this->serverResponse($error, null);
         }
+    }
+    
+    public function importItems(ImportRequest $request)
+    {
+        // dd(1);
+        try {
+            $import = new ItemsImport();
+            $import->onlySheets('Items');
+            Excel::import($import, $request->file('import_file'));
+            $success = 'Import data of items success';
+            return  $this->serverResponse(null, $success);
+        } catch (SheetNotFoundException $ex) {
+            $error =  'Please name your sheetname to \'Items\'';
+            return  $this->serverResponse($error, null);
+        }
+    }
+    
+    public function exportItems()
+    {
+        $items = $this->item->getALL();
+        if ($items->isEmpty()) {
+            $error =  'Please add item(s) before export';
+            return  $this->serverResponse($error, null);
+        } else {
+            return Excel::download(new ItemsExport, 'items.xlsx');
+        }
+    }
+
+    public function serverResponse($error, $success)
+    {
+        $time = Carbon::now()->format('H:i:s');
+        return response()->json([
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
+        ]);
     }
 }

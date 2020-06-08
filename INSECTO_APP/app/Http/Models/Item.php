@@ -57,6 +57,11 @@ class Item extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
+    public function countItems()
+    {
+        return $this->getALL()->count();
+    }
+
     public function findByCancelFlag($string)
     {
         return Item::with('room.building', 'item_type', 'brand', 'user')->where('cancel_flag', $string)->get();
@@ -79,6 +84,11 @@ class Item extends Model implements Auditable
     {
         $items = $this->findByCancelFlag('N');
         return $items->pluck('item_code');
+    }
+
+    public function getALL()
+    {
+        return Item::all();
     }
 
     public function setCancelFlag($CancelFlag)

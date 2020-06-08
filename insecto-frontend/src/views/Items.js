@@ -14,6 +14,8 @@ export default function Items() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
+  const [modalShowImport, setModalShowImport] = useState(false);
+  const [file, setFile] = useState();
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -59,7 +61,6 @@ export default function Items() {
   }, [lastUpdate]);
 
   const addHandleSubmit = async (event) => {
-    console.log(JSON.stringify(item));
     event.preventDefault();
     setSelectBuilding("- select building name -");
     setSelectRoom("- select room name -");
@@ -178,7 +179,7 @@ export default function Items() {
         responseType: "blob",
         data: {
           url: window.location.origin,
-        }
+        },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -200,13 +201,73 @@ export default function Items() {
         responseType: "blob",
         data: {
           url: window.location.origin,
-        }
+        },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "Items_QRCode.zip"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const importHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowImport(false);
+    try {
+      const formData = new FormData();
+      formData.append("import_file", file);
+
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}items/import`,
+        formData,
+        { headers: { "content-type": "multipart/form-data" } }
+      );
+      if (res.data.errors) {
+        setIsError({
+          error: true,
+          message: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(error.response);
+      let err_message = error.response.data.message;
+      if (error.response.status === 422) {
+        setIsError({
+          error: true,
+          message: error.response.data.errors.import_file,
+        });
+      } else if (err_message.split(":")[0] === "Undefined index") {
+        setIsError({
+          error: true,
+          message: `Import file doesn't has '${err_message.split(":")[1]}' column!`,
+        });
+      }
+    }
+  };
+
+  const exportItems = async () => {
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items/export`,
+        method: "GET",
+        responseType: "blob",
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Items.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -395,7 +456,25 @@ export default function Items() {
                 &emsp;
                 <Button variant="danger">Delete</Button>
                 &emsp;
-                <Button onClick={getItemsQRCode} variant="success">QR Code seperate by Room</Button>
+                {data.countItems === 0 ? (
+                  <Button
+                    onClick={() => setModalShowImport(true)}
+                    variant="warning"
+                    type="submit"
+                  >
+                    Import Item(s)
+                  </Button>
+                ) : (
+                  <>
+                    <Button onClick={getItemsQRCode} variant="success">
+                      QR Code seperate by Room
+                    </Button>
+                    &emsp;
+                    <Button onClick={exportItems} variant="warning">
+                      Export Item(s)
+                    </Button>
+                  </>
+                )}
               </div>
             }
             body={itemTable(data)}
@@ -1060,6 +1139,38 @@ export default function Items() {
             method="POST"
             onSubmit={editHandleSubmit}
             button="Confirm"
+            close="Cancel"
+          />
+
+          <FormModal
+            show={modalShowImport}
+            onHide={() => setModalShowImport(false)}
+            title="Import data of item(s)"
+            body={
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    File<span style={{ color: "red" }}>*</span>:
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="file"
+                      onChange={(event) => setFile(event.target.files[0])}
+                    />
+                  </div>
+                </div>
+                <div className="form-group row" style={{ marginBottom: 0 }}>
+                  <label className="col-sm-12 col-form-label">
+                    - Only .xls and .xlsx file type <br />- Import file must has
+                    'Items' sheetname <br /> - Import file must has all columns
+                    as insecto_data_format
+                  </label>
+                </div>
+              </>
+            }
+            method="POST"
+            onSubmit={importHandleSubmit}
+            button="Import"
             close="Cancel"
           />
         </div>
