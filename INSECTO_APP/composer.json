@@ -13,6 +13,7 @@
         "fruitcake/laravel-cors": "^1.0",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
+        "maatwebsite/excel": "^3.1",
         "owen-it/laravel-auditing": "^10.0",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "zanysoft/laravel-zip": "^1.0"
