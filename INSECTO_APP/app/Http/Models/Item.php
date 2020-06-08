@@ -267,7 +267,7 @@ class Item extends Model implements Auditable
                     $name = $item->item_code . '.png';
                     Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
                 }
-                if (strpos($room->room_code, "/") === false) { // will not add IT folder
+                if (strpos($room->room_code, "/") === false) { // find / in room code do not want to add IT/101, IT/102
                     // storage_path('app\\' . $room->room_code); for windows
                     $zip->add(storage_path('app/' . $room->room_code));
                 }
