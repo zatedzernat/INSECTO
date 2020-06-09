@@ -9,7 +9,7 @@ export default function FormModal(props) {
       onHide={props.onHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      animation={false} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
+      animation={true} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
