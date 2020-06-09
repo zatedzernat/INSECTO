@@ -11,6 +11,7 @@ import NotiProblems from "./views/NotificationProblems";
 import HistoryLogs from "./views/HistoryLogs";
 import NotFoundPage from "./views/NotFoundPage";
 import SendProblem from "./views/mobile/MobileSendProblem";
+import SendProblemGroup from "./views/mobile/MobileSendProblemGroup";
 import Home from "./views/mobile/trackingProblem";
 import { Mobile, Admin } from './Layout/layout';
 
@@ -28,7 +29,8 @@ export default function App() {
         <RouteWrapper path="/admin/problem_descriptions" component={ProblemDes} layout={Admin} />
         <RouteWrapper path="/admin/status" component={Statuses} layout={Admin} />
         <RouteWrapper path="/admin/history_logs" component={HistoryLogs} layout={Admin} />
-        <RouteWrapper path="/sendproblem/:code" component={SendProblem} layout={Mobile} />
+        <RouteWrapper exact path="/sendproblem/:code" component={SendProblem} layout={Mobile} />
+        <RouteWrapper path="/sendproblem/room/:room_code" component={SendProblemGroup} layout={Mobile} />
         <RouteWrapper component={NotFoundPage} layout={Mobile} />
       </Switch>
     </div>
