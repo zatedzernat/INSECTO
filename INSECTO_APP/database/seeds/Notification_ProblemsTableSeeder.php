@@ -18,7 +18,7 @@ class Notification_ProblemsTableSeeder extends Seeder
             'problem_des_id' => 4,
             'problem_description' => 'เครื่องปรับอากาศมีกลิ่น',
             'cancel_flag' => 'N',
-            'created_at' => Carbon::now(),
+            'created_at' => Carbon::now()->subMinutes(40),
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
@@ -28,7 +28,7 @@ class Notification_ProblemsTableSeeder extends Seeder
             'problem_des_id' => 5,
             'problem_description' => 'เครื่องปรับอากาศไม่เย็น',
             'cancel_flag' => 'N',
-            'created_at' => Carbon::now(),
+            'created_at' => Carbon::now()->subMinutes(30),
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
@@ -38,7 +38,7 @@ class Notification_ProblemsTableSeeder extends Seeder
             'problem_des_id' => 6,
             'problem_description' => 'เครื่องปรับอากาศไม่ติด',
             'cancel_flag' => 'N',
-            'created_at' => Carbon::now(),
+            'created_at' => Carbon::now()->subMinutes(20),
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
@@ -48,7 +48,7 @@ class Notification_ProblemsTableSeeder extends Seeder
             'problem_des_id' => 5,
             'problem_description' => 'เครื่องปรับอากาศไม่เย็น',
             'cancel_flag' => 'N',
-            'created_at' => Carbon::now(),
+            'created_at' => Carbon::now()->subMinutes(10),
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
