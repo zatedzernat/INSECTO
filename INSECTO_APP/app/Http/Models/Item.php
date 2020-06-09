@@ -86,6 +86,13 @@ class Item extends Model implements Auditable
         return $items->pluck('item_code');
     }
 
+    public function getItemsGroupByTypeName($items)
+    {
+        return $items->groupBy(function ($item) {
+            return $item->item_type->type_name;
+        });
+    }
+
     public function getALL()
     {
         return Item::all();
@@ -115,18 +122,22 @@ class Item extends Model implements Auditable
     {
         $this->room_id = $room_id;
     }
+
     public function setTypeID($type_id)
     {
         $this->type_id = $type_id;
     }
+
     public function setBrandID($brand_id)
     {
         $this->brand_id = $brand_id;
     }
+
     public function setSerial($serial_number)
     {
         $this->serial_number = $serial_number;
     }
+
     public function setModel($model)
     {
         $this->model = $model;

@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
 
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
+Route::get('sendprobleminroom/{room_code}', 'NotificationProblemController@showproblemNotResolvedInRoom')->where('room_code', '[A-Za-z0-9-.]+');
 Route::get('sendproblem/{item_code}', 'NotificationProblemController@showproblemNotResolved')->where('item_code', '[A-Za-z0-9-.]+');
 Route::post('noti_problems',  'NotificationProblemController@store');
 Route::put('noti_problems/{noti_id}',  'NotificationProblemController@update');

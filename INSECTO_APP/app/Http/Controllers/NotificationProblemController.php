@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Item;
 use App\Http\Models\Notification_Problem;
 use App\Http\Models\Problem_Description;
+use App\Http\Models\Room;
 use App\Http\Models\Status;
 use App\Http\Requests\NotiUpdateFormRequest;
 use App\Http\Requests\SendProblemRequest;
@@ -18,6 +19,7 @@ class NotificationProblemController extends Controller
     private $item;
     private $problem_desc;
     private $status;
+    private $room;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class NotificationProblemController extends Controller
         $this->item = new Item();
         $this->problem_desc = new Problem_Description();
         $this->status = new Status();
+        $this->room = new Room();
     }
 
     /**
@@ -50,6 +53,19 @@ class NotificationProblemController extends Controller
             $problemsNotResolved = $this->noti_problem->findProblemsNotResolvedByItemID($item->item_id);
             $problemsThatCanSend = $this->noti_problem->findProblemsThatCanSendByItemID($item);
             return compact('problemsNotResolved', 'item', 'problemsThatCanSend');
+        }
+    }
+
+    public function showproblemNotResolvedInRoom($room_code)
+    {
+        $room = $this->room->findByCode($room_code);
+        if (empty($room)) {
+            $error = "Room not found!";
+            return $this->serverResponse($error, null);
+        } else {
+            $problemsNotResolvedInRoom = $this->noti_problem->findProblemsNotResolvedInRoomByItems($room->items);
+            $itemsGroupByType = $this->item->getItemsGroupByTypeName($room->items);
+            return compact('problemsNotResolvedInRoom', 'itemsGroupByType');
         }
     }
 
