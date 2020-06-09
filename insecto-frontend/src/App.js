@@ -30,7 +30,7 @@ export default function App() {
         <RouteWrapper path="/admin/status" component={Statuses} layout={Admin} />
         <RouteWrapper path="/admin/history_logs" component={HistoryLogs} layout={Admin} />
         <RouteWrapper exact path="/sendproblem/:code" component={SendProblem} layout={Mobile} />
-        <RouteWrapper path="/sendproblem/room/:room_code" component={SendProblemGroup} layout={Mobile} />
+        <RouteWrapper exact path="/sendproblem/room/:room_code" component={SendProblemGroup} layout={Mobile} />
         <RouteWrapper component={NotFoundPage} layout={Mobile} />
       </Switch>
     </div>
