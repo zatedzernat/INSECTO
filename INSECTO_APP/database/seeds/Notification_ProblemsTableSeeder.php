@@ -15,7 +15,7 @@ class Notification_ProblemsTableSeeder extends Seeder
         DB::table('notification__problems')->insert([
             'item_id' => 1,
             'status_id' => 1,
-            'problem_des_id' => 4,
+            'problem_des_id' => 9,
             'problem_description' => 'เครื่องปรับอากาศมีกลิ่น',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now()->subMinutes(40),
@@ -25,7 +25,7 @@ class Notification_ProblemsTableSeeder extends Seeder
         DB::table('notification__problems')->insert([
             'item_id' => 1,
             'status_id' => 1,
-            'problem_des_id' => 5,
+            'problem_des_id' => 11,
             'problem_description' => 'เครื่องปรับอากาศไม่เย็น',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now()->subMinutes(30),
@@ -35,7 +35,7 @@ class Notification_ProblemsTableSeeder extends Seeder
         DB::table('notification__problems')->insert([
             'item_id' => 2,
             'status_id' => 1,
-            'problem_des_id' => 6,
+            'problem_des_id' => 10,
             'problem_description' => 'เครื่องปรับอากาศไม่ติด',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now()->subMinutes(20),
@@ -45,7 +45,7 @@ class Notification_ProblemsTableSeeder extends Seeder
         DB::table('notification__problems')->insert([
             'item_id' => 2,
             'status_id' => 1,
-            'problem_des_id' => 5,
+            'problem_des_id' =>11,
             'problem_description' => 'เครื่องปรับอากาศไม่เย็น',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now()->subMinutes(10),
