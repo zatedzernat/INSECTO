@@ -42,7 +42,7 @@ class Notification_Problem extends Model implements Auditable
 
     public function getAll()
     {
-        return Notification_Problem::with('item.room', 'status', 'user')->get();
+        return Notification_Problem::with('item.room', 'status', 'user')->orderBy('created_at', 'desc')->get();
     }
 
     public function findByID($id)
@@ -52,7 +52,7 @@ class Notification_Problem extends Model implements Auditable
 
     public function findProblemsNotResolvedByItemID($item_id)
     {
-        return Notification_Problem::where([
+        return Notification_Problem::with('status')->where([
             ['item_id', $item_id],
             ['status_id', '<>', 8], //status_id = 8 = resolved
         ])->get();
@@ -67,6 +67,16 @@ class Notification_Problem extends Model implements Auditable
 
         $problemsCanSend = Problem_Description::findByTypeID($item->type_id, 'N')->whereNotIn('problem_des_id', $sentProblemsID);
         return $problemsCanSend;
+    }
+
+    public function findProblemsNotResolvedInRoomByItems($items)
+    {
+        $all_items_id = $items->pluck('item_id');
+        return Notification_Problem::with('status')
+            ->whereIn('item_id', $all_items_id)
+            ->where([
+                ['status_id', '<>', 8], //status_id = 8 = resolved
+            ])->get();
     }
 
     public function create($item_id, $problem_des_id, $problem_description)

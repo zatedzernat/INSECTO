@@ -120,7 +120,7 @@ class ItemsTableSeeder extends Seeder
         DB::table('items')->insert([
             'item_code' => 'TOL-FLUSH-04',
             'item_name' => 'ชักโครก',
-            'room_id' => 3,
+            'room_id' => 6,
             'type_id' => 3,
             'group' => 'Y',
             'brand_id' => null,

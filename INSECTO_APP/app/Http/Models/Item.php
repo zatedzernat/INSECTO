@@ -5,7 +5,10 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
+use QrCode;
+use ZanySoft\Zip\Zip;
 
 class Item extends Model implements Auditable
 {
@@ -54,6 +57,11 @@ class Item extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
+    public function countItems()
+    {
+        return $this->getALL()->count();
+    }
+
     public function findByCancelFlag($string)
     {
         return Item::with('room.building', 'item_type', 'brand', 'user')->where('cancel_flag', $string)->get();
@@ -64,12 +72,30 @@ class Item extends Model implements Auditable
         return Item::where([
             ['item_code', $code],
             ['cancel_flag', 'N'],
-        ])->first();
+        ])->with('room')->first();
     }
 
     public function findByID($int)
     {
         return Item::where('item_id', $int)->first();
+    }
+
+    public function getItemsCode()
+    {
+        $items = $this->findByCancelFlag('N');
+        return $items->pluck('item_code');
+    }
+
+    public function getItemsGroupByTypeName($items)
+    {
+        return $items->groupBy(function ($item) {
+            return $item->item_type->type_name;
+        });
+    }
+
+    public function getALL()
+    {
+        return Item::all();
     }
 
     public function setCancelFlag($CancelFlag)
@@ -96,18 +122,22 @@ class Item extends Model implements Auditable
     {
         $this->room_id = $room_id;
     }
+
     public function setTypeID($type_id)
     {
         $this->type_id = $type_id;
     }
+
     public function setBrandID($brand_id)
     {
         $this->brand_id = $brand_id;
     }
+
     public function setSerial($serial_number)
     {
         $this->serial_number = $serial_number;
     }
+
     public function setModel($model)
     {
         $this->model = $model;
@@ -232,5 +262,49 @@ class Item extends Model implements Auditable
                 break;
         }
         return $collection;
+    }
+
+    public function getQRCode($item_code, $urlQR)
+    {
+        $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+        $fileName = $item_code . '.png';
+        Storage::disk('local')->put($fileName, $qrcode);
+        return $fileName;
+    }
+
+    public function getQRCodeZIP($urlRoot)
+    {
+        $arrayOfAllCode = $this->getItemsCode();
+        $rooms = Room::findByCancelFlag('N');
+        if (!$arrayOfAllCode->isEmpty()) {
+            $zipFileName = 'Items-QRcode.zip';
+            $zip = Zip::create($zipFileName);
+
+            foreach ($rooms as $room) {
+                Storage::disk('local')->makeDirectory($room->room_code);
+                foreach ($room->items as $item) {
+                    $urlQR = $urlRoot . "/sendProblem/" . $item->item_code;
+                    $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+                    $name = $item->item_code . '.png';
+                    Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
+                }
+                if (strpos($room->room_code, "/") === false) { // find / in room code do not want to add IT/101, IT/102
+                    // storage_path('app\\' . $room->room_code); for windows
+                    $zip->add(storage_path('app/' . $room->room_code));
+                }
+            }
+
+            // storage_path('app\\' . $room->room_code); for windows
+            $zip->add(storage_path('app/' . 'IT')); // add IT folder and subfolder (101, 102)
+            $zip->close();
+            foreach ($rooms as $room) {
+                Storage::disk('local')->deleteDirectory($room->room_code);
+            }
+            Storage::disk('local')->deleteDirectory('IT');
+        } else {
+            $zipFileName = null;
+        }
+
+        return $zipFileName;
     }
 }

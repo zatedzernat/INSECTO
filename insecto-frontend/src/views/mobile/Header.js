@@ -1,23 +1,21 @@
 import React from "react";
-import { Navbar, Row, Col } from "react-bootstrap";
+import { Container, Navbar } from "react-bootstrap";
 
 export default function Header() {
   return (
-      <Row>
-        <Col>
-        <Navbar className="border-bottom">
-          <a href="/" className="brand-link text-dark">
-            <img
-              src="/images/bug.png"
-              alt="insecto logo"
-              className="brand-image img-circle elevation-3"
-            />
-            <span className="font-weight-dark">
-              INSECTO
-            </span>
-          </a>
-        </Navbar>
-        </Col>
-      </Row>
+    <Container>
+      <Navbar expand="lg">
+        <Navbar.Brand href="/">
+          <img src="/images/bug.png" alt="insecto logo" width="45px" />
+          INSECTO
+        </Navbar.Brand>
+        {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link active href="/">Home</Nav.Link>
+          </Nav>
+        </Navbar.Collapse> */}
+      </Navbar>
+    </Container>
   );
 }

@@ -8,7 +8,7 @@ export default function Sidebar() {
       {/* Brand Logo */}
       <a href="/admin" className="brand-link">
         <img
-          src="images/bug.png"
+          src="/images/bug.png"
           alt="insecto logo"
           className="brand-image img-circle elevation-3"
         />
