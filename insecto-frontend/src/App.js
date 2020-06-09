@@ -13,7 +13,7 @@ import NotFoundPage from "./views/NotFoundPage";
 import SendProblem from "./views/mobile/MobileSendProblem";
 import SendProblemGroup from "./views/mobile/MobileSendProblemGroup";
 import Home from "./views/mobile/trackingProblem";
-import { Mobile, Admin } from './Layout/layout';
+import { Mobile, Admin } from "./Layout/layout";
 
 export default function App() {
   return (

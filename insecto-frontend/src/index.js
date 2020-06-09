@@ -13,7 +13,7 @@ const AppWithRouter = () => (
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppWithRouter />,
+    <AppWithRouter />
   </React.StrictMode>,
   document.getElementById("root")
 );

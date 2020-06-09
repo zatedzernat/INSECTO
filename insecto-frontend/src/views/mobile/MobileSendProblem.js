@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import * as yup from "yup";
-import { useFormik } from "formik";
 import FormModal from "../../components/FormModal";
 import moment from "moment";
 import {
   Container,
   Row,
   Col,
-  DropdownButton,
-  Dropdown,
   Button,
   Form,
   Alert,
@@ -34,12 +30,11 @@ export default function MobileSendProblem(props) {
     error: false,
     message: "",
   });
-  const [lastUpdate, setLastUpdate] = useState(0);
-  const [titleDropdown, setTitleDropdown] = useState("Select Problem");
   const [showInputProblem, setShowInputProblem] = useState(false);
   const [inputProblem, setInputProblem] = useState("");
   const [historyProblem, setHistoryProblem] = useState(false);
   const [modalShowComplete, setModalShowComplete] = useState(false);
+  const [canSubmit, setCanSubmit] = useState("");
   const code = props.match.params.code;
 
   const fetchData = async () => {
@@ -67,77 +62,63 @@ export default function MobileSendProblem(props) {
 
   useEffect(() => {
     fetchData();
-  }, [lastUpdate]);
+  }, []);
 
-  const dropdownHandel = (problem) => {
-    const valuePro = problem;
-    toggleInputProblemHandler(valuePro.problem_des_id, valuePro);
-  };
-
-  const toggleInputProblemHandler = (key, problem) => {
-    if (key === 0) {
-      setTitleDropdown("อื่นๆ");
+  const toggleInputProblemHandler = (problem_des_id) => {
+    if (problem_des_id === "") {
+      setShowInputProblem(false);
+      setCanSubmit(false);
+    } else if (problem_des_id === "etc") {
       setShowInputProblem(true);
     } else {
-      setProblemDes(problem);
-      setTitleDropdown(problem.problem_description);
+      let problem_desc = _.find(allproblemDes, (a) => {
+        return a.problem_des_id === parseInt(problem_des_id);
+      });
+      setProblemDes({
+        problem_des_id: problem_des_id,
+        problem_description: problem_desc.problem_description,
+      });
       setShowInputProblem(false);
+      setCanSubmit(true);
     }
   };
 
   const problemInputChangedHandler = (event) => {
     setInputProblem(event.target.value);
-    setProblemDes({
-      problem_description: event.target.value,
-      problem_des_id: "etc",
-    });
+    let value = event.target.value;
+    if (value === "" || value.trim().length === 0) {
+      setCanSubmit(false);
+    } else {
+      setProblemDes({
+        problem_des_id: "etc",
+        problem_description: event.target.value,
+      });
+      setCanSubmit(true);
+    }
   };
 
   const submitSendHandle = async (event) => {
     event.preventDefault();
-    console.log(
-      "submit",
-      item.item_id,
-      problemDes.problem_des_id,
-      problemDes.problem_description
-    );
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}noti_problems/`,
+        `${process.env.REACT_APP_API_URL}noti_problems`,
         {
           item_id: item.item_id,
           problem_des_id: problemDes.problem_des_id,
           problem_description: problemDes.problem_description,
         }
       );
-      setModalShowComplete(true);
-      if (res.data.error) {
+      if (res.data.errors) {
         setIsError({
           error: true,
-          message: res.data.message,
+          message: res.data.errors,
         });
       } else {
-        setLastUpdate(res.data.time);
+        setModalShowComplete(true);
       }
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
-  };
-
-  // const SendProblemSchema = yup.object().shape({
-  //   room: yup.string(),
-  //   itemCode: yup.string(),
-  //   itemName: yup.string(),
-  //   allproblemDescription: yup.string(),
-  //   other: yup.string(),
-  // });
-
-  const historyProblemHandler = () => {
-    setHistoryProblem(false);
-  };
-
-  const modalShowCompleteHandler = () => {
-    setModalShowComplete(false);
   };
 
   const historyProblemCard = (problemsNotResolved) => {
@@ -149,7 +130,10 @@ export default function MobileSendProblem(props) {
           let fromnow = moment(problemNotResolved.created_at).fromNow();
           return (
             <Card
-              key={problemNotResolved.problem_des_id+problemNotResolved.problem_description}
+              key={
+                problemNotResolved.problem_des_id +
+                problemNotResolved.problem_description
+              }
               className="card card-outline card-primary"
             >
               <Card.Header>
@@ -161,7 +145,7 @@ export default function MobileSendProblem(props) {
                 <div className="form-group">
                   Status: {problemNotResolved.status.status_name} <br />
                   Date: {date} <br />
-                  Time: {time} ({fromnow}) 
+                  Time: {time} ({fromnow})
                 </div>
               </Card.Body>
             </Card>
@@ -170,7 +154,7 @@ export default function MobileSendProblem(props) {
       </div>
     );
   };
-  
+
   return (
     <>
       {isError.error && (
@@ -181,13 +165,15 @@ export default function MobileSendProblem(props) {
 
       <Modal
         show={modalShowComplete}
-        onHide={modalShowCompleteHandler}
+        onHide={() => {
+          setModalShowComplete(false);
+          window.location.href = "/";
+        }}
         aria-labelledby="contained-modal-title-vcenter"
         centered
         animation={false} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
       >
-        <Modal.Header closeButton />
-        <Modal.Body closeButton className="text-center m-3">
+        <Modal.Body className="text-center m-3">
           <h3>THANK YOU!!</h3>
           <h6>ปัญหาของคุณถูกส่งแล้ว</h6>
           <h6>สามารถติดตามสถานะได้ที่</h6>
@@ -197,11 +183,10 @@ export default function MobileSendProblem(props) {
 
       <FormModal
         show={historyProblem}
-        onHide={historyProblemHandler}
+        onHide={() => setHistoryProblem(false)}
         title={"ปัญหาของ " + item.item_code + " ที่ถูกแจ้ง"}
         body={historyProblemCard(problemsNotResolved)}
         method="POST"
-        onSubmit={historyProblemHandler}
         custom={
           <Button
             variant="light"
@@ -209,6 +194,7 @@ export default function MobileSendProblem(props) {
             className="text-light"
             block
             style={{ backgroundColor: "#5091ff" }}
+            onClick={() => setHistoryProblem(false)}
           >
             แจ้งปัญหาอื่น
           </Button>
@@ -217,126 +203,120 @@ export default function MobileSendProblem(props) {
 
       <div className="content m-3">
         <Container>
-          <Row>
+          <Form.Row>
             <Col>
               <h1>Send Problem</h1>
             </Col>
-          </Row>
+          </Form.Row>
           <Row className="border-bottom">
             <Col>
               <h6>แจ้งปัญหาการใช้งานครุภัณฑ์ชำรุด</h6>
             </Col>
           </Row>
           <Row className="mt-4">
-            <Col>
-              <div className="col-md-5 form-group">
-                <Form.Label htmlFor="room">Room :</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="room"
-                  className="form-control"
-                  placeholder="Room"
-                  value={item?.room_id ?? ""}
-                  disabled
-                  size="sm"
-                ></Form.Control>
-              </div>
-            </Col>
+            <Form.Group as={Col} md="5">
+              <Form.Label htmlFor="room">Room :</Form.Label>
+              <Form.Control
+                type="text"
+                name="room"
+                className="form-control"
+                placeholder="Room"
+                value={item.room?.room_name ?? "-"}
+                disabled
+                size="sm"
+              ></Form.Control>
+            </Form.Group>
           </Row>
           <Row>
-            <Col>
-              <div className="col-md-5 form-group">
-                <Form.Label htmlFor="itemCode">Item Code :</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="itemCode"
-                  className="form-control"
-                  placeholder="Item Code"
-                  value={item?.item_code ?? ""}
-                  disabled
-                  size="sm"
-                ></Form.Control>
-              </div>
-            </Col>
+            <Form.Group as={Col} md="5">
+              <Form.Label htmlFor="itemCode">Item Code :</Form.Label>
+              <Form.Control
+                type="text"
+                name="itemCode"
+                className="form-control"
+                placeholder="Item Code"
+                value={item?.item_code ?? ""}
+                disabled
+                size="sm"
+              ></Form.Control>
+            </Form.Group>
           </Row>
+          <Form.Row>
+            <Form.Group as={Col} md="5">
+              <Form.Label htmlFor="itemName">Item Name :</Form.Label>
+              <Form.Control
+                type="text"
+                name="itemName"
+                className="form-control"
+                placeholder="Item Name"
+                value={item?.item_name ?? ""}
+                disabled
+                size="sm"
+              ></Form.Control>
+            </Form.Group>
+          </Form.Row>
           <Row>
-            <Col>
-              <div className="col-md-5 form-group">
-                <Form.Label htmlFor="itemName">Item Name :</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="itemName"
-                  className="form-control"
-                  placeholder="Item Name"
-                  value={item?.item_name ?? ""}
-                  disabled
-                  size="sm"
-                ></Form.Control>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className="col-md-5 form-group">
-                <Form.Label htmlFor="Problem">Problem:*</Form.Label>
-                <DropdownButton
-                  id="allproblemDescription"
-                  title={titleDropdown}
-                  variant="outline-primary"
-                >
-                  {_.map(allproblemDes, (problem) => (
-                    <Dropdown.Item
-                      key={problem.problem_des_id}
-                      value={problem.problem_des_id}
-                      onSelect={() => {
-                        dropdownHandel(problem);
-                      }}
-                    >
-                      {problem.problem_description}
-                    </Dropdown.Item>
-                  ))}
-                  <Dropdown.Item
-                    key="0"
-                    value="etc"
-                    onSelect={() => {
-                      dropdownHandel({
-                        problem_description: "อื่นๆ",
-                        problem_des_id: 0,
-                      });
-                    }}
+            <Form.Group as={Col} md="5">
+              <Form.Label htmlFor="Problem">Problem:*</Form.Label>
+              <Form.Control
+                as="select"
+                onChange={(event) => {
+                  toggleInputProblemHandler(event.target.value);
+                }}
+              >
+                <option value="">-- Select Problem --</option>
+                {_.map(allproblemDes, (problem) => (
+                  <option
+                    key={problem.problem_des_id}
+                    value={problem.problem_des_id}
                   >
-                    อื่นๆ
-                  </Dropdown.Item>
-                </DropdownButton>
-              </div>
-            </Col>
+                    {problem.problem_description}
+                  </option>
+                ))}
+                <option key="0" value="etc">
+                  อื่น ๆ
+                </option>
+              </Form.Control>
+            </Form.Group>
           </Row>
           <form method="POST" onSubmit={(event) => submitSendHandle(event)}>
             {showInputProblem === true ? (
               <Row>
-                <Col>
-                  <div className="col-md-12 form-group">
-                    <Form.Control
-                      type="text"
-                      placeholder="ใส่ข้อมูลปัญหาอื่นๆ"
-                      className="form-control"
-                      value={inputProblem}
-                      onChange={problemInputChangedHandler}
-                    ></Form.Control>
-                  </div>
-                </Col>
+                <Form.Group as={Col} md="5">
+                  <Form.Control
+                    type="text"
+                    placeholder="ใส่ข้อมูลปัญหาอื่น ๆ"
+                    className="form-control"
+                    value={inputProblem}
+                    onChange={problemInputChangedHandler}
+                  ></Form.Control>
+                </Form.Group>
               </Row>
             ) : null}
             <Row style={{ marginTop: 50 }}>
-              <Button
-                variant="light"
-                type="submit"
-                className="text-light"
-                block
-                style={{ backgroundColor: "#5091ff" }}
-              >
-                Submit
-              </Button>
+              {canSubmit ? (
+                <Button
+                  variant="light"
+                  type="submit"
+                  className="text-light"
+                  block
+                  active
+                  style={{ backgroundColor: "#5091ff" }}
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  variant="light"
+                  type="submit"
+                  className="text-light"
+                  block
+                  disabled
+                  style={{ backgroundColor: "#5091ff" }}
+                >
+                  Submit
+                </Button>
+              )}
             </Row>
           </form>
         </Container>

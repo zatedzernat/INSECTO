@@ -72,7 +72,7 @@ class Item extends Model implements Auditable
         return Item::where([
             ['item_code', $code],
             ['cancel_flag', 'N'],
-        ])->first();
+        ])->with('room')->first();
     }
 
     public function findByID($int)
