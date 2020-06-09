@@ -140,6 +140,7 @@ export default function MobileSendProblem(props) {
 
   const modalShowCompleteHandler = () => {
     setModalShowComplete(false);
+    //check to next page
   };
 
   const historyProblemCard = (data) => {
@@ -180,7 +181,7 @@ export default function MobileSendProblem(props) {
         </Alert>
       )}
 
-      <Modal
+      {/* <Modal
         show={modalShowComplete}
         onHide={modalShowCompleteHandler}
         aria-labelledby="contained-modal-title-vcenter"
@@ -194,7 +195,7 @@ export default function MobileSendProblem(props) {
           <h6>สามารถติดตามสถานะได้ที่</h6>
           <h6>www</h6>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
 
       <FormModal
         show={historyProblem}
@@ -230,7 +231,7 @@ export default function MobileSendProblem(props) {
           <Row className="mt-4">
             <Col>
               <div className="col-md-5 form-group">
-                <Form.Label htmlFor="room">Room :</Form.Label>
+                <Form.Label htmlFor="room">Room</Form.Label>
                 <Form.Control
                   type="text"
                   name="room"
@@ -246,7 +247,7 @@ export default function MobileSendProblem(props) {
           <Row>
             <Col>
               <div className="col-md-5 form-group">
-                <Form.Label htmlFor="itemCode">Item Code :</Form.Label>
+                <Form.Label htmlFor="itemCode">Item Code</Form.Label>
                 <Form.Control
                   type="text"
                   name="itemCode"
@@ -262,7 +263,7 @@ export default function MobileSendProblem(props) {
           <Row>
             <Col>
               <div className="col-md-5 form-group">
-                <Form.Label htmlFor="itemName">Item Name :</Form.Label>
+                <Form.Label htmlFor="itemName">Item Name</Form.Label>
                 <Form.Control
                   type="text"
                   name="itemName"
@@ -277,12 +278,13 @@ export default function MobileSendProblem(props) {
           </Row>
           <Row>
             <Col>
-              <div className="col-md-5 form-group">
-                <Form.Label htmlFor="Problem">Problem:*</Form.Label>
+              <div className="form-group">
+                <Form.Label htmlFor="Problem">Problem<span className="text-danger">*</span></Form.Label>
                 <DropdownButton
                   id="allproblemDescription"
                   title={titleDropdown}
                   variant="outline-primary"
+                  size="lg"
                 >
                   {_.map(allproblemDes, (problem) => (
                     <Dropdown.Item

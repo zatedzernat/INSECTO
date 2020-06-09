@@ -12,6 +12,7 @@ import HistoryLogs from "./views/HistoryLogs";
 import NotFoundPage from "./views/NotFoundPage";
 import SendProblem from "./views/mobile/MobileSendProblem";
 import Home from "./views/mobile/trackingProblem";
+import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from './Layout/layout';
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
         <RouteWrapper path="/admin/status" component={Statuses} layout={Admin} />
         <RouteWrapper path="/admin/history_logs" component={HistoryLogs} layout={Admin} />
         <RouteWrapper path="/sendproblem/:code" component={SendProblem} layout={Mobile} />
+        <RouteWrapper path="/sendproblem/Thank" component={Thank} layout={Mobile} />
         <RouteWrapper path="/" component={Home} layout={Mobile} />
         <RouteWrapper component={NotFoundPage} />
       </Switch>
