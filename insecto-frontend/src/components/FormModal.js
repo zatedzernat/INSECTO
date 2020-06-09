@@ -33,11 +33,7 @@ export default function FormModal(props) {
               {props.button}
             </Button>
           )}
-          {props.custom && (
-            <Button type="submit" variant="success">
-              {props.custom}
-            </Button>
-          )}
+          {props.custom}
         </Modal.Footer>
       </form>
     </Modal>
