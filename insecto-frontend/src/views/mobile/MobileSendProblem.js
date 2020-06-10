@@ -9,7 +9,6 @@ import {
   Button,
   Form,
   Alert,
-  Modal,
   Card,
 } from "react-bootstrap";
 import _ from "lodash";
@@ -34,7 +33,7 @@ export default function MobileSendProblem(props) {
   const [inputProblem, setInputProblem] = useState("");
   const [historyProblem, setHistoryProblem] = useState(false);
   const [modalShowComplete, setModalShowComplete] = useState(false);
-  const [canSubmit, setCanSubmit] = useState("");
+  const [canSubmit, setCanSubmit] = useState(false);
   const code = props.match.params.code;
 
   const fetchData = async () => {

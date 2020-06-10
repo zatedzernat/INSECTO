@@ -55,7 +55,6 @@ export default function App() {
           component={HistoryLogs}
           layout={Admin}
         />
-        <RouteWrapper component={NotFoundPage} />
         <RouteWrapper
           exact
           path="/sendproblem/:code"
