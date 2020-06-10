@@ -65,7 +65,7 @@ class NotificationProblemController extends Controller
         } else {
             $problemsNotResolvedInRoom = $this->noti_problem->findProblemsNotResolvedInRoomByItems($room->items);
             $itemsGroupByType = $this->item->getItemsGroupByTypeName($room->items);
-            return compact('problemsNotResolvedInRoom', 'itemsGroupByType');
+            return compact('room', 'problemsNotResolvedInRoom', 'itemsGroupByType');
         }
     }
 

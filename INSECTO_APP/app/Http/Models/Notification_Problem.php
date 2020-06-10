@@ -52,7 +52,7 @@ class Notification_Problem extends Model implements Auditable
 
     public function findProblemsNotResolvedByItemID($item_id)
     {
-        return Notification_Problem::with('status')->where([
+        return Notification_Problem::with('item', 'status')->where([
             ['item_id', $item_id],
             ['status_id', '<>', 8], //status_id = 8 = resolved
         ])->get();
@@ -72,7 +72,7 @@ class Notification_Problem extends Model implements Auditable
     public function findProblemsNotResolvedInRoomByItems($items)
     {
         $all_items_id = $items->pluck('item_id');
-        return Notification_Problem::with('status')
+        return Notification_Problem::with('item', 'status')
             ->whereIn('item_id', $all_items_id)
             ->where([
                 ['status_id', '<>', 8], //status_id = 8 = resolved

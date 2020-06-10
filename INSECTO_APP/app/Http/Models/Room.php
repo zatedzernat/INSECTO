@@ -51,7 +51,7 @@ class Room extends Model implements Auditable
 
     public function findByCode($code)
     {
-        return Room::where([
+        return Room::with('building')->where([
             ['room_code', $code],
             ['cancel_flag', 'N'],
         ])->first();
