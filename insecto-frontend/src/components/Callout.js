@@ -14,7 +14,9 @@ export default function Callout(props) {
       </Row>
       <Row>
         <Col>{props.problem}</Col>
-        <Col style={{ textAlign: "right" }}><h6>{props.time}</h6></Col>
+        <Col style={{ textAlign: "right" }}>
+          <h6>{props.time}</h6>
+        </Col>
       </Row>
     </div>
   );

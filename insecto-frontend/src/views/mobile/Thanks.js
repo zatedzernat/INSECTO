@@ -11,7 +11,7 @@ export default function ThanksPage() {
             <Row>
             <Col></Col>
             <Col className="mt-3">
-                <img src="/images/send.png" width="200" />
+                <img src="/images/send.png" width="200" alt="send pic" />
             </Col>
             <Col></Col>
             </Row>
