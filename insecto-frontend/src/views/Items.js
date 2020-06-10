@@ -363,7 +363,7 @@ export default function Items() {
         name: "QR Code",
         cell: (row) => (
           <>
-            <Button
+            <Button className="btn-xs"
               type="submit"
               variant="outline-success"
               size="sm"
