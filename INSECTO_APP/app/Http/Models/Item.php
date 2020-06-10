@@ -88,7 +88,9 @@ class Item extends Model implements Auditable
 
     public function getItemsGroupByTypeName($items)
     {
-        return $items->groupBy(function ($item) {
+        return $items->filter(function ($item) {
+            return $item->group == 'Y';
+        })->groupBy(function ($item) {
             return $item->item_type->type_name;
         });
     }
