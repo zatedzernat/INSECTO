@@ -5,10 +5,10 @@ export default function Callout(props) {
   return (
     <div className={props.color}>
       <Row>
-        <Col xs={7}>
+        <Col xs={6}>
           <h5>{props.item}</h5>
         </Col>
-        <Col style={{ textAlign: "right" }}>
+        <Col xs={6} style={{ textAlign: "right" }}>
           <h6>{props.status}</h6>
         </Col>
       </Row>

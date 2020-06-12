@@ -25,19 +25,19 @@ export default function ProblemsNotResolved({
               break;
             case 2:
               color = "callout callout-info";
-              status = "ดำเนินการอยู่";
+              status = "กำลังดำเนินการ";
               break;
             case 3:
               color = "callout callout-info";
-              status = "ดำเนินการอยู่";
+              status = "กำลังดำเนินการ";
               break;
             case 4:
               color = "callout callout-info";
-              status = "ดำเนินการอยู่";
+              status = "กำลังดำเนินการ";
               break;
             case 5:
               color = "callout callout-info";
-              status = "ดำเนินการอยู่";
+              status = "กำลังดำเนินการ";
               break;
             default:
               break;
