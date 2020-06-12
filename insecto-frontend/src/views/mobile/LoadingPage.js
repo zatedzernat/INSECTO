@@ -15,7 +15,7 @@ const defaultOptions = {
 
 export default function LoadingPage() {
   return (
-    <div>
+    <>
       <Container>
         <FadeIn className="mt-5 pt-5">
           <Row className="mt-5 pt-5 mb-4">
@@ -28,6 +28,6 @@ export default function LoadingPage() {
           </Row>
         </FadeIn>
       </Container>
-    </div>
+    </>
   );
 }
