@@ -18,6 +18,7 @@ import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from "./Layout/layout";
 import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
 import SelectItemInRoom from "./views/mobile/SelectItemInRoom";
+import LoadingPage from "./views/mobile/LoadingPage";
 
 export default function App() {
   return (
@@ -92,6 +93,12 @@ export default function App() {
           exact
           path="/send/success"
           component={Thank}
+          layout={Mobile}
+        />
+        <RouteWrapper
+          exact
+          path="/send/loading"
+          component={LoadingPage}
           layout={Mobile}
         />
         <RouteWrapper component={NotFoundPage} layout={Mobile} />
