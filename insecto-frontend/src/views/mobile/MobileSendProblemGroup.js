@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import moment from "moment";
-import { Container, Row, Col, Button, Alert } from "react-bootstrap";
-import _ from "lodash";
-import Callout from "../../components/Callout";
-import SelectType from "./SelectTypeInRoom";
+import ProblemsNotResolved from "./ProblemsNotResolved";
+import { Redirect } from "react-router-dom";
 
 export default function MobileSendProblem(props) {
   const [itemGroupByType, setItemGroupByType] = useState({});
@@ -19,26 +16,28 @@ export default function MobileSendProblem(props) {
   const [viewStep, setViewStep] = useState(0);
   const room_code = props.match.params.room_code;
 
-  const fetchData = async () => {
+  const fetchData = async (source) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}sendprobleminroom/${room_code}`
+        `${process.env.REACT_APP_API_URL}sendprobleminroom/${room_code}`,
+        { cancelToken: source.token }
       );
       if (res.data.errors) {
         setIsError({
           error: true,
           message: res.data.errors,
         });
+        setViewStep(3);
       } else {
-        //* wait for check room (if not found return not found page (item and room))
+        //* wait for check room (if not found return not found page (room not found))
         setRoom(res.data.room);
         setItemGroupByType(res.data.itemsGroupByType);
-        if (res.data.problemsNotResolvedInRoom) {
-          setViewStep(2);
-        } else {
-          setViewStep(1);
-        }
         setProblemsNotResolvedInRoom(res.data.problemsNotResolvedInRoom);
+        if (res.data.problemsNotResolvedInRoom.length > 0) {
+          setViewStep(1); //problems not resolved
+        } else {
+          setViewStep(2); //select types
+        }
       }
     } catch (error) {
       console.log(error);
@@ -46,108 +45,39 @@ export default function MobileSendProblem(props) {
   };
 
   useEffect(() => {
-    fetchData();
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
+    fetchData(source);
+
+    return () => {
+      source.cancel();
+    };
   }, []);
-
-  const HistoryProblemCallout = () => {
-    return (
-      <>
-        {_.map(problemsNotResolvedInRoom, (problemNotResolvedInRoom) => {
-          let color = "";
-          let status = "";
-          let fromnow = moment(problemNotResolvedInRoom.updated_at).fromNow();
-
-          switch (problemNotResolvedInRoom.status_id) {
-            case 1:
-              color = "callout callout-warning";
-              status = "รอดำเนินการ";
-              break;
-            case 2:
-              color = "callout callout-info";
-              status = "ดำเนินการอยู่";
-              break;
-            case 3:
-              color = "callout callout-info";
-              status = "ดำเนินการอยู่";
-              break;
-            case 4:
-              color = "callout callout-info";
-              status = "ดำเนินการอยู่";
-              break;
-            case 5:
-              color = "callout callout-info";
-              status = "ดำเนินการอยู่";
-              break;
-            default:
-              break;
-          }
-          return (
-            <Callout
-              key={problemNotResolvedInRoom.noti_id}
-              color={color}
-              item={problemNotResolvedInRoom.item.item_name}
-              problem={problemNotResolvedInRoom.problem_description}
-              status={status}
-              time={fromnow}
-            />
-          );
-        })}
-      </>
-    );
-  };
-
-  const ProblemsNotResolved = () => {
-    return (
-      <>
-        {isError.error && (
-          <Alert variant="danger" onClose={() => setIsError(false)} dismissible>
-            {isError.message}
-          </Alert>
-        )}
-
-        <div className="content m-3">
-          <Container>
-            <Row>
-              <Col>
-                <h1>ปัญหาที่ถูกแจ้ง</h1>
-              </Col>
-            </Row>
-            <Row className="border-bottom ">
-              <Col xs={4}>
-                <h6>ห้อง {room.room_code}</h6>
-              </Col>
-              <Col style={{ textAlign: "right" }}>
-                <h6>{room.building?.building_name}</h6>
-              </Col>
-            </Row>
-            <Row className="mt-4"></Row>
-
-            <HistoryProblemCallout />
-            <Row style={{ marginTop: 50 }}>
-              <Button
-                variant="light"
-                type="submit"
-                className="text-light"
-                block
-                style={{ backgroundColor: "#5091ff" }}
-                onClick={() => setViewStep(2)}
-              >
-                แจ้งปัญหาเพิ่มเติม
-              </Button>
-            </Row>
-          </Container>
-        </div>
-      </>
-    );
-  };
 
   switch (viewStep) {
     case 0:
-      return <div></div>;
+      return <div>Loading</div>;
     case 1:
-      return <ProblemsNotResolved />;
+      return (
+        <ProblemsNotResolved
+          room={room}
+          problems={problemsNotResolvedInRoom}
+          setViewStep={setViewStep}
+        />
+      );
     case 2:
-      return <SelectType room={room} itemGroupByType={itemGroupByType} />;
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: `/sendproblem/room/${room_code}/types`,
+            state: { room: room, itemGroupByType: itemGroupByType },
+          }}
+        />
+      );
+    case 3:
+      return <div>Error Page</div>;
     default:
       break;
   }
