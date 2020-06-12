@@ -77,9 +77,12 @@ class Notification_Problem extends Model implements Auditable
             ->where([
                 ['status_id', '<>', 8], //status_id = 8 = resolved
             ])->get();
-        return $problemsNotResolved->filter(function ($noti_prob) {
-            return $noti_prob->item->group == 'Y';
-        });
+        $rejected =  $problemsNotResolved
+            ->reject(function ($noti_prob) {
+                return $noti_prob->item->group == 'N';
+            });
+        $result = $rejected->values(); // get out of wrap
+        return $result;
     }
 
     public function create($item_id, $problem_des_id, $problem_description)
