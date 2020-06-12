@@ -10,7 +10,8 @@ import Statuses from "./views/Statuses";
 import NotiProblems from "./views/NotificationProblems";
 import HistoryLogs from "./views/HistoryLogs";
 import NotFoundPage from "./views/NotFoundPage";
-import SendProblem from "./views/mobile/MobileSendProblem";
+import SendProblem from "./views/mobile/SendProblem";
+import MobileSendProblem from "./views/mobile/MobileSendProblem";
 import SendProblemGroup from "./views/mobile/MobileSendProblemGroup";
 import Home from "./views/mobile/trackingProblem";
 import Thank from "./views/mobile/Thanks";
@@ -60,6 +61,12 @@ export default function App() {
           exact
           path="/sendproblem/:code"
           component={SendProblem}
+          layout={Mobile}
+        />
+        <RouteWrapper
+          exact
+          path="/sendproblem/:code/form"
+          component={MobileSendProblem}
           layout={Mobile}
         />
         <RouteWrapper

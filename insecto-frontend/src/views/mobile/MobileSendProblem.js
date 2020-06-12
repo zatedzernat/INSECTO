@@ -1,58 +1,33 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import FormModal from "../../components/FormModal";
-import moment from "moment";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Form,
-  Alert,
-  Card,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Alert } from "react-bootstrap";
 import _ from "lodash";
+import { useHistory } from "react-router-dom";
 
 export default function MobileSendProblem(props) {
-  const [item, setItem] = useState({
-    item_code: "Item Code",
-    room_id: 0,
-    item_name: "Item name",
-  });
-  const [allproblemDes, setAllProblemDes] = useState([]);
-  const [problemDes, setProblemDes] = useState({
-    problem_des_id: 0,
-    problem_description: "",
-  });
-  const [problemsNotResolved, setProblemsNotResolved] = useState([]);
+  const [item, setItem] = useState({});
+  const [allproblemDes, setAllproblemDes] = useState([]);
   const [isError, setIsError] = useState({
     error: false,
     message: "",
   });
+  const [problemDes, setProblemDes] = useState({
+    problem_des_id: 0,
+    problem_description: "",
+  });
   const [showInputProblem, setShowInputProblem] = useState(false);
   const [inputProblem, setInputProblem] = useState("");
-  const [historyProblem, setHistoryProblem] = useState(false);
-  const [modalShowComplete, setModalShowComplete] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
   const code = props.match.params.code;
+  const history = useHistory();
 
-  const fetchData = async () => {
+  const checkData = () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}sendproblem/` + code
-      );
-      if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
-        });
+      if (props.location.state === undefined) {
+        history.replace(`/sendproblem/${code}`);
       } else {
-        setItem(res.data.item);
-        setAllProblemDes(res.data.problemsThatCanSend);
-        setProblemsNotResolved(res.data.problemsNotResolved);
-        if (res.data.problemsNotResolved.length !== 0 && !modalShowComplete) {
-          setHistoryProblem(true);
-        }
+        setItem(props.location.state.item);
+        setAllproblemDes(props.location.state.allproblemDes);
       }
     } catch (error) {
       console.log(error);
@@ -60,7 +35,7 @@ export default function MobileSendProblem(props) {
   };
 
   useEffect(() => {
-    fetchData();
+    checkData();
   }, []);
 
   const toggleInputProblemHandler = (problem_des_id) => {
@@ -108,50 +83,17 @@ export default function MobileSendProblem(props) {
         }
       );
       if (res.data.errors) {
+        //* go to error page
         setIsError({
           error: true,
           message: res.data.errors,
         });
       } else {
-        setModalShowComplete(true);
+        history.replace("/send/success");
       }
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
-  };
-
-  const historyProblemCard = (problemsNotResolved) => {
-    return (
-      <div>
-        {_.map(problemsNotResolved, (problemNotResolved) => {
-          let date = moment(problemNotResolved.created_at).format("D/M/YYYY");
-          let time = moment(problemNotResolved.created_at).format("HH:mm:ss");
-          let fromnow = moment(problemNotResolved.created_at).fromNow();
-          return (
-            <Card
-              key={
-                problemNotResolved.problem_des_id +
-                problemNotResolved.problem_description
-              }
-              className="card card-outline card-primary"
-            >
-              <Card.Header>
-                <label className="col-form-group">
-                  {problemNotResolved.problem_description}
-                </label>
-              </Card.Header>
-              <Card.Body>
-                <div className="form-group">
-                  Status: {problemNotResolved.status.status_name} <br />
-                  Date: {date} <br />
-                  Time: {time} ({fromnow})
-                </div>
-              </Card.Body>
-            </Card>
-          );
-        })}
-      </div>
-    );
   };
 
   return (
@@ -161,44 +103,6 @@ export default function MobileSendProblem(props) {
           {isError.message}
         </Alert>
       )}
-
-      {/* <Modal
-        show={modalShowComplete}
-        onHide={() => {
-          setModalShowComplete(false);
-          window.location.href = "/";
-        }}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-        animation={false} //! error when set to true wait for fix https://github.com/react-bootstrap/react-bootstrap/issues/5075
-      >
-        <Modal.Body className="text-center m-3">
-          <h3>THANK YOU!!</h3>
-          <h6>ปัญหาของคุณถูกส่งแล้ว</h6>
-          <h6>สามารถติดตามสถานะได้ที่</h6>
-          <h6>www</h6>
-        </Modal.Body>
-      </Modal> */}
-
-      <FormModal
-        show={historyProblem}
-        onHide={() => setHistoryProblem(false)}
-        title={"ปัญหาของ " + item.item_code + " ที่ถูกแจ้ง"}
-        body={historyProblemCard(problemsNotResolved)}
-        method="POST"
-        custom={
-          <Button
-            variant="light"
-            type="submit"
-            className="text-light"
-            block
-            style={{ backgroundColor: "#5091ff" }}
-            onClick={() => setHistoryProblem(false)}
-          >
-            แจ้งปัญหาอื่น
-          </Button>
-        }
-      />
 
       <div className="content m-3">
         <Container>
