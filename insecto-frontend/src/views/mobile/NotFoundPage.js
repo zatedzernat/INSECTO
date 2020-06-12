@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import * as notFoundData from "./notFound.json";
 import FadeIn from "react-fade-in";
@@ -31,6 +31,6 @@ export default function NoResultFound(props) {
           </Row>
         </FadeIn>
       </Container>
-    </NoResultFound>
+    </>
   );
 }
