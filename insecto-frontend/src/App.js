@@ -17,6 +17,7 @@ import Home from "./views/mobile/trackingProblem";
 import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from "./Layout/layout";
 import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
+import SelectItemInRoom from "./views/mobile/SelectItemInRoom";
 
 export default function App() {
   return (
@@ -79,6 +80,12 @@ export default function App() {
           exact
           path="/sendproblem/room/:room_code/types"
           component={SelectTypeInRoom}
+          layout={Mobile}
+        />
+        <RouteWrapper
+          exact
+          path="/sendproblem/room/:room_code/types/items"
+          component={SelectItemInRoom}
           layout={Mobile}
         />
         <RouteWrapper
