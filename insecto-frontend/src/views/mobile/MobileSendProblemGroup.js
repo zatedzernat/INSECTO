@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProblemsNotResolved from "./ProblemsNotResolved";
 import { Redirect } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
+import NoResultFound from "./NoResultFound";
 
 export default function MobileSendProblem(props) {
   const [itemGroupByType, setItemGroupByType] = useState({});
@@ -57,7 +59,7 @@ export default function MobileSendProblem(props) {
 
   switch (viewStep) {
     case 0:
-      return <div>Loading</div>;
+      return <LoadingPage />;
     case 1:
       return (
         <ProblemsNotResolved
@@ -77,7 +79,7 @@ export default function MobileSendProblem(props) {
         />
       );
     case 3:
-      return <div>Error Page</div>;
+      return <NoResultFound message={isError.message} />;
     default:
       break;
   }

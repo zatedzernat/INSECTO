@@ -14,9 +14,6 @@ const defaultOptions = {
 };
 
 export default function NoResultFound(props) {
-  // * props จะถูกส่งมาตอนที่เรียก component NoResultFound ไปใข้เลย ตอนส่งก็ส่งมาแบบ <NoResultFound error={อะไรก็ว่าไป} message={อะไรก็ว่าไป} />
-  const { error, message } = props;
-
   return (
     <>
       <Container>
@@ -26,7 +23,7 @@ export default function NoResultFound(props) {
           </Row>
           <Row className="text-center">
             <Col>
-              <h5>Oops! No result found</h5>
+              <h5>Oops! {props.message ? props.message : "Page Not Found"}</h5>
             </Col>
           </Row>
         </FadeIn>

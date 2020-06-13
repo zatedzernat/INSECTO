@@ -83,7 +83,6 @@ export default function MobileSendProblem(props) {
         }
       );
       if (res.data.errors) {
-        //* go to error page
         setIsError({
           error: true,
           message: res.data.errors,

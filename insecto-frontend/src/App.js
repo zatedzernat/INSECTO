@@ -9,7 +9,6 @@ import ProblemDes from "./views/ProblemDescriptions";
 import Statuses from "./views/Statuses";
 import NotiProblems from "./views/NotificationProblems";
 import HistoryLogs from "./views/HistoryLogs";
-import NotFoundPage from "./views/NotFoundPage";
 import SendProblem from "./views/mobile/SendProblem";
 import MobileSendProblem from "./views/mobile/MobileSendProblem";
 import SendProblemGroup from "./views/mobile/MobileSendProblemGroup";
@@ -18,8 +17,7 @@ import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from "./Layout/layout";
 import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
 import SelectItemInRoom from "./views/mobile/SelectItemInRoom";
-import LoadingPage from "./views/mobile/LoadingPage";
-import NoResultFound from "./views/mobile/NotFoundPage";
+import NoResultFound from "./views/mobile/NoResultFound";
 
 export default function App() {
   return (
@@ -96,19 +94,7 @@ export default function App() {
           component={Thank}
           layout={Mobile}
         />
-        <RouteWrapper
-          exact
-          path="/send/loading"
-          component={LoadingPage}
-          layout={Mobile}
-        />
-        <RouteWrapper
-          exact
-          path="/send/notFound"
-          component={NoResultFound}
-          layout={Mobile}
-        />
-        <RouteWrapper component={NotFoundPage} layout={Mobile} />
+        <RouteWrapper component={NoResultFound} layout={Mobile} />
       </Switch>
     </div>
   );
