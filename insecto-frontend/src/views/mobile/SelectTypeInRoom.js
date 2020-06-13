@@ -113,6 +113,11 @@ export default function SelectTypeInRoom(props) {
             </Col>
           </Row>
           <Row className="mt-4"></Row>
+          <p style={{ color: "red" }}>
+            <i className="ion-checkmark-circled" /> &nbsp;
+            เลือกประเภทของครุภัณฑ์
+          </p>
+          <Row className="mt-4"></Row>
           <SelectType />
         </Container>
       </div>
