@@ -25,6 +25,7 @@ export default function SelectTypeInRoom(props) {
 
   useEffect(() => {
     checkData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const SelectType = () => {

@@ -36,6 +36,7 @@ export default function MobileSendProblem(props) {
 
   useEffect(() => {
     checkData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleInputProblemHandler = (problem_des_id) => {
