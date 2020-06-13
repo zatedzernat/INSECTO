@@ -72,7 +72,7 @@ export default function SelectTypeInRoom(props) {
               style={{ color: "black" }}
               to={{
                 pathname: `/sendproblem/room/${room_code}/types/items`,
-                state: { items: value },
+                state: { items: value, room: room, type: key },
               }}
             >
               <div className={float}>
@@ -108,7 +108,7 @@ export default function SelectTypeInRoom(props) {
         <Container>
           <Row className="border-bottom ">
             <Col>
-              <h1>ห้อง {room.room_code}</h1>
+              <h1>{room.room_name}</h1>
               <h6>{room.building?.building_name}</h6>
             </Col>
           </Row>
