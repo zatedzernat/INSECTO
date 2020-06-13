@@ -70,7 +70,7 @@ export default function ProblemsNotResolved({
             {room && (
               <>
                 <Col xs={5}>
-                  <h6>ห้อง {room.room_code}</h6>
+                  <h6>{room.room_name}</h6>
                 </Col>
                 <Col style={{ textAlign: "right" }}>
                   <h6>{room.building?.building_name}</h6>
@@ -80,10 +80,10 @@ export default function ProblemsNotResolved({
             {item && (
               <>
                 <Col xs={5}>
-                  <h6>{item.item_code}</h6>
+                  <h6>{item.item_name}</h6>
                 </Col>
                 <Col style={{ textAlign: "right" }}>
-                  <h6>ห้อง {item.room?.room_name}</h6>
+                  <h6>{item.room?.room_name}</h6>
                 </Col>
               </>
             )}
