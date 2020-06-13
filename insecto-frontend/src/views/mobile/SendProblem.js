@@ -45,7 +45,7 @@ export default function SendProblem(props) {
         } else {
           if (props.location.state.form)
             if (props.location.state.form === "sendproblem in room") {
-              setViewStep(2); //mobile send problem page
+              setViewStep(4); //mobile send problem page
             }
         }
       }
@@ -85,6 +85,18 @@ export default function SendProblem(props) {
       );
     case 3:
       return <NoResultFound message={isError.message} />;
+    case 4:
+      return (
+        <Redirect
+          to={{
+            pathname: `/sendproblem/${code}/form`,
+            state: {
+              item: item,
+              allproblemDes: allproblemDes,
+            },
+          }}
+        />
+      );
     default:
       break;
   }
