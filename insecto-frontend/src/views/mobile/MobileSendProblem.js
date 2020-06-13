@@ -89,7 +89,10 @@ export default function MobileSendProblem(props) {
           message: res.data.errors,
         });
       } else {
-        history.replace("/send/success");
+        history.replace({
+          pathname: "/send/success",
+          state: { code: code },
+        });
       }
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
