@@ -107,7 +107,7 @@ export default function SelectTypeInRoom(props) {
       <div className="content m-3">
         <Container>
           <Row className="border-bottom ">
-            <Col style={{ textIndent: "15px" }}>
+            <Col>
               <h1>ห้อง {room.room_code}</h1>
               <h6>{room.building?.building_name}</h6>
             </Col>
