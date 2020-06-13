@@ -36,10 +36,17 @@ export default function SendProblem(props) {
         setItem(res.data.item);
         setAllProblemDes(res.data.problemsThatCanSend);
         setProblemsNotResolved(res.data.problemsNotResolved);
-        if (res.data.problemsNotResolved.length > 0) {
-          setViewStep(1); //problems not resolved
+        if (props.location.state === undefined) {
+          if (res.data.problemsNotResolved.length > 0) {
+            setViewStep(1); //problems not resolved
+          } else {
+            setViewStep(2); //mobile send problem page
+          }
         } else {
-          setViewStep(2); //mobile send problem page
+          if (props.location.state.form)
+            if (props.location.state.form === "sendproblem in room") {
+              setViewStep(2); //mobile send problem page
+            }
         }
       }
     } catch (error) {
@@ -49,6 +56,7 @@ export default function SendProblem(props) {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   switch (viewStep) {
