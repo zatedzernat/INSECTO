@@ -16,6 +16,7 @@ class HistoryLogController extends Controller
     public function index()
     {
         $history_logs = $this->log->getAll();
-        return compact('history_logs');
+        $count = $history_logs->count();
+        return compact('history_logs', 'count');
     }
 }
