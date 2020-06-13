@@ -90,9 +90,11 @@ class Item extends Model implements Auditable
     {
         return $items->filter(function ($item) {
             return $item->group == 'Y';
-        })->groupBy(function ($item) {
-            return $item->item_type->type_name;
-        });
+        })
+            ->groupBy(function ($item) {
+                return $item->item_type->type_name;
+            })
+            ->sortKeys();
     }
 
     public function getALL()
