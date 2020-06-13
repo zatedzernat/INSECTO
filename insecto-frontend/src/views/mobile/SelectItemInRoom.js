@@ -26,9 +26,8 @@ export default function SelectItemInRoom(props) {
 
   useEffect(() => {
     checkData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(JSON.stringify(items));
 
   const SelectItem = () => {
     return (
@@ -62,43 +61,43 @@ export default function SelectItemInRoom(props) {
               break;
           }
           return (
-            <>
-              <Link
-                style={{ color: "black" }}
-                to={{
-                  pathname: `/sendproblem/${item.item_code}/form`,
-                  state: { items: items, room: room, type: type },
-                }}
-              >
-                <div className="card">
-                  <div class="card-body p-0">
-                    <ul className="nav nav-pills flex-column">
-                      <li
-                        className="nav-item active"
-                        style={{ backgroundColor: "#f8f9fa" }}
-                      >
-                        <div className="nav-link">
+            <Link
+              replace
+              key={item.item_id}
+              style={{ color: "black" }}
+              to={{
+                pathname: `/sendproblem/${item.item_code}`,
+                state: { form: "sendproblem in room" },
+              }}
+            >
+              <div key={item.item_id} className="card">
+                <div className="card-body p-0">
+                  <ul className="nav nav-pills flex-column">
+                    <li
+                      className="nav-item active"
+                      style={{ backgroundColor: "#f8f9fa" }}
+                    >
+                      <div className="nav-link">
+                        <i
+                          className={icon}
+                          style={{ height: "1rem", fontSize: "2em" }}
+                        />
+                        {icon2.length > 0 ? (
                           <i
-                            className={icon}
+                            className={icon2}
                             style={{ height: "1rem", fontSize: "2em" }}
                           />
-                          {icon2.length > 0 ? (
-                            <i
-                              className={icon2}
-                              style={{ height: "1rem", fontSize: "2em" }}
-                            />
-                          ) : null}
-                          <span style={{ fontSize: "24px", color: "black" }}>
-                            {" "}
-                            &nbsp;&nbsp;{item.item_name}
-                          </span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                        ) : null}
+                        <span style={{ fontSize: "24px", color: "black" }}>
+                          {" "}
+                          &nbsp;&nbsp;{item.item_name}
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </Link>
-            </>
+              </div>
+            </Link>
           );
         })}
       </>
