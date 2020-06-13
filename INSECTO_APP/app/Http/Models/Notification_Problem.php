@@ -55,7 +55,9 @@ class Notification_Problem extends Model implements Auditable
         return Notification_Problem::with('item', 'status')->where([
             ['item_id', $item_id],
             ['status_id', '<>', 8], //status_id = 8 = resolved
-        ])->get();
+        ])
+            ->orderBy('updated_at', 'desc')
+            ->get();
     }
 
     public function findProblemsThatCanSendByItemID($item)
@@ -76,7 +78,9 @@ class Notification_Problem extends Model implements Auditable
             ->whereIn('item_id', $all_items_id)
             ->where([
                 ['status_id', '<>', 8], //status_id = 8 = resolved
-            ])->get();
+            ])
+            ->orderBy('updated_at', 'desc')
+            ->get();
         $rejected =  $problemsNotResolved
             ->reject(function ($noti_prob) {
                 return $noti_prob->item->group == 'N';
