@@ -33,7 +33,7 @@ export default function SelectTypeInRoom(props) {
         {_.map(itemGroupByType, (value, key) => {
           index += 1;
           let icon = "";
-          let name = "";
+          let icon2 = "";
           let float = "";
           if (index % 2 === 0) {
             float = "col-lg-6 col-6 float-right";
@@ -42,31 +42,27 @@ export default function SelectTypeInRoom(props) {
           }
           switch (key) {
             case "Light":
-              icon = "ion ion-lightbulb";
-              name = "ไฟ";
+              icon = "ion ion-ios-lightbulb-outline";
               break;
             case "Computer":
-              icon = "ion ion-monitor";
-              name = "คอมพิวเตอร์";
+              icon = "ion ion-ios-monitor-outline";
               break;
             case "Toilet":
-              icon = "ion ion-woman";
-              name = "ห้องน้ำ";
+              icon = "ion ion-man";
+              icon2 = "ion ion-woman";
               break;
             case "Air-Condition":
-              icon = "ion ion-leaf";
-              name = "เครื่องปรับอากาศ";
+              icon = "ion ion-ios-snowy";
               break;
             case "Printer":
-              icon = "ion ion-printer";
-              name = "เครื่องพิมพ์";
+              icon = "ion ion-ios-printer-outline";
               break;
             case "Room":
-              icon = "ion ion-home";
-              name = "ห้อง";
+              icon = "ion ion-ios-home-outline";
               break;
 
             default:
+              icon = "ion ion-ios-cog-outline";
               break;
           }
 
@@ -89,6 +85,12 @@ export default function SelectTypeInRoom(props) {
                       className={icon}
                       style={{ height: "1rem", fontSize: "3.75em" }}
                     />
+                    {icon2.length > 0 ? (
+                      <i
+                        className={icon2}
+                        style={{ height: "1rem", fontSize: "3.75em" }}
+                      />
+                    ) : null}
                     <h6>{key}</h6>
                   </div>
                 </div>
