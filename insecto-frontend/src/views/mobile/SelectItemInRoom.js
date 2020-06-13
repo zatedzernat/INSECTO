@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import _ from "lodash";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function SelectItemInRoom(props) {
   const [room, setRoom] = useState({});
@@ -30,6 +30,13 @@ export default function SelectItemInRoom(props) {
   }, []);
 
   const SelectItem = () => {
+    const handleClick = (item) => {
+      history.push({
+        pathname: `/sendproblem/${item.item_code}`,
+        state: { form: "sendproblem in room" },
+      });
+    };
+
     return (
       <>
         {_.map(items, (item) => {
@@ -61,43 +68,37 @@ export default function SelectItemInRoom(props) {
               break;
           }
           return (
-            <Link
-              replace
+            <div
               key={item.item_id}
-              style={{ color: "black" }}
-              to={{
-                pathname: `/sendproblem/${item.item_code}`,
-                state: { form: "sendproblem in room" },
-              }}
+              className="card"
+              onClick={() => handleClick(item)}
             >
-              <div key={item.item_id} className="card">
-                <div className="card-body p-0">
-                  <ul className="nav nav-pills flex-column">
-                    <li
-                      className="nav-item active"
-                      style={{ backgroundColor: "#f8f9fa" }}
-                    >
-                      <div className="nav-link">
+              <div className="card-body p-0">
+                <ul className="nav nav-pills flex-column">
+                  <li
+                    className="nav-item active"
+                    style={{ backgroundColor: "#f8f9fa" }}
+                  >
+                    <div className="nav-link" style={{ color: "black" }}>
+                      <i
+                        className={icon}
+                        style={{ height: "1rem", fontSize: "2em" }}
+                      />
+                      {icon2.length > 0 ? (
                         <i
-                          className={icon}
+                          className={icon2}
                           style={{ height: "1rem", fontSize: "2em" }}
                         />
-                        {icon2.length > 0 ? (
-                          <i
-                            className={icon2}
-                            style={{ height: "1rem", fontSize: "2em" }}
-                          />
-                        ) : null}
-                        <span style={{ fontSize: "24px", color: "black" }}>
-                          {" "}
-                          &nbsp;&nbsp;{item.item_name}
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+                      ) : null}
+                      <span style={{ fontSize: "24px", color: "black" }}>
+                        {" "}
+                        &nbsp;&nbsp;{item.item_name}
+                      </span>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            </Link>
+            </div>
           );
         })}
       </>
