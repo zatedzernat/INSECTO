@@ -22,7 +22,7 @@ class BuildingsTableSeeder extends Seeder
         ]);
         DB::table('buildings')->insert([
             'building_code' => 'CB2',
-            'building_name' => 'ตึกCB2',
+            'building_name' => 'ตึก CB2',
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

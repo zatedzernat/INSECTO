@@ -14,7 +14,7 @@ class RoomsTableSeeder extends Seeder
     {
         DB::table('rooms')->insert([
             'room_code' => 'IT-101',
-            'room_name' => 'Training_Room1',
+            'room_name' => 'Training Room1',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -23,7 +23,7 @@ class RoomsTableSeeder extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT-102',
-            'room_name' => 'Training_Room2',
+            'room_name' => 'Training Room2',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -32,7 +32,7 @@ class RoomsTableSeeder extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT-103',
-            'room_name' => 'Training_Room3',
+            'room_name' => 'Training Room3',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -41,7 +41,7 @@ class RoomsTableSeeder extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT-104',
-            'room_name' => 'Training_Room4',
+            'room_name' => 'Training Room4',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -50,7 +50,7 @@ class RoomsTableSeeder extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT-105',
-            'room_name' => 'Training_Room5',
+            'room_name' => 'Training Room5',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -59,7 +59,7 @@ class RoomsTableSeeder extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT-108',
-            'room_name' => 'Computer_Lab2',
+            'room_name' => 'Computer Lab2',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
@@ -68,7 +68,7 @@ class RoomsTableSeeder extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_code' => 'IT-109',
-            'room_name' => 'Computer_Lab1',
+            'room_name' => 'Computer Lab1',
             'building_id' => 1,
             'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
