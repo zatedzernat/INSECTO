@@ -134,7 +134,7 @@ class ItemController extends Controller
         $fileName = $this->item->getQRCode($item_code, $urlQR);
         return response()->download(storage_path('app') . '/' . $fileName)->deleteFileAfterSend();
     }
-    
+
     public function getQRCodeZIP(Request $request)
     {
         // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
@@ -143,15 +143,13 @@ class ItemController extends Controller
         if ($zipFileName) {
             return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
         } else {
-            // dd(1);
             $error =  'Please add item before get QR-Code';
             return  $this->serverResponse($error, null);
         }
     }
-    
+
     public function importItems(ImportRequest $request)
     {
-        // dd(1);
         try {
             $import = new ItemsImport();
             $import->onlySheets('Items');
@@ -163,7 +161,7 @@ class ItemController extends Controller
             return  $this->serverResponse($error, null);
         }
     }
-    
+
     public function exportItems()
     {
         $items = $this->item->getALL();

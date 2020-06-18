@@ -289,7 +289,7 @@ class Item extends Model implements Auditable
                 foreach ($room->items as $item) {
                     $urlQR = $urlRoot . "/sendProblem/" . $item->item_code;
                     $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
-                    $name = $item->item_code . '.png';
+                    $name = $item->item_code . ' (' . $item->group . ')' . '.png';
                     Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
                 }
                 if (strpos($room->room_code, "/") === false) { // find / in room code do not want to add IT/101, IT/102

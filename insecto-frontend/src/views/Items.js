@@ -185,7 +185,7 @@ export default function Items() {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `${row.item_code}.png`); //or any other extension
+      link.setAttribute("download", `${row.item_code} (${row.group}).png`); //or any other extension
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -250,7 +250,9 @@ export default function Items() {
       } else if (err_message.split(":")[0] === "Undefined index") {
         setIsError({
           error: true,
-          message: `Import file doesn't has '${err_message.split(":")[1]}' column!`,
+          message: `Import file doesn't has '${
+            err_message.split(":")[1]
+          }' column!`,
         });
       }
     }
@@ -363,7 +365,8 @@ export default function Items() {
         name: "QR Code",
         cell: (row) => (
           <>
-            <Button className="btn-xs"
+            <Button
+              className="btn-xs"
               type="submit"
               variant="outline-success"
               size="sm"
@@ -467,7 +470,8 @@ export default function Items() {
                 ) : (
                   <>
                     <Button onClick={getItemsQRCode} variant="success">
-                      QR Code seperate by Room
+                      <i className="fa fa-qrcode" />
+                      All Item(s) QR Code
                     </Button>
                     &emsp;
                     <Button onClick={exportItems} variant="warning">
