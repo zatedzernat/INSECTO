@@ -3,7 +3,7 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import { Button, DropdownButton, Dropdown, Alert } from "react-bootstrap";
+import { Button, DropdownButton, Dropdown, Alert, Form } from "react-bootstrap";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
@@ -142,6 +142,28 @@ export default function Rooms() {
     }
   };
 
+  const getRoomQRCode = async (row) => {
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}getroomqr/${row.room_code}`,
+        method: "POST",
+        responseType: "blob",
+        data: {
+          url: window.location.origin,
+        },
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${row.room_code}.png`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
   const styles = {
     container: { color: "red" },
   };
@@ -207,6 +229,24 @@ export default function Rooms() {
             >
               <i className="fa fa-times" />
             </span>
+          </>
+        ),
+        button: true,
+      },
+      {
+        name: "Room QR Code",
+        cell: (row) => (
+          <>
+            <Button
+              className="btn-xs"
+              type="submit"
+              variant="outline-success"
+              size="sm"
+              onClick={() => getRoomQRCode(row)}
+            >
+              <i className="fa fa-qrcode" />
+              QR Code
+            </Button>
           </>
         ),
         button: true,
@@ -289,12 +329,24 @@ export default function Rooms() {
                       type="text"
                       className="form-control"
                       name="room_code"
-                      onChange={(event) =>
-                        setRoom({ room_code: event.target.value })
-                      }
+                      onChange={(event) => {
+                        let str = event.target.value;
+                        let rs = str.indexOf("/");
+                        if (rs === -1) {
+                          setRoom({ room_code: event.target.value });
+                        } else {
+                          event.target.value = "";
+                        }
+                      }}
                       required
                       autoFocus
                     />
+                  </div>
+                  <div className="col-sm-3"></div>
+                  <div className="col-sm-9">
+                    <Form.Text className="text-muted">
+                      Room Code can not contain "/"
+                    </Form.Text>
                   </div>
                 </div>
 

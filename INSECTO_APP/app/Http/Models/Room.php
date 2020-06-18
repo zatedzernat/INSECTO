@@ -2,10 +2,11 @@
 
 namespace App\Http\Models;
 
-use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
+use QrCode;
 
 class Room extends Model implements Auditable
 {
@@ -141,5 +142,13 @@ class Room extends Model implements Auditable
             $room->save();
         }
         return $rooms;
+    }
+
+    public function getRoomQRCode($room_code, $urlQR)
+    {
+        $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+        $fileName = $room_code . '.png';
+        Storage::disk('local')->put($fileName, $qrcode);
+        return $fileName;
     }
 }

@@ -99,6 +99,15 @@ class RoomController extends Controller
         return $this->serverResponse(null, $success);
     }
 
+    public function getRoomQRCode(Request $request, $room_code)
+    {
+        // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
+        $urlRoot = $request->url; //http://insecto.sit.kmutt.ac.th
+        $urlQR = $urlRoot . "/sendproblem/room/" . $room_code;
+        $fileName = $this->room->getRoomQRCode($room_code, $urlQR);
+        return response()->download(storage_path('app') . '/' . $fileName)->deleteFileAfterSend();
+    }
+
     public function serverResponse($error, $success)
     {
         $time = Carbon::now()->format('H:i:s');
