@@ -287,7 +287,7 @@ class Item extends Model implements Auditable
             foreach ($rooms as $room) {
                 Storage::disk('local')->makeDirectory($room->room_code);
                 foreach ($room->items as $item) {
-                    $urlQR = $urlRoot . "/sendProblem/" . $item->item_code;
+                    $urlQR = $urlRoot . "/sendproblem/" . $item->item_code;
                     $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
                     $name = $item->item_code . ' (' . $item->group . ')' . '.png';
                     Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);

@@ -130,7 +130,7 @@ class ItemController extends Controller
     {
         // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
         $urlRoot = $request->url; //http://insecto.sit.kmutt.ac.th
-        $urlQR = $urlRoot . "/sendProblem/" . $item_code;
+        $urlQR = $urlRoot . "/sendproblem/" . $item_code;
         $fileName = $this->item->getQRCode($item_code, $urlQR);
         return response()->download(storage_path('app') . '/' . $fileName)->deleteFileAfterSend();
     }
