@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import React /*, { useEffect }*/ from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 export default function ThanksPage(props) {
-  const history = useHistory();
-  useEffect(() => {
-    setTimeout(() => {
-      history.replace(`/sendproblem/${props.location.state.code}`);
-    }, 5000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const history = useHistory();
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     history.replace(`/sendproblem/${props.location.state.code}`);
+  //   }, 5000);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <Container>
