@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
-import { Button, Alert, DropdownButton, Dropdown } from "react-bootstrap";
+import { Button, Alert, DropdownButton, Dropdown, Form } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DropdownItem from "react-bootstrap/DropdownItem";
@@ -459,23 +459,24 @@ export default function Items() {
                 &emsp;
                 <Button variant="danger">Delete</Button>
                 &emsp;
-                {data.countItems === 0 ? (
-                  <Button
-                    onClick={() => setModalShowImport(true)}
-                    variant="warning"
-                    type="submit"
-                  >
-                    Import Item(s)
-                  </Button>
-                ) : (
+                {data.countItems === 0 ? null : (
                   <>
-                    <Button onClick={getItemsQRCode} variant="success">
-                      <i className="fa fa-qrcode" />
-                      All Item(s) QR Code
+                    <Button
+                      onClick={() => setModalShowImport(true)}
+                      variant="warning"
+                      type="submit"
+                      // style={{ color: "white"}}
+                    >
+                      Import Item(s)
                     </Button>
                     &emsp;
                     <Button onClick={exportItems} variant="warning">
                       Export Item(s)
+                    </Button>
+                    &emsp;
+                    <Button onClick={getItemsQRCode} variant="success">
+                      <i className="fa fa-qrcode" />
+                      All Item(s) QR Code
                     </Button>
                   </>
                 )}
@@ -501,12 +502,24 @@ export default function Items() {
                       type="text"
                       className="form-control"
                       name="item_code"
-                      onChange={(event) =>
-                        setItem({ item_code: event.target.value })
-                      }
+                      onChange={(event) => {
+                        let str = event.target.value;
+                        let rs = str.indexOf("/");
+                        if (rs === -1) {
+                          setItem({ item_code: event.target.value });
+                        } else {
+                          event.target.value = "";
+                        }
+                      }}
                       required
                       autoFocus
                     />
+                  </div>
+                  <div className="col-sm-3"></div>
+                  <div className="col-sm-9">
+                    <Form.Text className="text-muted">
+                      Item Code can not contain "/"
+                    </Form.Text>
                   </div>
                 </div>
 
@@ -620,6 +633,45 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={selectGroup}
+                      id="bg-nested-dropdown-group"
+                      size="sm"
+                      variant="warning"
+                    >
+                      <Dropdown.Item
+                        eventKey="Y"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            ...item,
+                            group: eventKey,
+                          });
+                          setSelectGroup("Y");
+                        }}
+                      >
+                        Y
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        eventKey="N"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            ...item,
+                            group: eventKey,
+                          });
+                          setSelectGroup("N");
+                        }}
+                      >
+                        N
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </div>
+                </div>
+
+                <div className="form-group row">
                   <label className="col-sm-3 col-form-label">Brand:</label>
                   <div className="col-sm-9">
                     <DropdownButton
@@ -699,44 +751,6 @@ export default function Items() {
                   </div>
                 </div>
 
-                <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
-                    Group: <span style={styles.container}>*</span>
-                  </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectGroup}
-                      id="bg-nested-dropdown-group"
-                      size="sm"
-                      variant="warning"
-                    >
-                      <Dropdown.Item
-                        eventKey="Y"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            ...item,
-                            group: eventKey,
-                          });
-                          setSelectGroup("Y");
-                        }}
-                      >
-                        Y
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        eventKey="N"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            ...item,
-                            group: eventKey,
-                          });
-                          setSelectGroup("N");
-                        }}
-                      >
-                        N
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  </div>
-                </div>
                 <div className="form-group row">
                   <label className="col-sm-3 col-form-label">Note:</label>
                   <div className="col-sm-9">
@@ -940,6 +954,64 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-9">
+                    <DropdownButton
+                      title={item.group}
+                      id="bg-nested-dropdown-g"
+                      size="sm"
+                      variant="warning"
+                    >
+                      <Dropdown.Item
+                        eventKey="Y"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            item_id: item.item_id,
+                            item_code: item.item_code,
+                            item_name: item.item_name,
+                            room_id: item.room_id,
+                            type_id: item.type_id,
+                            building_id: item.building_id,
+                            brand_id: item.brand_id,
+                            serial_number: item.serial_number,
+                            model: item.model,
+                            group: eventKey,
+                            note: item.note,
+                          });
+                          setSelectGroup("Y");
+                        }}
+                      >
+                        Y
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
+                        eventKey="N"
+                        onSelect={(eventKey) => {
+                          setItem({
+                            item_id: item.item_id,
+                            item_code: item.item_code,
+                            item_name: item.item_name,
+                            room_id: item.room_id,
+                            type_id: item.type_id,
+                            building_id: item.building_id,
+                            brand_id: item.brand_id,
+                            serial_number: item.serial_number,
+                            model: item.model,
+                            group: eventKey,
+                            note: item.note,
+                          });
+                          setSelectGroup("N");
+                        }}
+                      >
+                        N
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </div>
+                </div>
+
+                <div className="form-group row">
                   <label className="col-sm-3 col-form-label">Brand:</label>
                   <div className="col-sm-9">
                     <DropdownButton
@@ -1055,63 +1127,6 @@ export default function Items() {
                   </div>
                 </div>
 
-                <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
-                    Group: <span style={styles.container}>*</span>
-                  </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={item.group}
-                      id="bg-nested-dropdown-g"
-                      size="sm"
-                      variant="warning"
-                    >
-                      <Dropdown.Item
-                        eventKey="Y"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            item_id: item.item_id,
-                            item_code: item.item_code,
-                            item_name: item.item_name,
-                            room_id: item.room_id,
-                            type_id: item.type_id,
-                            building_id: item.building_id,
-                            brand_id: item.brand_id,
-                            serial_number: item.serial_number,
-                            model: item.model,
-                            group: eventKey,
-                            note: item.note,
-                          });
-                          setSelectGroup("Y");
-                        }}
-                      >
-                        Y
-                      </Dropdown.Item>
-
-                      <Dropdown.Item
-                        eventKey="N"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            item_id: item.item_id,
-                            item_code: item.item_code,
-                            item_name: item.item_name,
-                            room_id: item.room_id,
-                            type_id: item.type_id,
-                            building_id: item.building_id,
-                            brand_id: item.brand_id,
-                            serial_number: item.serial_number,
-                            model: item.model,
-                            group: eventKey,
-                            note: item.note,
-                          });
-                          setSelectGroup("N");
-                        }}
-                      >
-                        N
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  </div>
-                </div>
                 <div className="form-group row">
                   <label className="col-sm-3 col-form-label">Note:</label>
                   <div className="col-sm-9">
