@@ -57,7 +57,14 @@ export default function Items() {
   };
 
   useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/scripts/importfile.js";
+    script.async = true;
+    document.body.appendChild(script);
     fetchData();
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [lastUpdate]);
 
   const addHandleSubmit = async (event) => {
@@ -459,17 +466,16 @@ export default function Items() {
                 &emsp;
                 <Button variant="danger">Delete</Button>
                 &emsp;
+                <Button
+                  onClick={() => setModalShowImport(true)}
+                  variant="warning"
+                  type="submit"
+                >
+                  Import Item(s)
+                </Button>
+                &emsp;
                 {data.countItems === 0 ? null : (
                   <>
-                    <Button
-                      onClick={() => setModalShowImport(true)}
-                      variant="warning"
-                      type="submit"
-                      // style={{ color: "white"}}
-                    >
-                      Import Item(s)
-                    </Button>
-                    &emsp;
                     <Button onClick={exportItems} variant="warning">
                       Export Item(s)
                     </Button>
@@ -1172,10 +1178,20 @@ export default function Items() {
                     File<span style={{ color: "red" }}>*</span>:
                   </label>
                   <div className="col-sm-9">
-                    <input
-                      type="file"
-                      onChange={(event) => setFile(event.target.files[0])}
-                    />
+                    <div className="custom-file">
+                      <input
+                        type="file"
+                        className="custom-file-input"
+                        id="inputGroupFile"
+                        onChange={(event) => setFile(event.target.files[0])}
+                      />
+                      <label
+                        className="custom-file-label"
+                        htmlFor="inputGroupFile"
+                      >
+                        Choose file...
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div className="form-group row" style={{ marginBottom: 0 }}>
