@@ -3,7 +3,13 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import { Button, DropdownButton, Dropdown, Alert } from "react-bootstrap";
+import {
+  Button,
+  DropdownButton,
+  Dropdown,
+  Alert,
+  ButtonGroup,
+} from "react-bootstrap";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
@@ -136,9 +142,11 @@ export default function NotificationProblems() {
 
   const showNextStatus = (row) => {
     let next_status;
+    let color;
     switch (row.status_id) {
       case 1:
         next_status = [{ status_id: 2, status_name: "open" }];
+        color = "warning";
         break;
       case 2:
         next_status = [
@@ -146,6 +154,7 @@ export default function NotificationProblems() {
           { status_id: 4, status_name: "queue" },
           { status_id: 5, status_name: "in progress" },
         ];
+        color = "success";
         break;
       case 3:
         next_status = [
@@ -153,18 +162,21 @@ export default function NotificationProblems() {
           { status_id: 5, status_name: "in progress" },
           { status_id: 8, status_name: "resolved" },
         ];
+        color = "info";
         break;
       case 4:
         next_status = [
           { status_id: 3, status_name: "on hold" },
           { status_id: 5, status_name: "in progress" },
         ];
+        color = "info";
         break;
       case 5:
         next_status = [
           { status_id: 3, status_name: "on hold" },
           { status_id: 8, status_name: "resolved" },
         ];
+        color = "info";
         break;
       case 7:
         next_status = [
@@ -172,34 +184,44 @@ export default function NotificationProblems() {
           { status_id: 4, status_name: "queue" },
           { status_id: 5, status_name: "in progress" },
         ];
+        color = "danger";
         break;
       case 8:
         next_status = [{ status_id: 7, status_name: "reopen" }];
+        color = "primary";
         break;
       default:
+        color = "secondary";
         break;
     }
 
     return (
-      <DropdownButton
-        title={row.status.status_name}
-        id="bg-nested-dropdown-status"
-        size="sm"
-        variant="warning"
-      >
-        {_.map(next_status, (status) => (
-          <Dropdown.Item
-            key={status.status_id}
-            eventKey={status.status_id}
-            onSelect={(eventKey, event) => {
-              setNotiProblem(row);
-              handleStatus(parseInt(eventKey), event);
-            }}
+      <>
+        <Dropdown as={ButtonGroup}>
+          <Dropdown.Toggle
+            id="dropdown-custom-1"
+            size="xs"
+            style={{ width: "100px" }}
+            variant={color}
           >
-            {status.status_name}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
+            {row.status.status_name}
+          </Dropdown.Toggle>
+          <Dropdown.Menu className="super-colors">
+            {_.map(next_status, (status) => (
+              <Dropdown.Item
+                key={status.status_id}
+                eventKey={status.status_id}
+                onSelect={(eventKey, event) => {
+                  setNotiProblem(row);
+                  handleStatus(parseInt(eventKey), event);
+                }}
+              >
+                {status.status_name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>{" "}
+      </>
     );
   };
 
@@ -433,7 +455,8 @@ export default function NotificationProblems() {
             body={
               <div className="form-group row">
                 <label className="col-sm-12 col-form-label">
-                  Are you sure to change status to " <span style={styles.container}>{status.status_name}</span> " ?
+                  Are you sure to change status to "{" "}
+                  <span style={styles.container}>{status.status_name}</span> " ?
                 </label>
               </div>
             }
