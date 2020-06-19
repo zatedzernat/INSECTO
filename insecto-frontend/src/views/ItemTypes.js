@@ -249,10 +249,10 @@ export default function ItemTypes() {
             onSubmit={addHandleSubmit}
             body={
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">
+                <label className="col-sm-5 col-form-label">
                   Item Type Name: <span style={styles.container}>*</span>
                 </label>
-                <div className="col-sm-9">
+                <div className="col-sm-7">
                   <input
                     type="text"
                     className="form-control"
@@ -293,10 +293,10 @@ export default function ItemTypes() {
             title="Edit Item Type"
             body={
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">
+                <label className="col-sm-5 col-form-label">
                   Item Type Name: <span style={styles.container}>*</span>
                 </label>
-                <div className="col-sm-9">
+                <div className="col-sm-7">
                   <input
                     type="text"
                     className="form-control"
