@@ -248,10 +248,10 @@ export default function Brands() {
             title="Add Brand"
             body={
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">
+                <label className="col-sm-4 col-form-label">
                   Brand Name: <span style={styles.container}>*</span>
                 </label>
-                <div className="col-sm-9">
+                <div className="col-sm-8">
                   <input
                     type="text"
                     className="form-control"
@@ -294,10 +294,10 @@ export default function Brands() {
             title="Edit Brand"
             body={
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">
+                <label className="col-sm-4 col-form-label">
                   Brand Name: <span style={styles.container}>*</span>
                 </label>
-                <div className="col-sm-9">
+                <div className="col-sm-8">
                   <input
                     type="text"
                     className="form-control"
