@@ -250,10 +250,18 @@ export default function Items() {
       console.log(error.response);
       let err_message = error.response.data.message;
       if (error.response.status === 422) {
-        setIsError({
-          error: true,
-          message: error.response.data.errors.import_file,
-        });
+        let message = error.response.data;
+        if (message.errors.import_file) {
+          setIsError({
+            error: true,
+            message: message.errors.import_file,
+          });
+        } else {
+          setIsError({
+            error: true,
+            message: message.errors[0],
+          });
+        }
       } else if (err_message.split(":")[0] === "Undefined index") {
         setIsError({
           error: true,
@@ -1183,6 +1191,7 @@ export default function Items() {
                         type="file"
                         className="custom-file-input"
                         id="inputGroupFile"
+                        name="import_file"
                         onChange={(event) => setFile(event.target.files[0])}
                       />
                       <label
