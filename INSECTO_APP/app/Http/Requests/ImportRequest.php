@@ -31,8 +31,8 @@ class ImportRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Import file is required!',
-            'mimetypes' => 'Please choose only .xls and .xlsx type',
+            'import_file.required' => 'Import file is required!',
+            'import_file.mimetypes' => 'Please choose only .xls and .xlsx type',
         ];
     }
 }
