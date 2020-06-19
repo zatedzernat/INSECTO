@@ -3,7 +3,14 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import { Button, DropdownButton, Dropdown, Alert, Form } from "react-bootstrap";
+import {
+  Button,
+  DropdownButton,
+  Dropdown,
+  Alert,
+  Form,
+  ButtonGroup,
+} from "react-bootstrap";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
@@ -321,10 +328,10 @@ export default function Rooms() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Room Code: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -342,8 +349,8 @@ export default function Rooms() {
                       autoFocus
                     />
                   </div>
-                  <div className="col-sm-3"></div>
-                  <div className="col-sm-9">
+                  <div className="col-sm-4"></div>
+                  <div className="col-sm-8">
                     <Form.Text className="text-muted">
                       Room Code can not contain "/"
                     </Form.Text>
@@ -351,10 +358,10 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Room Name: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -368,32 +375,37 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Building: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectBuilding}
-                      id="building"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.buildings, (building) => (
-                        <Dropdown.Item
-                          key={building.building_id}
-                          eventKey={building.building_id}
-                          onSelect={(eventKey) => {
-                            setRoom({
-                              ...room,
-                              building_id: eventKey,
-                            });
-                            setSelectBuilding(building.building_name);
-                          }}
-                        >
-                          {building.building_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        size="sm"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBuilding}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.buildings, (building) => (
+                          <Dropdown.Item
+                            key={building.building_id}
+                            eventKey={building.building_id}
+                            onSelect={(eventKey) => {
+                              setRoom({
+                                ...room,
+                                building_id: eventKey,
+                              });
+                              setSelectBuilding(building.building_name);
+                            }}
+                          >
+                            {building.building_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
               </>
@@ -431,10 +443,10 @@ export default function Rooms() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Room Code: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -446,10 +458,10 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Room Name: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -470,34 +482,39 @@ export default function Rooms() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Building: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectBuilding}
-                      id="building"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.buildings, (building) => (
-                        <Dropdown.Item
-                          key={building.building_id}
-                          eventKey={building.building_id}
-                          onSelect={(eventKey) => {
-                            setRoom({
-                              room_id: room.room_id,
-                              room_code: room.room_code,
-                              room_name: room.room_name,
-                              building_id: eventKey,
-                            });
-                            setSelectBuilding(building.building_name);
-                          }}
-                        >
-                          {building.building_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-edit"
+                        size="sm"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBuilding}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.buildings, (building) => (
+                          <Dropdown.Item
+                            key={building.building_id}
+                            eventKey={building.building_id}
+                            onSelect={(eventKey) => {
+                              setRoom({
+                                room_id: room.room_id,
+                                room_code: room.room_code,
+                                room_name: room.room_name,
+                                building_id: eventKey,
+                              });
+                              setSelectBuilding(building.building_name);
+                            }}
+                          >
+                            {building.building_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
               </>
