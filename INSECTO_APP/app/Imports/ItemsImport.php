@@ -3,14 +3,13 @@
 namespace App\Imports;
 
 use App\Http\Models\Item;
-use Carbon\Carbon;
-use ErrorException;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class ItemsImport implements ToModel, WithHeadingRow, WithMultipleSheets
+class ItemsImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithValidation
 {
     use WithConditionalSheets;
     /**
@@ -39,6 +38,24 @@ class ItemsImport implements ToModel, WithHeadingRow, WithMultipleSheets
     {
         return [
             'Items' => new ItemsImport(),
+        ];
+    }
+
+    public function rules(): array
+    {
+        return [
+            'item_code' => function ($attribute, $value, $onFailure) {
+                //* in the future maybe check for "\", "?", and something will affect to url
+                $position = strpos($value, "/");
+                if ($position !== false) {
+                    $onFailure('Item Code can not contain "/" (' . $value . ')');
+                }
+
+                $item = Item::where('item_code', $value)->first();
+                if ($item !== null) {
+                    $onFailure('Can not insert duplicate Item Code (' . $value . ')');
+                }
+            }
         ];
     }
 }
