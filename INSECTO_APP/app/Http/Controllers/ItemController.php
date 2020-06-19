@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ItemsExport;
 use App\Http\Models\Brand;
 use App\Http\Models\Building;
 use App\Http\Models\Item;
@@ -10,11 +9,8 @@ use App\Http\Models\Item_Type;
 use App\Http\Models\Room;
 use App\Http\Requests\ImportRequest;
 use App\Http\Requests\ItemFormRequest;
-use App\Imports\ItemsImport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
@@ -150,27 +146,21 @@ class ItemController extends Controller
 
     public function importItems(ImportRequest $request)
     {
-        try {
-            $import = new ItemsImport();
-            $import->onlySheets('Items');
-            Excel::import($import, $request->file('import_file'));
-            $success = 'Import data of items success';
-            return  $this->serverResponse(null, $success);
-        } catch (SheetNotFoundException $ex) {
-            $error =  'Please name your sheetname to \'Items\'';
-            return  $this->serverResponse($error, null);
-        }
+        $file = $request->file('import_file');
+        $isSuccess = $this->item->importItems($file);
+        if ($isSuccess[0]) {
+            return  $this->serverResponse(null, $isSuccess[1]);
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
     }
 
     public function exportItems()
     {
-        $items = $this->item->getALL();
-        if ($items->isEmpty()) {
-            $error =  'Please add item(s) before export';
-            return  $this->serverResponse($error, null);
-        } else {
-            return Excel::download(new ItemsExport, 'items.xlsx');
-        }
+        $isSuccess = $this->item->exportItems();
+        if ($isSuccess[0]) {
+            return $isSuccess[1];
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
     }
 
     public function serverResponse($error, $success)

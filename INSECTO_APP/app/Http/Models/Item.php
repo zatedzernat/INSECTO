@@ -2,10 +2,14 @@
 
 namespace App\Http\Models;
 
+use App\Exports\ItemsExport;
+use App\Imports\ItemsImport;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
 use QrCode;
 use ZanySoft\Zip\Zip;
@@ -310,5 +314,31 @@ class Item extends Model implements Auditable
         }
 
         return $zipFileName;
+    }
+
+    public function importItems($file)
+    {
+        try {
+            $import = new ItemsImport();
+            $import->onlySheets('Items');
+            Excel::import($import, $file);
+            $success = 'Import data of items success';
+            return array(true, $success);
+        } catch (SheetNotFoundException $ex) {
+            $error =  'Please name your sheetname to \'Items\'';
+            return array(false, $error);
+        }
+    }
+
+    public function exportItems()
+    {
+        $items = $this->getALL();
+        if ($items->isEmpty()) {
+            $error =  'Please add item(s) before export';
+            return array(false, $error);
+        } else {
+            $itemsExport =  Excel::download(new ItemsExport, 'items.xlsx');
+            return array(true, $itemsExport);
+        }
     }
 }
