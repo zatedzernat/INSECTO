@@ -793,8 +793,8 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Note:</label>
-                  <div className="col-sm-9">
+                  <label className="col-sm-4 col-form-label">Note:</label>
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
