@@ -382,7 +382,6 @@ export default function Rooms() {
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
                         id="dropdown-add"
-                        size="sm"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -489,7 +488,6 @@ export default function Rooms() {
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
                         id="dropdown-edit"
-                        size="sm"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
