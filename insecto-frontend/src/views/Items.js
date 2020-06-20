@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
-import { Button, Alert, DropdownButton, Dropdown, Form } from "react-bootstrap";
+import {
+  Button,
+  Alert,
+  DropdownButton,
+  Dropdown,
+  Form,
+  ButtonGroup,
+} from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DropdownItem from "react-bootstrap/DropdownItem";
@@ -508,10 +515,10 @@ export default function Items() {
             body={
               <div>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Item Code: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -529,8 +536,8 @@ export default function Items() {
                       autoFocus
                     />
                   </div>
-                  <div className="col-sm-3"></div>
-                  <div className="col-sm-9">
+                  <div className="col-sm-4"></div>
+                  <div className="col-sm-8">
                     <Form.Text className="text-muted">
                       Item Code can not contain "/"
                     </Form.Text>
@@ -538,10 +545,10 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Item Name: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -555,191 +562,211 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Type: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectType}
-                      id="type"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.itemTypes, (type) => (
-                        <Dropdown.Item
-                          key={type.type_id}
-                          eventKey={type.type_id}
-                          onSelect={(eventKey) => {
-                            setItem({
-                              ...item,
-                              type_id: eventKey,
-                            });
-                            setSelectType(type.type_name);
-                          }}
-                        >
-                          {type.type_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectType}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.itemTypes, (type) => (
+                          <Dropdown.Item
+                            key={type.type_id}
+                            eventKey={type.type_id}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                ...item,
+                                type_id: eventKey,
+                              });
+                              setSelectType(type.type_name);
+                            }}
+                          >
+                            {type.type_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Building: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectBuilding}
-                      id="building"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.buildings, (building) => (
-                        <Dropdown.Item
-                          key={building.building_id}
-                          eventKey={building.building_id}
-                          onSelect={(eventKey) => {
-                            setRooms(building.rooms);
-                            setSelectBuilding(building.building_name);
-                            setSelectRoom("- select room name -");
-                            setItem({
-                              ...item,
-                              room_id: null,
-                            });
-                          }}
-                        >
-                          {building.building_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBuilding}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.buildings, (building) => (
+                          <Dropdown.Item
+                            key={building.building_id}
+                            eventKey={building.building_id}
+                            onSelect={(eventKey) => {
+                              setRooms(building.rooms);
+                              setSelectBuilding(building.building_name);
+                              setSelectRoom("- select room name -");
+                              setItem({
+                                ...item,
+                                room_id: null,
+                              });
+                            }}
+                          >
+                            {building.building_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Room: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectRoom}
-                      id="r"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(rooms, (room) => (
-                        <Dropdown.Item
-                          key={room.room_id}
-                          eventKey={room.room_id}
-                          onSelect={(eventKey) => {
-                            setItem({
-                              ...item,
-                              room_id: eventKey,
-                            });
-                            setSelectRoom(room.room_name);
-                          }}
-                        >
-                          {room.room_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectRoom}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(rooms, (room) => (
+                          <Dropdown.Item
+                            key={room.room_id}
+                            eventKey={room.room_id}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                ...item,
+                                room_id: eventKey,
+                              });
+                              setSelectRoom(room.room_name);
+                            }}
+                          >
+                            {room.room_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Group: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectGroup}
-                      id="bg-nested-dropdown-group"
-                      size="sm"
-                      variant="warning"
-                    >
-                      <Dropdown.Item
-                        eventKey="Y"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            ...item,
-                            group: eventKey,
-                          });
-                          setSelectGroup("Y");
-                        }}
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
                       >
-                        Y
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        eventKey="N"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            ...item,
-                            group: eventKey,
-                          });
-                          setSelectGroup("N");
-                        }}
-                      >
-                        N
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  </div>
-                </div>
-
-                <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Brand:</label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectBrand}
-                      id="bg-nested-dropdown-brand"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {item.brand_id && (
-                        <DropdownItem
-                          eventKey={null}
-                          onSelect={(eventKey) => {
-                            setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: item.building_id,
-                              brand_id: eventKey,
-                              serial_number: item.serial_number,
-                              model: item.model,
-                              group: item.group,
-                            });
-                            setSelectBrand("no brand");
-                          }}
-                        >
-                          no brand
-                        </DropdownItem>
-                      )}
-                      {_.map(data.brands, (brand) => (
+                        {selectGroup}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
                         <Dropdown.Item
-                          key={brand.brand_id}
-                          eventKey={brand.brand_id}
+                          eventKey="Y"
                           onSelect={(eventKey) => {
                             setItem({
                               ...item,
-                              brand_id: eventKey,
+                              group: eventKey,
                             });
-                            setSelectBrand(brand.brand_name);
+                            setSelectGroup("Y");
                           }}
                         >
-                          {brand.brand_name}
+                          Y
                         </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                        <Dropdown.Item
+                          eventKey="N"
+                          onSelect={(eventKey) => {
+                            setItem({
+                              ...item,
+                              group: eventKey,
+                            });
+                            setSelectGroup("N");
+                          }}
+                        >
+                          N
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">Brand:</label>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBrand}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {item.brand_id && (
+                          <DropdownItem
+                            eventKey={null}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                item_id: item.item_id,
+                                item_code: item.item_code,
+                                item_name: item.item_name,
+                                room_id: item.room_id,
+                                type_id: item.type_id,
+                                building_id: item.building_id,
+                                brand_id: eventKey,
+                                serial_number: item.serial_number,
+                                model: item.model,
+                                group: item.group,
+                              });
+                              setSelectBrand("no brand");
+                            }}
+                          >
+                            no brand
+                          </DropdownItem>
+                        )}
+                        {_.map(data.brands, (brand) => (
+                          <Dropdown.Item
+                            key={brand.brand_id}
+                            eventKey={brand.brand_id}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                ...item,
+                                brand_id: eventKey,
+                              });
+                              setSelectBrand(brand.brand_name);
+                            }}
+                          >
+                            {brand.brand_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
                     Serial Number:
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -752,8 +779,8 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Model:</label>
-                  <div className="col-sm-9">
+                  <label className="col-sm-4 col-form-label">Model:</label>
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -812,10 +839,10 @@ export default function Items() {
             body={
               <div>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Item Code: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -827,10 +854,10 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Item Name: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -858,209 +885,165 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Type: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectType}
-                      id="type"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.itemTypes, (type) => (
-                        <Dropdown.Item
-                          key={type.type_id}
-                          eventKey={type.type_id}
-                          onSelect={(eventKey) => {
-                            setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: eventKey,
-                              building_id: item.building_id,
-                              brand_id: item.brand_id,
-                              serial_number: item.serial_number,
-                              model: item.model,
-                              group: item.group,
-                              note: item.note,
-                            });
-                            setSelectType(type.type_name);
-                          }}
-                        >
-                          {type.type_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-edit"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectType}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.itemTypes, (type) => (
+                          <Dropdown.Item
+                            key={type.type_id}
+                            eventKey={type.type_id}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                item_id: item.item_id,
+                                item_code: item.item_code,
+                                item_name: item.item_name,
+                                room_id: item.room_id,
+                                type_id: eventKey,
+                                building_id: item.building_id,
+                                brand_id: item.brand_id,
+                                serial_number: item.serial_number,
+                                model: item.model,
+                                group: item.group,
+                                note: item.note,
+                              });
+                              setSelectType(type.type_name);
+                            }}
+                          >
+                            {type.type_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Building: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectBuilding}
-                      id="building"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.buildings, (building) => (
-                        <Dropdown.Item
-                          key={building.building_id}
-                          eventKey={building.building_id}
-                          onSelect={(eventKey) => {
-                            setRooms(building.rooms);
-                            setSelectBuilding(building.building_name);
-                            setSelectRoom("- select room name -");
-                            setItem({
-                              ...item,
-                              room_id: null,
-                            });
-                          }}
-                        >
-                          {building.building_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-edit"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBuilding}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.buildings, (building) => (
+                          <Dropdown.Item
+                            key={building.building_id}
+                            eventKey={building.building_id}
+                            onSelect={(eventKey) => {
+                              setRooms(building.rooms);
+                              setSelectBuilding(building.building_name);
+                              setSelectRoom("- select room name -");
+                              setItem({
+                                ...item,
+                                room_id: null,
+                              });
+                            }}
+                          >
+                            {building.building_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     Room: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectRoom}
-                      id="r"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(rooms, (room) => (
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-edit"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectRoom}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(rooms, (room) => (
+                          <Dropdown.Item
+                            key={room.room_id}
+                            eventKey={room.room_id}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                item_id: item.item_id,
+                                item_code: item.item_code,
+                                item_name: item.item_name,
+                                room_id: eventKey,
+                                type_id: item.type_id,
+                                building_id: item.building_id,
+                                brand_id: item.brand_id,
+                                serial_number: item.serial_number,
+                                model: item.model,
+                                group: item.group,
+                                note: item.note,
+                              });
+                              setSelectRoom(room.room_name);
+                            }}
+                          >
+                            {room.room_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Group: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-edit"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {item.group}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
                         <Dropdown.Item
-                          key={room.room_id}
-                          eventKey={room.room_id}
+                          eventKey="Y"
                           onSelect={(eventKey) => {
                             setItem({
                               item_id: item.item_id,
                               item_code: item.item_code,
                               item_name: item.item_name,
-                              room_id: eventKey,
+                              room_id: item.room_id,
                               type_id: item.type_id,
                               building_id: item.building_id,
                               brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
-                              group: item.group,
+                              group: eventKey,
                               note: item.note,
                             });
-                            setSelectRoom(room.room_name);
+                            setSelectGroup("Y");
                           }}
                         >
-                          {room.room_name}
+                          Y
                         </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
-                  </div>
-                </div>
 
-                <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
-                    Group: <span style={styles.container}>*</span>
-                  </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={item.group}
-                      id="bg-nested-dropdown-g"
-                      size="sm"
-                      variant="warning"
-                    >
-                      <Dropdown.Item
-                        eventKey="Y"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            item_id: item.item_id,
-                            item_code: item.item_code,
-                            item_name: item.item_name,
-                            room_id: item.room_id,
-                            type_id: item.type_id,
-                            building_id: item.building_id,
-                            brand_id: item.brand_id,
-                            serial_number: item.serial_number,
-                            model: item.model,
-                            group: eventKey,
-                            note: item.note,
-                          });
-                          setSelectGroup("Y");
-                        }}
-                      >
-                        Y
-                      </Dropdown.Item>
-
-                      <Dropdown.Item
-                        eventKey="N"
-                        onSelect={(eventKey) => {
-                          setItem({
-                            item_id: item.item_id,
-                            item_code: item.item_code,
-                            item_name: item.item_name,
-                            room_id: item.room_id,
-                            type_id: item.type_id,
-                            building_id: item.building_id,
-                            brand_id: item.brand_id,
-                            serial_number: item.serial_number,
-                            model: item.model,
-                            group: eventKey,
-                            note: item.note,
-                          });
-                          setSelectGroup("N");
-                        }}
-                      >
-                        N
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  </div>
-                </div>
-
-                <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Brand:</label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectBrand}
-                      id="bg-nested-dropdown-brand"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {item.brand_id && (
-                        <DropdownItem
-                          eventKey={null}
-                          onSelect={(eventKey) => {
-                            setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: item.building_id,
-                              brand_id: eventKey,
-                              serial_number: item.serial_number,
-                              model: item.model,
-                              group: item.group,
-                              note: item.note,
-                            });
-                            setSelectBrand("no brand");
-                          }}
-                        >
-                          no brand
-                        </DropdownItem>
-                      )}
-                      {_.map(data.brands, (brand) => (
                         <Dropdown.Item
-                          key={brand.brand_id}
-                          eventKey={brand.brand_id}
+                          eventKey="N"
                           onSelect={(eventKey) => {
                             setItem({
                               item_id: item.item_id,
@@ -1069,27 +1052,91 @@ export default function Items() {
                               room_id: item.room_id,
                               type_id: item.type_id,
                               building_id: item.building_id,
-                              brand_id: eventKey,
+                              brand_id: item.brand_id,
                               serial_number: item.serial_number,
                               model: item.model,
-                              group: item.group,
+                              group: eventKey,
                               note: item.note,
                             });
-                            setSelectBrand(brand.brand_name);
+                            setSelectGroup("N");
                           }}
                         >
-                          {brand.brand_name}
+                          N
                         </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">Brand:</label>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-edit"
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBrand}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {item.brand_id && (
+                          <DropdownItem
+                            eventKey={null}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                item_id: item.item_id,
+                                item_code: item.item_code,
+                                item_name: item.item_name,
+                                room_id: item.room_id,
+                                type_id: item.type_id,
+                                building_id: item.building_id,
+                                brand_id: eventKey,
+                                serial_number: item.serial_number,
+                                model: item.model,
+                                group: item.group,
+                                note: item.note,
+                              });
+                              setSelectBrand("no brand");
+                            }}
+                          >
+                            no brand
+                          </DropdownItem>
+                        )}
+                        {_.map(data.brands, (brand) => (
+                          <Dropdown.Item
+                            key={brand.brand_id}
+                            eventKey={brand.brand_id}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                item_id: item.item_id,
+                                item_code: item.item_code,
+                                item_name: item.item_name,
+                                room_id: item.room_id,
+                                type_id: item.type_id,
+                                building_id: item.building_id,
+                                brand_id: eventKey,
+                                serial_number: item.serial_number,
+                                model: item.model,
+                                group: item.group,
+                                note: item.note,
+                              });
+                              setSelectBrand(brand.brand_name);
+                            }}
+                          >
+                            {brand.brand_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
                     Serial Number:
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -1115,8 +1162,8 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Model:</label>
-                  <div className="col-sm-9">
+                  <label className="col-sm-4 col-form-label">Model:</label>
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
@@ -1142,8 +1189,8 @@ export default function Items() {
                 </div>
 
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Note:</label>
-                  <div className="col-sm-9">
+                  <label className="col-sm-4 col-form-label">Note:</label>
+                  <div className="col-sm-8">
                     <input
                       type="text"
                       className="form-control"
