@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Button, Alert, DropdownButton, Dropdown } from "react-bootstrap";
+import {
+  Button,
+  Alert,
+  DropdownButton,
+  Dropdown,
+  ButtonGroup,
+} from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
 import FormModal from "../components/FormModal";
@@ -277,10 +283,10 @@ export default function ProblemDescriptions() {
             body={
               <div>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-5 col-form-label">
                     Problem Description:
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-7">
                     <input
                       type="text"
                       className="form-control"
@@ -296,30 +302,34 @@ export default function ProblemDescriptions() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">Type:</label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectType}
-                      id="bg-nested-dropdown"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.types, (type) => (
-                        <Dropdown.Item
-                          key={type.type_id}
-                          eventKey={type.type_id}
-                          onSelect={(eventKey) => {
-                            setProblemDesc({
-                              ...problemDesc,
-                              type_id: eventKey,
-                            });
-                            setSelectType(type.type_name);
-                          }}
-                        >
-                          {type.type_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <label className="col-sm-5 col-form-label">Type:</label>
+                  <div className="col-sm-7">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        style={{ width: "263px" }}
+                        variant="outline-primary"
+                      >
+                        {selectType}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.types, (type) => (
+                          <Dropdown.Item
+                            key={type.type_id}
+                            eventKey={type.type_id}
+                            onSelect={(eventKey) => {
+                              setProblemDesc({
+                                ...problemDesc,
+                                type_id: eventKey,
+                              });
+                              setSelectType(type.type_name);
+                            }}
+                          >
+                            {type.type_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
               </div>
@@ -351,10 +361,10 @@ export default function ProblemDescriptions() {
             body={
               <div>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-6 col-form-label">
                     Problem Description:<span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-6">
                     <input
                       type="text"
                       className="form-control"
@@ -373,34 +383,38 @@ export default function ProblemDescriptions() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-6 col-form-label">
                     Type:<span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-9">
-                    <DropdownButton
-                      title={selectType}
-                      id="bg-nested-dropdown"
-                      size="sm"
-                      variant="warning"
-                    >
-                      {_.map(data.types, (type) => (
-                        <Dropdown.Item
-                          key={type.type_id}
-                          eventKey={type.type_id}
-                          onSelect={(eventKey) => {
-                            setProblemDesc({
-                              problem_des_id: problemDesc.problem_des_id,
-                              problem_description:
-                                problemDesc.problem_description,
-                              type_id: eventKey,
-                            });
-                            setSelectType(type.type_name);
-                          }}
-                        >
-                          {type.type_name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
+                  <div className="col-sm-6">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        id="dropdown-add"
+                        style={{ width: "223px" }}
+                        variant="outline-primary"
+                      >
+                        {selectType}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.types, (type) => (
+                          <Dropdown.Item
+                            key={type.type_id}
+                            eventKey={type.type_id}
+                            onSelect={(eventKey) => {
+                              setProblemDesc({
+                                problem_des_id: problemDesc.problem_des_id,
+                                problem_description:
+                                  problemDesc.problem_description,
+                                type_id: eventKey,
+                              });
+                              setSelectType(type.type_name);
+                            }}
+                          >
+                            {type.type_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
                   </div>
                 </div>
               </div>
