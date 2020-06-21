@@ -8,6 +8,7 @@ use App\Http\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuildingFormRequest;
+use App\Http\Requests\ImportRequest;
 
 class BuildingController extends Controller
 {
@@ -31,7 +32,8 @@ class BuildingController extends Controller
     public function index()
     {
         $buildings = $this->building->findByCancelFlag('N');
-        return compact('buildings');
+        $countBuildings = $this->building->countBuildings();
+        return compact('buildings', 'countBuildings');
     }
 
     /**
@@ -99,6 +101,25 @@ class BuildingController extends Controller
         $items = $this->item->deleteItems('rooms', $rooms);
         $success = 'Delete building \'' . $building->building_name . '\' success';
         return $this->serverResponse(null, $success);
+    }
+
+    public function importBuildings(ImportRequest $request)
+    {
+        $file = $request->file('import_file');
+        $isSuccess = $this->building->importBuildings($file);
+        if ($isSuccess[0]) {
+            return  $this->serverResponse(null, $isSuccess[1]);
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
+    }
+
+    public function exportBuildings()
+    {
+        $isSuccess = $this->building->exportBuildings();
+        if ($isSuccess[0]) {
+            return $isSuccess[1];
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
     }
 
     public function serverResponse($error, $success)

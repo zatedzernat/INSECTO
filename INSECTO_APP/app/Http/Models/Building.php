@@ -2,9 +2,12 @@
 
 namespace App\Http\Models;
 
-use DB;
+use App\Exports\BuildingsExport;
+use App\Imports\BuildingsImport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Building extends Model implements Auditable
@@ -39,6 +42,11 @@ class Building extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
+    public function countBuildings()
+    {
+        return $this->getALL()->count();
+    }
+
     public function findByCancelFlag($string)
     {
         return Building::with('user', 'rooms')->where('cancel_flag', $string)->get();
@@ -47,6 +55,11 @@ class Building extends Model implements Auditable
     public function findByID($int)
     {
         return Building::where('building_id', $int)->first();
+    }
+
+    public function getALL()
+    {
+        return Building::all();
     }
 
     public function setName($name)
@@ -112,5 +125,31 @@ class Building extends Model implements Auditable
         $building->user_id = 2;
         $building->save();
         return $building;
+    }
+
+    public function importBuildings($file)
+    {
+        try {
+            $import = new BuildingsImport();
+            $import->onlySheets('Buildings');
+            Excel::import($import, $file);
+            $success = 'Import data of buildings success';
+            return array(true, $success);
+        } catch (SheetNotFoundException $ex) {
+            $error =  'Please name your sheetname to \'Buildings\'';
+            return array(false, $error);
+        }
+    }
+
+    public function exportBuildings()
+    {
+        $buildings = $this->getALL();
+        if ($buildings->isEmpty()) {
+            $error =  'Please add building before export';
+            return array(false, $error);
+        } else {
+            $buildingsExport =  Excel::download(new BuildingsExport, 'buildings.xlsx');
+            return array(true, $buildingsExport);
+        }
     }
 }

@@ -25,11 +25,13 @@ Route::get('sendproblem/{item_code}', 'NotificationProblemController@showproblem
 Route::post('noti_problems',  'NotificationProblemController@store');
 Route::put('noti_problems/{noti_id}',  'NotificationProblemController@update');
 
-
 Route::get('buildings', 'BuildingController@index')->name('buildings');
 Route::post('buildings', 'BuildingController@store');
 Route::put('buildings/{building_id}', 'BuildingController@update');
 Route::delete('buildings/{building_id}', 'BuildingController@destroy');
+
+Route::post('buildings/import', 'BuildingController@importBuildings');
+Route::get('buildings/export', 'BuildingController@exportBuildings');
 
 Route::get('rooms', 'RoomController@index')->name('rooms');
 Route::post('rooms', 'RoomController@store');
