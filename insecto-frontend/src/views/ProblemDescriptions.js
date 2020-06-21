@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import {
-  Button,
-  Alert,
-  Dropdown,
-  ButtonGroup,
-} from "react-bootstrap";
+import { Button, Alert, Dropdown, ButtonGroup } from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
 import FormModal from "../components/FormModal";
@@ -283,7 +278,7 @@ export default function ProblemDescriptions() {
               <div>
                 <div className="form-group row">
                   <label className="col-sm-5 col-form-label">
-                    Problem Description:
+                    Problem Description: <span style={styles.container}>*</span>
                   </label>
                   <div className="col-sm-7">
                     <input
@@ -301,7 +296,9 @@ export default function ProblemDescriptions() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-5 col-form-label">Type:</label>
+                  <label className="col-sm-5 col-form-label">
+                    Type: <span style={styles.container}>*</span>
+                  </label>
                   <div className="col-sm-7">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
