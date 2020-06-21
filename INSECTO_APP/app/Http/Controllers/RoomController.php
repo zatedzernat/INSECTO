@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Building;
 use App\Http\Models\Item;
 use App\Http\Models\Room;
+use App\Http\Requests\ImportRequest;
 use App\Http\Requests\RoomFormRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -107,6 +108,25 @@ class RoomController extends Controller
         $urlQR = $urlRoot . "/sendproblem/room/" . $room_code;
         $fileName = $this->room->getRoomQRCode($room_code, $urlQR);
         return response()->download(storage_path('app') . '/' . $fileName)->deleteFileAfterSend();
+    }
+
+    public function importRooms(ImportRequest $request)
+    {
+        $file = $request->file('import_file');
+        $isSuccess = $this->room->importRooms($file);
+        if ($isSuccess[0]) {
+            return  $this->serverResponse(null, $isSuccess[1]);
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
+    }
+
+    public function exportRooms()
+    {
+        $isSuccess = $this->room->exportRooms();
+        if ($isSuccess[0]) {
+            return $isSuccess[1];
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
     }
 
     public function serverResponse($error, $success)

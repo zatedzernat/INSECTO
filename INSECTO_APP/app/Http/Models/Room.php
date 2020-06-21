@@ -2,9 +2,13 @@
 
 namespace App\Http\Models;
 
+use App\Exports\RoomsExport;
+use App\Imports\RoomsImport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
 use QrCode;
 
@@ -160,5 +164,31 @@ class Room extends Model implements Auditable
         $fileName = $room_code . '.png';
         Storage::disk('local')->put($fileName, $qrcode);
         return $fileName;
+    }
+
+    public function importRooms($file)
+    {
+        try {
+            $import = new RoomsImport();
+            $import->onlySheets('Rooms');
+            Excel::import($import, $file);
+            $success = 'Import data of items success';
+            return array(true, $success);
+        } catch (SheetNotFoundException $ex) {
+            $error =  'Please name your sheetname to \'Rooms\'';
+            return array(false, $error);
+        }
+    }
+
+    public function exportRooms()
+    {
+        $rooms = $this->getALL();
+        if ($rooms->isEmpty()) {
+            $error =  'Please add room before export';
+            return array(false, $error);
+        } else {
+            $RoomsExport =  Excel::download(new RoomsExport, 'items.xlsx');
+            return array(true, $RoomsExport);
+        }
     }
 }

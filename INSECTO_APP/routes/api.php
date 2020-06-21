@@ -38,6 +38,9 @@ Route::post('rooms', 'RoomController@store');
 Route::put('rooms/{room_id}', 'RoomController@update');
 Route::delete('rooms/{room_id}', 'RoomController@destroy');
 
+Route::post('rooms/import', 'RoomController@importRooms');
+Route::get('rooms/export', 'RoomController@exportRooms');
+
 Route::post('getroomqr/{room_code}', 'RoomController@getRoomQRCode');
 
 Route::get('brands', 'BrandController@index')->name('brands');

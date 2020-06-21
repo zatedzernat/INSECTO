@@ -3,13 +3,7 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import {
-  Button,
-  Dropdown,
-  Alert,
-  Form,
-  ButtonGroup,
-} from "react-bootstrap";
+import { Button, Dropdown, Alert, Form, ButtonGroup } from "react-bootstrap";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
@@ -19,6 +13,8 @@ export default function Rooms() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
+  const [modalShowImport, setModalShowImport] = useState(false);
+  const [file, setFile] = useState();
   const [isError, setIsError] = useState({
     error: false,
     message: "",
@@ -50,7 +46,14 @@ export default function Rooms() {
     }
   };
   useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/scripts/importfile.js";
+    script.async = true;
+    document.body.appendChild(script);
     fetchData();
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [lastUpdate]);
 
   const addHandleSubmit = async (event) => {
@@ -163,6 +166,76 @@ export default function Rooms() {
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", `${row.room_code}.png`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const importHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowImport(false);
+    try {
+      const formData = new FormData();
+      formData.append("import_file", file);
+
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}rooms/import`,
+        formData,
+        { headers: { "content-type": "multipart/form-data" } }
+      );
+      if (res.data.errors) {
+        setIsError({
+          error: true,
+          message: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(error.response);
+      let err_message = error.response.data.message;
+      if (error.response.status === 422) {
+        let message = error.response.data;
+        if (message.errors.import_file) {
+          setIsError({
+            error: true,
+            message: message.errors.import_file,
+          });
+        } else {
+          setIsError({
+            error: true,
+            message: message.errors[0],
+          });
+        }
+      } else if (err_message.split(":")[0] === "Undefined index") {
+        setIsError({
+          error: true,
+          message: `Import file doesn't has '${
+            err_message.split(":")[1]
+          }' column!`,
+        });
+      }
+    }
+  };
+
+  const exportRooms = async () => {
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}rooms/export`,
+        method: "GET",
+        responseType: "blob",
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Rooms.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -314,6 +387,23 @@ export default function Rooms() {
                 </Button>
                 &emsp;
                 <Button variant="danger">Delete</Button>
+                &emsp;
+                <Button
+                  onClick={() => setModalShowImport(true)}
+                  variant="warning"
+                  type="submit"
+                >
+                  Import Rooms
+                </Button>
+                &emsp;
+                {data.countRooms === 0 ? null : (
+                  <>
+                    <Button onClick={exportRooms} variant="warning">
+                      Export Rooms
+                    </Button>
+                    &emsp;
+                  </>
+                )}
               </div>
             }
             body={roomTable(data)}
@@ -519,6 +609,49 @@ export default function Rooms() {
             method="POST"
             onSubmit={editHandleSubmit}
             button="Confirm"
+            close="Cancel"
+          />
+
+          <FormModal
+            show={modalShowImport}
+            onHide={() => setModalShowImport(false)}
+            title="Import data of Rooms"
+            body={
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    File<span style={{ color: "red" }}>*</span>:
+                  </label>
+                  <div className="col-sm-9">
+                    <div className="custom-file">
+                      <input
+                        type="file"
+                        className="custom-file-input"
+                        id="inputGroupFile"
+                        name="import_file"
+                        onChange={(event) => setFile(event.target.files[0])}
+                      />
+                      <label
+                        className="custom-file-label"
+                        htmlFor="inputGroupFile"
+                      >
+                        Choose file...
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="form-group row" style={{ marginBottom: 0 }}>
+                  <label className="col-sm-12 col-form-label">
+                    - Only .xls and .xlsx file type <br />- Import file must has
+                    'Rooms' sheetname <br /> - Import file must has all
+                    columns as insecto_data_format
+                  </label>
+                </div>
+              </>
+            }
+            method="POST"
+            onSubmit={importHandleSubmit}
+            button="Import"
             close="Cancel"
           />
         </div>
