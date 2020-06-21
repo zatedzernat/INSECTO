@@ -334,7 +334,7 @@ class Item extends Model implements Auditable
     {
         $items = $this->getALL();
         if ($items->isEmpty()) {
-            $error =  'Please add item(s) before export';
+            $error =  'Please add item before export';
             return array(false, $error);
         } else {
             $itemsExport =  Excel::download(new ItemsExport, 'items.xlsx');
