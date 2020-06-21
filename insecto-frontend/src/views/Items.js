@@ -5,7 +5,6 @@ import _ from "lodash";
 import {
   Button,
   Alert,
-  DropdownButton,
   Dropdown,
   Form,
   ButtonGroup,
@@ -486,18 +485,18 @@ export default function Items() {
                   variant="warning"
                   type="submit"
                 >
-                  Import Item(s)
+                  Import Items
                 </Button>
                 &emsp;
                 {data.countItems === 0 ? null : (
                   <>
                     <Button onClick={exportItems} variant="warning">
-                      Export Item(s)
+                      Export Items
                     </Button>
                     &emsp;
                     <Button onClick={getItemsQRCode} variant="success">
                       <i className="fa fa-qrcode" />
-                      All Item(s) QR Code
+                      All Items QR Code
                     </Button>
                   </>
                 )}
@@ -1225,7 +1224,7 @@ export default function Items() {
           <FormModal
             show={modalShowImport}
             onHide={() => setModalShowImport(false)}
-            title="Import data of item(s)"
+            title="Import data of items"
             body={
               <>
                 <div className="form-group row">
