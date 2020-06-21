@@ -48,11 +48,13 @@ class ProblemDescriptionsImport implements ToModel, WithHeadingRow, WithMultiple
             },
 
             'type_id' => function ($attribute, $value, $onFailure) {
-                dd($this->prob_desc);
-                // $problem_desc = Problem_Description::where('type_id', $value)->first();
-                // if ($problem_desc !== null) {
-                //     $onFailure('Can not insert duplicate Type Name (' . $value . ')');
-                // }
+                $problem_desc = Problem_Description::where([
+                    ['problem_description', $this->prob_desc],
+                    ['type_id', $value],
+                ])->first();
+                if ($problem_desc !== null) {
+                    $onFailure('Can not insert duplicate Problem Description and Type (' . $this->prob_desc . ',' . $value . ')');
+                }
             }
         ];
     }

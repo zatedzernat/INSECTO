@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Problem_Description;
 use App\Http\Models\Item_Type;
+use App\Http\Requests\ImportRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProblemDescriptionFormRequest;
@@ -97,6 +98,25 @@ class ProblemDescriptionController extends Controller
         $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
         $success = 'Delete description \'' . $problem_desc->problem_description . '\' success';
         return $this->serverResponse(null, $success);
+    }
+
+    public function importProblemDescs(ImportRequest $request)
+    {
+        $file = $request->file('import_file');
+        $isSuccess = $this->problem_desc->importProblemDescs($file);
+        if ($isSuccess[0]) {
+            return  $this->serverResponse(null, $isSuccess[1]);
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
+    }
+
+    public function exportProblemDescs()
+    {
+        $isSuccess = $this->problem_desc->exportProblemDescs();
+        if ($isSuccess[0]) {
+            return $isSuccess[1];
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
     }
 
     public function serverResponse($error, $success)

@@ -2,8 +2,12 @@
 
 namespace App\Http\Models;
 
+use App\Exports\ProblemDescriptionsExport;
+use App\Imports\ProblemDescriptionsImport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Problem_Description extends Model implements Auditable
@@ -155,5 +159,31 @@ class Problem_Description extends Model implements Auditable
             $problem_desc->save();
         }
         return $problem_descs;
+    }
+
+    public function importProblemDescs($file)
+    {
+        try {
+            $import = new ProblemDescriptionsImport();
+            $import->onlySheets('Problem_Descriptions');
+            Excel::import($import, $file);
+            $success = 'Import data of problem descriptions success';
+            return array(true, $success);
+        } catch (SheetNotFoundException $ex) {
+            $error =  'Please name your sheetname to \'Problem_Descriptions\'';
+            return array(false, $error);
+        }
+    }
+
+    public function exportProblemDescs()
+    {
+        $prob_descs = $this->getALL();
+        if ($prob_descs->isEmpty()) {
+            $error =  'Please add problem description before export';
+            return array(false, $error);
+        } else {
+            $ProblemDescriptionsExport =  Excel::download(new ProblemDescriptionsExport, 'problem_descriptions.xlsx');
+            return array(true, $ProblemDescriptionsExport);
+        }
     }
 }

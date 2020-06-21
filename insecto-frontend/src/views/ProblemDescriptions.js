@@ -13,6 +13,8 @@ export default function ProblemDescriptions() {
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
+  const [modalShowImport, setModalShowImport] = useState(false);
+  const [file, setFile] = useState();
   const [isError, setIsError] = useState({
     error: false,
     success: false,
@@ -46,7 +48,14 @@ export default function ProblemDescriptions() {
   };
 
   useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/scripts/importfile.js";
+    script.async = true;
+    document.body.appendChild(script);
     fetchData();
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [lastUpdate]);
 
   const addHandleSubmit = async (event) => {
@@ -138,6 +147,76 @@ export default function ProblemDescriptions() {
           message: error.response.data.errors.problem_description,
         });
       }
+    }
+  };
+
+  const importHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowImport(false);
+    try {
+      const formData = new FormData();
+      formData.append("import_file", file);
+
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}problem_descs/import`,
+        formData,
+        { headers: { "content-type": "multipart/form-data" } }
+      );
+      if (res.data.errors) {
+        setIsError({
+          error: true,
+          message: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        setIsSuccess({
+          success: true,
+          message: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(error.response);
+      let err_message = error.response.data.message;
+      if (error.response.status === 422) {
+        let message = error.response.data;
+        if (message.errors.import_file) {
+          setIsError({
+            error: true,
+            message: message.errors.import_file,
+          });
+        } else {
+          setIsError({
+            error: true,
+            message: message.errors[0],
+          });
+        }
+      } else if (err_message.split(":")[0] === "Undefined index") {
+        setIsError({
+          error: true,
+          message: `Import file doesn't has '${
+            err_message.split(":")[1]
+          }' column!`,
+        });
+      }
+    }
+  };
+
+  const exportProblemDescs = async () => {
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}problem_descs/export`,
+        method: "GET",
+        responseType: "blob",
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Problem_Descs.xlsx"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
     }
   };
 
@@ -262,6 +341,22 @@ export default function ProblemDescriptions() {
                 </Button>
                 &emsp;
                 <Button variant="danger">Delete</Button>
+                &emsp;
+                <Button
+                  onClick={() => setModalShowImport(true)}
+                  variant="warning"
+                  type="submit"
+                >
+                  Import Problem Descs
+                </Button>
+                &emsp;
+                {data.countProblemDescs === 0 ? null : (
+                  <>
+                    <Button onClick={exportProblemDescs} variant="warning">
+                      Export Problem Descs
+                    </Button>
+                  </>
+                )}
               </div>
             }
             body={problemDesTable(data)}
@@ -416,6 +511,49 @@ export default function ProblemDescriptions() {
               </div>
             }
             button="Confirm"
+            close="Cancel"
+          />
+
+          <FormModal
+            show={modalShowImport}
+            onHide={() => setModalShowImport(false)}
+            title="Import data of Problem Descriptions"
+            body={
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-3 col-form-label">
+                    File<span style={{ color: "red" }}>*</span>:
+                  </label>
+                  <div className="col-sm-9">
+                    <div className="custom-file">
+                      <input
+                        type="file"
+                        className="custom-file-input"
+                        id="inputGroupFile"
+                        name="import_file"
+                        onChange={(event) => setFile(event.target.files[0])}
+                      />
+                      <label
+                        className="custom-file-label"
+                        htmlFor="inputGroupFile"
+                      >
+                        Choose file...
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="form-group row" style={{ marginBottom: 0 }}>
+                  <label className="col-sm-12 col-form-label">
+                    - Only .xls and .xlsx file type <br />- Import file must has
+                    'Problem_Descriptions' sheetname <br /> - Import file must has all columns
+                    as insecto_data_format
+                  </label>
+                </div>
+              </>
+            }
+            method="POST"
+            onSubmit={importHandleSubmit}
+            button="Import"
             close="Cancel"
           />
         </div>
