@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ItemsTableSeeder::class,
             StatusesTableSeeder::class,
             Notification_ProblemsTableSeeder::class,
+            History_LogsTableSeeder::class
         ]);
     }
 }
