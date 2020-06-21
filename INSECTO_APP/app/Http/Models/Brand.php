@@ -39,6 +39,11 @@ class Brand extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
+    public function countBrands()
+    {
+        return $this->getALL()->count();
+    }
+
     public function findByCancelFlag($string)
     {
         return Brand::with('user')->where('cancel_flag', $string)->get();
@@ -47,6 +52,11 @@ class Brand extends Model implements Auditable
     public function findByID($int)
     {
         return Brand::where('brand_id', $int)->first();
+    }
+
+    public function getALL()
+    {
+        return Brand::all();
     }
 
     public function setName($name)

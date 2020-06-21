@@ -28,8 +28,9 @@ class ProblemDescriptionController extends Controller
     public function index()
     {
         $problem_descs = $this->problem_desc->findByCancelFlag('N');
+        $countProblemDescs = $this->problem_desc->countProblemDescs();
         $types = $this->type->findByCancelFlag('N');
-        return compact('problem_descs', 'types');
+        return compact('problem_descs', 'types', 'countProblemDescs');
     }
 
     /**

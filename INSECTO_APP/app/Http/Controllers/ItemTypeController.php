@@ -31,7 +31,8 @@ class ItemTypeController extends Controller
     public function index()
     {
         $item_types = $this->item_type->findByCancelFlag('N');
-        return compact('item_types');
+        $countItemTypes = $this->item_type->countItemTypes();
+        return compact('item_types', 'countItemTypes');
     }
 
     /**

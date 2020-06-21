@@ -28,7 +28,8 @@ class BrandController extends Controller
     public function index()
     {
         $brands = $this->brand->findByCancelFlag('N');
-        return compact('brands');
+        $countBrands = $this->brand->countBrands();
+        return compact('brands', 'countBrands');
     }
 
     /**

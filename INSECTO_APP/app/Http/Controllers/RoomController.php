@@ -32,8 +32,9 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = $this->room->findByCancelFlag('N');
+        $countRooms = $this->room->countRooms();
         $buildings = $this->building->findByCancelFlag('N');
-        return compact('rooms', 'buildings');
+        return compact('rooms', 'buildings', 'countRooms');
     }
 
     /**

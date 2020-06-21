@@ -43,6 +43,11 @@ class Problem_Description extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
+    public function countProblemDescs()
+    {
+        return $this->getALL()->count();
+    }
+
     public static function findByCancelFlag($string)
     {
         return Problem_Description::with('item_type', 'user')->where('cancel_flag', $string)->get();
@@ -59,6 +64,11 @@ class Problem_Description extends Model implements Auditable
             ['type_id', $type_id],
             ['cancel_flag', $cancel_flag]
         ])->get();
+    }
+
+    public function getALL()
+    {
+        return Problem_Description::all();
     }
 
     public function getProblemDescription($problem_des_id)

@@ -44,6 +44,11 @@ class Item_Type extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
+    public function countItemTypes()
+    {
+        return $this->getALL()->count();
+    }
+
     public function findByCancelFlag($string)
     {
         return Item_Type::with('user')->where('cancel_flag', $string)->get();
@@ -52,6 +57,11 @@ class Item_Type extends Model implements Auditable
     public function findByID($int)
     {
         return Item_Type::where('type_id', $int)->first();
+    }
+
+    public function getALL()
+    {
+        return Item_Type::all();
     }
 
     public function setName($name)

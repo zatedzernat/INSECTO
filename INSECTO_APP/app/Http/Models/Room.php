@@ -45,6 +45,11 @@ class Room extends Model implements Auditable
         return $this->belongsTo('App\Http\Models\User', 'user_id', 'id');
     }
 
+    public function countRooms()
+    {
+        return $this->getALL()->count();
+    }
+
     public static function findByCancelFlag($string)
     {
         return Room::with('building', 'user')->where('cancel_flag', $string)->get();
@@ -61,6 +66,11 @@ class Room extends Model implements Auditable
     public function findByID($int)
     {
         return room::where('room_id', $int)->first();
+    }
+
+    public function getALL()
+    {
+        return Room::all();
     }
 
     public function setName($name)
