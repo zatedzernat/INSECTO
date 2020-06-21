@@ -341,7 +341,6 @@ export default function Buildings() {
                     <Button onClick={exportBuildings} variant="warning">
                       Export Buildings
                     </Button>
-                    &emsp;
                   </>
                 )}
               </div>

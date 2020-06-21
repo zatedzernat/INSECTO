@@ -401,7 +401,6 @@ export default function Rooms() {
                     <Button onClick={exportRooms} variant="warning">
                       Export Rooms
                     </Button>
-                    &emsp;
                   </>
                 )}
               </div>
