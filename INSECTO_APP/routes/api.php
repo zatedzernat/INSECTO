@@ -48,6 +48,9 @@ Route::post('brands', 'BrandController@store');
 Route::put('brands/{brand_id}', 'BrandController@update');
 Route::delete('brands/{brand_id}', 'BrandController@destroy');
 
+Route::post('brands/import', 'BrandController@importBrands');
+Route::get('brands/export', 'BrandController@exportBrands');
+
 Route::get('problem_descs', 'ProblemDescriptionController@index')->name('problem_descs');
 Route::post('problem_descs', 'ProblemDescriptionController@store');
 Route::put('problem_descs/{problem_des_id}', 'ProblemDescriptionController@update');

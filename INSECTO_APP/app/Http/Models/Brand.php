@@ -2,9 +2,13 @@
 
 namespace App\Http\Models;
 
+use App\Exports\BrandsExport;
+use App\Imports\BrandsImport;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Brand extends Model implements Auditable
@@ -120,5 +124,31 @@ class Brand extends Model implements Auditable
         $brand->user_id = 2;
         $brand->save();
         return $brand;
+    }
+
+    public function importBrands($file)
+    {
+        try {
+            $import = new BrandsImport();
+            $import->onlySheets('Brands');
+            Excel::import($import, $file);
+            $success = 'Import data of brands success';
+            return array(true, $success);
+        } catch (SheetNotFoundException $ex) {
+            $error =  'Please name your sheetname to \'Brands\'';
+            return array(false, $error);
+        }
+    }
+
+    public function exportBrands()
+    {
+        $brands = $this->getALL();
+        if ($brands->isEmpty()) {
+            $error =  'Please add brand before export';
+            return array(false, $error);
+        } else {
+            $BrandsExport =  Excel::download(new BrandsExport, 'brands.xlsx');
+            return array(true, $BrandsExport);
+        }
     }
 }
