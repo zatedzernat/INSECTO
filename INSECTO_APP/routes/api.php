@@ -69,6 +69,9 @@ Route::post('item_types', 'ItemTypeController@store');
 Route::put('item_types/{type_id}', 'ItemTypeController@update');
 Route::delete('item_types/{type_id}', 'ItemTypeController@destroy');
 
+Route::post('item_types/import', 'ItemTypeController@importItemTypes');
+Route::get('item_types/export', 'ItemTypeController@exportItemTypes');
+
 Route::get('statuses', 'StatusController@index')->name('statuses');
 Route::post('statuses', 'StatusController@store');
 Route::put('statuses/{status_id}', 'StatusController@update');

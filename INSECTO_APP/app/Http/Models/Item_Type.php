@@ -2,9 +2,13 @@
 
 namespace App\Http\Models;
 
+use App\Exports\ItemTypesExport;
+use App\Imports\ItemTypesImport;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Item_Type extends Model implements Auditable
@@ -121,5 +125,31 @@ class Item_Type extends Model implements Auditable
         $item_type->user_id = 2;
         $item_type->save();
         return $item_type;
+    }
+
+    public function importItemTypes($file)
+    {
+        try {
+            $import = new ItemTypesImport();
+            $import->onlySheets('Item_Types');
+            Excel::import($import, $file);
+            $success = 'Import data of item types success';
+            return array(true, $success);
+        } catch (SheetNotFoundException $ex) {
+            $error =  'Please name your sheetname to \'Item_Types\'';
+            return array(false, $error);
+        }
+    }
+
+    public function exportItemTypes()
+    {
+        $item_types = $this->getALL();
+        if ($item_types->isEmpty()) {
+            $error =  'Please add item type before export';
+            return array(false, $error);
+        } else {
+            $ItemTypesExport =  Excel::download(new ItemTypesExport, 'item_types.xlsx');
+            return array(true, $ItemTypesExport);
+        }
     }
 }

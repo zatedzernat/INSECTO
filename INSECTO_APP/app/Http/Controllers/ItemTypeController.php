@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Item;
 use App\Http\Models\Item_Type;
 use App\Http\Models\Problem_Description;
+use App\Http\Requests\ImportRequest;
 use App\Http\Requests\ItemTypeFormRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -99,6 +100,25 @@ class ItemTypeController extends Controller
         $problem_desc = $this->problem_desc->deleteProblemDescs($item_type);
         $success = 'Delete type \'' . $item_type->type_name . '\' success';
         return $this->serverResponse(null, $success);
+    }
+
+    public function importItemTypes(ImportRequest $request)
+    {
+        $file = $request->file('import_file');
+        $isSuccess = $this->item_type->importItemTypes($file);
+        if ($isSuccess[0]) {
+            return  $this->serverResponse(null, $isSuccess[1]);
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
+    }
+
+    public function exportItemTypes()
+    {
+        $isSuccess = $this->item_type->exportItemTypes();
+        if ($isSuccess[0]) {
+            return $isSuccess[1];
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
     }
 
     public function serverResponse($error, $success)
