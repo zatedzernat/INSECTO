@@ -269,17 +269,17 @@ export default function Rooms() {
         selector: "building.building_name",
         sortable: true,
       },
+      // {
+      //   name: "Created At",
+      //   selector: "created_at",
+      //   sortable: true,
+      //   format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      // },
       {
-        name: "Created At",
-        selector: "created_at",
-        sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
-      },
-      {
-        name: "Updated At",
+        name: "Last Updated",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
       },
       {
         name: "User",
@@ -519,8 +519,8 @@ export default function Rooms() {
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
-            button="Yes"
-            close="No"
+            button="Confirm"
+            close="Cancel"
           />
 
           <FormModal
@@ -603,6 +603,12 @@ export default function Rooms() {
                     </Dropdown>{" "}
                   </div>
                 </div>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">Created At:</label>
+                  <div className="col-sm-8 col-form-label">
+                    {moment(room.created_at).format("D/MM/YYYY - HH:mm:ss")}
+                  </div>
+                </div>
               </>
             }
             method="POST"
@@ -642,8 +648,8 @@ export default function Rooms() {
                 <div className="form-group row" style={{ marginBottom: 0 }}>
                   <label className="col-sm-12 col-form-label">
                     - Only .xls and .xlsx file type <br />- Import file must has
-                    'Rooms' sheetname <br /> - Import file must has all
-                    columns as insecto_data_format
+                    'Rooms' sheetname <br /> - Import file must has all columns
+                    as insecto_data_format
                   </label>
                 </div>
               </>

@@ -221,17 +221,17 @@ export default function ItemTypes() {
         selector: "type_name",
         sortable: true,
       },
+      // {
+      //   name: "Created At",
+      //   selector: "created_at",
+      //   sortable: true,
+      //   format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      // },
       {
-        name: "Created At",
-        selector: "created_at",
-        sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
-      },
-      {
-        name: "Updated At",
+        name: "Last Updated",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
       },
       {
         name: "User",
@@ -378,8 +378,8 @@ export default function ItemTypes() {
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
-            button="Yes"
-            close="No"
+            button="Confirm"
+            close="Cancel"
           />
 
           <FormModal
@@ -387,27 +387,35 @@ export default function ItemTypes() {
             onHide={() => setModalShowEdit(false)}
             title="Edit Item Type"
             body={
-              <div className="form-group row">
-                <label className="col-sm-5 col-form-label">
-                  Item Type Name: <span style={styles.container}>*</span>
-                </label>
-                <div className="col-sm-7">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="type_name"
-                    defaultValue={itemType.type_name}
-                    onChange={(event) =>
-                      setItemType({
-                        type_id: itemType.type_id,
-                        type_name: event.target.value,
-                      })
-                    }
-                    required
-                    autoFocus
-                  />
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-5 col-form-label">
+                    Item Type Name: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-7">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="type_name"
+                      defaultValue={itemType.type_name}
+                      onChange={(event) =>
+                        setItemType({
+                          type_id: itemType.type_id,
+                          type_name: event.target.value,
+                        })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
                 </div>
-              </div>
+                <div className="form-group row">
+                  <label className="col-sm-5 col-form-label">Created At:</label>
+                  <div className="col-sm-7 col-form-label">
+                    {moment(itemType.created_at).format("D/MM/YYYY - HH:mm:ss")}
+                  </div>
+                </div>
+              </>
             }
             method="POST"
             onSubmit={editHandleSubmit}
@@ -446,8 +454,8 @@ export default function ItemTypes() {
                 <div className="form-group row" style={{ marginBottom: 0 }}>
                   <label className="col-sm-12 col-form-label">
                     - Only .xls and .xlsx file type <br />- Import file must has
-                    'Item_Types' sheetname <br /> - Import file must has all columns
-                    as insecto_data_format
+                    'Item_Types' sheetname <br /> - Import file must has all
+                    columns as insecto_data_format
                   </label>
                 </div>
               </>

@@ -241,17 +241,17 @@ export default function ProblemDescriptions() {
         selector: "item_type.type_name",
         sortable: true,
       },
+      // {
+      //   name: "Created At",
+      //   selector: "created_at",
+      //   sortable: true,
+      //   format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      // },
       {
-        name: "Created At",
-        selector: "created_at",
-        sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
-      },
-      {
-        name: "Updated At",
+        name: "Last Updated",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
       },
       {
         name: "User",
@@ -397,7 +397,6 @@ export default function ProblemDescriptions() {
                   <div className="col-sm-7">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-add"
                         style={{ width: "263px" }}
                         variant="outline-primary"
                       >
@@ -439,8 +438,8 @@ export default function ProblemDescriptions() {
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
-            button="Yes"
-            close="No"
+            button="Confirm"
+            close="Cancel"
           />
 
           <FormModal
@@ -450,12 +449,12 @@ export default function ProblemDescriptions() {
             method="POST"
             onSubmit={editHandleSubmit}
             body={
-              <div>
+              <>
                 <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">
+                  <label className="col-sm-5 col-form-label">
                     Problem Description:<span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-6">
+                  <div className="col-sm-7">
                     <input
                       type="text"
                       className="form-control"
@@ -474,14 +473,13 @@ export default function ProblemDescriptions() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">
+                  <label className="col-sm-5 col-form-label">
                     Type:<span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-6">
+                  <div className="col-sm-7">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-add"
-                        style={{ width: "223px" }}
+                        style={{ width: "263px" }}
                         variant="outline-primary"
                       >
                         {selectType}
@@ -508,7 +506,13 @@ export default function ProblemDescriptions() {
                     </Dropdown>{" "}
                   </div>
                 </div>
-              </div>
+                <div className="form-group row">
+                  <label className="col-sm-5 col-form-label">Created At:</label>
+                  <div className="col-sm-7 col-form-label">
+                    {moment(problemDesc.created_at).format("D/MM/YYYY - HH:mm:ss")}
+                  </div>
+                </div>
+              </>
             }
             button="Confirm"
             close="Cancel"
@@ -545,8 +549,8 @@ export default function ProblemDescriptions() {
                 <div className="form-group row" style={{ marginBottom: 0 }}>
                   <label className="col-sm-12 col-form-label">
                     - Only .xls and .xlsx file type <br />- Import file must has
-                    'Problem_Descriptions' sheetname <br /> - Import file must has all columns
-                    as insecto_data_format
+                    'Problem_Descriptions' sheetname <br /> - Import file must
+                    has all columns as insecto_data_format
                   </label>
                 </div>
               </>
