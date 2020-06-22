@@ -386,10 +386,10 @@ export default function ProblemDescriptions() {
             body={
               <div>
                 <div className="form-group row">
-                  <label className="col-sm-5 col-form-label">
+                  <label className="col-sm-6 col-form-label">
                     Problem Description: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-7">
+                  <div className="col-sm-6">
                     <input
                       type="text"
                       className="form-control"
@@ -405,13 +405,13 @@ export default function ProblemDescriptions() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-5 col-form-label">
+                  <label className="col-sm-6 col-form-label">
                     Type: <span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-7">
+                  <div className="col-sm-6">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        style={{ width: "263px" }}
+                        style={{ width: "223px" }}
                         variant="outline-primary"
                       >
                         {selectType}
@@ -465,10 +465,10 @@ export default function ProblemDescriptions() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-5 col-form-label">
+                  <label className="col-sm-6 col-form-label">
                     Problem Description:<span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-7">
+                  <div className="col-sm-6">
                     <input
                       type="text"
                       className="form-control"
@@ -487,13 +487,13 @@ export default function ProblemDescriptions() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-5 col-form-label">
+                  <label className="col-sm-6 col-form-label">
                     Type:<span style={styles.container}>*</span>
                   </label>
-                  <div className="col-sm-7">
+                  <div className="col-sm-6">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        style={{ width: "263px" }}
+                        style={{ width: "223px" }}
                         variant="outline-primary"
                       >
                         {selectType}
@@ -521,8 +521,8 @@ export default function ProblemDescriptions() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-5 col-form-label">Created At:</label>
-                  <div className="col-sm-7 col-form-label">
+                  <label className="col-sm-6 col-form-label">Created At:</label>
+                  <div className="col-sm-6 col-form-label">
                     {moment(problemDesc.created_at).format("D/MM/YYYY - HH:mm:ss")}
                   </div>
                 </div>
