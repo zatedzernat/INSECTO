@@ -42,4 +42,11 @@ class History_log extends Model
 
         return $audits;
     }
+
+    public function getLogsByAmountOfDays($amount)
+    {
+        $grouped = $this->getAll();
+        $lastest_with_amount_of_day = $grouped->take($amount);
+        return $lastest_with_amount_of_day;
+    }
 }
