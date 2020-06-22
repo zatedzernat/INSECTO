@@ -3,12 +3,7 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import {
-  Button,
-  Dropdown,
-  Alert,
-  ButtonGroup,
-} from "react-bootstrap";
+import { Button, Dropdown, Alert, ButtonGroup } from "react-bootstrap";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
@@ -200,7 +195,7 @@ export default function NotificationProblems() {
           <Dropdown.Toggle
             id="dropdown-custom-1"
             size="xs"
-            style={{ width: "100px" }}
+            style={{ width: "100px", fontSize: "15px" }}
             variant={color}
           >
             {row.status.status_name}
@@ -210,6 +205,7 @@ export default function NotificationProblems() {
               <Dropdown.Item
                 key={status.status_id}
                 eventKey={status.status_id}
+                style={{ fontSize: "15px" }}
                 onSelect={(eventKey, event) => {
                   setNotiProblem(row);
                   handleStatus(parseInt(eventKey), event);
@@ -234,11 +230,13 @@ export default function NotificationProblems() {
         name: "#",
         selector: "noti_id",
         sortable: true,
+        width: "100px",
       },
       {
         name: "Item Code",
         selector: "item.item_code",
         sortable: true,
+        width: "120px",
       },
       {
         name: "Item Name",
@@ -254,6 +252,7 @@ export default function NotificationProblems() {
         name: "Room Code",
         selector: "item.room.room_code",
         sortable: true,
+        width: "130px",
       },
       {
         name: "Status",
@@ -262,17 +261,18 @@ export default function NotificationProblems() {
         allowOverflow: true, //for dropdown
         cell: (row) => showNextStatus(row),
       },
+      // {
+      //   name: "Created At",
+      //   selector: "created_at",
+      //   sortable: true,
+      //   format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      // },
       {
-        name: "Created At",
-        selector: "created_at",
-        sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
-      },
-      {
-        name: "Updated At",
+        name: "Last Updated",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
+        width: "200px"
       },
       {
         name: "User",
@@ -296,6 +296,19 @@ export default function NotificationProblems() {
       },
     ];
 
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
+
     return (
       <DataTable
         columns={columns}
@@ -306,6 +319,7 @@ export default function NotificationProblems() {
         selectableRowsHighlight
         highlightOnHover
         pagination
+        customStyles={myFonts}
       />
     );
   };
@@ -348,28 +362,56 @@ export default function NotificationProblems() {
             onHide={() => setModalShowDetail(false)}
             title="Detail"
             body={
-              <div className="form-group row">
-                <label className="col-sm-6 col-form-label">Created At: </label>
-                <div className="col-sm-6">{notiProblem.created_at}</div>
-                <label className="col-sm-6 col-form-label">
-                  Problem Description ID:{" "}
-                </label>
-                <div className="col-sm-6">{notiProblem.problem_des_id}</div>
-                <label className="col-sm-6 col-form-label">Room Name:</label>
-                <div className="col-sm-6">
-                  {notiProblem.item?.room.room_name}
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-6 col-form-label">Created At:</label>
+                  <div className="col-sm-6 col-form-label">
+                    {moment(notiProblem.created_at).format(
+                      "D/MM/YYYY - HH:mm:ss"
+                    )}
+                  </div>
                 </div>
-                <label className="col-sm-6 col-form-label">Status </label>
-                <div className="col-sm-6">
-                  {notiProblem.status?.status_name}
+                <div className="form-group row">
+                  <label className="col-sm-6 col-form-label">
+                    Problem Description ID:{" "}
+                  </label>
+                  <div className="col-sm-6 col-form-label">
+                    {notiProblem.problem_des_id}
+                  </div>
                 </div>
-                <label className="col-sm-6 col-form-label">HDC: </label>
-                <div className="col-sm-6">
-                  {notiProblem.help_desk_code ?? "-"}
+                <div className="form-group row">
+                  <label className="col-sm-6 col-form-label">Room Name:</label>
+                  <div className="col-sm-6 col-form-label">
+                    {notiProblem.item?.room.room_name}
+                  </div>
                 </div>
-                <label className="col-sm-6 col-form-label">Note: </label>
-                <div className="col-sm-6">{notiProblem.note ?? "-"}</div>
-              </div>
+                <div className="form-group row">
+                  <label className="col-sm-6 col-form-label">
+                    Building Name:
+                  </label>
+                  <div className="col-sm-6 col-form-label">
+                    {notiProblem.item?.room.building.building_name}
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-6 col-form-label">Status: </label>
+                  <div className="col-sm-6 col-form-label">
+                    {notiProblem.status?.status_name}
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-6 col-form-label">HDC: </label>
+                  <div className="col-sm-6 col-form-label">
+                    {notiProblem.help_desk_code ?? "-"}
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-6 col-form-label">Note: </label>
+                  <div className="col-sm-6 col-form-label">
+                    {notiProblem.note ?? "-"}
+                  </div>
+                </div>
+              </>
             }
             method="POST"
             close="Close"
