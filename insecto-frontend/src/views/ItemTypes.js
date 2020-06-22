@@ -264,6 +264,18 @@ export default function ItemTypes() {
         button: true,
       },
     ];
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        }
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
     return (
       <DataTable
         columns={columns}
@@ -274,6 +286,7 @@ export default function ItemTypes() {
         selectableRowsHighlight
         highlightOnHover
         pagination
+        customStyles={myFonts}
       />
     );
   };

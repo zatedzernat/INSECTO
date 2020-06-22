@@ -322,6 +322,7 @@ export default function Rooms() {
               variant="outline-success"
               size="sm"
               onClick={() => getRoomQRCode(row)}
+              style={{ fontSize: "15px" }}
             >
               <i className="fa fa-qrcode" />
               QR Code
@@ -329,8 +330,21 @@ export default function Rooms() {
           </>
         ),
         button: true,
+        width: "120px"
       },
     ];
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        }
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
     return (
       <DataTable
         columns={columns}
@@ -341,6 +355,7 @@ export default function Rooms() {
         selectableRowsHighlight
         highlightOnHover
         pagination
+        customStyles={myFonts}
       />
     );
   };

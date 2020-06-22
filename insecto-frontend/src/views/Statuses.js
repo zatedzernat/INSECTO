@@ -41,7 +41,18 @@ export default function Statuses() {
         sortable: true,
       },
     ];
-
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        }
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
     return (
       <DataTable
         columns={columns}
@@ -52,6 +63,7 @@ export default function Statuses() {
         selectableRowsHighlight
         highlightOnHover
         pagination
+        customStyles={myFonts}
       />
     );
   };

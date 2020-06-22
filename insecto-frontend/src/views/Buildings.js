@@ -277,6 +277,20 @@ export default function Buildings() {
         button: true,
       },
     ];
+
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        }
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
+
     return (
       <DataTable
         columns={columns}
@@ -287,6 +301,7 @@ export default function Buildings() {
         selectableRowsHighlight
         highlightOnHover
         pagination
+        customStyles={myFonts}
       />
     );
   };

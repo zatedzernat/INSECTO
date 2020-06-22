@@ -302,6 +302,7 @@ export default function Items() {
         name: "#",
         selector: "item_id",
         sortable: true,
+        grow: 0,
       },
       {
         name: "Item Code*",
@@ -327,7 +328,7 @@ export default function Items() {
         name: "Group",
         selector: "group",
         sortable: true,
-        grow: 0
+        grow: 0,
       },
       // {
       //   name: "Created At",
@@ -340,7 +341,7 @@ export default function Items() {
         selector: "updated_at",
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
-        grow: 2
+        grow: 2,
       },
       {
         name: "User",
@@ -393,6 +394,7 @@ export default function Items() {
               variant="outline-success"
               size="sm"
               onClick={() => getItemQRCode(row)}
+              style={{ fontSize: "15px" }}
             >
               <i className="fa fa-qrcode" />
               QR Code
@@ -406,8 +408,9 @@ export default function Items() {
       <div
         style={{
           textAlign: "center",
-          fontSize: 14,
-          backgroundColor: "#A7D3D8",
+          fontSize: "15px",
+          backgroundColor: "#9CBBA6",
+          padding: "3px"
         }}
       >
         Building: {data.room.building.building_code} &emsp; Brand:{" "}
@@ -416,6 +419,20 @@ export default function Items() {
         Note: {data.note ?? "-"}
       </div>
     );
+
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
+
     return (
       <DataTable
         columns={columns}
@@ -429,6 +446,7 @@ export default function Items() {
         expandableRows
         expandOnRowClicked
         expandableRowsComponent={<ExpandedComponent />}
+        customStyles={myFonts}
       />
     );
   };
