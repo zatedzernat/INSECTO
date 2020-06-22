@@ -327,6 +327,7 @@ export default function Items() {
         name: "Group",
         selector: "group",
         sortable: true,
+        grow: 0
       },
       // {
       //   name: "Created At",
@@ -339,6 +340,7 @@ export default function Items() {
         selector: "updated_at",
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
+        grow: 2
       },
       {
         name: "User",
