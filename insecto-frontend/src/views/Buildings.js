@@ -234,17 +234,17 @@ export default function Buildings() {
         selector: "building_name",
         sortable: true,
       },
+      // {
+      //   name: "Created At",
+      //   selector: "created_at",
+      //   sortable: true,
+      //   format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      // },
       {
-        name: "Created At",
-        selector: "created_at",
-        sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
-      },
-      {
-        name: "Updated At",
+        name: "Last Updated",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
       },
       {
         name: "User",
@@ -277,6 +277,20 @@ export default function Buildings() {
         button: true,
       },
     ];
+
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        }
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
+
     return (
       <DataTable
         columns={columns}
@@ -287,6 +301,7 @@ export default function Buildings() {
         selectableRowsHighlight
         highlightOnHover
         pagination
+        customStyles={myFonts}
       />
     );
   };
@@ -354,43 +369,46 @@ export default function Buildings() {
             title="Add Building"
             close="Close"
             body={
-              <div className="form-group row">
-                <label className="col-sm-3 col-form-label">
-                  Building Code: <span style={styles.container}>*</span>
-                </label>
-                <div className="col-sm-9">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="building_code"
-                    onChange={(event) =>
-                      setBuilding({
-                        building_code: event.target.value,
-                      })
-                    }
-                    required
-                    autoFocus
-                  />
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Building Code: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="building_code"
+                      onChange={(event) =>
+                        setBuilding({
+                          building_code: event.target.value,
+                        })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
                 </div>
-
-                <label className="col-sm-3 col-form-label">
-                  Building Name: <span style={styles.container}>*</span>
-                </label>
-                <div className="col-sm-9">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="building_name"
-                    onChange={(event) =>
-                      setBuilding({
-                        ...building,
-                        building_name: event.target.value,
-                      })
-                    }
-                    required
-                  />
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Building Name: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="building_name"
+                      onChange={(event) =>
+                        setBuilding({
+                          ...building,
+                          building_name: event.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
+              </>
             }
             method="POST"
             onSubmit={addHandleSubmit}
@@ -414,8 +432,8 @@ export default function Buildings() {
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
-            button="Yes"
-            close="No"
+            button="Confirm"
+            close="Cancel"
           />
 
           <FormModal
@@ -423,40 +441,50 @@ export default function Buildings() {
             onHide={() => setModalShowEdit(false)}
             title="Edit Building"
             body={
-              <div className="form-group row">
-                <label className="col-sm-3 col-form-label">
-                  Building Code:
-                </label>
-                <div className="col-sm-9">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="building_code"
-                    value={building.building_code}
-                    required
-                    disabled
-                  />
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Building Code:
+                  </label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="building_code"
+                      value={building.building_code}
+                      required
+                      disabled
+                    />
+                  </div>
                 </div>
-                <label className="col-sm-3 col-form-label">
-                  Building Name: <span style={styles.container}>*</span>
-                </label>
-                <div className="col-sm-9">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="building_name"
-                    value={building.building_name}
-                    onChange={(event) =>
-                      setBuilding({
-                        ...building,
-                        building_name: event.target.value,
-                      })
-                    }
-                    required
-                    autoFocus
-                  />
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Building Name: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="building_name"
+                      value={building.building_name}
+                      onChange={(event) =>
+                        setBuilding({
+                          ...building,
+                          building_name: event.target.value,
+                        })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
                 </div>
-              </div>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">Created At:</label>
+                  <div className="col-sm-8 col-form-label">
+                    {moment(building.created_at).format("D/MM/YYYY - HH:mm:ss")}
+                  </div>
+                </div>
+              </>
             }
             method="POST"
             onSubmit={editHandleSubmit}
@@ -471,10 +499,10 @@ export default function Buildings() {
             body={
               <>
                 <div className="form-group row">
-                  <label className="col-sm-3 col-form-label">
+                  <label className="col-sm-4 col-form-label">
                     File<span style={{ color: "red" }}>*</span>:
                   </label>
-                  <div className="col-sm-9">
+                  <div className="col-sm-8">
                     <div className="custom-file">
                       <input
                         type="file"

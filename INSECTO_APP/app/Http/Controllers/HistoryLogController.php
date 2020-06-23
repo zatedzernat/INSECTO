@@ -16,7 +16,14 @@ class HistoryLogController extends Controller
     public function index()
     {
         $history_logs = $this->log->getAll();
-        $count = $history_logs->count();
-        return compact('history_logs', 'count');
+        $countDays = $history_logs->count();
+        $countPerDate = $this->log->countPerDate();
+        return compact('history_logs', 'countDays', 'countPerDate');
+    }
+
+    public function getLogs($amount)
+    {
+        $logsByDays = $this->log->getLogsByAmountOfDays($amount);
+        return compact('logsByDays');
     }
 }

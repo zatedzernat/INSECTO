@@ -2,13 +2,7 @@ import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
-import {
-  Button,
-  Alert,
-  Dropdown,
-  Form,
-  ButtonGroup,
-} from "react-bootstrap";
+import { Button, Alert, Dropdown, Form, ButtonGroup } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DropdownItem from "react-bootstrap/DropdownItem";
@@ -308,6 +302,7 @@ export default function Items() {
         name: "#",
         selector: "item_id",
         sortable: true,
+        grow: 0,
       },
       {
         name: "Item Code*",
@@ -330,16 +325,23 @@ export default function Items() {
         sortable: true,
       },
       {
-        name: "Created At",
-        selector: "created_at",
+        name: "Group",
+        selector: "group",
         sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+        grow: 0,
       },
+      // {
+      //   name: "Created At",
+      //   selector: "created_at",
+      //   sortable: true,
+      //   format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      // },
       {
-        name: "Updated At",
+        name: "Last Updated",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
+        grow: 2,
       },
       {
         name: "User",
@@ -392,6 +394,7 @@ export default function Items() {
               variant="outline-success"
               size="sm"
               onClick={() => getItemQRCode(row)}
+              style={{ fontSize: "15px" }}
             >
               <i className="fa fa-qrcode" />
               QR Code
@@ -405,16 +408,31 @@ export default function Items() {
       <div
         style={{
           textAlign: "center",
-          fontSize: 14,
-          backgroundColor: "#A7D3D8",
+          fontSize: "15px",
+          backgroundColor: "#9CBBA6",
+          padding: "3px"
         }}
       >
         Building: {data.room.building.building_code} &emsp; Brand:{" "}
         {data.brand?.brand_name ?? "-"} &emsp; Serial Number: &nbsp;
         {data.serial_number ?? "-"} &emsp; Model: {data.model ?? "-"} &emsp;
-        Group: {data.group} &emsp; Note: {data.note ?? "-"}
+        Note: {data.note ?? "-"}
       </div>
     );
+
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
+
     return (
       <DataTable
         columns={columns}
@@ -428,6 +446,7 @@ export default function Items() {
         expandableRows
         expandOnRowClicked
         expandableRowsComponent={<ExpandedComponent />}
+        customStyles={myFonts}
       />
     );
   };
@@ -567,7 +586,6 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-add"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -601,7 +619,6 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-add"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -637,7 +654,6 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-add"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -671,7 +687,6 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-add"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -712,7 +727,6 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-add"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -827,8 +841,8 @@ export default function Items() {
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
-            button="Yes"
-            close="No"
+            button="Confirm"
+            close="Cancel"
           />
 
           <FormModal
@@ -1140,7 +1154,7 @@ export default function Items() {
                       type="text"
                       className="form-control"
                       name="serial_number"
-                      value={item.serial_number ?? "-"}
+                      value={item.serial_number ?? ""}
                       onChange={(event) =>
                         setItem({
                           item_id: item.item_id,
@@ -1167,7 +1181,7 @@ export default function Items() {
                       type="text"
                       className="form-control"
                       name="model"
-                      value={item.model ?? "-"}
+                      value={item.model ?? ""}
                       onChange={(event) =>
                         setItem({
                           item_id: item.item_id,
@@ -1194,7 +1208,7 @@ export default function Items() {
                       type="text"
                       className="form-control"
                       name="note"
-                      value={item.note ?? "-"}
+                      value={item.note ?? ""}
                       onChange={(event) =>
                         setItem({
                           item_id: item.item_id,
@@ -1211,6 +1225,12 @@ export default function Items() {
                         })
                       }
                     />
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">Created At:</label>
+                  <div className="col-sm-8 col-form-label">
+                    {moment(item.created_at).format("D/MM/YYYY - HH:mm:ss")}
                   </div>
                 </div>
               </div>

@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
+Route::get('history_logs/{amount}', 'HistoryLogController@getLogs');
 
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
 Route::get('sendprobleminroom/{room_code}', 'NotificationProblemController@showproblemNotResolvedInRoom');

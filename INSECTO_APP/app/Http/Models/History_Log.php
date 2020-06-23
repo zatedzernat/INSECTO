@@ -2,11 +2,14 @@
 
 namespace App\Http\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use OwenIt\Auditing\Models\Audit;
 
 class History_log extends Model
 {
+    private $count = [];
     //! must add this section     
     //public function user()
     // {
@@ -23,8 +26,27 @@ class History_log extends Model
     {
         $audits =  Audit::with('user')->orderBy('created_at', 'desc')->get();
         $grouped = $audits->groupBy(function ($item) {
-            return date('d-M-Y', strtotime($item->created_at));
+            return date('d-m-Y', strtotime($item->created_at)); //21-06-2020
         });
         return $grouped;
+    }
+
+    public function countPerDate()
+    {
+        $audits = Audit::groupBy('date')
+            ->orderBy('date', 'DESC')
+            ->get(array(
+                DB::raw('DATE_FORMAT(created_at, "%d-%m-%Y") as date'), //21-06-2020
+                DB::raw('COUNT(*) as "count"')
+            ));
+
+        return $audits;
+    }
+
+    public function getLogsByAmountOfDays($amount)
+    {
+        $grouped = $this->getAll();
+        $lastest_with_amount_of_day = $grouped->take($amount);
+        return $lastest_with_amount_of_day;
     }
 }

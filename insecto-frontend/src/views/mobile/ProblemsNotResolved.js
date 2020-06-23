@@ -39,7 +39,13 @@ export default function ProblemsNotResolved({
               color = "callout callout-info";
               status = "กำลังดำเนินการ";
               break;
+            case 7:
+              color = "callout callout-info";
+              status = "กำลังดำเนินการ";
+              break;
             default:
+              color = "callout callout-secondary";
+              status = "อื่นๆ";
               break;
           }
           return (

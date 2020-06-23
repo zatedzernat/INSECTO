@@ -222,17 +222,17 @@ export default function Brands() {
         selector: "brand_name",
         sortable: true,
       },
+      // {
+      //   name: "Created At",
+      //   selector: "created_at",
+      //   sortable: true,
+      //   format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
+      // },
       {
-        name: "Created At",
-        selector: "created_at",
-        sortable: true,
-        format: (r) => moment(r.created_at).format("D/M/YYYY - HH:mm:ss"),
-      },
-      {
-        name: "Updated At",
+        name: "Last Updated",
         selector: "updated_at",
         sortable: true,
-        format: (r) => moment(r.updated_at).format("D/M/YYYY - HH:mm:ss"),
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
       },
       {
         name: "User",
@@ -265,6 +265,18 @@ export default function Brands() {
         button: true,
       },
     ];
+    const myFonts = {
+      rows: {
+        style: {
+          fontSize: "15px",
+        }
+      },
+      headCells: {
+        style: {
+          fontSize: "15px",
+        },
+      },
+    };
     return (
       <DataTable
         columns={columns}
@@ -275,6 +287,7 @@ export default function Brands() {
         selectableRowsHighlight
         highlightOnHover
         pagination
+        customStyles={myFonts}
       />
     );
   };
@@ -380,35 +393,43 @@ export default function Brands() {
             }
             method="POST"
             onSubmit={deleteHandleSubmit}
-            button="Yes"
-            close="No"
+            button="Confirm"
+            close="Cancel"
           />
           <FormModal
             show={modalShowEdit}
             onHide={() => setModalShowEdit(false)}
             title="Edit Brand"
             body={
-              <div className="form-group row">
-                <label className="col-sm-4 col-form-label">
-                  Brand Name: <span style={styles.container}>*</span>
-                </label>
-                <div className="col-sm-8">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="brand_name"
-                    value={brand.brand_name}
-                    onChange={(event) =>
-                      setBrand({
-                        brand_id: brand.brand_id,
-                        brand_name: event.target.value,
-                      })
-                    }
-                    required
-                    autoFocus
-                  />
+              <>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Brand Name: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="brand_name"
+                      value={brand.brand_name}
+                      onChange={(event) =>
+                        setBrand({
+                          brand_id: brand.brand_id,
+                          brand_name: event.target.value,
+                        })
+                      }
+                      required
+                      autoFocus
+                    />
+                  </div>
                 </div>
-              </div>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">Created At:</label>
+                  <div className="col-sm-8 col-form-label">
+                    {moment(brand.created_at).format("D/MM/YYYY - HH:mm:ss")}
+                  </div>
+                </div>
+              </>
             }
             method="POST"
             onSubmit={editHandleSubmit}
@@ -447,8 +468,8 @@ export default function Brands() {
                 <div className="form-group row" style={{ marginBottom: 0 }}>
                   <label className="col-sm-12 col-form-label">
                     - Only .xls and .xlsx file type <br />- Import file must has
-                    'Brands' sheetname <br /> - Import file must has all
-                    columns as insecto_data_format
+                    'Brands' sheetname <br /> - Import file must has all columns
+                    as insecto_data_format
                   </label>
                 </div>
               </>

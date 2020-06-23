@@ -42,7 +42,7 @@ class Notification_Problem extends Model implements Auditable
 
     public function getAll()
     {
-        return Notification_Problem::with('item.room', 'status', 'user')->orderBy('created_at', 'desc')->get();
+        return Notification_Problem::with('item.room.building', 'status', 'user')->orderBy('created_at', 'desc')->get();
     }
 
     public function findByID($id)
