@@ -7,6 +7,7 @@ import { Button, Dropdown, Alert, ButtonGroup } from "react-bootstrap";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 export default function NotificationProblems() {
   const [data, setData] = useState([]);
@@ -17,14 +18,6 @@ export default function NotificationProblems() {
   const [modalShowNote, setModalShowNote] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
   const [status, setStatus] = useState({});
-  const [isError, setIsError] = useState({
-    error: false,
-    message: "",
-  });
-  const [isSuccess, setIsSuccess] = useState({
-    success: false,
-    message: "",
-  });
   const [lastUpdate, setLastUpdate] = useState(0);
 
   const fetchData = async () => {
@@ -44,6 +37,17 @@ export default function NotificationProblems() {
     fetchData();
   }, [lastUpdate]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
   const handleStatus = async (next_status_id, event) => {
     if (next_status_id === 2) {
       setStatus({
@@ -104,15 +108,15 @@ export default function NotificationProblems() {
         status
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -126,9 +130,9 @@ export default function NotificationProblems() {
         let mess3 = error.response.data.errors.note
           ? error.response.data.errors.note
           : "";
-        setIsError({
-          error: true,
-          message: mess1 + " " + mess2 + " " + mess3,
+        Toast.fire({
+          icon: "error",
+          title: mess1 + " " + mess2 + " " + mess3,
         });
       }
     }
@@ -272,7 +276,7 @@ export default function NotificationProblems() {
         selector: "updated_at",
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
-        width: "200px"
+        width: "200px",
       },
       {
         name: "User",
@@ -328,24 +332,6 @@ export default function NotificationProblems() {
     <Content
       content={
         <>
-          {isError.error && (
-            <Alert
-              variant="danger"
-              onClose={() => setIsError(false)}
-              dismissible
-            >
-              {isError.message}
-            </Alert>
-          )}
-          {isSuccess.success && (
-            <Alert
-              variant="success"
-              onClose={() => setIsSuccess(false)}
-              dismissible
-            >
-              {isSuccess.message}
-            </Alert>
-          )}
           <Card
             title={
               <div>
