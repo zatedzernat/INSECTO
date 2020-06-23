@@ -269,7 +269,7 @@ export default function Brands() {
       rows: {
         style: {
           fontSize: "15px",
-        }
+        },
       },
       headCells: {
         style: {
@@ -365,7 +365,7 @@ export default function Brands() {
                     className="form-control"
                     name="brand_name"
                     onChange={(event) =>
-                      setBrand({ brand_name: event.target.value })
+                      setBrand({ ...brand, brand_name: event.target.value })
                     }
                     required
                     autoFocus
@@ -414,6 +414,7 @@ export default function Brands() {
                       value={brand.brand_name}
                       onChange={(event) =>
                         setBrand({
+                          ...brand,
                           brand_id: brand.brand_id,
                           brand_name: event.target.value,
                         })

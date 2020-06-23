@@ -290,7 +290,7 @@ export default function ProblemDescriptions() {
       rows: {
         style: {
           fontSize: "15px",
-        }
+        },
       },
       headCells: {
         style: {
@@ -396,6 +396,7 @@ export default function ProblemDescriptions() {
                       name="problem_description"
                       onChange={(event) =>
                         setProblemDesc({
+                          ...problemDesc,
                           problem_description: event.target.value,
                         })
                       }
@@ -476,6 +477,7 @@ export default function ProblemDescriptions() {
                       value={problemDesc.problem_description}
                       onChange={(event) =>
                         setProblemDesc({
+                          ...problemDesc,
                           problem_des_id: problemDesc.problem_des_id,
                           problem_description: event.target.value,
                           type_id: problemDesc.type_id,
@@ -505,6 +507,7 @@ export default function ProblemDescriptions() {
                             eventKey={type.type_id}
                             onSelect={(eventKey) => {
                               setProblemDesc({
+                                ...problemDesc,
                                 problem_des_id: problemDesc.problem_des_id,
                                 problem_description:
                                   problemDesc.problem_description,
@@ -523,7 +526,9 @@ export default function ProblemDescriptions() {
                 <div className="form-group row">
                   <label className="col-sm-6 col-form-label">Created At:</label>
                   <div className="col-sm-6 col-form-label">
-                    {moment(problemDesc.created_at).format("D/MM/YYYY - HH:mm:ss")}
+                    {moment(problemDesc.created_at).format(
+                      "D/MM/YYYY - HH:mm:ss"
+                    )}
                   </div>
                 </div>
               </>

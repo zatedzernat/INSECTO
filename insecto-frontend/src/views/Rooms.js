@@ -430,7 +430,7 @@ export default function Rooms() {
                         let str = event.target.value;
                         let rs = str.indexOf("/");
                         if (rs === -1) {
-                          setRoom({ room_code: event.target.value });
+                          setRoom({ ...room, room_code: event.target.value });
                         } else {
                           event.target.value = "";
                         }
@@ -558,9 +558,7 @@ export default function Rooms() {
                       value={room.room_name}
                       onChange={(event) =>
                         setRoom({
-                          room_id: room.room_id,
-                          room_code: room.room_code,
-                          building_id: room.building_id,
+                          ...room,
                           room_name: event.target.value,
                         })
                       }
@@ -590,9 +588,7 @@ export default function Rooms() {
                             eventKey={building.building_id}
                             onSelect={(eventKey) => {
                               setRoom({
-                                room_id: room.room_id,
-                                room_code: room.room_code,
-                                room_name: room.room_name,
+                                ...room,
                                 building_id: eventKey,
                               });
                               setSelectBuilding(building.building_name);

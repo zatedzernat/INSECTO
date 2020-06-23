@@ -268,7 +268,7 @@ export default function ItemTypes() {
       rows: {
         style: {
           fontSize: "15px",
-        }
+        },
       },
       headCells: {
         style: {
@@ -366,7 +366,10 @@ export default function ItemTypes() {
                     className="form-control"
                     name="type_name"
                     onChange={(event) =>
-                      setItemType({ type_name: event.target.value })
+                      setItemType({
+                        ...itemType,
+                        type_name: event.target.value,
+                      })
                     }
                     required
                     autoFocus
@@ -413,6 +416,7 @@ export default function ItemTypes() {
                       defaultValue={itemType.type_name}
                       onChange={(event) =>
                         setItemType({
+                          ...itemType,
                           type_id: itemType.type_id,
                           type_name: event.target.value,
                         })

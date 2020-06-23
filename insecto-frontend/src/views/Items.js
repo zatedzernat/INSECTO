@@ -410,7 +410,7 @@ export default function Items() {
           textAlign: "center",
           fontSize: "15px",
           backgroundColor: "#9CBBA6",
-          padding: "3px"
+          padding: "3px",
         }}
       >
         Building: {data.room.building.building_code} &emsp; Brand:{" "}
@@ -545,7 +545,7 @@ export default function Items() {
                         let str = event.target.value;
                         let rs = str.indexOf("/");
                         if (rs === -1) {
-                          setItem({ item_code: event.target.value });
+                          setItem({ ...item, item_code: event.target.value });
                         } else {
                           event.target.value = "";
                         }
@@ -738,16 +738,8 @@ export default function Items() {
                             eventKey={null}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
+                                ...item,
                                 brand_id: eventKey,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
                               });
                               setSelectBrand("no brand");
                             }}
@@ -878,17 +870,8 @@ export default function Items() {
                       value={item.item_name}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
+                          ...item,
                           item_name: event.target.value,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
-                          model: item.model,
-                          group: item.group,
-                          note: item.note,
                         })
                       }
                       required
@@ -917,17 +900,8 @@ export default function Items() {
                             eventKey={type.type_id}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
+                                ...item,
                                 type_id: eventKey,
-                                building_id: item.building_id,
-                                brand_id: item.brand_id,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectType(type.type_name);
                             }}
@@ -996,17 +970,8 @@ export default function Items() {
                             eventKey={room.room_id}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
+                                ...item,
                                 room_id: eventKey,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
-                                brand_id: item.brand_id,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectRoom(room.room_name);
                             }}
@@ -1037,17 +1002,8 @@ export default function Items() {
                           eventKey="Y"
                           onSelect={(eventKey) => {
                             setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: item.building_id,
-                              brand_id: item.brand_id,
-                              serial_number: item.serial_number,
-                              model: item.model,
+                              ...item,
                               group: eventKey,
-                              note: item.note,
                             });
                             setSelectGroup("Y");
                           }}
@@ -1059,17 +1015,8 @@ export default function Items() {
                           eventKey="N"
                           onSelect={(eventKey) => {
                             setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: item.building_id,
-                              brand_id: item.brand_id,
-                              serial_number: item.serial_number,
-                              model: item.model,
+                              ...item,
                               group: eventKey,
-                              note: item.note,
                             });
                             setSelectGroup("N");
                           }}
@@ -1098,17 +1045,8 @@ export default function Items() {
                             eventKey={null}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
+                                ...item,
                                 brand_id: eventKey,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectBrand("no brand");
                             }}
@@ -1122,17 +1060,8 @@ export default function Items() {
                             eventKey={brand.brand_id}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
+                                ...item,
                                 brand_id: eventKey,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectBrand(brand.brand_name);
                             }}
@@ -1157,17 +1086,8 @@ export default function Items() {
                       value={item.serial_number ?? ""}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
+                          ...item,
                           serial_number: event.target.value,
-                          model: item.model,
-                          group: item.group,
-                          note: item.note,
                         })
                       }
                     />
@@ -1184,17 +1104,8 @@ export default function Items() {
                       value={item.model ?? ""}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
+                          ...item,
                           model: event.target.value,
-                          group: item.group,
-                          note: item.note,
                         })
                       }
                     />
@@ -1211,16 +1122,7 @@ export default function Items() {
                       value={item.note ?? ""}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
-                          model: item.model,
-                          group: item.group,
+                          ...item,
                           note: event.target.value,
                         })
                       }
