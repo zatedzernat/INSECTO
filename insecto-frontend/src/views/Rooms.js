@@ -112,7 +112,7 @@ export default function Rooms() {
       if (res.data.error) {
         Toast.fire({
           icon: "error",
-          title: res.data.errors,
+          title: res.data.message,
         });
       } else {
         setLastUpdate(res.data.time);
