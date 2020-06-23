@@ -417,7 +417,6 @@ export default function ItemTypes() {
                       onChange={(event) =>
                         setItemType({
                           ...itemType,
-                          type_id: itemType.type_id,
                           type_name: event.target.value,
                         })
                       }

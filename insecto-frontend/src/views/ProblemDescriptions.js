@@ -478,9 +478,7 @@ export default function ProblemDescriptions() {
                       onChange={(event) =>
                         setProblemDesc({
                           ...problemDesc,
-                          problem_des_id: problemDesc.problem_des_id,
                           problem_description: event.target.value,
-                          type_id: problemDesc.type_id,
                         })
                       }
                       required
@@ -508,9 +506,6 @@ export default function ProblemDescriptions() {
                             onSelect={(eventKey) => {
                               setProblemDesc({
                                 ...problemDesc,
-                                problem_des_id: problemDesc.problem_des_id,
-                                problem_description:
-                                  problemDesc.problem_description,
                                 type_id: eventKey,
                               });
                               setSelectType(type.type_name);

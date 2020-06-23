@@ -415,7 +415,6 @@ export default function Brands() {
                       onChange={(event) =>
                         setBrand({
                           ...brand,
-                          brand_id: brand.brand_id,
                           brand_name: event.target.value,
                         })
                       }
