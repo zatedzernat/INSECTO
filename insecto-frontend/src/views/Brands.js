@@ -6,6 +6,7 @@ import axios from "axios";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 export default function Brands() {
   const [data, setData] = useState([]);
@@ -14,14 +15,6 @@ export default function Brands() {
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [modalShowImport, setModalShowImport] = useState(false);
   const [file, setFile] = useState();
-  const [isError, setIsError] = useState({
-    error: false,
-    message: "",
-  });
-  const [isSuccess, setIsSuccess] = useState({
-    success: false,
-    message: "",
-  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const [brand, setBrand] = useState({
@@ -51,6 +44,17 @@ export default function Brands() {
     };
   }, [lastUpdate]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowAdd(false);
@@ -60,22 +64,22 @@ export default function Brands() {
         brand
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
       if (error.response.status === 422) {
-        setIsError({
-          error: true,
-          message: error.response.data.errors.brand_name,
+        Toast.fire({
+          icon: "error",
+          title: error.response.data.errors.brand_name,
         });
       }
     }
@@ -90,15 +94,15 @@ export default function Brands() {
         brand.brand_id
       );
       if (res.data.error) {
-        setIsError({
-          error: true,
-          message: res.data.message,
+        Toast.fire({
+          icon: "error",
+          title: res.data.message,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -115,22 +119,22 @@ export default function Brands() {
         brand
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
       if (error.response.status === 422) {
-        setIsError({
-          error: true,
-          message: error.response.data.errors.brand_name,
+        Toast.fire({
+          icon: "error",
+          title: error.response.data.errors.brand_name,
         });
       }
     }
@@ -149,15 +153,15 @@ export default function Brands() {
         { headers: { "content-type": "multipart/form-data" } }
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -166,20 +170,20 @@ export default function Brands() {
       if (error.response.status === 422) {
         let message = error.response.data;
         if (message.errors.import_file) {
-          setIsError({
-            error: true,
-            message: message.errors.import_file,
+          Toast.fire({
+            icon: "error",
+            title: message.errors.import_file,
           });
         } else {
-          setIsError({
-            error: true,
-            message: message.errors[0],
+          Toast.fire({
+            icon: "error",
+            title: message.errors[0],
           });
         }
       } else if (err_message.split(":")[0] === "Undefined index") {
-        setIsError({
-          error: true,
-          message: `Import file doesn't has '${
+        Toast.fire({
+          icon: "error",
+          title: `Import file doesn't has '${
             err_message.split(":")[1]
           }' column!`,
         });
@@ -296,24 +300,6 @@ export default function Brands() {
     <Content
       content={
         <div>
-          {isError.error && (
-            <Alert
-              variant="danger"
-              onClose={() => setIsError(false)}
-              dismissible
-            >
-              {isError.message}
-            </Alert>
-          )}
-          {isSuccess.success && (
-            <Alert
-              variant="success"
-              onClose={() => setIsSuccess(false)}
-              dismissible
-            >
-              {isSuccess.message}
-            </Alert>
-          )}
           <Card
             title={
               <div>
