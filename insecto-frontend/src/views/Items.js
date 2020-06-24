@@ -19,7 +19,7 @@ export default function Items() {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [item, setItem] = useState({
+  const initialState = {
     item_code: 0,
     item_name: "",
     building_id: 0,
@@ -28,7 +28,8 @@ export default function Items() {
     serial_number: "",
     model: "",
     group: "",
-  });
+  };
+  const [item, setItem] = useState(initialState);
   const [rooms, setRooms] = useState({});
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
@@ -84,6 +85,7 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items`,
         item
       );
+      setItem(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -129,6 +131,7 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item.item_id
       );
+      setItem(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -154,6 +157,7 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item
       );
+      setItem(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -513,7 +517,10 @@ export default function Items() {
 
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setItem(initialState);
+            }}
             title="Add Item"
             close="Close"
             body={
@@ -808,7 +815,10 @@ export default function Items() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setItem(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -825,7 +835,10 @@ export default function Items() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setItem(initialState);
+            }}
             title="Edit Item"
             body={
               <div>

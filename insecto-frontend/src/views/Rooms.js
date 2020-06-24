@@ -18,12 +18,13 @@ export default function Rooms() {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [room, setRoom] = useState({
+  const initialState = {
     room_id: 0,
     room_code: "",
     room_name: "",
     building_id: 0,
-  });
+  };
+  const [room, setRoom] = useState(initialState);
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
   );
@@ -70,6 +71,7 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms`,
         room
       );
+      setRoom(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -110,6 +112,7 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         room.room_id
       );
+      setRoom(initialState);
       if (res.data.error) {
         Toast.fire({
           icon: "error",
@@ -135,6 +138,7 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         room
       );
+      setRoom(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -259,11 +263,13 @@ export default function Rooms() {
         name: "#",
         selector: "room_id",
         sortable: true,
+        width: "110px",
       },
       {
         name: "Room Code*",
         selector: "room_code",
         sortable: true,
+        width: "120px",
       },
       {
         name: "Room Name",
@@ -413,7 +419,10 @@ export default function Rooms() {
           />
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setRoom(initialState);
+            }}
             close="Close"
             title="Add Room"
             body={
@@ -507,7 +516,10 @@ export default function Rooms() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setRoom(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -528,7 +540,10 @@ export default function Rooms() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setRoom(initialState);
+            }}
             title="Edit Room"
             body={
               <>

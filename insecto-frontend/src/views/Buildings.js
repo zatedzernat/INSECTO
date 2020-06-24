@@ -17,11 +17,12 @@ export default function Buildings() {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [building, setBuilding] = useState({
+  const initialState = {
     // building_id: 0,
     building_code: 0,
     building_name: "",
-  });
+  };
+  const [building, setBuilding] = useState(initialState);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -65,6 +66,7 @@ export default function Buildings() {
         `${process.env.REACT_APP_API_URL}buildings`,
         building
       );
+      setBuilding(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -101,6 +103,7 @@ export default function Buildings() {
         `${process.env.REACT_APP_API_URL}buildings/${building.building_id}`,
         building.building_id
       );
+      setBuilding(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -126,6 +129,7 @@ export default function Buildings() {
         `${process.env.REACT_APP_API_URL}buildings/${building.building_id}`,
         building
       );
+      setBuilding(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -352,7 +356,10 @@ export default function Buildings() {
           />
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setBuilding(initialState);
+            }}
             title="Add Building"
             close="Close"
             body={
@@ -404,7 +411,10 @@ export default function Buildings() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setBuilding(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -425,7 +435,10 @@ export default function Buildings() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setBuilding(initialState);
+            }}
             title="Edit Building"
             body={
               <>

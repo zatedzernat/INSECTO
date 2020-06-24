@@ -17,10 +17,11 @@ export default function Brands() {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [brand, setBrand] = useState({
+  const initialState = {
     brand_id: 0,
     brand_name: "",
-  });
+  };
+  const [brand, setBrand] = useState(initialState);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -63,6 +64,7 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands`,
         brand
       );
+      setBrand(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -93,6 +95,7 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         brand.brand_id
       );
+      setBrand(initialState);
       if (res.data.error) {
         Toast.fire({
           icon: "error",
@@ -118,6 +121,7 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         brand
       );
+      setBrand(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -338,7 +342,10 @@ export default function Brands() {
 
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setBrand(initialState);
+            }}
             title="Add Brand"
             body={
               <div className="form-group row">
@@ -367,7 +374,10 @@ export default function Brands() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setBrand(initialState);
+            }}
             title="Are you sure that you want to delete?"
             body={
               <div className="form-group col-form-label">
@@ -384,7 +394,10 @@ export default function Brands() {
           />
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setBrand(initialState);
+            }}
             title="Edit Brand"
             body={
               <>

@@ -18,11 +18,12 @@ export default function ProblemDescriptions() {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [problemDesc, setProblemDesc] = useState({
+  const initialState = {
     problem_des_id: 0,
     problem_description: "",
     type_id: "",
-  });
+  };
+  const [problemDesc, setProblemDesc] = useState(initialState);
   const [selectType, setSelectType] = useState("- select type name -");
 
   const fetchData = async () => {
@@ -60,6 +61,7 @@ export default function ProblemDescriptions() {
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
   });
+
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setSelectType("- select type name -");
@@ -69,6 +71,7 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs`,
         problemDesc
       );
+      setProblemDesc(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -105,6 +108,7 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
         problemDesc.problem_des_id
       );
+      setProblemDesc(initialState);
       if (res.data.error) {
         Toast.fire({
           icon: "error",
@@ -130,6 +134,7 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
         problemDesc
       );
+      setProblemDesc(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -362,7 +367,10 @@ export default function ProblemDescriptions() {
           />
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setProblemDesc(initialState);
+            }}
             title="Add Problem Description"
             method="POST"
             close="Close"
@@ -428,7 +436,10 @@ export default function ProblemDescriptions() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setProblemDesc(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -443,7 +454,10 @@ export default function ProblemDescriptions() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setProblemDesc(initialState);
+            }}
             title="Edit Problem Description"
             method="POST"
             onSubmit={editHandleSubmit}

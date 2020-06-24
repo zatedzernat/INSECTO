@@ -17,9 +17,10 @@ export default function ItemTypes() {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [itemType, setItemType] = useState({
+  const initialState = {
     type_name: "",
-  });
+  };
+  const [itemType, setItemType] = useState(initialState);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -63,6 +64,7 @@ export default function ItemTypes() {
         `${process.env.REACT_APP_API_URL}item_types`,
         itemType
       );
+      setItemType(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -93,6 +95,7 @@ export default function ItemTypes() {
         `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
         itemType.type_id
       );
+      setItemType(initialState);
       if (res.data.error) {
         Toast.fire({
           icon: "error",
@@ -118,6 +121,7 @@ export default function ItemTypes() {
         `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
         itemType
       );
+      setItemType(initialState);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -337,7 +341,10 @@ export default function ItemTypes() {
           />
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setItemType(initialState);
+            }}
             title="Add Item Type"
             method="POST"
             close="Close"
@@ -368,7 +375,10 @@ export default function ItemTypes() {
           />
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setItemType(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -387,7 +397,10 @@ export default function ItemTypes() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setItemType(initialState);
+            }}
             title="Edit Item Type"
             body={
               <>
