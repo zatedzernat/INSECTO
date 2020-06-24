@@ -93,9 +93,10 @@ export default function Rooms() {
         let mess3 = error.response.data.errors.building_id
           ? error.response.data.errors.building_id
           : "";
+        let mess = mess1 + " " + mess2 + " " + mess3;
         Toast.fire({
           icon: "error",
-          title: mess1 + " " + mess2,
+          title: mess,
         });
       }
     }

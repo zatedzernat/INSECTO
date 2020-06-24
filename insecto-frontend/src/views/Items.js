@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
-import { Button, Alert, Dropdown, Form, ButtonGroup } from "react-bootstrap";
+import { Button, Dropdown, Form, ButtonGroup } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DropdownItem from "react-bootstrap/DropdownItem";

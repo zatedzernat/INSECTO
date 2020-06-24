@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Button, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
