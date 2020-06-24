@@ -108,7 +108,7 @@ export default function ProblemDescriptions() {
       if (res.data.error) {
         Toast.fire({
           icon: "error",
-          title: res.data.message,
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
