@@ -7,6 +7,7 @@ import axios from "axios";
 import moment from "moment";
 import FormModal from "../components/FormModal";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ButtonToTop from "../components/ButtonToTop";
 
 export default function HistoryLogs() {
   const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ export default function HistoryLogs() {
   const [count, setCount] = useState(7);
   const [countDays, setCountDays] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [intervalId, setIntervalId] = useState(0);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -183,6 +185,7 @@ export default function HistoryLogs() {
   };
 
   return (
+    <>
     <Content
       content={
         <Card
@@ -197,5 +200,7 @@ export default function HistoryLogs() {
         />
       }
     />
+    <ButtonToTop scrollStepInPx="50" delayInMs="6.66" intervalId={intervalId} setIntervalId={setIntervalId} />
+    </>
   );
 }
