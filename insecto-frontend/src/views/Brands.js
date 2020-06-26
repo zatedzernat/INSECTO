@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Button, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 export default function Brands() {
   const [data, setData] = useState([]);
@@ -14,20 +15,13 @@ export default function Brands() {
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [modalShowImport, setModalShowImport] = useState(false);
   const [file, setFile] = useState();
-  const [isError, setIsError] = useState({
-    error: false,
-    message: "",
-  });
-  const [isSuccess, setIsSuccess] = useState({
-    success: false,
-    message: "",
-  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [brand, setBrand] = useState({
+  const initialState = {
     brand_id: 0,
     brand_name: "",
-  });
+  };
+  const [brand, setBrand] = useState(initialState);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -51,6 +45,17 @@ export default function Brands() {
     };
   }, [lastUpdate]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowAdd(false);
@@ -59,23 +64,24 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands`,
         brand
       );
+      setBrand(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
       if (error.response.status === 422) {
-        setIsError({
-          error: true,
-          message: error.response.data.errors.brand_name,
+        Toast.fire({
+          icon: "error",
+          title: error.response.data.errors.brand_name,
         });
       }
     }
@@ -89,16 +95,17 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         brand.brand_id
       );
+      setBrand(initialState);
       if (res.data.error) {
-        setIsError({
-          error: true,
-          message: res.data.message,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -114,23 +121,24 @@ export default function Brands() {
         `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         brand
       );
+      setBrand(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
       if (error.response.status === 422) {
-        setIsError({
-          error: true,
-          message: error.response.data.errors.brand_name,
+        Toast.fire({
+          icon: "error",
+          title: error.response.data.errors.brand_name,
         });
       }
     }
@@ -149,15 +157,15 @@ export default function Brands() {
         { headers: { "content-type": "multipart/form-data" } }
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -166,20 +174,20 @@ export default function Brands() {
       if (error.response.status === 422) {
         let message = error.response.data;
         if (message.errors.import_file) {
-          setIsError({
-            error: true,
-            message: message.errors.import_file,
+          Toast.fire({
+            icon: "error",
+            title: message.errors.import_file,
           });
         } else {
-          setIsError({
-            error: true,
-            message: message.errors[0],
+          Toast.fire({
+            icon: "error",
+            title: message.errors[0],
           });
         }
       } else if (err_message.split(":")[0] === "Undefined index") {
-        setIsError({
-          error: true,
-          message: `Import file doesn't has '${
+        Toast.fire({
+          icon: "error",
+          title: `Import file doesn't has '${
             err_message.split(":")[1]
           }' column!`,
         });
@@ -269,7 +277,7 @@ export default function Brands() {
       rows: {
         style: {
           fontSize: "15px",
-        }
+        },
       },
       headCells: {
         style: {
@@ -296,24 +304,6 @@ export default function Brands() {
     <Content
       content={
         <div>
-          {isError.error && (
-            <Alert
-              variant="danger"
-              onClose={() => setIsError(false)}
-              dismissible
-            >
-              {isError.message}
-            </Alert>
-          )}
-          {isSuccess.success && (
-            <Alert
-              variant="success"
-              onClose={() => setIsSuccess(false)}
-              dismissible
-            >
-              {isSuccess.message}
-            </Alert>
-          )}
           <Card
             title={
               <div>
@@ -352,7 +342,10 @@ export default function Brands() {
 
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setBrand(initialState);
+            }}
             title="Add Brand"
             body={
               <div className="form-group row">
@@ -365,7 +358,7 @@ export default function Brands() {
                     className="form-control"
                     name="brand_name"
                     onChange={(event) =>
-                      setBrand({ brand_name: event.target.value })
+                      setBrand({ ...brand, brand_name: event.target.value })
                     }
                     required
                     autoFocus
@@ -381,7 +374,10 @@ export default function Brands() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setBrand(initialState);
+            }}
             title="Are you sure that you want to delete?"
             body={
               <div className="form-group col-form-label">
@@ -398,7 +394,10 @@ export default function Brands() {
           />
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setBrand(initialState);
+            }}
             title="Edit Brand"
             body={
               <>
@@ -414,7 +413,7 @@ export default function Brands() {
                       value={brand.brand_name}
                       onChange={(event) =>
                         setBrand({
-                          brand_id: brand.brand_id,
+                          ...brand,
                           brand_name: event.target.value,
                         })
                       }

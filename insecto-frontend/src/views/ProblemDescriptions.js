@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
-import { Button, Alert, Dropdown, ButtonGroup } from "react-bootstrap";
+import { Button, Dropdown, ButtonGroup } from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 export default function ProblemDescriptions() {
   const [data, setData] = useState([]);
@@ -15,23 +16,14 @@ export default function ProblemDescriptions() {
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [modalShowImport, setModalShowImport] = useState(false);
   const [file, setFile] = useState();
-  const [isError, setIsError] = useState({
-    error: false,
-    success: false,
-    message: "",
-    time: "",
-  });
-  const [isSuccess, setIsSuccess] = useState({
-    success: false,
-    message: "",
-  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [problemDesc, setProblemDesc] = useState({
+  const initialState = {
     problem_des_id: 0,
     problem_description: "",
     type_id: "",
-  });
+  };
+  const [problemDesc, setProblemDesc] = useState(initialState);
   const [selectType, setSelectType] = useState("- select type name -");
 
   const fetchData = async () => {
@@ -58,6 +50,18 @@ export default function ProblemDescriptions() {
     };
   }, [lastUpdate]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setSelectType("- select type name -");
@@ -67,16 +71,17 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs`,
         problemDesc
       );
+      setProblemDesc(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -87,9 +92,9 @@ export default function ProblemDescriptions() {
         let mess2 = error.response.data.errors.type_id
           ? error.response.data.errors.type_id
           : "";
-        setIsError({
-          error: true,
-          message: mess1 + " " + mess2,
+        Toast.fire({
+          icon: "error",
+          title: mess1 + " " + mess2,
         });
       }
     }
@@ -103,16 +108,17 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
         problemDesc.problem_des_id
       );
+      setProblemDesc(initialState);
       if (res.data.error) {
-        setIsError({
-          error: true,
-          message: res.data.message,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -128,23 +134,24 @@ export default function ProblemDescriptions() {
         `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
         problemDesc
       );
+      setProblemDesc(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
       if (error.response.status === 422) {
-        setIsError({
-          error: true,
-          message: error.response.data.errors.problem_description,
+        Toast.fire({
+          icon: "error",
+          title: error.response.data.errors.problem_description,
         });
       }
     }
@@ -163,15 +170,15 @@ export default function ProblemDescriptions() {
         { headers: { "content-type": "multipart/form-data" } }
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -180,20 +187,20 @@ export default function ProblemDescriptions() {
       if (error.response.status === 422) {
         let message = error.response.data;
         if (message.errors.import_file) {
-          setIsError({
-            error: true,
-            message: message.errors.import_file,
+          Toast.fire({
+            icon: "error",
+            title: message.errors.import_file,
           });
         } else {
-          setIsError({
-            error: true,
-            message: message.errors[0],
+          Toast.fire({
+            icon: "error",
+            title: message.errors[0],
           });
         }
       } else if (err_message.split(":")[0] === "Undefined index") {
-        setIsError({
-          error: true,
-          message: `Import file doesn't has '${
+        Toast.fire({
+          icon: "error",
+          title: `Import file doesn't has '${
             err_message.split(":")[1]
           }' column!`,
         });
@@ -290,7 +297,7 @@ export default function ProblemDescriptions() {
       rows: {
         style: {
           fontSize: "15px",
-        }
+        },
       },
       headCells: {
         style: {
@@ -317,24 +324,6 @@ export default function ProblemDescriptions() {
     <Content
       content={
         <div>
-          {isError.error && (
-            <Alert
-              variant="danger"
-              onClose={() => setIsError(false)}
-              dismissible
-            >
-              {isError.message}
-            </Alert>
-          )}
-          {isSuccess.success && (
-            <Alert
-              variant="success"
-              onClose={() => setIsSuccess(false)}
-              dismissible
-            >
-              {isSuccess.message}
-            </Alert>
-          )}
           <Card
             title={
               <div>
@@ -378,7 +367,10 @@ export default function ProblemDescriptions() {
           />
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setProblemDesc(initialState);
+            }}
             title="Add Problem Description"
             method="POST"
             close="Close"
@@ -396,6 +388,7 @@ export default function ProblemDescriptions() {
                       name="problem_description"
                       onChange={(event) =>
                         setProblemDesc({
+                          ...problemDesc,
                           problem_description: event.target.value,
                         })
                       }
@@ -443,7 +436,10 @@ export default function ProblemDescriptions() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setProblemDesc(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -458,7 +454,10 @@ export default function ProblemDescriptions() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setProblemDesc(initialState);
+            }}
             title="Edit Problem Description"
             method="POST"
             onSubmit={editHandleSubmit}
@@ -476,9 +475,8 @@ export default function ProblemDescriptions() {
                       value={problemDesc.problem_description}
                       onChange={(event) =>
                         setProblemDesc({
-                          problem_des_id: problemDesc.problem_des_id,
+                          ...problemDesc,
                           problem_description: event.target.value,
-                          type_id: problemDesc.type_id,
                         })
                       }
                       required
@@ -505,9 +503,7 @@ export default function ProblemDescriptions() {
                             eventKey={type.type_id}
                             onSelect={(eventKey) => {
                               setProblemDesc({
-                                problem_des_id: problemDesc.problem_des_id,
-                                problem_description:
-                                  problemDesc.problem_description,
+                                ...problemDesc,
                                 type_id: eventKey,
                               });
                               setSelectType(type.type_name);
@@ -523,7 +519,9 @@ export default function ProblemDescriptions() {
                 <div className="form-group row">
                   <label className="col-sm-6 col-form-label">Created At:</label>
                   <div className="col-sm-6 col-form-label">
-                    {moment(problemDesc.created_at).format("D/MM/YYYY - HH:mm:ss")}
+                    {moment(problemDesc.created_at).format(
+                      "D/MM/YYYY - HH:mm:ss"
+                    )}
                   </div>
                 </div>
               </>

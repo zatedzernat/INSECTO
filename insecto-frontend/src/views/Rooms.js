@@ -3,10 +3,11 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
 import axios from "axios";
-import { Button, Dropdown, Alert, Form, ButtonGroup } from "react-bootstrap";
+import { Button, Dropdown, Form, ButtonGroup } from "react-bootstrap";
 import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 export default function Rooms() {
   const [data, setData] = useState([]);
@@ -15,22 +16,15 @@ export default function Rooms() {
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [modalShowImport, setModalShowImport] = useState(false);
   const [file, setFile] = useState();
-  const [isError, setIsError] = useState({
-    error: false,
-    message: "",
-  });
-  const [isSuccess, setIsSuccess] = useState({
-    success: false,
-    message: "",
-  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [room, setRoom] = useState({
+  const initialState = {
     room_id: 0,
     room_code: "",
     room_name: "",
     building_id: 0,
-  });
+  };
+  const [room, setRoom] = useState(initialState);
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
   );
@@ -56,6 +50,18 @@ export default function Rooms() {
     };
   }, [lastUpdate]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setSelectBuilding("- select building name -");
@@ -65,16 +71,17 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms`,
         room
       );
+      setRoom(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -88,9 +95,10 @@ export default function Rooms() {
         let mess3 = error.response.data.errors.building_id
           ? error.response.data.errors.building_id
           : "";
-        setIsError({
-          error: true,
-          message: mess1 + " " + mess2 + " " + mess3,
+        let mess = mess1 + " " + mess2 + " " + mess3;
+        Toast.fire({
+          icon: "error",
+          title: mess,
         });
       }
     }
@@ -104,16 +112,17 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         room.room_id
       );
+      setRoom(initialState);
       if (res.data.error) {
-        setIsError({
-          error: true,
-          message: res.data.message,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -129,23 +138,24 @@ export default function Rooms() {
         `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         room
       );
+      setRoom(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
       if (error.response.status === 422) {
-        setIsError({
-          error: true,
-          message: error.response.data.errors.room_name,
+        Toast.fire({
+          icon: "error",
+          title: error.response.data.errors.room_name,
         });
       }
     }
@@ -186,15 +196,15 @@ export default function Rooms() {
         { headers: { "content-type": "multipart/form-data" } }
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -203,20 +213,20 @@ export default function Rooms() {
       if (error.response.status === 422) {
         let message = error.response.data;
         if (message.errors.import_file) {
-          setIsError({
-            error: true,
-            message: message.errors.import_file,
+          Toast.fire({
+            icon: "error",
+            title: message.errors.import_file,
           });
         } else {
-          setIsError({
-            error: true,
-            message: message.errors[0],
+          Toast.fire({
+            icon: "error",
+            title: message.errors[0],
           });
         }
       } else if (err_message.split(":")[0] === "Undefined index") {
-        setIsError({
-          error: true,
-          message: `Import file doesn't has '${
+        Toast.fire({
+          icon: "error",
+          title: `Import file doesn't has '${
             err_message.split(":")[1]
           }' column!`,
         });
@@ -253,11 +263,13 @@ export default function Rooms() {
         name: "#",
         selector: "room_id",
         sortable: true,
+        width: "110px",
       },
       {
         name: "Room Code*",
         selector: "room_code",
         sortable: true,
+        width: "120px",
       },
       {
         name: "Room Name",
@@ -330,14 +342,14 @@ export default function Rooms() {
           </>
         ),
         button: true,
-        width: "120px"
+        width: "120px",
       },
     ];
     const myFonts = {
       rows: {
         style: {
           fontSize: "15px",
-        }
+        },
       },
       headCells: {
         style: {
@@ -364,24 +376,6 @@ export default function Rooms() {
     <Content
       content={
         <div>
-          {isError.error && (
-            <Alert
-              variant="danger"
-              onClose={() => setIsError(false)}
-              dismissible
-            >
-              {isError.message}
-            </Alert>
-          )}
-          {isSuccess.success && (
-            <Alert
-              variant="success"
-              onClose={() => setIsSuccess(false)}
-              dismissible
-            >
-              {isSuccess.message}
-            </Alert>
-          )}
           <Card
             title={
               <div>
@@ -425,7 +419,10 @@ export default function Rooms() {
           />
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setRoom(initialState);
+            }}
             close="Close"
             title="Add Room"
             body={
@@ -443,7 +440,7 @@ export default function Rooms() {
                         let str = event.target.value;
                         let rs = str.indexOf("/");
                         if (rs === -1) {
-                          setRoom({ room_code: event.target.value });
+                          setRoom({ ...room, room_code: event.target.value });
                         } else {
                           event.target.value = "";
                         }
@@ -519,7 +516,10 @@ export default function Rooms() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setRoom(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -540,7 +540,10 @@ export default function Rooms() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setRoom(initialState);
+            }}
             title="Edit Room"
             body={
               <>
@@ -571,9 +574,7 @@ export default function Rooms() {
                       value={room.room_name}
                       onChange={(event) =>
                         setRoom({
-                          room_id: room.room_id,
-                          room_code: room.room_code,
-                          building_id: room.building_id,
+                          ...room,
                           room_name: event.target.value,
                         })
                       }
@@ -603,9 +604,7 @@ export default function Rooms() {
                             eventKey={building.building_id}
                             onSelect={(eventKey) => {
                               setRoom({
-                                room_id: room.room_id,
-                                room_code: room.room_code,
-                                room_name: room.room_name,
+                                ...room,
                                 building_id: eventKey,
                               });
                               setSelectBuilding(building.building_name);

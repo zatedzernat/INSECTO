@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
-import { Button, Alert, Dropdown, Form, ButtonGroup } from "react-bootstrap";
+import { Button, Dropdown, Form, ButtonGroup } from "react-bootstrap";
 import axios from "axios";
 import FormModal from "../components/FormModal";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 export default function Items() {
   const [data, setData] = useState([]);
@@ -16,17 +17,9 @@ export default function Items() {
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [modalShowImport, setModalShowImport] = useState(false);
   const [file, setFile] = useState();
-  const [isError, setIsError] = useState({
-    error: false,
-    message: "",
-  });
-  const [isSuccess, setIsSuccess] = useState({
-    success: false,
-    message: "",
-  });
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
-  const [item, setItem] = useState({
+  const initialState = {
     item_code: 0,
     item_name: "",
     building_id: 0,
@@ -35,7 +28,8 @@ export default function Items() {
     serial_number: "",
     model: "",
     group: "",
-  });
+  };
+  const [item, setItem] = useState(initialState);
   const [rooms, setRooms] = useState({});
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
@@ -67,6 +61,18 @@ export default function Items() {
     };
   }, [lastUpdate]);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setSelectBuilding("- select building name -");
@@ -79,16 +85,17 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items`,
         item
       );
+      setItem(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -108,10 +115,9 @@ export default function Items() {
         let mess5 = error.response.data.errors.group
           ? error.response.data.errors.group
           : "";
-        setIsError({
-          error: true,
-          message:
-            mess1 + " " + mess2 + " " + mess3 + " " + mess4 + " " + mess5,
+        Toast.fire({
+          icon: "error",
+          title: mess1 + " " + mess2 + " " + mess3 + " " + mess4 + " " + mess5,
         });
       }
     }
@@ -125,16 +131,17 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item.item_id
       );
+      setItem(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -150,16 +157,17 @@ export default function Items() {
         `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         item
       );
+      setItem(initialState);
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -170,9 +178,9 @@ export default function Items() {
         let mess2 = error.response.data.errors.room_id
           ? error.response.data.errors.room_id
           : "";
-        setIsError({
-          error: true,
-          message: mess1 + " " + mess2,
+        Toast.fire({
+          icon: "error",
+          title: mess1 + " " + mess2,
         });
       }
     }
@@ -235,15 +243,15 @@ export default function Items() {
         { headers: { "content-type": "multipart/form-data" } }
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         setLastUpdate(res.data.time);
-        setIsSuccess({
-          success: true,
-          message: res.data.success,
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
         });
       }
     } catch (error) {
@@ -252,20 +260,20 @@ export default function Items() {
       if (error.response.status === 422) {
         let message = error.response.data;
         if (message.errors.import_file) {
-          setIsError({
-            error: true,
-            message: message.errors.import_file,
+          Toast.fire({
+            icon: "error",
+            title: message.errors.import_file,
           });
         } else {
-          setIsError({
-            error: true,
-            message: message.errors[0],
+          Toast.fire({
+            icon: "error",
+            title: message.errors[0],
           });
         }
       } else if (err_message.split(":")[0] === "Undefined index") {
-        setIsError({
-          error: true,
-          message: `Import file doesn't has '${
+        Toast.fire({
+          icon: "error",
+          title: `Import file doesn't has '${
             err_message.split(":")[1]
           }' column!`,
         });
@@ -410,7 +418,7 @@ export default function Items() {
           textAlign: "center",
           fontSize: "15px",
           backgroundColor: "#9CBBA6",
-          padding: "3px"
+          padding: "3px",
         }}
       >
         Building: {data.room.building.building_code} &emsp; Brand:{" "}
@@ -455,24 +463,6 @@ export default function Items() {
     <Content
       content={
         <div>
-          {isError.error && (
-            <Alert
-              variant="danger"
-              onClose={() => setIsError(false)}
-              dismissible
-            >
-              {isError.message}
-            </Alert>
-          )}
-          {isSuccess.success && (
-            <Alert
-              variant="success"
-              onClose={() => setIsSuccess(false)}
-              dismissible
-            >
-              {isSuccess.message}
-            </Alert>
-          )}
           <Card
             title={
               <div>
@@ -527,7 +517,10 @@ export default function Items() {
 
           <FormModal
             show={modalShowAdd}
-            onHide={() => setModalShowAdd(false)}
+            onHide={() => {
+              setModalShowAdd(false);
+              setItem(initialState);
+            }}
             title="Add Item"
             close="Close"
             body={
@@ -545,7 +538,7 @@ export default function Items() {
                         let str = event.target.value;
                         let rs = str.indexOf("/");
                         if (rs === -1) {
-                          setItem({ item_code: event.target.value });
+                          setItem({ ...item, item_code: event.target.value });
                         } else {
                           event.target.value = "";
                         }
@@ -738,16 +731,8 @@ export default function Items() {
                             eventKey={null}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
+                                ...item,
                                 brand_id: eventKey,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
                               });
                               setSelectBrand("no brand");
                             }}
@@ -830,7 +815,10 @@ export default function Items() {
 
           <FormModal
             show={modalShowDel}
-            onHide={() => setModalShowDel(false)}
+            onHide={() => {
+              setModalShowDel(false);
+              setItem(initialState);
+            }}
             title="Do you confirm to delete?"
             body={
               <div className="form-group col-form-label">
@@ -847,7 +835,10 @@ export default function Items() {
 
           <FormModal
             show={modalShowEdit}
-            onHide={() => setModalShowEdit(false)}
+            onHide={() => {
+              setModalShowEdit(false);
+              setItem(initialState);
+            }}
             title="Edit Item"
             body={
               <div>
@@ -878,17 +869,8 @@ export default function Items() {
                       value={item.item_name}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
+                          ...item,
                           item_name: event.target.value,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
-                          model: item.model,
-                          group: item.group,
-                          note: item.note,
                         })
                       }
                       required
@@ -917,17 +899,8 @@ export default function Items() {
                             eventKey={type.type_id}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
+                                ...item,
                                 type_id: eventKey,
-                                building_id: item.building_id,
-                                brand_id: item.brand_id,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectType(type.type_name);
                             }}
@@ -996,17 +969,8 @@ export default function Items() {
                             eventKey={room.room_id}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
+                                ...item,
                                 room_id: eventKey,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
-                                brand_id: item.brand_id,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectRoom(room.room_name);
                             }}
@@ -1037,17 +1001,8 @@ export default function Items() {
                           eventKey="Y"
                           onSelect={(eventKey) => {
                             setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: item.building_id,
-                              brand_id: item.brand_id,
-                              serial_number: item.serial_number,
-                              model: item.model,
+                              ...item,
                               group: eventKey,
-                              note: item.note,
                             });
                             setSelectGroup("Y");
                           }}
@@ -1059,17 +1014,8 @@ export default function Items() {
                           eventKey="N"
                           onSelect={(eventKey) => {
                             setItem({
-                              item_id: item.item_id,
-                              item_code: item.item_code,
-                              item_name: item.item_name,
-                              room_id: item.room_id,
-                              type_id: item.type_id,
-                              building_id: item.building_id,
-                              brand_id: item.brand_id,
-                              serial_number: item.serial_number,
-                              model: item.model,
+                              ...item,
                               group: eventKey,
-                              note: item.note,
                             });
                             setSelectGroup("N");
                           }}
@@ -1098,17 +1044,8 @@ export default function Items() {
                             eventKey={null}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
+                                ...item,
                                 brand_id: eventKey,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectBrand("no brand");
                             }}
@@ -1122,17 +1059,8 @@ export default function Items() {
                             eventKey={brand.brand_id}
                             onSelect={(eventKey) => {
                               setItem({
-                                item_id: item.item_id,
-                                item_code: item.item_code,
-                                item_name: item.item_name,
-                                room_id: item.room_id,
-                                type_id: item.type_id,
-                                building_id: item.building_id,
+                                ...item,
                                 brand_id: eventKey,
-                                serial_number: item.serial_number,
-                                model: item.model,
-                                group: item.group,
-                                note: item.note,
                               });
                               setSelectBrand(brand.brand_name);
                             }}
@@ -1157,17 +1085,8 @@ export default function Items() {
                       value={item.serial_number ?? ""}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
+                          ...item,
                           serial_number: event.target.value,
-                          model: item.model,
-                          group: item.group,
-                          note: item.note,
                         })
                       }
                     />
@@ -1184,17 +1103,8 @@ export default function Items() {
                       value={item.model ?? ""}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
+                          ...item,
                           model: event.target.value,
-                          group: item.group,
-                          note: item.note,
                         })
                       }
                     />
@@ -1211,16 +1121,7 @@ export default function Items() {
                       value={item.note ?? ""}
                       onChange={(event) =>
                         setItem({
-                          item_id: item.item_id,
-                          item_code: item.item_code,
-                          item_name: item.item_name,
-                          room_id: item.room_id,
-                          type_id: item.type_id,
-                          building_id: item.building_id,
-                          brand_id: item.brand_id,
-                          serial_number: item.serial_number,
-                          model: item.model,
-                          group: item.group,
+                          ...item,
                           note: event.target.value,
                         })
                       }
