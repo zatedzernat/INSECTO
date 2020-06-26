@@ -6,21 +6,31 @@ import _ from "lodash";
 import axios from "axios";
 import moment from "moment";
 import FormModal from "../components/FormModal";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function HistoryLogs() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [historyLog, setHistoryLog] = useState({});
   const [modalShowDetail, setModalShowDetail] = useState(false);
+  const [count, setCount] = useState(7);
+  const [countDays, setCountDays] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}history_logs`
+      if (countDays === 0) {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}history_logs/${count}`
+        );
+        setData(res.data);
+      }
+      const temp = await axios.get(
+        `${process.env.REACT_APP_API_URL}history_logs/`
       );
-      setData(res.data);
       setIsLoading(false);
+      setCountDays(temp.data.countDays);
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
@@ -53,74 +63,108 @@ export default function HistoryLogs() {
     return str;
   };
 
+  const fetchMoreData = () => {
+    // console.log("line1", count);
+    // console.log("line2", countDays);
+    if (count >= countDays) {
+      setHasMore(false);
+      return;
+    }
+    setTimeout(async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}history_logs/${count}`
+        );
+        setData(res.data);
+      } catch (error) {
+        console.log(JSON.stringify(error.response.data.errors));
+      }
+      setCount(count + 7);
+    }, 500);
+  };
+
   const HistoryLogCard = (props) => {
     return (
       <div>
         <div className="card-body">
-          {_.map(props.data, (value, key, i) => (
-            <div key={key} className="card card-info">
-              <div className="card-header">
-                <h3 className="card-title">{key}</h3>
-                {i === 1 ? (
-                  <div className="card-tools">
-                    <button
-                      type="button"
-                      className="btn btn-tool"
-                      data-card-widget="collapse"
-                    >
-                      <i className="fas fa-plus" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="card-tools">
-                    <button
-                      type="button"
-                      className="btn btn-tool"
-                      data-card-widget="collapse"
-                    >
-                      <i className="fas fa-minus"></i>
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="card-body">
-                {_.map(value, (log) => (
-                  <Row key={log.id}>
-                    <Col>{moment(log.updated_at).format("HH:mm:ss")}</Col>
-                    <Col xs={3}>
-                      {log.event[0].toUpperCase() + log.event.slice(1)}
-                      <Button
-                        variant="link"
-                        onClick={() => {
-                          setModalShowDetail(true);
-                          setHistoryLog(log);
-                        }}
+          <InfiniteScroll
+            dataLength={count}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={<h4>Loading... 7 days ago</h4>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            {_.map(props.data, (value, key, i) => (
+              <div key={key} className="card card-info">
+                <div className="card-header">
+                  <h3 className="card-title">{key}</h3>
+                  {i === 1 ? (
+                    <div className="card-tools">
+                      <button
+                        type="button"
+                        className="btn btn-tool"
+                        data-card-widget="collapse"
                       >
-                        {getModel(log.auditable_type)}
-                      </Button>
-                    </Col>
-                    <Col xs={5}>
-                      {log.old_values.length === 0
-                        ? _.map(log.new_values, (value, key) => (
-                            <div key={Math.random()}>
-                              - {upperKey(key)}: {value}
-                            </div>
-                          ))
-                        : _.map(log.old_values, (value, key) => (
-                            <div key={Math.random()}>
-                              - {upperKey(key)} changed from "{value ?? "null"}"{" "}
-                              to "{_.get(log.new_values, key)}"
-                            </div>
-                          ))}
-                      <br />
-                    </Col>
-                    <Col xs={3}>by "wait for log-in system"</Col>
-                  </Row>
-                ))}
+                        <i className="fas fa-plus" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="card-tools">
+                      <button
+                        type="button"
+                        className="btn btn-tool"
+                        data-card-widget="collapse"
+                      >
+                        <i className="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div className="card-body">
+                  {_.map(value, (log) => (
+                    <Row key={log.id}>
+                      <Col>{moment(log.created_at).format("HH:mm:ss")}</Col>
+                      <Col xs={3}>
+                        {log.event[0].toUpperCase() + log.event.slice(1)}
+                        <Button
+                          variant="link"
+                          onClick={() => {
+                            setModalShowDetail(true);
+                            setHistoryLog(log);
+                          }}
+                        >
+                          {getModel(log.auditable_type)}
+                        </Button>
+                      </Col>
+                      <Col xs={5}>
+                        {log.old_values.length === 0
+                          ? _.map(log.new_values, (value, key) => (
+                              <div key={Math.random()}>
+                                - {upperKey(key)}: {value}
+                              </div>
+                            ))
+                          : _.map(log.old_values, (value, key) => (
+                              <div key={Math.random()}>
+                                - {upperKey(key)} changed from "
+                                {value ?? "null"}" to "
+                                {_.get(log.new_values, key)}"
+                              </div>
+                            ))}
+                        <br />
+                      </Col>
+                      <Col xs={3}>by "wait for log-in system"</Col>
+                    </Row>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </InfiniteScroll>
         </div>
+
         <FormModal
           show={modalShowDetail}
           onHide={() => setModalShowDetail(false)}
@@ -148,7 +192,7 @@ export default function HistoryLogs() {
               <h6>รายการบันทึกประวัติการแก้ไขทั้งหมด</h6>
             </div>
           }
-          body={historyLogTable(data.history_logs)}
+          body={historyLogTable(data.logsByDays)}
           loading={isLoading ? "overlay" : ""}
         />
       }
