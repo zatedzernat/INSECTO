@@ -17,7 +17,7 @@ export default function HistoryLogs() {
   const [count, setCount] = useState(7);
   const [countDays, setCountDays] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [intervalId, setIntervalId] = useState(0);
+  // const [intervalId, setIntervalId] = useState(0);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -184,23 +184,36 @@ export default function HistoryLogs() {
     );
   };
 
+  const GoToTop = () => {
+    const [showScroll, setShowScroll] = useState(false);
+    const checkScrollTop = () => {
+      if (!showScroll && window.pageYOffset > 400) {
+        setShowScroll(true);
+      } else if (showScroll && window.pageYOffset <= 400) {
+        setShowScroll(false);
+      }
+    };
+    window.addEventListener("scroll", checkScrollTop);
+  };
+
   return (
     <>
-    <Content
-      content={
-        <Card
-          title={
-            <div>
-              <h2>History Logs</h2>
-              <h6>รายการบันทึกประวัติการแก้ไขทั้งหมด</h6>
-            </div>
-          }
-          body={historyLogTable(data.logsByDays)}
-          loading={isLoading ? "overlay" : ""}
-        />
-      }
-    />
-    <ButtonToTop scrollStepInPx="50" delayInMs="6.66" intervalId={intervalId} setIntervalId={setIntervalId} />
+      <Content
+        content={
+          <Card
+            title={
+              <div>
+                <h2>History Logs</h2>
+                <h6>รายการบันทึกประวัติการแก้ไขทั้งหมด</h6>
+              </div>
+            }
+            body={historyLogTable(data.logsByDays)}
+            loading={isLoading ? "overlay" : ""}
+          />
+        }
+      />
+       <ButtonToTop scrollStepInPx="50" delayInMs="6.66" />;
+       {/* <ButtonToTop />; */}
     </>
   );
 }

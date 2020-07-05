@@ -1,21 +1,18 @@
-  .scroll {
-    opacity: 0.8;
-    background-color: black;
-    width: 50px;
-    height: 50px;
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    border-radius: 5px;
-    border: none;
+  .scrollTop {
+    position: fixed; 
+    width: 40px;
+    right: 20px;
+    bottom: 20px;
+    align-items: flex-end;
+    height: 20px;
+    justify-content: flex-end;
+    z-index: 1000;
+    cursor: pointer;
+    animation: fadeIn 0.3s;
+    transition: opacity 0.4s;
+    opacity: 0.5;
   }
   
-  .arrow-up {
-    color: salmon;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -9px;
-    margin-left: -5px;
+  .scrollTop:hover{
+    opacity: 1;
   }
-    
