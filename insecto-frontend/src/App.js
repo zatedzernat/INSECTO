@@ -15,8 +15,9 @@ import SendProblemGroup from "./views/mobile/MobileSendProblemGroup";
 import Home from "./views/mobile/trackingProblem";
 import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from "./Layout/layout";
-import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
-import SelectItemInRoom from "./views/mobile/SelectItemInRoom";
+// import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
+// import SelectItemInRoom from "./views/mobile/SelectItemInRoom";
+import SelectItemAndTypeInRoom from "./views/mobile/SelectItemAndTypeInRoom";
 import NoResultFound from "./views/mobile/NoResultFound";
 
 export default function App() {
@@ -76,7 +77,7 @@ export default function App() {
           component={SendProblemGroup}
           layout={Mobile}
         />
-        <RouteWrapper
+        {/* <RouteWrapper
           exact
           path="/sendproblem/room/:room_code/types"
           component={SelectTypeInRoom}
@@ -86,6 +87,12 @@ export default function App() {
           exact
           path="/sendproblem/room/:room_code/types/items"
           component={SelectItemInRoom}
+          layout={Mobile}
+        /> */}
+        <RouteWrapper
+          exact
+          path="/sendproblem/room/:room_code/items"
+          component={SelectItemAndTypeInRoom}
           layout={Mobile}
         />
         <RouteWrapper
