@@ -74,7 +74,8 @@ export default function MobileSendProblem(props) {
         <Redirect
           push
           to={{
-            pathname: `/sendproblem/room/${room_code}/types`,
+            // pathname: `/sendproblem/room/${room_code}/types`,
+            pathname: `/sendproblem/room/${room_code}/items`,
             state: { room: room, itemGroupByType: itemGroupByType },
           }}
         />
