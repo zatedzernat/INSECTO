@@ -99,8 +99,8 @@ export default function HistoryLogs() {
               </div>
             }
             endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
+              <p style={{ textAlign: "center", color: 'rgb(209, 209, 209)' }}>
+                Looks like you've reached the end
               </p>
             }
           >
