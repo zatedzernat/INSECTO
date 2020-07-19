@@ -93,7 +93,11 @@ export default function HistoryLogs() {
             dataLength={count}
             next={fetchMoreData}
             hasMore={hasMore}
-            loader={<h4>Loading... 7 days ago</h4>}
+            loader={
+              <div class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+              </div>
+            }
             endMessage={
               <p style={{ textAlign: "center" }}>
                 <b>Yay! You have seen it all</b>
@@ -212,8 +216,8 @@ export default function HistoryLogs() {
           />
         }
       />
-       <ButtonToTop scrollStepInPx="50" delayInMs="6.66" />;
-       {/* <ButtonToTop />; */}
+      <ButtonToTop scrollStepInPx="50" delayInMs="6.66" />;
+      {/* <ButtonToTop />; */}
     </>
   );
 }
