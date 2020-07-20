@@ -47,6 +47,7 @@ export default function HistoryLogs() {
     // return () => {
     //   document.body.removeChild(script);
     // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const historyLogTable = (data) => {
@@ -94,12 +95,12 @@ export default function HistoryLogs() {
             next={fetchMoreData}
             hasMore={hasMore}
             loader={
-              <div class="overlay">
-                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+              <div className="overlay">
+                <i className="fas fa-2x fa-sync-alt fa-spin"></i>
               </div>
             }
             endMessage={
-              <p style={{ textAlign: "center", color: 'rgb(209, 209, 209)' }}>
+              <p style={{ textAlign: "center", color: "rgb(209, 209, 209)" }}>
                 Looks like you've reached the end
               </p>
             }
@@ -188,17 +189,17 @@ export default function HistoryLogs() {
     );
   };
 
-  const GoToTop = () => {
-    const [showScroll, setShowScroll] = useState(false);
-    const checkScrollTop = () => {
-      if (!showScroll && window.pageYOffset > 400) {
-        setShowScroll(true);
-      } else if (showScroll && window.pageYOffset <= 400) {
-        setShowScroll(false);
-      }
-    };
-    window.addEventListener("scroll", checkScrollTop);
-  };
+  // const GoToTop = () => {
+  //   const [showScroll, setShowScroll] = useState(false);
+  //   const checkScrollTop = () => {
+  //     if (!showScroll && window.pageYOffset > 400) {
+  //       setShowScroll(true);
+  //     } else if (showScroll && window.pageYOffset <= 400) {
+  //       setShowScroll(false);
+  //     }
+  //   };
+  //   window.addEventListener("scroll", checkScrollTop);
+  // };
 
   return (
     <>
@@ -217,7 +218,6 @@ export default function HistoryLogs() {
         }
       />
       <ButtonToTop scrollStepInPx="50" delayInMs="6.66" />;
-      {/* <ButtonToTop />; */}
     </>
   );
 }
