@@ -2,22 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import _ from "lodash";
 import axios from "axios";
-import Card from "../../components/CardTracking";
+import Card from "../../../components/CardTracking";
 
 export default function TrackingProblem() {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [notiProblem, setNotiProblem] = useState({});
-  const [status, setStatus] = useState({});
 
   const fetchData = async () => {
-    setIsLoading(true);
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}noti_problems`
       );
       setData(res.data.noti_problems);
-      setIsLoading(false);
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
@@ -29,24 +24,26 @@ export default function TrackingProblem() {
 
   const statusBar = () => {
     const arr = [];
-    // for (let key in data) {
-      arr.push(
-     data.map((item) => (
-      <Row
-        style={{
-          borderColor: "#E2E2E2",
-          borderBottomWidth: 1,
-          borderBottomStyle: "solid",
-        }}
-      >
-        <Card
-          itemName={item.item.item_code + " " + item.item.item_name}
-          itemProblem={item.problem_description}
-          room={item.item.room.room_name}
-          status={item.status.status_name}
-        />
-      </Row>
-    ))) 
+    arr.push(
+      data.map((item) => (
+        <div onClick={() => alert("test")}>
+        <Row
+          style={{
+            borderColor: "#E2E2E2",
+            borderBottomWidth: 1,
+            borderBottomStyle: "solid",
+          }}
+        >
+          <Card
+            itemName={item.item.item_code + " " + item.item.item_name}
+            itemProblem={item.problem_description}
+            room={item.item.room.room_name}
+            status={item.status.status_name}
+          />
+        </Row>
+        </div>
+      ))
+    );
     return arr;
   };
 

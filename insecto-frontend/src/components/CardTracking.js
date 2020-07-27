@@ -62,7 +62,7 @@ export default function Card(props) {
     }
 
     return (
-      <Container fluid className="mt-1 text-center pt-2" style={styles}>
+      <Container fluid className="mt-1 text-center pt-2 ml-3" style={styles}>
         <p style={{ fontSize: 11, color: 'white' }}>{textStatus}</p>
       </Container>
     );

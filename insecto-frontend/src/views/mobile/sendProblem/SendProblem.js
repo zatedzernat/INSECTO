@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProblemsNotResolved from "./ProblemsNotResolved";
 import { Redirect } from "react-router-dom";
-import LoadingPage from "./LoadingPage";
-import NoResultFound from "./NoResultFound";
+import LoadingPage from "../LoadingPage";
+import NoResultFound from "../NoResultFound";
 
 export default function SendProblem(props) {
   const [item, setItem] = useState({

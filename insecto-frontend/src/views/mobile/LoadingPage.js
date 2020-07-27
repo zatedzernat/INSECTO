@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import * as loadingData from "./loading.json";
+import * as loadingData from "./constants/loading.json";
 import FadeIn from "react-fade-in";
 import Lottie from "react-lottie";
 

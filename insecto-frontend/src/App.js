@@ -9,15 +9,15 @@ import ProblemDes from "./views/ProblemDescriptions";
 import Statuses from "./views/Statuses";
 import NotiProblems from "./views/NotificationProblems";
 import HistoryLogs from "./views/HistoryLogs";
-import SendProblem from "./views/mobile/SendProblem";
-import MobileSendProblem from "./views/mobile/MobileSendProblem";
-import SendProblemGroup from "./views/mobile/MobileSendProblemGroup";
-import Home from "./views/mobile/trackingProblem";
+import SendProblem from "./views/mobile/sendProblem/SendProblem";
+import MobileSendProblem from "./views/mobile/sendProblem/MobileSendProblem";
+import SendProblemGroup from "./views/mobile/sendProblem/MobileSendProblemGroup";
+import Home from "./views/mobile/homepage/trackingProblem";
 import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from "./Layout/layout";
 // import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
 // import SelectItemInRoom from "./views/mobile/SelectItemInRoom";
-import SelectItemAndTypeInRoom from "./views/mobile/SelectItemAndTypeInRoom";
+import SelectItemAndTypeInRoom from "./views/mobile/sendProblem/SelectItemAndTypeInRoom";
 import NoResultFound from "./views/mobile/NoResultFound";
 
 export default function App() {

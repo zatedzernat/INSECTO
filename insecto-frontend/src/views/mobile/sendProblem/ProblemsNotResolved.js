@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import moment from "moment";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import Callout from "../../components/Callout";
+import Callout from "../../../components/Callout";
 
 export default function ProblemsNotResolved({
   item,
