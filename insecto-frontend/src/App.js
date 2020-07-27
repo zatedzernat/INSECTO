@@ -13,6 +13,7 @@ import SendProblem from "./views/mobile/sendProblem/SendProblem";
 import MobileSendProblem from "./views/mobile/sendProblem/MobileSendProblem";
 import SendProblemGroup from "./views/mobile/sendProblem/MobileSendProblemGroup";
 import Home from "./views/mobile/homepage/trackingProblem";
+import TrackingItem from "./views/mobile/homepage/trackingItem";
 import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from "./Layout/layout";
 // import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
@@ -25,6 +26,7 @@ export default function App() {
     <div>
       <Switch>
         <RouteWrapper exact path="/" component={Home} layout={Mobile} />
+        <RouteWrapper exact path="/:code" component={TrackingItem} layout={Mobile} />
         <RouteWrapper
           exact
           path="/admin"
