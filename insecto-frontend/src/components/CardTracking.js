@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 export default function Card(props) {
   const statusBar = () => {
     var styles;
+    var font;
     var textStatus = "";
 
     switch (props.status) {
@@ -12,12 +13,13 @@ export default function Card(props) {
           borderColor: "#93D388",
           borderWidth: 1,
           borderStyle: "solid",
-          height: 35,
-          width: 100,
-          backgroundColor: "#43CF2A",
+          height: 22,
+          width: 99,
+          backgroundColor: "#FAFAFA",
           borderRadius: 5
         };
         textStatus = "ดำเนินการเสร็จสิ้น";
+        font= {color: '#43CF2A', fontSize: 11}
         break;
 
       case "closed":
@@ -25,13 +27,14 @@ export default function Card(props) {
           borderColor: "#93D388",
           borderWidth: 1,
           borderStyle: "solid",
-          height: 35,
-          width: 100,
-          backgroundColor: "#43CF2A",
+          height: 22,
+          width: 99,
+          backgroundColor: "#FAFAFA",
           borderRadius: 5
 
         };
         textStatus = "ดำเนินการเสร็จสิ้น";
+         font= {color: '#43CF2A', fontSize: 11}
         break;
 
       case "in progress":
@@ -39,12 +42,13 @@ export default function Card(props) {
           borderColor: "#A0DCFF",
           borderWidth: 1,
           borderStyle: "solid",
-          height: 35,
-          width: 100,
-          backgroundColor: "#2BB0FF",
+          height: 22,
+          width: 99,
+          backgroundColor: "#FAFAFA",
           borderRadius: 5
         };
         textStatus = "กำลังดำเนินการ";
+         font= {color: '#2BB0FF', fontSize: 11}
         break;
 
       default:
@@ -52,18 +56,19 @@ export default function Card(props) {
           borderColor: "#FBD4FF",
           borderWidth: 1,
           borderStyle: "solid",
-          height: 35,
-          width: 100,
-          backgroundColor: "#DAA6DF",
-          borderRadius: 5
+          height: 22,
+          width: 99,
+          backgroundColor: "#FAFAFA",
+          borderRadius: 5,
         };
         textStatus = "รอการดำเนินการ";
+         font= {color: '#F19EFF', fontSize: 11}
         break;
     }
 
     return (
-      <Container fluid className="mt-1 text-center pt-2 ml-3" style={styles}>
-        <p style={{ fontSize: 11, color: 'white' }}>{textStatus}</p>
+      <Container fluid className="mt-1 text-center pt-1 ml-3" style={styles}>
+        <p style={font}>{textStatus}</p>
       </Container>
     );
   };
@@ -76,7 +81,7 @@ export default function Card(props) {
       }}
     >
       <Row>
-        <Col className="col-5">
+        <Col className="col-4">
           <Row className="pb-0 mb-0" style={{ height: 22 }}>
             <p style={{ fontSize: 14 }}>
               {props.itemName.length > 15
@@ -92,17 +97,12 @@ export default function Card(props) {
             </p>
           </Row>
         </Col>
-        <Col className="col-1">
-          <Row>
-            <p style={{ fontSize: 11, paddingTop: 3 }}>
-              {props.room.length > 10
-                ? props.room.slice(0, 10) + "..."
-                : props.room}
+        <Col className="col-3  mt-2 text-right">
+            <p  style={{ fontSize: 11, paddingTop: 3 }}>
+                {props.room}
             </p>
-          </Row>
-          <Row></Row>
         </Col>
-        <Col className="col-5">{statusBar()}</Col>
+        <Col className="col-4 mt-2">{statusBar()}</Col>
         <Col className="col-1 text-center pt-2">
           <i
             className="fa fa-angle-right"

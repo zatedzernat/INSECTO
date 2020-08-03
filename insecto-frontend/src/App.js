@@ -26,7 +26,7 @@ export default function App() {
     <div>
       <Switch>
         <RouteWrapper exact path="/" component={Home} layout={Mobile} />
-        <RouteWrapper exact path="/:code" component={TrackingItem} layout={Mobile} />
+        <RouteWrapper exact path="/tracking/:code" component={TrackingItem} layout={Mobile} />
         <RouteWrapper
           exact
           path="/admin"

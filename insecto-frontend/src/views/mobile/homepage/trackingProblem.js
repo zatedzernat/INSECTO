@@ -31,7 +31,7 @@ export default function TrackingProblem() {
         <Redirect
           push
           to={{
-            pathname: `/${code}`,
+            pathname: `/tracking/${code}`,
             state: {
               problemInfo: problemInfo,
             },
