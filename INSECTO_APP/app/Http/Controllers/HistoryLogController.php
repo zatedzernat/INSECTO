@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\History_Log;
+use App\Http\Models\Notification_Problem;
+use Carbon\Carbon;
 
 class HistoryLogController extends Controller
 {
@@ -11,6 +13,7 @@ class HistoryLogController extends Controller
     public function __construct()
     {
         $this->log = new History_Log();
+        $this->noti = new Notification_Problem();
     }
 
     public function index()
@@ -25,5 +28,13 @@ class HistoryLogController extends Controller
     {
         $logsByDays = $this->log->getLogsByAmountOfDays($amount);
         return compact('logsByDays');
+    }
+
+    public function getTracking($noti_id)
+    {
+        $noti_tracking = $this->noti->findByID($noti_id)->audits;
+        $noti_tracking = $this->log->getTracking($noti_tracking); //3 days
+        $time = Carbon::now()->format('H:i:s');
+        return compact('noti_tracking', 'time');
     }
 }

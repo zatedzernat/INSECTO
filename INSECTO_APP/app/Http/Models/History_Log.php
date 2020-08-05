@@ -49,4 +49,12 @@ class History_log extends Model
         $lastest_with_amount_of_day = $grouped->take($amount);
         return $lastest_with_amount_of_day;
     }
+
+    public function getTracking($noti_tracking)
+    {
+        $noti_tracking_in_days = $noti_tracking->filter(function ($noti) {
+            return $noti->created_at->toDateString() == Carbon::today()->toDateString();
+        });
+        return $noti_tracking_in_days;
+    }
 }
