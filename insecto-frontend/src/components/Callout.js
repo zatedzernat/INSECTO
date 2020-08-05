@@ -13,8 +13,10 @@ export default function Callout(props) {
         </Col>
         <Col xs={6} style={{ textAlign: "right" }}>
           <Button
-            className="btn btn-default btn-xs "
-            // style={style}
+            disabled
+            variant="light"
+            className="btn btn-xs "
+            style={{ borderColor: "#909497", color: "#424949" }}
           >
             {props.status}
           </Button>
