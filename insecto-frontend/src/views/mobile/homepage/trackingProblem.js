@@ -48,6 +48,7 @@ export default function TrackingProblem() {
     arr.push(
       data.map((item) => (
         <div
+          key={Math.random()}
           onClick={() => {
             setIsClick(true);
             setCode(item.noti_id);
