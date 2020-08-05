@@ -34,9 +34,13 @@ export default function Card(props) {
     var textStatus = "";
 
     switch (props.status) {
-      case "resolved":
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 7:
         styles = {
-          borderColor: "#93D388",
+          borderColor: "rgb(255 148 234)",
           borderWidth: 1,
           borderStyle: "solid",
           height: 22,
@@ -44,25 +48,10 @@ export default function Card(props) {
           backgroundColor: "#FAFAFA",
           borderRadius: 5,
         };
-        textStatus = "ดำเนินการเสร็จสิ้น";
-        font = { color: "#43CF2A", fontSize: 11 };
+        textStatus = "รอการดำเนินการ";
+        font = { color: "rgb(241 79 210)", fontSize: 11 };
         break;
-
-      case "closed":
-        styles = {
-          borderColor: "#93D388",
-          borderWidth: 1,
-          borderStyle: "solid",
-          height: 22,
-          width: 100,
-          backgroundColor: "#FAFAFA",
-          borderRadius: 5,
-        };
-        textStatus = "ดำเนินการเสร็จสิ้น";
-        font = { color: "#43CF2A", fontSize: 11 };
-        break;
-
-      case "in progress":
+      case 5:
         styles = {
           borderColor: "#A0DCFF",
           borderWidth: 1,
@@ -75,10 +64,9 @@ export default function Card(props) {
         textStatus = "กำลังดำเนินการ";
         font = { color: "#2BB0FF", fontSize: 11 };
         break;
-
-      default:
+      case 8:
         styles = {
-          borderColor: "rgb(255 148 234)",
+          borderColor: "#93D388",
           borderWidth: 1,
           borderStyle: "solid",
           height: 22,
@@ -86,8 +74,10 @@ export default function Card(props) {
           backgroundColor: "#FAFAFA",
           borderRadius: 5,
         };
-        textStatus = "รอการดำเนินการ";
-        font = { color: "rgb(241 79 210)", fontSize: 11 };
+        textStatus = "ดำเนินการเสร็จสิ้น";
+        font = { color: "#43CF2A", fontSize: 11 };
+        break;
+      default:
         break;
     }
 
@@ -120,8 +110,9 @@ export default function Card(props) {
             <p style={{ fontSize: 11, color: "#777777" }}>
               {width <= 700
                 ? props.itemProblem.length > 18
-                ? props.itemProblem.slice(0, 18) + "..."
-                : props.itemProblem : props.itemProblem}
+                  ? props.itemProblem.slice(0, 18) + "..."
+                  : props.itemProblem
+                : props.itemProblem}
             </p>
           </Row>
         </Col>

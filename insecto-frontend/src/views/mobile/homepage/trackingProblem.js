@@ -56,7 +56,7 @@ export default function TrackingProblem() {
               item_code: item.item.item_code,
               item_name: item.item.item_name,
               problem_description: item.problem_description,
-              status_name: item.status.status_name,
+              status_id: item.status_id,
               room: item.item.room.room_name,
               building: item.item.room.building.building_name,
               updated_at: item.updated_at,
@@ -74,7 +74,7 @@ export default function TrackingProblem() {
               itemName={item.item.item_code}
               itemProblem={item.problem_description}
               room={item.item.room.room_name}
-              status={item.status.status_name}
+              status={item.status.status_id}
             />
           </Row>
         </div>
