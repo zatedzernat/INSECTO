@@ -68,7 +68,7 @@ export default function Card(props) {
           borderWidth: 1,
           borderStyle: "solid",
           height: 22,
-          width: 90,
+          width: 100,
           backgroundColor: "#FAFAFA",
           borderRadius: 5,
         };
@@ -82,7 +82,7 @@ export default function Card(props) {
           borderWidth: 1,
           borderStyle: "solid",
           height: 22,
-          width: 97,
+          width: 100,
           backgroundColor: "#FAFAFA",
           borderRadius: 5,
         };
@@ -129,10 +129,10 @@ export default function Card(props) {
           <p style={{ fontSize: 11, paddingTop: 3 }}>{props.room}</p>
         </Col>
         <Col className="col-4 mt-2 text-center">{statusBar()}</Col>
-        <Col className="col-1 text-center pt-2">
+        <Col className="col-1 text-center pt-1">
           <i
-            className="fa fa-angle-right"
-            style={{ color: "#777777", fontSize: 30 }}
+            className="ion-ios-arrow-right"
+            style={{ color: "#777777", fontSize: 25 }}
           ></i>
         </Col>
       </Row>

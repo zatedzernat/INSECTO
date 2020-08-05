@@ -71,7 +71,7 @@ export default function TrackingProblem() {
             }}
           >
             <Card
-              itemName={item.item.item_code + " " + item.item.item_name}
+              itemName={item.item.item_code}
               itemProblem={item.problem_description}
               room={item.item.room.room_name}
               status={item.status.status_name}
