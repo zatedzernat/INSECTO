@@ -3,8 +3,8 @@ import { Container, Navbar } from "react-bootstrap";
 
 export default function Header() {
   return (
-    <Container>
-      <Navbar expand="lg">
+    <Container style={{ padding: "0px" }}>
+      <Navbar expand="lg" >
         <Navbar.Brand href="/">
           <img src="/images/bug.png" alt="insecto logo" width="45px" />
           INSECTO
