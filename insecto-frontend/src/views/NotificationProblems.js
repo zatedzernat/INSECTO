@@ -48,7 +48,7 @@ export default function NotificationProblems() {
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
   });
-  const handleStatus = async (next_status_id, event) => {
+  const handleStatus = async (next_status_id, row) => {
     if (next_status_id === 2) {
       setStatus({
         next_status_id: 2,
@@ -87,11 +87,13 @@ export default function NotificationProblems() {
     } else if (next_status_id === 8) {
       setStatus({
         next_status_id: 8,
+        note: row.note
       });
       setModalShowNote(true);
     } else if (next_status_id === 7) {
       setStatus({
         next_status_id: 7,
+        help_desk_code: row.help_desk_code,
       });
       setModalShowHDC(true);
     }
@@ -212,7 +214,7 @@ export default function NotificationProblems() {
                 style={{ fontSize: "15px" }}
                 onSelect={(eventKey, event) => {
                   setNotiProblem(row);
-                  handleStatus(parseInt(eventKey), event);
+                  handleStatus(parseInt(eventKey), row);
                 }}
               >
                 {status.status_name}
