@@ -128,13 +128,13 @@ export default function Sidebar() {
                 </li>
               </ul>
             </li>
-            <li className="nav-header">MISCELLANEOUS</li>
+            {/* <li className="nav-header">MISCELLANEOUS</li>
             <li className="nav-item">
               <a href="https://adminlte.io/docs/3.0" className="nav-link">
                 <i className="nav-icon fas fa-file" />
                 <p>Documentation</p>
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
         {/* /.sidebar-menu */}
