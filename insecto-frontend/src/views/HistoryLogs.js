@@ -29,7 +29,7 @@ export default function HistoryLogs() {
         setData(res.data);
       }
       const temp = await axios.get(
-        `${process.env.REACT_APP_API_URL}history_logs/`
+        `${process.env.REACT_APP_API_URL}history_logs`
       );
       setIsLoading(false);
       setCountDays(temp.data.countDays);
