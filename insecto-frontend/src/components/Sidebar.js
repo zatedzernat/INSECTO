@@ -36,7 +36,6 @@ export default function Sidebar() {
                 <i className="nav-icon fas fa-bell" />
                 <p>
                   Notification Problems
-                  <span className="right badge badge-danger">1</span>
                 </p>
               </NavLink>
             </li>
@@ -49,7 +48,6 @@ export default function Sidebar() {
                 <i className="nav-icon fas fa-history" />
                 <p>
                   History Logs
-                  <span className="right badge badge-danger">New</span>
                 </p>
               </NavLink>
             </li>
