@@ -22,6 +22,8 @@ export default function Brands() {
     brand_name: "",
   };
   const [brand, setBrand] = useState(initialState);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -110,6 +112,35 @@ export default function Brands() {
       }
     } catch (error) {
       console.log(JSON.stringify(error));
+    }
+  };
+
+  const deleteSelectedHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    let brands = {
+      brands: selectedRows.map(({ brand_id }) => brand_id),
+    };
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}brands/selected`,
+        brands
+      );
+      setToggleCleared(!toggleCleared);
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
     }
   };
 
@@ -218,6 +249,15 @@ export default function Brands() {
     container: { color: "red" },
   };
 
+  const handleRowSelected = React.useCallback((state) => {
+    let selected = state.selectedRows.map(({ brand_id, brand_name }) => ({
+      brand_id,
+      brand_name,
+    }));
+    let sort = selected.sort((a, b) => a.brand_id - b.brand_id);
+    setSelectedRows(sort);
+  }, []);
+
   const brandTable = (data) => {
     const columns = [
       {
@@ -296,6 +336,8 @@ export default function Brands() {
         highlightOnHover
         pagination
         customStyles={myFonts}
+        onSelectedRowsChange={handleRowSelected}
+        clearSelectedRows={toggleCleared}
       />
     );
   };
@@ -316,8 +358,19 @@ export default function Brands() {
                 <Button variant="info" onClick={() => setModalShowAdd(true)}>
                   Add
                 </Button>
-                {/* &emsp;
-                <Button variant="danger">Delete</Button> */}
+                {selectedRows.length > 0 ? (
+                  <>
+                    &emsp;
+                    <Button
+                      onClick={() => {
+                        setModalShowDel(true);
+                      }}
+                      variant="danger"
+                    >
+                      Delete
+                    </Button>
+                  </>
+                ) : null}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -380,15 +433,37 @@ export default function Brands() {
             }}
             title="Are you sure that you want to delete?"
             body={
-              <div className="form-group col-form-label">
-                <p>"{brand.brand_name}"</p>
-                <p className="text-danger">
-                  *** All items which are {brand.brand_name} be set to null ***
-                </p>
-              </div>
+              selectedRows.length > 0 ? (
+                <div className="form-group col-form-label">
+                  {selectedRows.map((brand) => (
+                    <p key={brand.brand_id}>
+                      {brand.brand_id} - {brand.brand_name}
+                    </p>
+                  ))}
+                  <p className="text-danger">
+                    *** All items which are{" "}
+                    {selectedRows
+                      .map(({ brand_name }) => brand_name)
+                      .join(", ")}{" "}
+                    be set to null ***
+                  </p>
+                </div>
+              ) : (
+                <div className="form-group col-form-label">
+                  <p>"{brand.brand_name}"</p>
+                  <p className="text-danger">
+                    *** All items which are {brand.brand_name} be set to null
+                    ***
+                  </p>
+                </div>
+              )
             }
             method="POST"
-            onSubmit={deleteHandleSubmit}
+            onSubmit={
+              selectedRows.length > 0
+                ? deleteSelectedHandleSubmit
+                : deleteHandleSubmit
+            }
             button="Confirm"
             close="Cancel"
           />
