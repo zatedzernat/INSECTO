@@ -66,7 +66,8 @@ Route::get('problem_descs/export', 'ProblemDescriptionController@exportProblemDe
 Route::get('items', 'ItemController@index')->name('items');
 Route::post('items', 'ItemController@store');
 Route::put('items/{item_id}', 'ItemController@update');
-Route::delete('items/{item_id}', 'ItemController@destroy');
+Route::delete('items/{item_id}', 'ItemController@deleteOne');
+Route::post('items/selected', 'ItemController@deleteMultiple');
 
 Route::post('items/import', 'ItemController@importItems');
 Route::get('items/export', 'ItemController@exportItems');

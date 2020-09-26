@@ -109,17 +109,36 @@ class ItemController extends Controller
         return  $this->serverResponse(null, $success);
     }
 
+    public function deleteOne(Request $request, $item_id)
+    {
+        $deleted = $this->delete($item_id);
+        $success = 'Delete item \'' . $deleted . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $items = $request->items;
+        $code = array();
+        foreach ($items as $item_id) {
+            $deleted = $this->delete($item_id);
+            array_push($code, $deleted);
+        }
+        $success = 'Delete items \'' . implode(", ", $code) . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Http\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $item_id)
+    public function delete($item_id)
     {
         $item = $this->item->deleteItem($item_id);
-        $success = 'Delete item \'' . $item->item_code . '\' success';
-        return $this->serverResponse(null, $success);
+        $deleted = $item->item_code;
+        return $deleted;
     }
 
     public function getQRCode(Request $request, $item_code)
