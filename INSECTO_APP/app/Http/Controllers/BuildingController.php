@@ -103,6 +103,20 @@ class BuildingController extends Controller
         return $this->serverResponse(null, $success);
     }
 
+    // public function destroySelected(Request $request)
+    // {
+    //     $buildings = $request->buildings;
+    //     $name = array();
+    //     foreach ($buildings as $building_id) {
+    //         $building = $this->building->deleteBuilding($building_id);
+    //         $rooms = $this->room->deleteRooms($building);
+    //         $items = $this->item->deleteItems('rooms', $rooms);
+    //         array_push($name, $building->building_name);
+    //     }
+    //     $success = 'Delete buildings \'' . implode(" ", $name) . '\' success';
+    //     return $this->serverResponse(null, $success);
+    // }
+
     public function importBuildings(ImportRequest $request)
     {
         $file = $request->file('import_file');
