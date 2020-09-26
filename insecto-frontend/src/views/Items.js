@@ -310,7 +310,7 @@ export default function Items() {
         name: "#",
         selector: "item_id",
         sortable: true,
-        grow: 0,
+        width: "50px",
       },
       {
         name: "Item Code*",
@@ -326,6 +326,7 @@ export default function Items() {
         name: "Type",
         selector: "item_type.type_name",
         sortable: true,
+        width: "140px",
       },
       {
         name: "Room",
@@ -336,7 +337,7 @@ export default function Items() {
         name: "Group",
         selector: "group",
         sortable: true,
-        grow: 0,
+        width: "70px",
       },
       // {
       //   name: "Created At",
@@ -349,12 +350,13 @@ export default function Items() {
         selector: "updated_at",
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
-        grow: 2,
+        width: "200px",
       },
       {
         name: "User",
         selector: "user.name",
         sortable: true,
+        width: "150px",
       },
       {
         name: "Action",
