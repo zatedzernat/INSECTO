@@ -236,7 +236,7 @@ export default function NotificationProblems() {
         name: "#",
         selector: "noti_id",
         sortable: true,
-        width: "70px",
+        width: "80px",
       },
       {
         name: "Item Code",

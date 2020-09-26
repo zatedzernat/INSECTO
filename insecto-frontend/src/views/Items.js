@@ -310,7 +310,7 @@ export default function Items() {
         name: "#",
         selector: "item_id",
         sortable: true,
-        width: "50px",
+        width: "80px",
       },
       {
         name: "Item Code*",
