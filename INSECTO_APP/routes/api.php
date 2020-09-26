@@ -78,7 +78,8 @@ Route::post('getqr_zip', 'ItemController@getQRCodeZIP');
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');
 Route::post('item_types', 'ItemTypeController@store');
 Route::put('item_types/{type_id}', 'ItemTypeController@update');
-Route::delete('item_types/{type_id}', 'ItemTypeController@destroy');
+Route::delete('item_types/{type_id}', 'ItemTypeController@deleteOne');
+Route::post('item_types/selected', 'ItemTypeController@deleteMultiple');
 
 Route::post('item_types/import', 'ItemTypeController@importItemTypes');
 Route::get('item_types/export', 'ItemTypeController@exportItemTypes');

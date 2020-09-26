@@ -87,19 +87,38 @@ class ItemTypeController extends Controller
         }
     }
 
+    public function deleteOne(Request $request, $type_id)
+    {
+        $deleted = $this->delete($type_id);
+        $success = 'Delete type \'' . $deleted . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $item_types = $request->item_types;
+        $name = array();
+        foreach ($item_types as $type_id) {
+            $deleted = $this->delete($type_id);
+            array_push($name, $deleted);
+        }
+        $success = 'Delete types \'' . implode(", ", $name) . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Http\Models\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $type_id)
+    public function delete($type_id)
     {
         $item_type = $this->item_type->deleteItemType($type_id);
         $items = $this->item->deleteItems('item_type', $item_type);
         $problem_desc = $this->problem_desc->deleteProblemDescs($item_type);
-        $success = 'Delete type \'' . $item_type->type_name . '\' success';
-        return $this->serverResponse(null, $success);
+        $deleted = $item_type->type_name;
+        return $deleted;
     }
 
     public function importItemTypes(ImportRequest $request)
