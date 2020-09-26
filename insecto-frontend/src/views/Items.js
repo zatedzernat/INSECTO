@@ -488,8 +488,8 @@ export default function Items() {
                 >
                   Add
                 </Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
+                {/* &emsp;
+                <Button variant="danger">Delete</Button> */}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
