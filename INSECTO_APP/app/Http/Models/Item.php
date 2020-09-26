@@ -303,7 +303,7 @@ class Item extends Model implements Auditable
             }
 
             // storage_path('app\\' . $room->room_code); for windows
-            $zip->add(storage_path('app/' . 'IT')); // add IT folder and subfolder (101, 102)
+            // $zip->add(storage_path('app/' . 'IT')); // add IT folder and subfolder (101, 102)
             $zip->close();
             foreach ($rooms as $room) {
                 Storage::disk('local')->deleteDirectory($room->room_code);
