@@ -236,18 +236,19 @@ export default function NotificationProblems() {
         name: "#",
         selector: "noti_id",
         sortable: true,
-        width: "100px",
+        width: "70px",
       },
       {
         name: "Item Code",
         selector: "item.item_code",
         sortable: true,
-        width: "120px",
+        width: "170px",
       },
       {
         name: "Item Name",
         selector: "item.item_name",
         sortable: true,
+        width: "130px",
       },
       {
         name: "Problem Decription",
@@ -258,7 +259,7 @@ export default function NotificationProblems() {
         name: "Room Code",
         selector: "item.room.room_code",
         sortable: true,
-        width: "130px",
+        width: "140px",
       },
       {
         name: "Status",
@@ -284,6 +285,7 @@ export default function NotificationProblems() {
         name: "User",
         selector: "user.name",
         sortable: true,
+        width: "170px",
       },
       {
         name: "Detail",
@@ -364,7 +366,7 @@ export default function NotificationProblems() {
                     Problem Description ID:{" "}
                   </label>
                   <div className="col-sm-6 col-form-label">
-                    {notiProblem.problem_des_id}
+                    {notiProblem.problem_des_id ?? 'New Problem Description**'}
                   </div>
                 </div>
                 <div className="form-group row">
