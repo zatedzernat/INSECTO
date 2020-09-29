@@ -60,7 +60,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        //show
+        //
     }
 
     /**
