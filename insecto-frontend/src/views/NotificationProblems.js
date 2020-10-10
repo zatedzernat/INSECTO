@@ -286,13 +286,14 @@ export default function NotificationProblems() {
         name: "User",
         selector: "user.name",
         sortable: true,
-        width: "150px",
+        width: "135px",
       },
       {
         name: "Detail",
         cell: (row) => (
           <Button
             variant="link"
+            style={{ fontSize: "14px" }}
             onClick={() => {
               setModalShowDetail(true);
               setNotiProblem(row);
