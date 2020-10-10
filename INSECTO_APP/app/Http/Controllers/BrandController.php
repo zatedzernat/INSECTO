@@ -84,18 +84,37 @@ class BrandController extends Controller
         }
     }
 
+    public function deleteOne(Request $request, $brand_id)
+    {
+        $deleted = $this->delete($brand_id);
+        $success =  'Delete brand \'' . $deleted . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $brands = $request->brands;
+        $name = array();
+        foreach ($brands as $brand_id) {
+            $deleted = $this->delete($brand_id);
+            array_push($name, $deleted);
+        }
+        $success = 'Delete brands \'' . implode(", ", $name) . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Http\Models\Brand   $brand
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $brand_id)
+    public function delete($brand_id)
     {
         $brand = $this->brand->deleteBrand($brand_id);
         $items = $this->item->setNullInItem($brand);
-        $success =  'Delete brand \'' . $brand->brand_name . '\' success';
-        return $this->serverResponse(null, $success);
+        $deleted = $brand->brand_name;
+        return $deleted;
     }
 
     public function importBrands(ImportRequest $request)

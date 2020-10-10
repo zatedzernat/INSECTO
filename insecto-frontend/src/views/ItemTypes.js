@@ -21,6 +21,8 @@ export default function ItemTypes() {
     type_name: "",
   };
   const [itemType, setItemType] = useState(initialState);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -97,6 +99,35 @@ export default function ItemTypes() {
       );
       setItemType(initialState);
       if (res.data.error) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const deleteSelectedHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    let item_types = {
+      item_types: selectedRows.map(({ type_id }) => type_id),
+    };
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}item_types/selected`,
+        item_types
+      );
+      setToggleCleared(!toggleCleared);
+      if (res.data.errors) {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
@@ -218,6 +249,15 @@ export default function ItemTypes() {
     container: { color: "red" },
   };
 
+  const handleRowSelected = React.useCallback((state) => {
+    let selected = state.selectedRows.map(({ type_id, type_name }) => ({
+      type_id,
+      type_name,
+    }));
+    let sort = selected.sort((a, b) => a.type_id - b.type_id);
+    setSelectedRows(sort);
+  }, []);
+
   const itemTypeTable = (data) => {
     const columns = [
       {
@@ -296,6 +336,8 @@ export default function ItemTypes() {
         highlightOnHover
         pagination
         customStyles={myFonts}
+        onSelectedRowsChange={handleRowSelected}
+        clearSelectedRows={toggleCleared}
       />
     );
   };
@@ -316,8 +358,19 @@ export default function ItemTypes() {
                 <Button variant="info" onClick={() => setModalShowAdd(true)}>
                   Add
                 </Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
+                {selectedRows.length > 0 ? (
+                  <>
+                    &emsp;
+                    <Button
+                      onClick={() => {
+                        setModalShowDel(true);
+                      }}
+                      variant="danger"
+                    >
+                      Delete
+                    </Button>
+                  </>
+                ) : null}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -381,16 +434,35 @@ export default function ItemTypes() {
             }}
             title="Do you confirm to delete?"
             body={
-              <div className="form-group col-form-label">
-                <p>"{itemType.type_name}"</p>
-                <p className="text-danger">
-                  *** All items and problem descriptions that relate{" "}
-                  {itemType.type_name} will be delete too ***
-                </p>
-              </div>
+              selectedRows.length > 0 ? (
+                <div className="form-group col-form-label">
+                  {selectedRows.map((item_type) => (
+                    <p key={item_type.type_id}>
+                      {item_type.type_id} - {item_type.type_name}
+                    </p>
+                  ))}
+                  <p className="text-danger">
+                    *** All items and problem descriptions that relate{" "}
+                    {selectedRows.map(({ type_name }) => type_name).join(", ")}{" "}
+                    will be delete too ***
+                  </p>
+                </div>
+              ) : (
+                <div className="form-group col-form-label">
+                  <p>"{itemType.type_name}"</p>
+                  <p className="text-danger">
+                    *** All items and problem descriptions that relate{" "}
+                    {itemType.type_name} will be delete too ***
+                  </p>
+                </div>
+              )
             }
             method="POST"
-            onSubmit={deleteHandleSubmit}
+            onSubmit={
+              selectedRows.length > 0
+                ? deleteSelectedHandleSubmit
+                : deleteHandleSubmit
+            }
             button="Confirm"
             close="Cancel"
           />

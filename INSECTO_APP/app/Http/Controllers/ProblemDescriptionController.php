@@ -87,17 +87,36 @@ class ProblemDescriptionController extends Controller
         }
     }
 
+    public function deleteOne(Request $request, $problem_des_id)
+    {
+        $deleted = $this->delete($problem_des_id);
+        $success = 'Delete description \'' . $deleted . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $problem_descs = $request->problem_descs;
+        $description = array();
+        foreach ($problem_descs as $problem_des_id) {
+            $deleted = $this->delete($problem_des_id);
+            array_push($description, $deleted);
+        }
+        $success = 'Delete descriptions \'' . implode(", ", $description) . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $problem_des_id)
+    public function delete($problem_des_id)
     {
         $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
-        $success = 'Delete description \'' . $problem_desc->problem_description . '\' success';
-        return $this->serverResponse(null, $success);
+        $deleted = $problem_desc->problem_description;
+        return $deleted;
     }
 
     public function importProblemDescs(ImportRequest $request)

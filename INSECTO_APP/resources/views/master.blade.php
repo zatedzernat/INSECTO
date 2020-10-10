@@ -50,16 +50,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
+                    {{-- <li class="nav-item active">
                         <a class="nav-link" href="{{url('/')}}">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{'/send-problem'}}">Send Problem</a>
-                    </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="#">Admin</a>
                     </li> --}}
-                    <li class="nav-item dropdown">
+                    {{-- <li class="nav-item">
+                        <a class="nav-link" href="{{'/send-problem'}}">Send Problem</a>
+                    </li> --}}
+                    {{-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             Admin
@@ -75,7 +72,7 @@
                             <a class="dropdown-item" href="api/brands">Brands</a>
                             <a class="dropdown-item" href="api/statuses">Statuses</a>
                         </div>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

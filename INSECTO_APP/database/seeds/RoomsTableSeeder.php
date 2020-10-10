@@ -75,5 +75,23 @@ class RoomsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
             'user_id' => 1
         ]);
+        DB::table('rooms')->insert([
+            'room_code' => 'TOL-101',
+            'room_name' => 'Men\'s Toilet',
+            'building_id' => 1,
+            'cancel_flag' => 'N',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'user_id' => 1
+        ]);
+        DB::table('rooms')->insert([
+            'room_code' => 'TOL-102',
+            'room_name' => 'Women\'s Toilet',
+            'building_id' => 1,
+            'cancel_flag' => 'N',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'user_id' => 1
+        ]);
     }
 }

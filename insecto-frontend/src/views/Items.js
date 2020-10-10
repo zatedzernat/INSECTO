@@ -38,6 +38,8 @@ export default function Items() {
   const [selectType, setSelectType] = useState("- select type name -");
   const [selectBrand, setSelectBrand] = useState("- select brand name -");
   const [selectGroup, setSelectGroup] = useState("- select group -");
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -132,6 +134,35 @@ export default function Items() {
         item.item_id
       );
       setItem(initialState);
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const deleteSelectedHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    let items = {
+      items: selectedRows.map(({ item_id }) => item_id),
+    };
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}items/selected`,
+        items
+      );
+      setToggleCleared(!toggleCleared);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -304,13 +335,25 @@ export default function Items() {
     container: { color: "red" },
   };
 
+  const handleRowSelected = React.useCallback((state) => {
+    let selected = state.selectedRows.map(
+      ({ item_id, item_code, item_name }) => ({
+        item_id,
+        item_code,
+        item_name,
+      })
+    );
+    let sort = selected.sort((a, b) => a.item_id - b.item_id);
+    setSelectedRows(sort);
+  }, []);
+
   const itemTable = (data) => {
     const columns = [
       {
         name: "#",
         selector: "item_id",
         sortable: true,
-        grow: 0,
+        width: "80px",
       },
       {
         name: "Item Code*",
@@ -326,6 +369,7 @@ export default function Items() {
         name: "Type",
         selector: "item_type.type_name",
         sortable: true,
+        width: "140px",
       },
       {
         name: "Room",
@@ -336,7 +380,7 @@ export default function Items() {
         name: "Group",
         selector: "group",
         sortable: true,
-        grow: 0,
+        width: "70px",
       },
       // {
       //   name: "Created At",
@@ -349,12 +393,13 @@ export default function Items() {
         selector: "updated_at",
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
-        grow: 2,
+        width: "200px",
       },
       {
         name: "User",
         selector: "user.name",
         sortable: true,
+        width: "150px",
       },
       {
         name: "Action",
@@ -455,6 +500,8 @@ export default function Items() {
         expandOnRowClicked
         expandableRowsComponent={<ExpandedComponent />}
         customStyles={myFonts}
+        onSelectedRowsChange={handleRowSelected}
+        clearSelectedRows={toggleCleared}
       />
     );
   };
@@ -486,8 +533,19 @@ export default function Items() {
                 >
                   Add
                 </Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
+                {selectedRows.length > 0 ? (
+                  <>
+                    &emsp;
+                    <Button
+                      onClick={() => {
+                        setModalShowDel(true);
+                      }}
+                      variant="danger"
+                    >
+                      Delete
+                    </Button>
+                  </>
+                ) : null}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -821,14 +879,28 @@ export default function Items() {
             }}
             title="Do you confirm to delete?"
             body={
-              <div className="form-group col-form-label">
-                <p>
-                  "{item.item_code} - {item.item_name}"
-                </p>
-              </div>
+              selectedRows.length > 0 ? (
+                <div className="form-group col-form-label">
+                  {selectedRows.map((item) => (
+                    <p key={item.item_id}>
+                      {item.item_code} - {item.item_name}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <div className="form-group col-form-label">
+                  <p>
+                    "{item.item_code} - {item.item_name}"
+                  </p>
+                </div>
+              )
             }
             method="POST"
-            onSubmit={deleteHandleSubmit}
+            onSubmit={
+              selectedRows.length > 0
+                ? deleteSelectedHandleSubmit
+                : deleteHandleSubmit
+            }
             button="Confirm"
             close="Cancel"
           />

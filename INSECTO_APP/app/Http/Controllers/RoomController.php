@@ -87,18 +87,37 @@ class RoomController extends Controller
         return  $this->serverResponse(null, $success);
     }
 
+    public function deleteOne(Request $request, $room_id)
+    {
+        $deleted = $this->delete($room_id);
+        $success = 'Delete room \'' . $deleted . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $rooms = $request->rooms;
+        $name = array();
+        foreach ($rooms as $room_id) {
+            $deleted = $this->delete($room_id);
+            array_push($name, $deleted);
+        }
+        $success = 'Delete rooms \'' . implode(", ", $name) . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $room_id)
+    public function delete($room_id)
     {
         $room = $this->room->deleteRoom($room_id);
         $items = $this->item->deleteItems('room', $room);
-        $success = 'Delete room \'' . $room->room_name . '\' success';
-        return $this->serverResponse(null, $success);
+        $deleted = $room->room_name;
+        return $deleted;
     }
 
     public function getRoomQRCode(Request $request, $room_code)

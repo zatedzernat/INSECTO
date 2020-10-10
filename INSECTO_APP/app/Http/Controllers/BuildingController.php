@@ -88,19 +88,38 @@ class BuildingController extends Controller
         }
     }
 
+    public function deleteOne(Request $request, $buildind_id)
+    {
+        $deleted = $this->delete($buildind_id);
+        $success = 'Delete building \'' . $deleted . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $buildings = $request->buildings;
+        $name = array();
+        foreach ($buildings as $building_id) {
+            $deleted = $this->delete($building_id);
+            array_push($name, $deleted);
+        }
+        $success = 'Delete buildings \'' . implode(", ", $name) . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Http\Models\Building  $building
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $building_id)
+    public function delete($building_id)
     {
         $building = $this->building->deleteBuilding($building_id);
         $rooms = $this->room->deleteRooms($building);
         $items = $this->item->deleteItems('rooms', $rooms);
-        $success = 'Delete building \'' . $building->building_name . '\' success';
-        return $this->serverResponse(null, $success);
+        $deleted = $building->building_name;
+        return $deleted;
     }
 
     public function importBuildings(ImportRequest $request)

@@ -23,6 +23,8 @@ export default function Buildings() {
     building_name: "",
   };
   const [building, setBuilding] = useState(initialState);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -104,6 +106,35 @@ export default function Buildings() {
         building.building_id
       );
       setBuilding(initialState);
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const deleteSelectedHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    let buildings = {
+      buildings: selectedRows.map(({ building_id }) => building_id),
+    };
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}buildings/selected`,
+        buildings
+      );
+      setToggleCleared(!toggleCleared);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -226,6 +257,18 @@ export default function Buildings() {
     container: { color: "red" },
   };
 
+  const handleRowSelected = React.useCallback((state) => {
+    let selected = state.selectedRows.map(
+      ({ building_id, building_code, building_name }) => ({
+        building_id,
+        building_code,
+        building_name,
+      })
+    );
+    let sort = selected.sort((a, b) => a.building_id - b.building_id);
+    setSelectedRows(sort);
+  }, []);
+
   const buildingTable = (data) => {
     const columns = [
       {
@@ -311,6 +354,8 @@ export default function Buildings() {
         highlightOnHover
         pagination
         customStyles={myFonts}
+        onSelectedRowsChange={handleRowSelected}
+        clearSelectedRows={toggleCleared}
       />
     );
   };
@@ -331,8 +376,19 @@ export default function Buildings() {
                 <Button variant="info" onClick={() => setModalShowAdd(true)}>
                   Add
                 </Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
+                {selectedRows.length > 0 ? (
+                  <>
+                    &emsp;
+                    <Button
+                      onClick={() => {
+                        setModalShowDel(true);
+                      }}
+                      variant="danger"
+                    >
+                      Delete
+                    </Button>
+                  </>
+                ) : null}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -417,18 +473,39 @@ export default function Buildings() {
             }}
             title="Do you confirm to delete?"
             body={
-              <div className="form-group col-form-label">
-                <p>
-                  "{building.building_code} - {building.building_name}"
-                </p>
-                <p className="text-danger">
-                  *** All rooms and items that relate to{" "}
-                  {building.building_name} will be delete too ***
-                </p>
-              </div>
+              selectedRows.length > 0 ? (
+                <div className="form-group col-form-label">
+                  {selectedRows.map((building) => (
+                    <p key={building.building_id}>
+                      {building.building_code} - {building.building_name}
+                    </p>
+                  ))}
+                  <p className="text-danger">
+                    *** All rooms and items that relate to{" "}
+                    {selectedRows
+                      .map(({ building_name }) => building_name)
+                      .join(", ")}{" "}
+                    will be delete too ***
+                  </p>
+                </div>
+              ) : (
+                <div className="form-group col-form-label">
+                  <p>
+                    "{building.building_code} - {building.building_name}"
+                  </p>
+                  <p className="text-danger">
+                    *** All rooms and items that relate to{" "}
+                    {building.building_name} will be delete too ***
+                  </p>
+                </div>
+              )
             }
             method="POST"
-            onSubmit={deleteHandleSubmit}
+            onSubmit={
+              selectedRows.length > 0
+                ? deleteSelectedHandleSubmit
+                : deleteHandleSubmit
+            }
             button="Confirm"
             close="Cancel"
           />

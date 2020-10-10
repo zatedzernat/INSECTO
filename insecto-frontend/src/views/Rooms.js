@@ -28,6 +28,8 @@ export default function Rooms() {
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
   );
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -114,6 +116,35 @@ export default function Rooms() {
       );
       setRoom(initialState);
       if (res.data.error) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const deleteSelectedHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    let rooms = {
+      rooms: selectedRows.map(({ room_id }) => room_id),
+    };
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}rooms/selected`,
+        rooms
+      );
+      setToggleCleared(!toggleCleared);
+      if (res.data.errors) {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
@@ -257,6 +288,18 @@ export default function Rooms() {
     container: { color: "red" },
   };
 
+  const handleRowSelected = React.useCallback((state) => {
+    let selected = state.selectedRows.map(
+      ({ room_id, room_code, room_name }) => ({
+        room_id,
+        room_code,
+        room_name,
+      })
+    );
+    let sort = selected.sort((a, b) => a.room_id - b.room_id);
+    setSelectedRows(sort);
+  }, []);
+
   const roomTable = (data) => {
     const columns = [
       {
@@ -368,6 +411,8 @@ export default function Rooms() {
         highlightOnHover
         pagination
         customStyles={myFonts}
+        onSelectedRowsChange={handleRowSelected}
+        clearSelectedRows={toggleCleared}
       />
     );
   };
@@ -394,8 +439,19 @@ export default function Rooms() {
                 >
                   Add
                 </Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
+                {selectedRows.length > 0 ? (
+                  <>
+                    &emsp;
+                    <Button
+                      onClick={() => {
+                        setModalShowDel(true);
+                      }}
+                      variant="danger"
+                    >
+                      Delete
+                    </Button>
+                  </>
+                ) : null}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -522,18 +578,37 @@ export default function Rooms() {
             }}
             title="Do you confirm to delete?"
             body={
-              <div className="form-group col-form-label">
-                <p>
-                  "{room.room_code} - {room.room_name}"
-                </p>
-                <p className="text-danger">
-                  *** All items that relate to {room.room_code} will be delete
-                  too ***
-                </p>
-              </div>
+              selectedRows.length > 0 ? (
+                <div className="form-group col-form-label">
+                  {selectedRows.map((room) => (
+                    <p key={room.room_id}>
+                      {room.room_code} - {room.room_name}
+                    </p>
+                  ))}
+                  <p className="text-danger">
+                    *** All items that relate to{" "}
+                    {selectedRows.map(({ room_name }) => room_name).join(", ")}{" "}
+                    will be delete too ***
+                  </p>
+                </div>
+              ) : (
+                <div className="form-group col-form-label">
+                  <p>
+                    "{room.room_code} - {room.room_name}"
+                  </p>
+                  <p className="text-danger">
+                    *** All items that relate to {room.room_code} will be delete
+                    too ***
+                  </p>
+                </div>
+              )
             }
             method="POST"
-            onSubmit={deleteHandleSubmit}
+            onSubmit={
+              selectedRows.length > 0
+                ? deleteSelectedHandleSubmit
+                : deleteHandleSubmit
+            }
             button="Confirm"
             close="Cancel"
           />

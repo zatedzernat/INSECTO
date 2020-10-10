@@ -36,7 +36,6 @@ export default function Sidebar() {
                 <i className="nav-icon fas fa-bell" />
                 <p>
                   Notification Problems
-                  <span className="right badge badge-danger">1</span>
                 </p>
               </NavLink>
             </li>
@@ -49,7 +48,6 @@ export default function Sidebar() {
                 <i className="nav-icon fas fa-history" />
                 <p>
                   History Logs
-                  <span className="right badge badge-danger">New</span>
                 </p>
               </NavLink>
             </li>
@@ -130,13 +128,13 @@ export default function Sidebar() {
                 </li>
               </ul>
             </li>
-            <li className="nav-header">MISCELLANEOUS</li>
+            {/* <li className="nav-header">MISCELLANEOUS</li>
             <li className="nav-item">
               <a href="https://adminlte.io/docs/3.0" className="nav-link">
                 <i className="nav-icon fas fa-file" />
                 <p>Documentation</p>
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
         {/* /.sidebar-menu */}

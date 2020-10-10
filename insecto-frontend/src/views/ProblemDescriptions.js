@@ -25,6 +25,8 @@ export default function ProblemDescriptions() {
   };
   const [problemDesc, setProblemDesc] = useState(initialState);
   const [selectType, setSelectType] = useState("- select type name -");
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -110,6 +112,35 @@ export default function ProblemDescriptions() {
       );
       setProblemDesc(initialState);
       if (res.data.error) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const deleteSelectedHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    let problem_descs = {
+      problem_descs: selectedRows.map(({ problem_des_id }) => problem_des_id),
+    };
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}problem_descs/selected`,
+        problem_descs
+      );
+      setToggleCleared(!toggleCleared);
+      if (res.data.errors) {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
@@ -231,6 +262,17 @@ export default function ProblemDescriptions() {
     container: { color: "red" },
   };
 
+  const handleRowSelected = React.useCallback((state) => {
+    let selected = state.selectedRows.map(
+      ({ problem_des_id, problem_description }) => ({
+        problem_des_id,
+        problem_description,
+      })
+    );
+    let sort = selected.sort((a, b) => a.problem_des_id - b.problem_des_id);
+    setSelectedRows(sort);
+  }, []);
+
   const problemDesTable = (data) => {
     const columns = [
       {
@@ -316,6 +358,8 @@ export default function ProblemDescriptions() {
         highlightOnHover
         pagination
         customStyles={myFonts}
+        onSelectedRowsChange={handleRowSelected}
+        clearSelectedRows={toggleCleared}
       />
     );
   };
@@ -342,8 +386,19 @@ export default function ProblemDescriptions() {
                 >
                   Add
                 </Button>
-                &emsp;
-                <Button variant="danger">Delete</Button>
+                {selectedRows.length > 0 ? (
+                  <>
+                    &emsp;
+                    <Button
+                      onClick={() => {
+                        setModalShowDel(true);
+                      }}
+                      variant="danger"
+                    >
+                      Delete
+                    </Button>
+                  </>
+                ) : null}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -442,12 +497,27 @@ export default function ProblemDescriptions() {
             }}
             title="Do you confirm to delete?"
             body={
-              <div className="form-group col-form-label">
-                <p>"{problemDesc.problem_description}"</p>
-              </div>
+              selectedRows.length > 0 ? (
+                <div className="form-group col-form-label">
+                  {selectedRows.map((problem_desc) => (
+                    <p key={problem_desc.problem_des_id}>
+                      {problem_desc.problem_des_id} -{" "}
+                      {problem_desc.problem_description}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <div className="form-group col-form-label">
+                  <p>"{problemDesc.problem_description}"</p>
+                </div>
+              )
             }
             method="POST"
-            onSubmit={deleteHandleSubmit}
+            onSubmit={
+              selectedRows.length > 0
+                ? deleteSelectedHandleSubmit
+                : deleteHandleSubmit
+            }
             button="Confirm"
             close="Cancel"
           />

@@ -27,6 +27,7 @@ function useWindowDimensions() {
 }
 
 export default function Card(props) {
+  // eslint-disable-next-line
   const { height, width } = useWindowDimensions();
   const statusBar = () => {
     var styles;
