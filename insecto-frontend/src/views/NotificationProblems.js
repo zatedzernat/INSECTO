@@ -201,7 +201,7 @@ export default function NotificationProblems() {
           <Dropdown.Toggle
             id="dropdown-custom-1"
             size="xs"
-            style={{ width: "100px", fontSize: "15px" }}
+            style={{ width: "105px", fontSize: "15px" }}
             variant={color}
           >
             {row.status.status_name}
@@ -236,7 +236,7 @@ export default function NotificationProblems() {
         name: "#",
         selector: "noti_id",
         sortable: true,
-        width: "80px",
+        width: "50px",
       },
       {
         name: "Item Code",
@@ -254,12 +254,13 @@ export default function NotificationProblems() {
         name: "Problem Decription",
         selector: "problem_description",
         sortable: true,
+
       },
       {
         name: "Room Code",
         selector: "item.room.room_code",
         sortable: true,
-        width: "140px",
+        width: "125px",
       },
       {
         name: "Status",
@@ -285,7 +286,7 @@ export default function NotificationProblems() {
         name: "User",
         selector: "user.name",
         sortable: true,
-        width: "170px",
+        width: "150px",
       },
       {
         name: "Detail",
@@ -297,7 +298,7 @@ export default function NotificationProblems() {
               setNotiProblem(row);
             }}
           >
-            Detail
+         Detail
           </Button>
         ),
         button: true,
@@ -315,6 +316,7 @@ export default function NotificationProblems() {
           fontSize: "15px",
         },
       },
+    
     };
 
     return (
@@ -413,10 +415,10 @@ export default function NotificationProblems() {
             title="Enter your help desk code"
             body={
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">
+                <label className="col-sm-5 col-form-label">
                   Help Desk Code: <span style={styles.container}>*</span>
                 </label>
-                <div className="col-sm-9">
+                <div className="col-sm-7">
                   <input
                     type="text"
                     className="form-control"
