@@ -10,7 +10,7 @@ export default function Footer() {
       &nbsp;
       INSECTO
       <div className="float-right d-none d-sm-inline-block">
-        <b>Version</b> 0.4
+        <b>Version</b> 0.8
       </div>
     </footer>
   );
