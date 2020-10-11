@@ -275,6 +275,7 @@ export default function Buildings() {
         name: "#",
         selector: "building_id",
         sortable: true,
+        width: "50px",
       },
       {
         name: "Building Code*",

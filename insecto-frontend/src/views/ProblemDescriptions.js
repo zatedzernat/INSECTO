@@ -279,6 +279,7 @@ export default function ProblemDescriptions() {
         name: "#",
         selector: "problem_des_id",
         sortable: true,
+        width: "100px",
       },
       {
         name: "Problem Description*",

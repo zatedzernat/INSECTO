@@ -264,6 +264,7 @@ export default function ItemTypes() {
         name: "#",
         selector: "type_id",
         sortable: true,
+        width: "200px",
       },
       {
         name: "Type Name*",

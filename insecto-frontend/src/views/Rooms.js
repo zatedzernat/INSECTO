@@ -306,7 +306,7 @@ export default function Rooms() {
         name: "#",
         selector: "room_id",
         sortable: true,
-        width: "110px",
+        width: "50px",
       },
       {
         name: "Room Code*",
@@ -340,6 +340,7 @@ export default function Rooms() {
         name: "User",
         selector: "user.name",
         sortable: true,
+        width: "135px",
       },
       {
         name: "Action",

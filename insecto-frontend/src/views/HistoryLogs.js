@@ -9,6 +9,15 @@ import FormModal from "../components/FormModal";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ButtonToTop from "../components/ButtonToTop";
 
+const styles = {
+    paddingLink: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingRight: 6,
+        paddingLeft: 12
+    }
+}
+
 export default function HistoryLogs() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -138,6 +147,7 @@ export default function HistoryLogs() {
                       <Col xs={3}>
                         {log.event[0].toUpperCase() + log.event.slice(1)}
                         <Button
+                          style={styles.paddingLink}
                           variant="link"
                           onClick={() => {
                             setModalShowDetail(true);
