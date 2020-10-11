@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             Problem_DescriptionsTableSeeder::class,
             ItemsTableSeeder::class,  //comment when deployed
             StatusesTableSeeder::class,
-            Notification_ProblemsTableSeeder::class, //comment when deployed
+            // Notification_ProblemsTableSeeder::class, //comment when deployed
             History_LogsTableSeeder::class
         ]);
     }
