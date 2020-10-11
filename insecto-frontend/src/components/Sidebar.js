@@ -51,6 +51,18 @@ export default function Sidebar() {
                 </p>
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                to="/admin/dashboard"
+                activeClassName="active"
+                className="nav-link"
+              >
+                <i className="nav-icon fas fa-chart-pie" />
+                <p>
+                  Dashboard
+                </p>
+              </NavLink>
+            </li>
             <li className="nav-item has-treeview menu-close">
               <a href="admin/#section" className="nav-link">
                 <i className="nav-icon fas fa-database" />

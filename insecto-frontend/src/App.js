@@ -16,6 +16,7 @@ import Home from "./views/mobile/homepage/trackingProblem";
 import TrackingItem from "./views/mobile/homepage/trackingItem";
 import Thank from "./views/mobile/Thanks";
 import { Mobile, Admin } from "./Layout/layout";
+import Dashboard from "./views/Dashboard"
 // import SelectTypeInRoom from "./views/mobile/SelectTypeInRoom";
 // import SelectItemInRoom from "./views/mobile/SelectItemInRoom";
 import SelectItemAndTypeInRoom from "./views/mobile/sendProblem/SelectItemAndTypeInRoom";
@@ -59,6 +60,11 @@ export default function App() {
         <RouteWrapper
           path="/admin/history_logs"
           component={HistoryLogs}
+          layout={Admin}
+        />
+        <RouteWrapper
+          path="/admin/dashboard"
+          component={Dashboard}
           layout={Admin}
         />
         <RouteWrapper
