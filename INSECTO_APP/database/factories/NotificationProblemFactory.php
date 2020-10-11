@@ -42,6 +42,12 @@ $factory->define(Notification_Problem::class, function (Faker $faker) {
         'cancel_flag' => 'N',
         'created_at' => $faker->dateTime($max = 'now', $timezone = 'Asia/Bangkok'),
         'updated_at' => Carbon::now(),
-        'user_id' => 1
+        'user_id' => function (array $attributes) use ($faker) {
+            if ($attributes['status_id'] === 1) {
+                return 6;
+            } else {
+                return $faker->randomElement($array = array(3, 4, 5));
+            }
+        },
     ];
 });

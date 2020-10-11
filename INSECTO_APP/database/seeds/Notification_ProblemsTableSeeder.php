@@ -13,7 +13,7 @@ class Notification_ProblemsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Notification_Problem::class, 350)->create();
+        factory(Notification_Problem::class, 1000)->create();
         // DB::table('notification__problems')->insert([
         //     'item_id' => 1,
         //     'status_id' => 1,
