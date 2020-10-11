@@ -277,9 +277,11 @@ export default function ProblemDescriptions() {
     const columns = [
       {
         name: "#",
-        selector: "problem_des_id",
         sortable: true,
         width: "100px",
+        cell: (row, index, column, id) => {
+          return <div>{index + 1}</div>;
+        },
       },
       {
         name: "Problem Description*",

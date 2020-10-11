@@ -262,9 +262,11 @@ export default function ItemTypes() {
     const columns = [
       {
         name: "#",
-        selector: "type_id",
         sortable: true,
         width: "200px",
+        cell: (row, index, column, id) => {
+          return <div>{index + 1}</div>;
+        },
       },
       {
         name: "Type Name*",

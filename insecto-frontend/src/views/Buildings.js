@@ -273,9 +273,11 @@ export default function Buildings() {
     const columns = [
       {
         name: "#",
-        selector: "building_id",
         sortable: true,
         width: "50px",
+        cell: (row, index, column, id) => {
+          return <div>{index + 1}</div>;
+        },
       },
       {
         name: "Building Code*",

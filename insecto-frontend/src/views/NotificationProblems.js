@@ -87,7 +87,7 @@ export default function NotificationProblems() {
     } else if (next_status_id === 8) {
       setStatus({
         next_status_id: 8,
-        note: row.note
+        note: row.note,
       });
       setModalShowNote(true);
     } else if (next_status_id === 7) {
@@ -234,9 +234,11 @@ export default function NotificationProblems() {
     const columns = [
       {
         name: "#",
-        selector: "noti_id",
         sortable: true,
         width: "50px",
+        cell: (row, index, column, id) => {
+          return <div>{index + 1}</div>;
+        },
       },
       {
         name: "Item Code",
@@ -254,7 +256,6 @@ export default function NotificationProblems() {
         name: "Problem Decription",
         selector: "problem_description",
         sortable: true,
-
       },
       {
         name: "Room Code",
@@ -299,7 +300,7 @@ export default function NotificationProblems() {
               setNotiProblem(row);
             }}
           >
-         Detail
+            Detail
           </Button>
         ),
         button: true,
@@ -317,7 +318,6 @@ export default function NotificationProblems() {
           fontSize: "15px",
         },
       },
-    
     };
 
     return (
@@ -369,7 +369,7 @@ export default function NotificationProblems() {
                     Problem Description ID:{" "}
                   </label>
                   <div className="col-sm-6 col-form-label">
-                    {notiProblem.problem_des_id ?? 'New Problem Description**'}
+                    {notiProblem.problem_des_id ?? "New Problem Description**"}
                   </div>
                 </div>
                 <div className="form-group row">

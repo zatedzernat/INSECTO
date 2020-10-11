@@ -351,9 +351,11 @@ export default function Items() {
     const columns = [
       {
         name: "#",
-        selector: "item_id",
         sortable: true,
         width: "50px",
+        cell: (row, index, column, id) => {
+          return <div>{index + 1}</div>;
+        },
       },
       {
         name: "Item Code*",

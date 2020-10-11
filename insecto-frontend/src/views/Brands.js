@@ -262,8 +262,10 @@ export default function Brands() {
     const columns = [
       {
         name: "#",
-        selector: "brand_id",
         sortable: true,
+        cell: (row, index, column, id) => {
+          return <div>{index + 1}</div>;
+        },
       },
       {
         name: "Brand Name*",
