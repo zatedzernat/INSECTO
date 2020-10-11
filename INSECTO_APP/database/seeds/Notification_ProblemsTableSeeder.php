@@ -13,7 +13,9 @@ class Notification_ProblemsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Notification_Problem::class, 1000)->create();
+        $amount = $this->command->ask("Enter amount of seeder: ", 200);
+        factory(Notification_Problem::class, (int)$amount)->create();
+
         // DB::table('notification__problems')->insert([
         //     'item_id' => 1,
         //     'status_id' => 1,
