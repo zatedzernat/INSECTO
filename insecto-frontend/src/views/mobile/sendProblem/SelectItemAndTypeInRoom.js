@@ -55,10 +55,11 @@ export default function SelectItemAndTypeInRoom(props) {
           //     break;
           // }
           return (
-            <ListGroup key={key} variant="flush">
+            // <ListGroup key={key} variant="flush">
+            <ListGroup key={key}>
               <ListGroup.Item
-                variant="secondary"
-                style={{ textAlign: "center", fontWeight: "bold" }}
+                variant="secondary "
+                style={{ fontWeight: "bold", background: "#E0E0E0" }}
               >
                 {key}
               </ListGroup.Item>
@@ -66,10 +67,22 @@ export default function SelectItemAndTypeInRoom(props) {
                 <ListGroup.Item
                   key={item.item_id}
                   action
-                  style={{ color: "black" }}
+                  style={{
+                    textAlign: "center",
+                    color: "black",
+                    background: "#EEEEEE",
+                  }}
                   onClick={() => handleClick(item)}
                 >
                   {item.item_name}
+                  <i
+                    className="ion-ios-arrow-right"
+                    style={{
+                      color: "#777777",
+                      fontSize: 20,
+                      float: "right",
+                    }}
+                  ></i>
                 </ListGroup.Item>
               ))}
             </ListGroup>
