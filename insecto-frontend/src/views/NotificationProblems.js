@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
@@ -8,6 +8,7 @@ import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
+import FilterComponent from "../components/FilterBox";
 
 export default function NotificationProblems() {
   const [data, setData] = useState([]);
@@ -19,6 +20,8 @@ export default function NotificationProblems() {
   const [modalConfirm, setModalConfirm] = useState(false);
   const [status, setStatus] = useState({});
   const [lastUpdate, setLastUpdate] = useState(0);
+  const [filterText, setFilterText] = useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -230,15 +233,61 @@ export default function NotificationProblems() {
     container: { color: "red" },
   };
 
+  const filteredItems = data.noti_problems?.filter(
+    (item) =>
+      item.problem_description |
+      item.problem_description
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) |
+      item.help_desk_code |
+      item.help_desk_code?.toLowerCase()
+        .includes(filterText.toLowerCase()) |
+      item.item.item_code |
+      item.item.item_code.toLowerCase().includes(filterText.toLowerCase()) |
+      item.item.item_name |
+      item.item.item_name
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) |
+      item.item.room.room_code |
+      item.item.room.room_code
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) |
+      item.item.room.room_name |
+      item.item.room.room_name
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) |
+      item.item.room.building.building_name |
+      item.item.room.building.building_name
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) |
+      item.user.name |
+      item.user.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const subHeaderComponentMemo = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={(e) => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+
   const notiProblemTable = (data) => {
     const columns = [
       {
         name: "#",
         sortable: true,
         width: "50px",
-        cell: (row, index, column, id) => {
-          return <div>{index + 1}</div>;
-        },
+        selector: "noti_id",
       },
       {
         name: "Item Code",
@@ -323,7 +372,7 @@ export default function NotificationProblems() {
     return (
       <DataTable
         columns={columns}
-        data={data.noti_problems}
+        data={data}
         striped
         responsive
         noHeader
@@ -331,6 +380,8 @@ export default function NotificationProblems() {
         highlightOnHover
         pagination
         customStyles={myFonts}
+        subHeader
+        subHeaderComponent={subHeaderComponentMemo}
       />
     );
   };
@@ -346,7 +397,7 @@ export default function NotificationProblems() {
                 <h6>รายการการแจ้งปัญหาทั้งหมด</h6>
               </div>
             }
-            body={notiProblemTable(data)}
+            body={notiProblemTable(filteredItems)}
             loading={isLoading ? "overlay" : ""}
           />
 
