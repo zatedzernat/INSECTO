@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import { Button } from "react-bootstrap";
@@ -7,6 +7,7 @@ import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
+import FilterComponent from "../components/FilterBox";
 
 export default function ItemTypes() {
   const [data, setData] = useState([]);
@@ -23,6 +24,8 @@ export default function ItemTypes() {
   const [itemType, setItemType] = useState(initialState);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
+  const [filterText, setFilterText] = useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -258,15 +261,38 @@ export default function ItemTypes() {
     setSelectedRows(sort);
   }, []);
 
+  const filteredItems = data.item_types?.filter(
+    (item) =>
+      item.type_name |
+      item.type_name.toLowerCase().includes(filterText.toLowerCase()) |
+      item.user.name |
+      item.user.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const subHeaderComponentMemo = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={(e) => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+
   const itemTypeTable = (data) => {
     const columns = [
       {
         name: "#",
         sortable: true,
         width: "200px",
-        cell: (row, index, column, id) => {
-          return <div>{index + 1}</div>;
-        },
+        selector: "type_id",
       },
       {
         name: "Type Name*",
@@ -331,7 +357,7 @@ export default function ItemTypes() {
     return (
       <DataTable
         columns={columns}
-        data={data.item_types}
+        data={data}
         striped
         responsive
         selectableRows
@@ -341,6 +367,8 @@ export default function ItemTypes() {
         customStyles={myFonts}
         onSelectedRowsChange={handleRowSelected}
         clearSelectedRows={toggleCleared}
+        subHeader
+        subHeaderComponent={subHeaderComponentMemo}
       />
     );
   };
@@ -392,7 +420,7 @@ export default function ItemTypes() {
                 )}
               </div>
             }
-            body={itemTypeTable(data)}
+            body={itemTypeTable(filteredItems)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal

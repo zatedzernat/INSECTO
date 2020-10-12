@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Content from "../components/Content";
 import Card from "../components/Card";
 import _ from "lodash";
@@ -9,6 +9,7 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
+import FilterComponent from "../components/FilterBox";
 
 export default function Items() {
   const [data, setData] = useState([]);
@@ -40,6 +41,8 @@ export default function Items() {
   const [selectGroup, setSelectGroup] = useState("- select group -");
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
+    const [filterText, setFilterText] = useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -347,15 +350,56 @@ export default function Items() {
     setSelectedRows(sort);
   }, []);
 
+const filteredItems = data.items?.filter(
+    (item) =>
+      item.item_code |
+      item.item_code.toLowerCase().includes(filterText.toLowerCase()) |
+      item.item_name |
+      item.item_name.toLowerCase().includes(filterText.toLowerCase()) |
+      item.group |
+      item.group.toLowerCase().includes(filterText.toLowerCase()) |
+      item.note |
+      item.note?.toLowerCase().includes(filterText.toLowerCase()) |
+      item.serial_number |
+      item.serial_number?.toLowerCase().includes(filterText.toLowerCase()) |
+      item.model |
+      item.model?.toLowerCase().includes(filterText.toLowerCase()) |
+      item.brand?.brand_name |
+      item.brand?.brand_name.toLowerCase().includes(filterText.toLowerCase()) |
+      item.room.room_name |
+      item.room.room_name.toLowerCase().includes(filterText.toLowerCase()) |
+      item.room.building.building_code |
+      item.room.building.building_code.toLowerCase().includes(filterText.toLowerCase()) |
+      item.item_type.type_name |
+      item.item_type.type_name.toLowerCase().includes(filterText.toLowerCase()) |
+      item.user.name |
+      item.user.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const subHeaderComponentMemo = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText("");
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={(e) => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, resetPaginationToggle]);
+
   const itemTable = (data) => {
     const columns = [
       {
         name: "#",
         sortable: true,
         width: "50px",
-        cell: (row, index, column, id) => {
-          return <div>{index + 1}</div>;
-        },
+        selector: "item_id",
       },
       {
         name: "Item Code*",
@@ -494,7 +538,7 @@ export default function Items() {
     return (
       <DataTable
         columns={columns}
-        data={data.items}
+        data={data}
         striped
         responsive
         selectableRows
@@ -507,6 +551,8 @@ export default function Items() {
         customStyles={myFonts}
         onSelectedRowsChange={handleRowSelected}
         clearSelectedRows={toggleCleared}
+        subHeader
+        subHeaderComponent={subHeaderComponentMemo}
       />
     );
   };
@@ -574,7 +620,7 @@ export default function Items() {
                 )}
               </div>
             }
-            body={itemTable(data)}
+            body={itemTable(filteredItems)}
             loading={isLoading ? "overlay" : ""}
           />
 
