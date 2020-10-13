@@ -233,37 +233,6 @@ export default function NotificationProblems() {
     container: { color: "red" },
   };
 
-  const filteredItems = data.noti_problems?.filter(
-    (item) =>
-      item.problem_description |
-      item.problem_description
-        .toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.help_desk_code |
-      item.help_desk_code?.toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.item.item_code |
-      item.item.item_code.toLowerCase().includes(filterText.toLowerCase()) |
-      item.item.item_name |
-      item.item.item_name
-        .toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.item.room.room_code |
-      item.item.room.room_code
-        .toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.item.room.room_name |
-      item.item.room.room_name
-        .toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.item.room.building.building_name |
-      item.item.room.building.building_name
-        .toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.user.name |
-      item.user.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -273,11 +242,13 @@ export default function NotificationProblems() {
     };
 
     return (
-      <FilterComponent
-        onFilter={(e) => setFilterText(e.target.value)}
-        onClear={handleClear}
-        filterText={filterText}
-      />
+      <>
+        <FilterComponent
+          onFilter={(e) => setFilterText(e.target.value)}
+          onClear={handleClear}
+          filterText={filterText}
+        />
+      </>
     );
   }, [filterText, resetPaginationToggle]);
 
@@ -369,10 +340,38 @@ export default function NotificationProblems() {
       },
     };
 
+    const filteredItems = data.noti_problems?.filter(
+      (item) =>
+        item.problem_description |
+        item.problem_description
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.help_desk_code |
+        item.help_desk_code?.toLowerCase().includes(filterText.toLowerCase()) |
+        item.item.item_code |
+        item.item.item_code.toLowerCase().includes(filterText.toLowerCase()) |
+        item.item.item_name |
+        item.item.item_name.toLowerCase().includes(filterText.toLowerCase()) |
+        item.item.room.room_code |
+        item.item.room.room_code
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.item.room.room_name |
+        item.item.room.room_name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.item.room.building.building_name |
+        item.item.room.building.building_name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.user.name |
+        item.user.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
     return (
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredItems}
         striped
         responsive
         noHeader
@@ -397,7 +396,7 @@ export default function NotificationProblems() {
                 <h6>รายการการแจ้งปัญหาทั้งหมด</h6>
               </div>
             }
-            body={notiProblemTable(filteredItems)}
+            body={notiProblemTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
 
