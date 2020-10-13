@@ -261,14 +261,6 @@ export default function ItemTypes() {
     setSelectedRows(sort);
   }, []);
 
-  const filteredItems = data.item_types?.filter(
-    (item) =>
-      item.type_name |
-      item.type_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.user.name |
-      item.user.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -342,6 +334,7 @@ export default function ItemTypes() {
         button: true,
       },
     ];
+
     const myFonts = {
       rows: {
         style: {
@@ -354,10 +347,19 @@ export default function ItemTypes() {
         },
       },
     };
+
+    const filteredItems = data.item_types?.filter(
+      (item) =>
+        item.type_name |
+        item.type_name.toLowerCase().includes(filterText.toLowerCase()) |
+        item.user.name |
+        item.user.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
     return (
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredItems}
         striped
         responsive
         selectableRows
@@ -420,7 +422,7 @@ export default function ItemTypes() {
                 )}
               </div>
             }
-            body={itemTypeTable(filteredItems)}
+            body={itemTypeTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal

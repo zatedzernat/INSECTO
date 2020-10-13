@@ -7,7 +7,7 @@ import FormModal from "../components/FormModal";
 import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
-import FilterComponent from "../components/FilterBox"
+import FilterComponent from "../components/FilterBox";
 
 export default function Buildings() {
   const [data, setData] = useState([]);
@@ -272,16 +272,6 @@ export default function Buildings() {
     setSelectedRows(sort);
   }, []);
 
-  const filteredItems = data.buildings?.filter(
-    (item) =>
-      item.building_name |
-      item.building_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.building_code |
-      item.building_code.toLowerCase().includes(filterText.toLowerCase()) |
-      item.user.name |
-      item.user.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -374,10 +364,20 @@ export default function Buildings() {
       },
     };
 
+    const filteredItems = data.buildings?.filter(
+      (item) =>
+        item.building_name |
+        item.building_name.toLowerCase().includes(filterText.toLowerCase()) |
+        item.building_code |
+        item.building_code.toLowerCase().includes(filterText.toLowerCase()) |
+        item.user.name |
+        item.user.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
     return (
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredItems}
         striped
         responsive
         selectableRows
@@ -440,7 +440,7 @@ export default function Buildings() {
                 )}
               </div>
             }
-            body={buildingTable(filteredItems)}
+            body={buildingTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal

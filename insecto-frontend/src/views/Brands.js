@@ -261,14 +261,6 @@ export default function Brands() {
     setSelectedRows(sort);
   }, []);
 
-  const filteredItems = data.brands?.filter(
-    (item) =>
-      item.brand_name |
-      item.brand_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.user.name |
-      item.user.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -341,6 +333,7 @@ export default function Brands() {
         button: true,
       },
     ];
+
     const myFonts = {
       rows: {
         style: {
@@ -353,10 +346,19 @@ export default function Brands() {
         },
       },
     };
+
+    const filteredItems = data.brands?.filter(
+      (item) =>
+        item.brand_name |
+        item.brand_name.toLowerCase().includes(filterText.toLowerCase()) |
+        item.user.name |
+        item.user.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
     return (
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredItems}
         striped
         responsive
         selectableRows
@@ -419,7 +421,7 @@ export default function Brands() {
                 )}
               </div>
             }
-            body={brandTable(filteredItems)}
+            body={brandTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
 

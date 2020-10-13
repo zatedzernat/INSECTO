@@ -276,20 +276,6 @@ export default function ProblemDescriptions() {
     setSelectedRows(sort);
   }, []);
 
-  const filteredItems = data.problem_descs?.filter(
-    (item) =>
-      item.problem_description |
-      item.problem_description
-        .toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.item_type.type_name |
-      item.item_type.type_name
-        .toLowerCase()
-        .includes(filterText.toLowerCase()) |
-      item.user.name |
-      item.user.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -382,10 +368,25 @@ export default function ProblemDescriptions() {
         },
       },
     };
+
+    const filteredItems = data.problem_descs?.filter(
+      (item) =>
+        item.problem_description |
+        item.problem_description
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.item_type.type_name |
+        item.item_type.type_name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.user.name |
+        item.user.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
     return (
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredItems}
         striped
         responsive
         selectableRows
@@ -454,7 +455,7 @@ export default function ProblemDescriptions() {
                 )}
               </div>
             }
-            body={problemDesTable(filteredItems)}
+            body={problemDesTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal

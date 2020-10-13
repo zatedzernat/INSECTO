@@ -303,18 +303,6 @@ export default function Rooms() {
     setSelectedRows(sort);
   }, []);
 
-  const filteredItems = data.rooms?.filter(
-    (item) =>
-      item.room_name |
-      item.room_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.room_code |
-      item.room_code.toLowerCase().includes(filterText.toLowerCase()) |
-      item.building.building_name |
-      item.building.building_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.user.name |
-      item.user.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -421,6 +409,7 @@ export default function Rooms() {
         width: "120px",
       },
     ];
+
     const myFonts = {
       rows: {
         style: {
@@ -433,10 +422,25 @@ export default function Rooms() {
         },
       },
     };
+
+    const filteredItems = data.rooms?.filter(
+      (item) =>
+        item.room_name |
+        item.room_name.toLowerCase().includes(filterText.toLowerCase()) |
+        item.room_code |
+        item.room_code.toLowerCase().includes(filterText.toLowerCase()) |
+        item.building.building_name |
+        item.building.building_name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.user.name |
+        item.user.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
     return (
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredItems}
         striped
         responsive
         selectableRows
@@ -505,7 +509,7 @@ export default function Rooms() {
                 )}
               </div>
             }
-            body={roomTable(filteredItems)}
+            body={roomTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
           <FormModal

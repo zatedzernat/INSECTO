@@ -41,7 +41,7 @@ export default function Items() {
   const [selectGroup, setSelectGroup] = useState("- select group -");
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
-    const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const fetchData = async () => {
@@ -350,32 +350,6 @@ export default function Items() {
     setSelectedRows(sort);
   }, []);
 
-const filteredItems = data.items?.filter(
-    (item) =>
-      item.item_code |
-      item.item_code.toLowerCase().includes(filterText.toLowerCase()) |
-      item.item_name |
-      item.item_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.group |
-      item.group.toLowerCase().includes(filterText.toLowerCase()) |
-      item.note |
-      item.note?.toLowerCase().includes(filterText.toLowerCase()) |
-      item.serial_number |
-      item.serial_number?.toLowerCase().includes(filterText.toLowerCase()) |
-      item.model |
-      item.model?.toLowerCase().includes(filterText.toLowerCase()) |
-      item.brand?.brand_name |
-      item.brand?.brand_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.room.room_name |
-      item.room.room_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.room.building.building_code |
-      item.room.building.building_code.toLowerCase().includes(filterText.toLowerCase()) |
-      item.item_type.type_name |
-      item.item_type.type_name.toLowerCase().includes(filterText.toLowerCase()) |
-      item.user.name |
-      item.user.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -506,6 +480,7 @@ const filteredItems = data.items?.filter(
         button: true,
       },
     ];
+
     const ExpandedComponent = ({ data }) => (
       <div
         style={{
@@ -535,10 +510,42 @@ const filteredItems = data.items?.filter(
       },
     };
 
+    const filteredItems = data.items?.filter(
+      (item) =>
+        item.item_code |
+        item.item_code.toLowerCase().includes(filterText.toLowerCase()) |
+        item.item_name |
+        item.item_name.toLowerCase().includes(filterText.toLowerCase()) |
+        item.group |
+        item.group.toLowerCase().includes(filterText.toLowerCase()) |
+        item.note |
+        item.note?.toLowerCase().includes(filterText.toLowerCase()) |
+        item.serial_number |
+        item.serial_number?.toLowerCase().includes(filterText.toLowerCase()) |
+        item.model |
+        item.model?.toLowerCase().includes(filterText.toLowerCase()) |
+        item.brand?.brand_name |
+        item.brand?.brand_name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.room.room_name |
+        item.room.room_name.toLowerCase().includes(filterText.toLowerCase()) |
+        item.room.building.building_code |
+        item.room.building.building_code
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.item_type.type_name |
+        item.item_type.type_name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
+        item.user.name |
+        item.user.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
     return (
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredItems}
         striped
         responsive
         selectableRows
@@ -620,7 +627,7 @@ const filteredItems = data.items?.filter(
                 )}
               </div>
             }
-            body={itemTable(filteredItems)}
+            body={itemTable(data)}
             loading={isLoading ? "overlay" : ""}
           />
 
