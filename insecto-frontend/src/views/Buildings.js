@@ -294,7 +294,7 @@ export default function Buildings() {
       {
         name: "#",
         sortable: true,
-        width: "50px",
+        width: "70px",
         selector: "building_id",
       },
       {

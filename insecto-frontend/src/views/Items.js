@@ -372,7 +372,7 @@ export default function Items() {
       {
         name: "#",
         sortable: true,
-        width: "50px",
+        width: "70px",
         selector: "item_id",
       },
       {

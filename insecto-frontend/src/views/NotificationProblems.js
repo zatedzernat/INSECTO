@@ -257,7 +257,7 @@ export default function NotificationProblems() {
       {
         name: "#",
         sortable: true,
-        width: "50px",
+        width: "70px",
         selector: "noti_id",
       },
       {
@@ -346,8 +346,10 @@ export default function NotificationProblems() {
         item.problem_description
           .toLowerCase()
           .includes(filterText.toLowerCase()) |
-        item.help_desk_code |
-        item.help_desk_code?.toLowerCase().includes(filterText.toLowerCase()) |
+        item.status.status_name |
+        item.status.status_name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()) |
         item.item.item_code |
         item.item.item_code.toLowerCase().includes(filterText.toLowerCase()) |
         item.item.item_name |

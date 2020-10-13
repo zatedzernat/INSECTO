@@ -283,7 +283,7 @@ export default function ItemTypes() {
       {
         name: "#",
         sortable: true,
-        width: "200px",
+        width: "70px",
         selector: "type_id",
       },
       {
