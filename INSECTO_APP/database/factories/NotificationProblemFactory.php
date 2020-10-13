@@ -7,6 +7,7 @@ use App\Http\Models\Notification_Problem;
 use App\Http\Models\Problem_Description;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(Notification_Problem::class, function (Faker $faker) {
 
@@ -27,14 +28,14 @@ $factory->define(Notification_Problem::class, function (Faker $faker) {
         },
         'help_desk_code' => function (array $attributes) use ($faker) {
             if (in_array($attributes['status_id'], array(2, 3, 4, 5, 8))) {
-                return $faker->numberBetween($min = 1000, $max = 9000);
+                return $faker->numberBetween($min = 1000, $max = 2000);
             } else {
                 return null;
             }
         },
-        'note' => function (array $attributes) use ($faker) {
+        'note' => function (array $attributes) {
             if ($attributes['status_id'] === 8) {
-                return $faker->word;
+                return Str::random(3);
             } else {
                 return null;
             }
@@ -42,6 +43,12 @@ $factory->define(Notification_Problem::class, function (Faker $faker) {
         'cancel_flag' => 'N',
         'created_at' => $faker->dateTime($max = 'now', $timezone = 'Asia/Bangkok'),
         'updated_at' => Carbon::now(),
-        'user_id' => 1
+        'user_id' => function (array $attributes) use ($faker) {
+            if ($attributes['status_id'] === 1) {
+                return 6;
+            } else {
+                return $faker->randomElement($array = array(3, 4, 5));
+            }
+        },
     ];
 });

@@ -96,7 +96,7 @@ class Notification_Problem extends Model implements Auditable
         $this->problem_des_id = $problem_des_id;
         $this->problem_description = $problem_description;
         $this->cancel_flag = 'N';
-        $this->user_id = 3;
+        $this->user_id = 6; //problem sender
         $this->save();
     }
 
@@ -127,7 +127,7 @@ class Notification_Problem extends Model implements Auditable
             $noti_prob->status_id = 2; // status_id = 2 = open
             $status = 'open';
         }
-        $noti_prob->user_id = 3;
+        $noti_prob->user_id = 2;
         $noti_prob->save();
         return $status;
     }
