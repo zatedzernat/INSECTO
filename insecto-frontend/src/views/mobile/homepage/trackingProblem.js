@@ -9,13 +9,16 @@ export default function TrackingProblem() {
   const [problemInfo, setProblemInfo] = useState({});
   const [isClick, setIsClick] = useState(false);
   const [code, setCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}noti_problems`
       );
       setData(res.data.noti_problems);
+      setIsLoading(false);
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
@@ -45,41 +48,41 @@ export default function TrackingProblem() {
 
   const statusBar = () => {
     const arr = [];
-    arr.push(
-      data.map((item) => (
-        <div
-          key={Math.random()}
-          onClick={() => {
-            setIsClick(true);
-            setCode(item.noti_id);
-            setProblemInfo({
-              item_code: item.item.item_code,
-              item_name: item.item.item_name,
-              problem_description: item.problem_description,
-              status_id: item.status_id,
-              room: item.item.room.room_name,
-              building: item.item.room.building.building_name,
-              updated_at: item.updated_at,
-            });
-          }}
-        >
-          <Row
-            style={{
-              borderColor: "#E2E2E2",
-              borderBottomWidth: 1,
-              borderBottomStyle: "solid",
+      arr.push(
+        data.slice(0,30).map((item) => (
+          <div
+            key={Math.random()}
+            onClick={() => {
+              setIsClick(true);
+              setCode(item.noti_id);
+              setProblemInfo({
+                item_code: item.item.item_code,
+                item_name: item.item.item_name,
+                problem_description: item.problem_description,
+                status_id: item.status_id,
+                room: item.item.room.room_name,
+                building: item.item.room.building.building_name,
+                updated_at: item.updated_at,
+              });
             }}
           >
-            <Card
-              itemName={item.item.item_code}
-              itemProblem={item.problem_description}
-              room={item.item.room.room_name}
-              status={item.status.status_id}
-            />
-          </Row>
-        </div>
-      ))
-    );
+            <Row
+              style={{
+                borderColor: "#E2E2E2",
+                borderBottomWidth: 1,
+                borderBottomStyle: "solid",
+              }}
+            >
+              <Card
+                itemName={item.item.item_code}
+                itemProblem={item.problem_description}
+                room={item.item.room.room_name}
+                status={item.status.status_id}
+              />
+            </Row>
+          </div>
+        ))
+      );
     return arr;
   };
 
@@ -102,6 +105,15 @@ export default function TrackingProblem() {
           </Col>
         </Row>
         {componentTracking()}
+        {isLoading ? (
+          <Row>
+            <Col className="overlay dark text-center" style={{paddingTop: '140px'}}>
+              <i className="fas fa-2x fa-sync-alt fa-spin" />
+            </Col>
+          </Row>
+        ) : (
+          ""
+        )}
       </Container>
     </>
   );
