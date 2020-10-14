@@ -317,7 +317,7 @@ export default function Brands() {
                 setBrand(row);
               }}
             >
-              <i className="fa fa-edit" />
+              <i className="ion-edit" />
             </span>
             &emsp;
             <span
