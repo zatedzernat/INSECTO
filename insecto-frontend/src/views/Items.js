@@ -400,7 +400,7 @@ export default function Items() {
         width: "150px",
       },
       {
-        name: "Group",
+        name: "isGroup",
         selector: "group",
         sortable: true,
         width: "60px",
@@ -422,7 +422,6 @@ export default function Items() {
         name: "User",
         selector: "user.name",
         sortable: true,
-        width: "135px",
       },
       {
         name: "Action",
@@ -458,6 +457,7 @@ export default function Items() {
             </span>
           </>
         ),
+       
         button: true,
       },
       {
