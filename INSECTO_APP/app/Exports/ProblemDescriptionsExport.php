@@ -25,6 +25,7 @@ class ProblemDescriptionsExport implements FromCollection, WithHeadings, WithMap
             'problem_description',
             'type_id',
             'cancel_flag',
+            'user_id'
         ];
     }
 
@@ -37,6 +38,7 @@ class ProblemDescriptionsExport implements FromCollection, WithHeadings, WithMap
             $prob_desc->problem_description,
             $prob_desc->type_id,
             $prob_desc->cancel_flag,
+            $prob_desc->user_id
         ];
     }
 

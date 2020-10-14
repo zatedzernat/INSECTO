@@ -24,6 +24,7 @@ class BrandsExport implements FromCollection, WithHeadings, WithMapping, WithTit
         return [
             'brand_name',
             'cancel_flag',
+            'user_id'
         ];
     }
 
@@ -35,6 +36,7 @@ class BrandsExport implements FromCollection, WithHeadings, WithMapping, WithTit
         return [
             $brand->brand_name,
             $brand->cancel_flag,
+            $brand->user_id
         ];
     }
 

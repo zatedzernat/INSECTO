@@ -25,6 +25,7 @@ class BuildingsExport implements FromCollection, WithHeadings, WithMapping, With
             'building_code',
             'building_name',
             'cancel_flag',
+            'user_id'
         ];
     }
 
@@ -37,6 +38,7 @@ class BuildingsExport implements FromCollection, WithHeadings, WithMapping, With
             $building->building_code,
             $building->building_name,
             $building->cancel_flag,
+            $building->user_id
         ];
     }
 

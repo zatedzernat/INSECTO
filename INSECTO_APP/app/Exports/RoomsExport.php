@@ -26,6 +26,7 @@ class RoomsExport implements FromCollection, WithHeadings, WithMapping, WithTitl
             'room_name',
             'building_id',
             'cancel_flag',
+            'user_id'
         ];
     }
 
@@ -39,6 +40,7 @@ class RoomsExport implements FromCollection, WithHeadings, WithMapping, WithTitl
             $room->room_name,
             $room->building_id,
             $room->cancel_flag,
+            $room->user_id
         ];
     }
 

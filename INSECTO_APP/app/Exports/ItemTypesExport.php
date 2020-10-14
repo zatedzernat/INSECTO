@@ -12,8 +12,8 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 class ItemTypesExport implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return Item_Type::all();
@@ -24,6 +24,7 @@ class ItemTypesExport implements FromCollection, WithHeadings, WithMapping, With
         return [
             'type_name',
             'cancel_flag',
+            'user_id'
         ];
     }
 
@@ -35,6 +36,7 @@ class ItemTypesExport implements FromCollection, WithHeadings, WithMapping, With
         return [
             $item_type->type_name,
             $item_type->cancel_flag,
+            $item_type->user_id
         ];
     }
 
