@@ -332,7 +332,7 @@ export default function Rooms() {
         name: "Room Code*",
         selector: "room_code",
         sortable: true,
-        width: "120px",
+        width: "150px",
       },
       {
         name: "Room Name",
