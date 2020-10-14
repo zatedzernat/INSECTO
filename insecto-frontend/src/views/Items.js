@@ -440,7 +440,7 @@ export default function Items() {
                 setSelectRoom(row.room.room_name);
                 setSelectGroup(row.group);
                 {
-                  let mybd = _.find(data.buildings, row.building_id);
+                  let mybd = _.find(data.buildings, row.room.building);
                   setRooms(mybd.rooms);
                 }
               }}
@@ -458,7 +458,6 @@ export default function Items() {
             </span>
           </>
         ),
-       
         button: true,
       },
       {
@@ -1017,7 +1016,7 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-edit"
+                        id="dropdown-edit-type"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -1051,7 +1050,7 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-edit"
+                        id="dropdown-edit-building"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -1087,7 +1086,7 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-edit"
+                        id="dropdown-edit-room"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -1121,7 +1120,7 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-edit"
+                        id="dropdown-edit-group"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
@@ -1163,7 +1162,7 @@ export default function Items() {
                   <div className="col-sm-8">
                     <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
-                        id="dropdown-edit"
+                        id="dropdown-edit-brand"
                         style={{ width: "303px" }}
                         variant="outline-primary"
                       >
