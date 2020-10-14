@@ -110,7 +110,7 @@ export default function TrackingItem(props) {
           <Row>
             <p style={{ fontSize: 18 }}>สถานะการซ่อม</p>
           </Row>
-          {_.map(data.noti_tracking, (noti) => {
+          {_.map(data.noti_trackings, (noti) => {
             switch (noti.new_values.status_id) {
               case 1:
                 textStatus = "รอดำเนินการ";
@@ -137,7 +137,7 @@ export default function TrackingItem(props) {
                   <Col className="col-3">
                     {moment(noti.updated_at).format("LT")} น.
                   </Col>
-                  <Col className="col-5">{textStatus}</Col>
+                  <Col className="col-5">{noti.status_name}</Col>
                 </Row>
               </React.Fragment>
             );

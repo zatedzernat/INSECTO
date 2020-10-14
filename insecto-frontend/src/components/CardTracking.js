@@ -41,42 +41,49 @@ export default function Card(props) {
       case 4:
       case 7:
         styles = {
-          borderColor: "rgb(255 148 234)",
-          borderWidth: 1,
-          borderStyle: "solid",
+          // borderColor: "rgb(255 148 234)",
+          // borderWidth: 1,
+          // borderStyle: "solid",
           height: 22,
-          width: 100,
-          backgroundColor: "#FAFAFA",
+          width: 80,
+          // backgroundColor: "#FAFAFA",
+          backgroundColor: "#F4FF81",
           borderRadius: 5,
         };
         textStatus = "รอการดำเนินการ";
-        font = { color: "rgb(241 79 210)", fontSize: 11 };
+        // font = { color: "rgb(241 79 210)", fontSize: 11 };
+        font = { color: "black", fontSize: 11 };
         break;
       case 5:
         styles = {
-          borderColor: "#A0DCFF",
-          borderWidth: 1,
-          borderStyle: "solid",
+          // borderColor: "#A0DCFF",
+          // borderWidth: 1,
+          // borderStyle: "solid",
           height: 22,
-          width: 100,
-          backgroundColor: "#FAFAFA",
+          width: 80,
+          // backgroundColor: "#FAFAFA",
+          // backgroundColor: "#cfedff",
+          backgroundColor: "#B3E5FC",
           borderRadius: 5,
         };
         textStatus = "กำลังดำเนินการ";
-        font = { color: "#2BB0FF", fontSize: 11 };
+        // font = { color: "#2BB0FF", fontSize: 11 };
+        font = { color: "black", fontSize: 11 };
         break;
       case 8:
         styles = {
-          borderColor: "#93D388",
-          borderWidth: 1,
-          borderStyle: "solid",
+          // borderColor: "#93D388",
+          // borderWidth: 1,
+          // borderStyle: "solid",
           height: 22,
-          width: 100,
-          backgroundColor: "#FAFAFA",
+          width: 80,
+          // backgroundColor: "#FAFAFA",
+          backgroundColor: "#CCFF90",
           borderRadius: 5,
         };
         textStatus = "ดำเนินการเสร็จสิ้น";
-        font = { color: "#43CF2A", fontSize: 11 };
+        // font = { color: "#43CF2A", fontSize: 11 };
+        font = { color: "black", fontSize: 11 };
         break;
       default:
         break;
@@ -84,7 +91,8 @@ export default function Card(props) {
 
     return (
       <Container fluid className="mt-1 text-center pt-1" style={styles}>
-        <p style={font}>{textStatus}</p>
+        {/* <p style={font}>{textStatus}</p> */}
+        <p style={font}>{props.statusName}</p>
       </Container>
     );
   };

@@ -21,30 +21,37 @@ export default function ProblemsNotResolved({
           switch (problem.status_id) {
             case 1:
               color = "callout callout-warning";
+              // color = "#F4FF81";
               status = "รอดำเนินการ";
               break;
             case 2:
               color = "callout callout-info";
+              // color = "#B3E5FC";
               status = "กำลังดำเนินการ";
               break;
             case 3:
               color = "callout callout-info";
+              // color = "#B3E5FC";
               status = "กำลังดำเนินการ";
               break;
             case 4:
               color = "callout callout-info";
+              // color = "#B3E5FC";
               status = "กำลังดำเนินการ";
               break;
             case 5:
               color = "callout callout-info";
+              // color = "#B3E5FC";
               status = "กำลังดำเนินการ";
               break;
             case 7:
               color = "callout callout-info";
+              // color = "#B3E5FC";
               status = "กำลังดำเนินการ";
               break;
-            default:
-              color = "callout callout-secondary";
+              default:
+                color = "callout callout-secondary";
+                // color = "#F4FF81";
               status = "อื่นๆ";
               break;
           }
@@ -54,7 +61,8 @@ export default function ProblemsNotResolved({
               color={color}
               item={problem.item.item_code}
               problem={problem.problem_description}
-              status={status}
+              // status={status}
+              status={problem.status.status_name}
               time={fromnow}
             />
           );

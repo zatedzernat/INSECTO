@@ -78,6 +78,7 @@ export default function TrackingProblem() {
                 itemProblem={item.problem_description}
                 room={item.item.room.room_name}
                 status={item.status.status_id}
+                statusName={item.status.status_name}
               />
             </Row>
           </div>
