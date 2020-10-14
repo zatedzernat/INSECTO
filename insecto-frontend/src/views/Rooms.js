@@ -373,7 +373,7 @@ export default function Rooms() {
                 setSelectBuilding(row.building.building_name); //? google->react hook setstate not updating
               }}
             >
-              <i className="fa fa-edit" />
+              <i className="ion-edit" />
             </span>
             &emsp;
             <span
