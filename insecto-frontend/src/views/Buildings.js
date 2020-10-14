@@ -334,7 +334,8 @@ export default function Buildings() {
                 setBuilding(row);
               }}
             >
-              <i className="fa fa-edit" />
+              {/* <i className="fa fa-edit" /> */}
+              <i className="ion-edit" />
             </span>
             &emsp;
             <span
