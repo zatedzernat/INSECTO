@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Notification_Problem extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'help_desk_code', 'note', 'cancel_flag', 'user_id'];
+    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'service_desk_code', 'note', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'noti_id';
 
     public function status()
@@ -113,12 +113,12 @@ class Notification_Problem extends Model implements Auditable
         $this->save();
     }
 
-    public function checkStatus($noti_id, $next_status_id, $help_desk_code, $note)
+    public function checkStatus($noti_id, $next_status_id, $service_desk_code, $note)
     {
         $noti_prob = $this->findByID($noti_id);
         if ($noti_prob) {
             if ($next_status_id == 2 || $next_status_id == 7) { // status_id = 2 = open
-                $status = $this->openTask($noti_prob, $help_desk_code);
+                $status = $this->openTask($noti_prob, $service_desk_code);
                 return $status;
             } else if ($next_status_id == 8) { // status_id = 8 = resolved
                 $status = $this->resolvedTask($noti_prob, $note);
@@ -130,9 +130,9 @@ class Notification_Problem extends Model implements Auditable
         }
     }
 
-    public function openTask($noti_prob, $help_desk_code)
+    public function openTask($noti_prob, $service_desk_code)
     {
-        $noti_prob->help_desk_code = $help_desk_code;
+        $noti_prob->service_desk_code = $service_desk_code;
         if ($noti_prob->note) {
             $noti_prob->status_id = 7; // status_id = 7 = reopen
             $status = 'reopen';

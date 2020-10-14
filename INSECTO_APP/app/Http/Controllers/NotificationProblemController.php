@@ -9,7 +9,6 @@ use App\Http\Models\Room;
 use App\Http\Models\Status;
 use App\Http\Requests\NotiUpdateFormRequest;
 use App\Http\Requests\SendProblemRequest;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class NotificationProblemController extends Controller
@@ -108,9 +107,9 @@ class NotificationProblemController extends Controller
     {
         if ($noti_id) {
             $next_status_id = $request->next_status_id;
-            $help_desk_code = $request->help_desk_code;
+            $service_desk_code = $request->service_desk_code;
             $note = $request->note;
-            $status = $this->noti_problem->checkStatus($noti_id, $next_status_id, $help_desk_code, $note);
+            $status = $this->noti_problem->checkStatus($noti_id, $next_status_id, $service_desk_code, $note);
             $success = 'change status to \'' . $status . '\' complete';
             return $this->serverResponse(null, $success);
         } else {

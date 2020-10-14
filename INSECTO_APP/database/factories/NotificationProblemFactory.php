@@ -26,7 +26,7 @@ $factory->define(Notification_Problem::class, function (Faker $faker) {
         'problem_description' => function (array $attributes) {
             return Problem_Description::find($attributes['problem_des_id'])->problem_description;
         },
-        'help_desk_code' => function (array $attributes) use ($faker) {
+        'service_desk_code' => function (array $attributes) use ($faker) {
             if (in_array($attributes['status_id'], array(2, 3, 4, 5, 8))) {
                 return $faker->numberBetween($min = 1000, $max = 2000);
             } else {

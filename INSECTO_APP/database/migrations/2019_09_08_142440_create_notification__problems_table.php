@@ -20,7 +20,7 @@ class CreateNotificationProblemsTable extends Migration
             $table->unsignedBigInteger('problem_des_id')->nullable();
             $table->string('problem_description', 100);
             // $table->ipAddress('sender_ip');
-            $table->string('help_desk_code', 15)->nullable();
+            $table->string('service_desk_code', 15)->nullable();
             $table->string('note', 100)->nullable();
             $table->string('cancel_flag', 1);
             $table->timestamps();

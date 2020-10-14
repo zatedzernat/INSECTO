@@ -15,7 +15,7 @@ export default function NotificationProblems() {
   const [isLoading, setIsLoading] = useState(false);
   const [notiProblem, setNotiProblem] = useState({});
   const [modalShowDetail, setModalShowDetail] = useState(false);
-  const [modalShowHDC, setModalShowHDC] = useState(false);
+  const [modalShowSDC, setModalShowSDC] = useState(false);
   const [modalShowNote, setModalShowNote] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
   const [status, setStatus] = useState({});
@@ -56,7 +56,7 @@ export default function NotificationProblems() {
       setStatus({
         next_status_id: 2,
       });
-      setModalShowHDC(true);
+      setModalShowSDC(true);
     } else if (
       next_status_id === 3 ||
       next_status_id === 4 ||
@@ -96,15 +96,15 @@ export default function NotificationProblems() {
     } else if (next_status_id === 7) {
       setStatus({
         next_status_id: 7,
-        help_desk_code: row.help_desk_code,
+        service_desk_code: row.service_desk_code,
       });
-      setModalShowHDC(true);
+      setModalShowSDC(true);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setModalShowHDC(false);
+    setModalShowSDC(false);
     setModalShowNote(false);
     setModalConfirm(false);
     try {
@@ -129,8 +129,8 @@ export default function NotificationProblems() {
         let mess1 = error.response.data.errors.next_status_id
           ? error.response.data.errors.next_status_id
           : "";
-        let mess2 = error.response.data.errors.help_desk_code
-          ? error.response.data.errors.help_desk_code
+        let mess2 = error.response.data.errors.service_desk_code
+          ? error.response.data.errors.service_desk_code
           : "";
         let mess3 = error.response.data.errors.note
           ? error.response.data.errors.note
@@ -445,9 +445,9 @@ export default function NotificationProblems() {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">HDC: </label>
+                  <label className="col-sm-6 col-form-label">Service Desk Code: </label>
                   <div className="col-sm-6 col-form-label">
-                    {notiProblem.help_desk_code ?? "-"}
+                    {notiProblem.service_desk_code ?? "-"}
                   </div>
                 </div>
                 <div className="form-group row">
@@ -463,28 +463,28 @@ export default function NotificationProblems() {
           />
 
           <FormModal
-            show={modalShowHDC}
-            onHide={() => setModalShowHDC(false)}
-            title="Enter your help desk code"
+            show={modalShowSDC}
+            onHide={() => setModalShowSDC(false)}
+            title="Enter your service desk code"
             body={
               <div className="form-group row">
                 <label className="col-sm-5 col-form-label">
-                  Help Desk Code: <span style={styles.container}>*</span>
+                  Service Desk Code: <span style={styles.container}>*</span>
                 </label>
                 <div className="col-sm-7">
                   <input
                     type="text"
                     className="form-control"
-                    name="help_desk_code"
-                    value={notiProblem.help_desk_code ?? ""}
+                    name="service_desk_code"
+                    value={notiProblem.service_desk_code ?? ""}
                     onChange={(event) => {
                       setStatus({
                         ...status,
-                        help_desk_code: event.target.value,
+                        service_desk_code: event.target.value,
                       });
                       setNotiProblem({
                         ...notiProblem,
-                        help_desk_code: event.target.value,
+                        service_desk_code: event.target.value,
                       });
                     }}
                     required

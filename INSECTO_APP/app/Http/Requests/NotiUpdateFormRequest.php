@@ -27,7 +27,7 @@ class NotiUpdateFormRequest extends FormRequest
         if (Request::input('next_status_id') == 2 || Request::input('next_status_id') == 7 ) { // status_id = 2 = open / 7 = reopen
             return [
                 'next_status_id' => 'required',
-                'help_desk_code' => 'required',
+                'service_desk_code' => 'required',
             ];
         } else if (Request::input('next_status_id') == 8) { //status_id = 8 = resolved
             return [
@@ -45,7 +45,7 @@ class NotiUpdateFormRequest extends FormRequest
     {
         return [
             'next_status_id.required' => 'Next Status ID is required!',
-            'help_desk_code.required' => 'Help Desk Code is required!',
+            'service_desk_code.required' => 'Service Desk Code is required!',
             'note.required' => 'Note is required!',
         ];
     }
