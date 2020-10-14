@@ -84,7 +84,11 @@ class NotificationProblemController extends Controller
         if ($problem_des_id == "etc") {
             $problem_des_id = null;
         } else {
-            $problem_description = $this->problem_desc->getProblemDescription($problem_des_id); //this probelm_description exists
+            $problem_description = $this->problem_desc->getProblemDescription($problem_des_id);
+            if ($this->noti_problem->isDuplicateProblem($item_id, $problem_des_id)) {
+                $error = "Send Duplicate Problem! - " . $problem_description;
+                return $this->serverResponse($error, null);
+            }
         }
 
         $this->noti_problem->create($item_id, $problem_des_id, $problem_description);

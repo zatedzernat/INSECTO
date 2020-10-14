@@ -62,12 +62,15 @@ class Notification_Problem extends Model implements Auditable
 
     public function findProblemsThatCanSendByItemID($item)
     {
-        $sentProblemsID = Notification_Problem::where([
-            ['item_id', $item->item_id],
-            ['status_id', '<>', 8], //status_id = 8 = resolved
-        ])->pluck('problem_des_id');
 
-        $problemsCanSend = Problem_Description::findByTypeID($item->type_id, 'N')->whereNotIn('problem_des_id', $sentProblemsID);
+        // * Admin need all problemThatCanSend and need to show duplicate send (modal or page)
+        $problemsCanSend = Problem_Description::findByTypeID($item->type_id, 'N');
+        // $sentProblemsID = Notification_Problem::where([
+        //     ['item_id', $item->item_id],
+        //     ['status_id', '<>', 8], //status_id = 8 = resolved
+        // ])->pluck('problem_des_id');
+
+        // $problemsCanSend = Problem_Description::findByTypeID($item->type_id, 'N')->whereNotIn('problem_des_id', $sentProblemsID);
         return $problemsCanSend;
     }
 
@@ -87,6 +90,16 @@ class Notification_Problem extends Model implements Auditable
             });
         $result = $rejected->values(); // get out of wrap
         return $result;
+    }
+
+    public function isDuplicateProblem($item_id, $problem_des_id)
+    {
+        $isDuplicated = Notification_Problem::where([
+            ['item_id', $item_id],
+            ['problem_des_id', $problem_des_id],
+            ['status_id', '<>', 8], //status_id = 8 = resolved
+        ])->exists();
+        return $isDuplicated;
     }
 
     public function create($item_id, $problem_des_id, $problem_description)

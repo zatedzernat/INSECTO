@@ -3,6 +3,7 @@ import axios from "axios";
 import { Container, Row, Col, Button, Form, Alert } from "react-bootstrap";
 import _ from "lodash";
 import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function MobileSendProblem(props) {
   const [item, setItem] = useState({});
@@ -84,9 +85,13 @@ export default function MobileSendProblem(props) {
         }
       );
       if (res.data.errors) {
-        setIsError({
-          error: true,
-          message: res.data.errors,
+        // setIsError({
+        //   error: true,
+        //   message: res.data.errors,
+        // });
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
         });
       } else {
         history.replace({
@@ -98,6 +103,14 @@ export default function MobileSendProblem(props) {
       console.log(JSON.stringify(error.response.data.errors));
     }
   };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 5000,
+    timerProgressBar: true,
+  });
 
   return (
     <>
