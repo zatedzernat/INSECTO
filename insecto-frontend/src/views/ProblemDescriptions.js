@@ -339,7 +339,7 @@ export default function ProblemDescriptions() {
                 setModalShowEdit(true);
               }}
             >
-              <i className="fa fa-edit" />
+              <i className="ion-edit" />
             </span>
             &emsp;
             <span
