@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\History_Log;
 use App\Http\Models\Notification_Problem;
+use App\Http\Models\Status;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class HistoryLogController extends Controller
 {
@@ -14,6 +16,7 @@ class HistoryLogController extends Controller
     {
         $this->log = new History_Log();
         $this->noti = new Notification_Problem();
+        $this->status = new Status();
     }
 
     public function index()
@@ -32,9 +35,15 @@ class HistoryLogController extends Controller
 
     public function getTracking($noti_id)
     {
-        $noti_tracking = $this->noti->findByID($noti_id)->audits;
-        $noti_tracking = $this->log->getTracking($noti_tracking); //3 days
+        $noti_prob =  $this->noti->findByID($noti_id);
+        $noti_trackings = $noti_prob->audits;
+        $noti_trackings = $this->log->getTracking($noti_trackings); //3 days
+        foreach ($noti_trackings as $noti_tracking) {
+            $status_id = Arr::get($noti_tracking->new_values, 'status_id');
+            $status_name = $this->status->findByID($status_id)->status_name;
+            Arr::add($noti_tracking, 'status_name', $status_name);
+        }
         $time = Carbon::now()->format('H:i:s');
-        return compact('noti_tracking', 'time');
+        return compact('noti_trackings', 'time');
     }
 }
