@@ -444,7 +444,7 @@ export default function Items() {
                 }
               }}
             >
-              <i className="fa fa-edit" />
+              <i className="ion-edit" />
             </span>
             &emsp;
             <span
