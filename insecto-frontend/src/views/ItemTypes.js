@@ -318,7 +318,7 @@ export default function ItemTypes() {
                 setItemType(row);
               }}
             >
-              <i className="fa fa-edit" />
+              <i className="ion-edit" />
             </span>
             &emsp;
             <span
