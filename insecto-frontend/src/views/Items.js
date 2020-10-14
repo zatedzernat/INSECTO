@@ -403,6 +403,7 @@ export default function Items() {
         name: "isGroup",
         selector: "group",
         sortable: true,
+        center: true,
         width: "60px",
       },
       // {
