@@ -33,6 +33,7 @@ export default function Rooms() {
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [isExport, setIsExport] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -40,6 +41,7 @@ export default function Rooms() {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}rooms`);
       setData(res.data);
       setIsLoading(false);
+      setIsExport(false);
     } catch (error) {
       console.log(error);
     }
@@ -269,6 +271,7 @@ export default function Rooms() {
   };
 
   const exportRooms = async () => {
+    setIsExport(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/export`,
@@ -282,6 +285,7 @@ export default function Rooms() {
       link.setAttribute("download", "Rooms.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -502,9 +506,15 @@ export default function Rooms() {
                 &emsp;
                 {data.countRooms === 0 ? null : (
                   <>
-                    <Button onClick={exportRooms} variant="warning">
-                      Export Rooms
-                    </Button>
+                    {isExport === false ? (
+                      <Button onClick={exportRooms} variant="warning">
+                        Export Rooms
+                      </Button>
+                    ) : (
+                      <Button variant="warning">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 )}
               </div>

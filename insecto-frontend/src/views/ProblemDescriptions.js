@@ -30,6 +30,7 @@ export default function ProblemDescriptions() {
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [isExport, setIsExport] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -39,6 +40,7 @@ export default function ProblemDescriptions() {
       );
       setData(res.data);
       setIsLoading(false);
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
@@ -243,6 +245,7 @@ export default function ProblemDescriptions() {
   };
 
   const exportProblemDescs = async () => {
+    setIsExport(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}problem_descs/export`,
@@ -256,6 +259,7 @@ export default function ProblemDescriptions() {
       link.setAttribute("download", "Problem_Descs.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -448,9 +452,15 @@ export default function ProblemDescriptions() {
                 &emsp;
                 {data.countProblemDescs === 0 ? null : (
                   <>
-                    <Button onClick={exportProblemDescs} variant="warning">
-                      Export Problem Descs
-                    </Button>
+                    {isExport === false ? (
+                      <Button onClick={exportProblemDescs} variant="warning">
+                        Export Problem Descs
+                      </Button>
+                    ) : (
+                      <Button variant="warning">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 )}
               </div>

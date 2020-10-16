@@ -27,6 +27,7 @@ export default function Brands() {
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [isExport, setIsExport] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -34,6 +35,7 @@ export default function Brands() {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
       setData(res.data);
       setIsLoading(false);
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error));
     }
@@ -230,6 +232,7 @@ export default function Brands() {
   };
 
   const exportBrands = async () => {
+    setIsExport(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/export`,
@@ -243,6 +246,7 @@ export default function Brands() {
       link.setAttribute("download", "Brands.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -414,9 +418,15 @@ export default function Brands() {
                 &emsp;
                 {data.countBrands === 0 ? null : (
                   <>
-                    <Button onClick={exportBrands} variant="warning">
-                      Export Brands
-                    </Button>
+                    {isExport === false ? (
+                      <Button onClick={exportBrands} variant="warning">
+                        Export Brands
+                      </Button>
+                    ) : (
+                      <Button variant="warning">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 )}
               </div>

@@ -28,6 +28,7 @@ export default function Buildings() {
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [isExport, setIsExport] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -35,6 +36,7 @@ export default function Buildings() {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}buildings`);
       setData(res.data);
       setIsLoading(false);
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error));
     }
@@ -238,6 +240,7 @@ export default function Buildings() {
   };
 
   const exportBuildings = async () => {
+    setIsExport(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/export`,
@@ -251,6 +254,7 @@ export default function Buildings() {
       link.setAttribute("download", "Buildings.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -434,9 +438,17 @@ export default function Buildings() {
                 &emsp;
                 {data.countBuildings === 0 ? null : (
                   <>
-                    <Button onClick={exportBuildings} variant="warning">
-                      Export Buildings
-                    </Button>
+                    {isExport === false ? (
+                      <Button onClick={exportBuildings} variant="warning">
+                        Export Buildings
+                      </Button>
+                    ) : (
+                      <Button variant="warning">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
+                    {/* <div className="overlay dark"> */}
+                    {/* </div> */}
                   </>
                 )}
               </div>
