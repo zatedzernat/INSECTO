@@ -15,44 +15,44 @@ export default function ProblemsNotResolved({
       <>
         {_.map(problems, (problem) => {
           let color = "";
-          let status = "";
+          // let status = "";
           let fromnow = moment(problem.updated_at).fromNow();
 
           switch (problem.status_id) {
             case 1:
               color = "callout callout-warning";
               // color = "#F4FF81";
-              status = "รอดำเนินการ";
+              // status = "รอดำเนินการ";
               break;
             case 2:
-              color = "callout callout-info";
+              color = "callout callout-warning";
               // color = "#B3E5FC";
-              status = "กำลังดำเนินการ";
+              // status = "กำลังดำเนินการ";
               break;
             case 3:
               color = "callout callout-info";
               // color = "#B3E5FC";
-              status = "กำลังดำเนินการ";
+              // status = "กำลังดำเนินการ";
               break;
             case 4:
               color = "callout callout-info";
               // color = "#B3E5FC";
-              status = "กำลังดำเนินการ";
+              // status = "กำลังดำเนินการ";
               break;
             case 5:
               color = "callout callout-info";
               // color = "#B3E5FC";
-              status = "กำลังดำเนินการ";
+              // status = "กำลังดำเนินการ";
               break;
             case 7:
               color = "callout callout-info";
               // color = "#B3E5FC";
-              status = "กำลังดำเนินการ";
+              // status = "กำลังดำเนินการ";
               break;
               default:
                 color = "callout callout-secondary";
                 // color = "#F4FF81";
-              status = "อื่นๆ";
+              // status = "อื่นๆ";
               break;
           }
           return (

@@ -32,7 +32,7 @@ export default function Card(props) {
   const statusBar = () => {
     var styles;
     var font;
-    var textStatus = "";
+    // var textStatus = "";  
 
     switch (props.status) {
       case 1:
@@ -47,10 +47,10 @@ export default function Card(props) {
           height: 22,
           width: 80,
           // backgroundColor: "#FAFAFA",
-          backgroundColor: "#F4FF81",
+          backgroundColor: "#ffdd59",
           borderRadius: 5,
         };
-        textStatus = "รอการดำเนินการ";
+        // textStatus = "รอการดำเนินการ";
         // font = { color: "rgb(241 79 210)", fontSize: 11 };
         font = { color: "black", fontSize: 11 };
         break;
@@ -66,7 +66,7 @@ export default function Card(props) {
           backgroundColor: "#B3E5FC",
           borderRadius: 5,
         };
-        textStatus = "กำลังดำเนินการ";
+        // textStatus = "กำลังดำเนินการ";
         // font = { color: "#2BB0FF", fontSize: 11 };
         font = { color: "black", fontSize: 11 };
         break;
@@ -78,10 +78,10 @@ export default function Card(props) {
           height: 22,
           width: 80,
           // backgroundColor: "#FAFAFA",
-          backgroundColor: "#CCFF90",
+          backgroundColor: "#C4E538",
           borderRadius: 5,
         };
-        textStatus = "ดำเนินการเสร็จสิ้น";
+        // textStatus = "ดำเนินการเสร็จสิ้น";
         // font = { color: "#43CF2A", fontSize: 11 };
         font = { color: "black", fontSize: 11 };
         break;
