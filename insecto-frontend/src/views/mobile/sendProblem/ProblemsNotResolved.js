@@ -15,49 +15,51 @@ export default function ProblemsNotResolved({
       <>
         {_.map(problems, (problem) => {
           let color = "";
+          let callOutClass = "";
           // let status = "";
           let fromnow = moment(problem.updated_at).fromNow();
 
           switch (problem.status_id) {
             case 1:
-              color = "callout callout-warning";
-              // color = "#F4FF81";
+              callOutClass = "callout";
+              color = "#ffdd59";
               // status = "รอดำเนินการ";
               break;
             case 2:
-              color = "callout callout-warning";
-              // color = "#B3E5FC";
+              callOutClass = "callout";
+              color = "#ffdd59";
               // status = "กำลังดำเนินการ";
               break;
             case 3:
-              color = "callout callout-info";
-              // color = "#B3E5FC";
+              callOutClass = "callout";
+              color = "#B3E5FC";
               // status = "กำลังดำเนินการ";
               break;
             case 4:
-              color = "callout callout-info";
-              // color = "#B3E5FC";
+              callOutClass = "callout";
+              color = "#B3E5FC";
               // status = "กำลังดำเนินการ";
               break;
             case 5:
-              color = "callout callout-info";
-              // color = "#B3E5FC";
+              callOutClass = "callout";
+              color = "#B3E5FC";
               // status = "กำลังดำเนินการ";
               break;
             case 7:
-              color = "callout callout-info";
-              // color = "#B3E5FC";
+              callOutClass = "callout";
+              color = "#ffdd59";
               // status = "กำลังดำเนินการ";
               break;
-              default:
-                color = "callout callout-secondary";
-                // color = "#F4FF81";
+            default:
+              callOutClass = "callout";
+              color = "#C4E538";
               // status = "อื่นๆ";
               break;
           }
           return (
             <Callout
               key={problem.noti_id}
+              callOutClass={callOutClass}
               color={color}
               item={problem.item.item_code}
               problem={problem.problem_description}

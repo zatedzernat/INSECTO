@@ -5,8 +5,9 @@ export default function Callout(props) {
   // const style = {
   // backgroundColor: `${props.onlyColor}`,
   // };
+
   return (
-    <div className={props.color} style={{ borderLeftWidth: "10px" }}>
+    <div className={props.callOutClass} style={{ borderLeftWidth: "10px", borderLeftColor: props.color }}>
       <Row>
         <Col xs={6}>
           <h5>{props.item}</h5>
