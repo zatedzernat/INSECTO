@@ -37,8 +37,6 @@ export default function Card(props) {
     switch (props.status) {
       case 1:
       case 2:
-      case 3:
-      case 4:
       case 7:
         styles = {
           // borderColor: "rgb(255 148 234)",
@@ -54,6 +52,8 @@ export default function Card(props) {
         // font = { color: "rgb(241 79 210)", fontSize: 11 };
         font = { color: "black", fontSize: 11 };
         break;
+      case 3:
+      case 4:
       case 5:
         styles = {
           // borderColor: "#A0DCFF",
