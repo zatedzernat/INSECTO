@@ -430,6 +430,7 @@ export default function ItemTypes() {
                   onClick={() => setModalShowImport(true)}
                   variant="warning"
                   type="submit"
+                  style={{color: 'white'}}
                 >
                   Import Item Types
                 </Button>
@@ -437,11 +438,11 @@ export default function ItemTypes() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportItemTypes} variant="warning">
+                      <Button onClick={exportItemTypes} variant="warning" style={{color: 'white'}}>
                         Export Item Types
                       </Button>
                     ) : (
-                      <Button variant="warning">
+                      <Button variant="warning" style={{color: 'white'}}>
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}

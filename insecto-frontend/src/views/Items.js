@@ -637,6 +637,7 @@ export default function Items() {
                   onClick={() => setModalShowImport(true)}
                   variant="warning"
                   type="submit"
+                  style={{color: 'white'}}
                 >
                   Import Items
                 </Button>
@@ -644,11 +645,11 @@ export default function Items() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportItems} variant="warning">
+                      <Button onClick={exportItems} variant="warning" style={{color: 'white'}}>
                         Export Items
                       </Button>
                     ) : (
-                      <Button variant="warning">
+                      <Button variant="warning" style={{color: 'white'}}>
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}

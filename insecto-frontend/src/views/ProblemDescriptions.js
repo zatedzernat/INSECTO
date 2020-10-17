@@ -463,6 +463,7 @@ export default function ProblemDescriptions() {
                   onClick={() => setModalShowImport(true)}
                   variant="warning"
                   type="submit"
+                  style={{color: 'white'}}
                 >
                   Import Problem Descs
                 </Button>
@@ -470,11 +471,11 @@ export default function ProblemDescriptions() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportProblemDescs} variant="warning">
+                      <Button onClick={exportProblemDescs} variant="warning" style={{color: 'white'}}>
                         Export Problem Descs
                       </Button>
                     ) : (
-                      <Button variant="warning">
+                      <Button variant="warning" style={{color: 'white'}}>
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}

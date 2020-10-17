@@ -204,7 +204,7 @@ export default function NotificationProblems() {
           <Dropdown.Toggle
             id="dropdown-custom-1"
             size="xs"
-            style={{ width: "105px", fontSize: "15px" }}
+            style={{ width: "105px", fontSize: "15px", color: 'white' }}
             variant={color}
           >
             {row.status.status_name}

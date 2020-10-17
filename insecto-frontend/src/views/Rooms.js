@@ -546,6 +546,7 @@ export default function Rooms() {
                   onClick={() => setModalShowImport(true)}
                   variant="warning"
                   type="submit"
+                  style={{color: 'white'}}
                 >
                   Import Rooms
                 </Button>
@@ -553,11 +554,11 @@ export default function Rooms() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportRooms} variant="warning">
+                      <Button onClick={exportRooms} variant="warning" style={{color: 'white'}}>
                         Export Rooms
                       </Button>
                     ) : (
-                      <Button variant="warning">
+                      <Button variant="warning" style={{color: 'white'}}>
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}

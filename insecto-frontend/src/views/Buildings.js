@@ -449,6 +449,7 @@ export default function Buildings() {
                   onClick={() => setModalShowImport(true)}
                   variant="warning"
                   type="submit"
+                  style={{color: 'white'}}
                 >
                   Import Buildings
                 </Button>
@@ -456,11 +457,11 @@ export default function Buildings() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportBuildings} variant="warning">
+                      <Button onClick={exportBuildings} variant="warning" style={{color: 'white'}}>
                         Export Buildings
                       </Button>
                     ) : (
-                      <Button variant="warning">
+                      <Button variant="warning" style={{color: 'white'}}>
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
