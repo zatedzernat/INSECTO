@@ -12,12 +12,19 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class ItemsExport implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
 {
+    protected $items;
+
+    public function __construct($items)
+    {
+        $this->items = $items;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return Item::all();
+        return $this->items;
     }
 
     public function headings(): array

@@ -72,7 +72,7 @@ Route::delete('items/{item_id}', 'ItemController@deleteOne');
 Route::post('items/selected', 'ItemController@deleteMultiple');
 
 Route::post('items/import', 'ItemController@importItems');
-Route::get('items/export', 'ItemController@exportItems');
+Route::post('items/export', 'ItemController@exportItems');
 
 Route::post('getqr/{item_code}', 'ItemController@getQRCode');
 Route::post('getqr_zip', 'ItemController@getQRCodeZIP');

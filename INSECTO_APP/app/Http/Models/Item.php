@@ -330,14 +330,14 @@ class Item extends Model implements Auditable
         }
     }
 
-    public function exportItems()
+    public function exportItems($all_items_id)
     {
-        $items = $this->getALL();
+        $items = Item::find($all_items_id);
         if ($items->isEmpty()) {
             $error =  'Please add item before export';
             return array(false, $error);
         } else {
-            $itemsExport =  Excel::download(new ItemsExport, 'items.xlsx');
+            $itemsExport =  Excel::download(new ItemsExport($items), 'items.xlsx');
             return array(true, $itemsExport);
         }
     }

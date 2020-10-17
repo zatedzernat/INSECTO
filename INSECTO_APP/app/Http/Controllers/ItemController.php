@@ -173,9 +173,10 @@ class ItemController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
-    public function exportItems()
+    public function exportItems(Request $request)
     {
-        $isSuccess = $this->item->exportItems();
+        $all_items_id = $request->items;
+        $isSuccess = $this->item->exportItems($all_items_id);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else
