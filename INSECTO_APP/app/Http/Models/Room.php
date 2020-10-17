@@ -180,15 +180,15 @@ class Room extends Model implements Auditable
         }
     }
 
-    public function exportRooms()
+    public function exportRooms($all_rooms_id)
     {
-        $rooms = $this->getALL();
+        $rooms = Room::find($all_rooms_id);
         if ($rooms->isEmpty()) {
             $error =  'Please add room before export';
             return array(false, $error);
         } else {
-            $RoomsExport =  Excel::download(new RoomsExport, 'items.xlsx');
-            return array(true, $RoomsExport);
+            $roomsExport =  Excel::download(new RoomsExport($rooms), 'items.xlsx');
+            return array(true, $roomsExport);
         }
     }
 }

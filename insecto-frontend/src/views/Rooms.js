@@ -270,12 +270,17 @@ export default function Rooms() {
     }
   };
 
-  const exportRooms = async () => {
+  const exportRooms = async (event) => {
     setIsExport(true);
+    event.preventDefault();
+    let rooms = {
+      rooms: selectedRows.map(({ room_id }) => room_id),
+    };
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/export`,
-        method: "GET",
+        data: rooms,
+        method: "POST",
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
@@ -285,6 +290,7 @@ export default function Rooms() {
       link.setAttribute("download", "Rooms.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setToggleCleared(!toggleCleared);
       setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
@@ -482,9 +488,9 @@ export default function Rooms() {
                 >
                   Add
                 </Button>
+                &emsp;
                 {selectedRows.length > 0 ? (
                   <>
-                    &emsp;
                     <Button
                       onClick={() => {
                         setModalShowDel(true);
@@ -494,7 +500,11 @@ export default function Rooms() {
                       Delete
                     </Button>
                   </>
-                ) : null}
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Delete
+                  </Button>
+                )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -504,7 +514,7 @@ export default function Rooms() {
                   Import Rooms
                 </Button>
                 &emsp;
-                {data.countRooms === 0 ? null : (
+                {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
                       <Button onClick={exportRooms} variant="warning">
@@ -516,6 +526,10 @@ export default function Rooms() {
                       </Button>
                     )}
                   </>
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Export Rooms
+                  </Button>
                 )}
               </div>
             }

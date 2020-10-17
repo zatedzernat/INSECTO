@@ -139,9 +139,10 @@ class RoomController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
-    public function exportRooms()
+    public function exportRooms(Request $request)
     {
-        $isSuccess = $this->room->exportRooms();
+        $all_rooms_id = $request->rooms;
+        $isSuccess = $this->room->exportRooms($all_rooms_id);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else

@@ -43,7 +43,7 @@ Route::delete('rooms/{room_id}', 'RoomController@deleteOne');
 Route::post('rooms/selected', 'RoomController@deleteMultiple');
 
 Route::post('rooms/import', 'RoomController@importRooms');
-Route::get('rooms/export', 'RoomController@exportRooms');
+Route::post('rooms/export', 'RoomController@exportRooms');
 
 Route::post('getroomqr/{room_code}', 'RoomController@getRoomQRCode');
 
