@@ -136,12 +136,14 @@ export default function ItemTypes() {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
+          width: 450,
         });
       } else {
         setLastUpdate(res.data.time);
         Toast.fire({
           icon: "success",
           title: res.data.success,
+          width: 450,
         });
       }
     } catch (error) {
@@ -196,12 +198,14 @@ export default function ItemTypes() {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
+          width: 450,
         });
       } else {
         setLastUpdate(res.data.time);
         Toast.fire({
           icon: "success",
           title: res.data.success,
+          width: 450,
         });
       }
     } catch (error) {
@@ -213,16 +217,19 @@ export default function ItemTypes() {
           Toast.fire({
             icon: "error",
             title: message.errors.import_file,
+            width: 450,
           });
         } else {
           Toast.fire({
             icon: "error",
             title: message.errors[0],
+            width: 450,
           });
         }
       } else if (err_message.split(":")[0] === "Undefined index") {
         Toast.fire({
           icon: "error",
+          width: 450,
           title: `Import file doesn't has '${
             err_message.split(":")[1]
           }' column!`,
