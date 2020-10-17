@@ -154,7 +154,8 @@ class ItemController extends Controller
     {
         // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
         $urlRoot = $request->url; //http://insecto.sit.kmutt.ac.th
-        $zipFileName = $this->item->getQRCodeZIP($urlRoot);
+        $all_items_id = $request->items;
+        $zipFileName = $this->item->getSelectedQRCodeZIP($urlRoot, $all_items_id);
         if ($zipFileName) {
             return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
         } else {

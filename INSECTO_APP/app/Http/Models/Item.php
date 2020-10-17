@@ -280,21 +280,64 @@ class Item extends Model implements Auditable
         return $fileName;
     }
 
-    public function getQRCodeZIP($urlRoot)
+    // public function getAllQRCodeZIP($urlRoot)
+    // {
+    //     $arrayOfAllCode = $this->getItemsCode();
+    //     $rooms = Room::findByCancelFlag('N');
+    //     if (!$arrayOfAllCode->isEmpty()) {
+    //         $zipFileName = 'Items-QRcode.zip';
+    //         $zip = Zip::create($zipFileName);
+
+    //         foreach ($rooms as $room) {
+    //             Storage::disk('local')->makeDirectory($room->room_code);
+    //             foreach ($room->items as $item) {
+    //                 $urlQR = $urlRoot . "/sendproblem/" . $item->item_code;
+    //                 $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+    //                 $name = $item->item_code . ' (' . $item->group . ')' . '.png';
+    //                 Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
+    //             }
+    //             if (strpos($room->room_code, "/") === false) { // find / in room code do not want to add IT/101, IT/102
+    //                 // storage_path('app\\' . $room->room_code); for windows
+    //                 $zip->add(storage_path('app/' . $room->room_code));
+    //             }
+    //         }
+
+    //         // storage_path('app\\' . $room->room_code); for windows
+    //         // $zip->add(storage_path('app/' . 'IT')); // add IT folder and subfolder (101, 102)
+    //         $zip->close();
+    //         foreach ($rooms as $room) {
+    //             Storage::disk('local')->deleteDirectory($room->room_code);
+    //         }
+    //         Storage::disk('local')->deleteDirectory('IT');
+    //     } else {
+    //         $zipFileName = null;
+    //     }
+
+    //     return $zipFileName;
+    // }
+
+    public function getSelectedQRCodeZIP($urlRoot, $all_items_id)
     {
-        $arrayOfAllCode = $this->getItemsCode();
-        $rooms = Room::findByCancelFlag('N');
-        if (!$arrayOfAllCode->isEmpty()) {
+        $items = Item::find($all_items_id);
+        $rooms = new Collection();
+
+        foreach ($items as $item) {
+            $rooms->push($item->room);
+        }
+        $rooms_unique = $rooms->unique('room_id');
+        if ($all_items_id !== null) {
             $zipFileName = 'Items-QRcode.zip';
             $zip = Zip::create($zipFileName);
 
-            foreach ($rooms as $room) {
+            foreach ($rooms_unique as $room) {
                 Storage::disk('local')->makeDirectory($room->room_code);
-                foreach ($room->items as $item) {
-                    $urlQR = $urlRoot . "/sendproblem/" . $item->item_code;
-                    $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
-                    $name = $item->item_code . ' (' . $item->group . ')' . '.png';
-                    Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
+                foreach ($items as $item) {
+                    if ($item->room_id === $room->room_id) {
+                        $urlQR = $urlRoot . "/sendproblem/" . $item->item_code;
+                        $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+                        $name = $item->item_code . ' (' . $item->group . ')' . '.png';
+                        Storage::disk('local')->put($room->room_code . '//' . $name, $qrcode);
+                    }
                 }
                 if (strpos($room->room_code, "/") === false) { // find / in room code do not want to add IT/101, IT/102
                     // storage_path('app\\' . $room->room_code); for windows
@@ -305,7 +348,8 @@ class Item extends Model implements Auditable
             // storage_path('app\\' . $room->room_code); for windows
             // $zip->add(storage_path('app/' . 'IT')); // add IT folder and subfolder (101, 102)
             $zip->close();
-            foreach ($rooms as $room) {
+
+            foreach ($rooms_unique as $room) {
                 Storage::disk('local')->deleteDirectory($room->room_code);
             }
             Storage::disk('local')->deleteDirectory('IT');

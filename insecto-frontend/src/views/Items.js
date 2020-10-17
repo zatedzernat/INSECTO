@@ -246,14 +246,16 @@ export default function Items() {
     }
   };
 
-  const getItemsQRCode = async (row) => {
+  const getItemsQRCode = async (event) => {
     setIsGenAllQR(true);
+    event.preventDefault();
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}getqr_zip`,
         method: "POST",
         responseType: "blob",
         data: {
+          items: selectedRows.map(({ item_id }) => item_id),
           url: window.location.origin,
         },
       });
@@ -265,6 +267,7 @@ export default function Items() {
       document.body.appendChild(link);
       link.click();
       setIsGenAllQR(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
