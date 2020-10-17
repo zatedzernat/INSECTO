@@ -32,17 +32,17 @@ export default function ProblemsNotResolved({
               break;
             case 3:
               callOutClass = "callout";
-              color = "#B3E5FC";
+              color = "#90CAF9";
               // status = "กำลังดำเนินการ";
               break;
             case 4:
               callOutClass = "callout";
-              color = "#B3E5FC";
+              color = "#90CAF9";
               // status = "กำลังดำเนินการ";
               break;
             case 5:
               callOutClass = "callout";
-              color = "#B3E5FC";
+              color = "#90CAF9";
               // status = "กำลังดำเนินการ";
               break;
             case 7:

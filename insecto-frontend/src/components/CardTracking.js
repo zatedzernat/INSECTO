@@ -63,7 +63,7 @@ export default function Card(props) {
           width: 80,
           // backgroundColor: "#FAFAFA",
           // backgroundColor: "#cfedff",
-          backgroundColor: "#B3E5FC",
+          backgroundColor: "#90CAF9",
           borderRadius: 5,
         };
         // textStatus = "กำลังดำเนินการ";
