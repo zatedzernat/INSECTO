@@ -34,6 +34,7 @@ export default function Rooms() {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
+  const [isGenAllQR, setIsGenAllQR] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -42,6 +43,7 @@ export default function Rooms() {
       setData(res.data);
       setIsLoading(false);
       setIsExport(false);
+      setIsGenAllQR(false);
     } catch (error) {
       console.log(error);
     }
@@ -222,6 +224,7 @@ export default function Rooms() {
   };
 
   const getRoomsQRCode = async (event) => {
+    setIsGenAllQR(true);
     event.preventDefault();
     try {
       const res = await axios({
@@ -240,6 +243,7 @@ export default function Rooms() {
       link.setAttribute("download", "Rooms_QRCode.zip"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsGenAllQR(false);
       setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
@@ -558,10 +562,16 @@ export default function Rooms() {
                       </Button>
                     )}
                     &emsp;
-                    <Button onClick={getRoomsQRCode} variant="success">
-                      <i className="fa fa-qrcode" />
-                      &nbsp; Rooms QR Code
-                    </Button>
+                    {isGenAllQR === false ? (
+                      <Button onClick={getRoomsQRCode} variant="success">
+                        <i className="fa fa-qrcode" />
+                        &nbsp; Rooms QR Code
+                      </Button>
+                    ) : (
+                      <Button variant="success">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 ) : (
                   <>
