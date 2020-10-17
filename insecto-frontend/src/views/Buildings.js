@@ -259,8 +259,8 @@ export default function Buildings() {
       link.setAttribute("download", "Buildings.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
-      setToggleCleared(!toggleCleared);
       setIsExport(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }

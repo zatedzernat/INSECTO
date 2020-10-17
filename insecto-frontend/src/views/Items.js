@@ -341,8 +341,8 @@ export default function Items() {
       link.setAttribute("download", "Items.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
-      setToggleCleared(!toggleCleared);
       setIsExport(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
