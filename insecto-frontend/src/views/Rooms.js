@@ -200,7 +200,7 @@ export default function Rooms() {
   const getRoomQRCode = async (row) => {
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}getroomqr/${row.room_code}`,
+        url: `${process.env.REACT_APP_API_URL}get_room_qr/${row.room_code}`,
         method: "POST",
         responseType: "blob",
         data: {
@@ -214,6 +214,31 @@ export default function Rooms() {
       link.setAttribute("download", `${row.room_code}.png`); //or any other extension
       document.body.appendChild(link);
       link.click();
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const getRoomsQRCode = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}getqr_zip`,
+        method: "POST",
+        responseType: "blob",
+        data: {
+          items: selectedRows.map(({ item_id }) => item_id),
+          url: window.location.origin,
+        },
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Items_QRCode.zip"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }

@@ -45,7 +45,8 @@ Route::post('rooms/selected', 'RoomController@deleteMultiple');
 Route::post('rooms/import', 'RoomController@importRooms');
 Route::post('rooms/export', 'RoomController@exportRooms');
 
-Route::post('getroomqr/{room_code}', 'RoomController@getRoomQRCode');
+Route::post('get_room_qr/{room_code}', 'RoomController@getRoomQRCode');
+Route::post('get_rooms_qr_zip', 'RoomController@getQRCodeZIP');
 
 Route::get('brands', 'BrandController@index')->name('brands');
 Route::post('brands', 'BrandController@store');
@@ -74,8 +75,8 @@ Route::post('items/selected', 'ItemController@deleteMultiple');
 Route::post('items/import', 'ItemController@importItems');
 Route::post('items/export', 'ItemController@exportItems');
 
-Route::post('getqr/{item_code}', 'ItemController@getQRCode');
-Route::post('getqr_zip', 'ItemController@getQRCodeZIP');
+Route::post('get_item_qr/{item_code}', 'ItemController@getQRCode');
+Route::post('get_items_qr_zip', 'ItemController@getQRCodeZIP');
 
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');
 Route::post('item_types', 'ItemTypeController@store');

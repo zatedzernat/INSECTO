@@ -227,7 +227,7 @@ export default function Items() {
   const getItemQRCode = async (row) => {
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}getqr/${row.item_code}`,
+        url: `${process.env.REACT_APP_API_URL}get_item_qr/${row.item_code}`,
         method: "POST",
         responseType: "blob",
         data: {
@@ -251,7 +251,7 @@ export default function Items() {
     event.preventDefault();
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}getqr_zip`,
+        url: `${process.env.REACT_APP_API_URL}get_items_qr_zip`,
         method: "POST",
         responseType: "blob",
         data: {
