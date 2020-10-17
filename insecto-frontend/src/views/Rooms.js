@@ -525,11 +525,23 @@ export default function Rooms() {
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
+                    &emsp;
+                    <Button onClick={null} variant="success">
+                      <i className="fa fa-qrcode" />
+                      &nbsp; Rooms QR Code
+                    </Button>
                   </>
                 ) : (
-                  <Button variant="secondary" disabled>
-                    Export Rooms
-                  </Button>
+                  <>
+                    <Button variant="secondary" disabled>
+                      Export Rooms
+                    </Button>
+                    &emsp;
+                    <Button variant="secondary" disabled>
+                      <i className="fa fa-qrcode" />
+                      &nbsp; Rooms QR Code
+                    </Button>
+                  </>
                 )}
               </div>
             }
