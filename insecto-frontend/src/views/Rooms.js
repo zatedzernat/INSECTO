@@ -223,11 +223,11 @@ export default function Rooms() {
     event.preventDefault();
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}getqr_zip`,
+        url: `${process.env.REACT_APP_API_URL}get_rooms_qr_zip`,
         method: "POST",
         responseType: "blob",
         data: {
-          items: selectedRows.map(({ item_id }) => item_id),
+          rooms: selectedRows.map(({ room_id }) => room_id),
           url: window.location.origin,
         },
       });
@@ -235,7 +235,7 @@ export default function Rooms() {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "Items_QRCode.zip"); //or any other extension
+      link.setAttribute("download", "Rooms_QRCode.zip"); //or any other extension
       document.body.appendChild(link);
       link.click();
       setToggleCleared(!toggleCleared);
@@ -551,7 +551,7 @@ export default function Rooms() {
                       </Button>
                     )}
                     &emsp;
-                    <Button onClick={null} variant="success">
+                    <Button onClick={getRoomsQRCode} variant="success">
                       <i className="fa fa-qrcode" />
                       &nbsp; Rooms QR Code
                     </Button>
