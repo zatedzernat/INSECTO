@@ -43,6 +43,8 @@ export default function Items() {
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [isExport, setIsExport] = useState(false);
+  const [isGenAllQR, setIsGenAllQR] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -50,6 +52,8 @@ export default function Items() {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}items`);
       setData(res.data);
       setIsLoading(false);
+      setIsExport(false);
+      setIsGenAllQR(false);
     } catch (error) {
       console.log(JSON.stringify(error));
     }
@@ -243,6 +247,7 @@ export default function Items() {
   };
 
   const getItemsQRCode = async (row) => {
+    setIsGenAllQR(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}getqr_zip`,
@@ -259,6 +264,7 @@ export default function Items() {
       link.setAttribute("download", "Items_QRCode.zip"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsGenAllQR(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -316,6 +322,7 @@ export default function Items() {
   };
 
   const exportItems = async () => {
+    setIsExport(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/export`,
@@ -329,6 +336,7 @@ export default function Items() {
       link.setAttribute("download", "Items.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -615,14 +623,26 @@ export default function Items() {
                 &emsp;
                 {data.countItems === 0 ? null : (
                   <>
-                    <Button onClick={exportItems} variant="warning">
-                      Export Items
-                    </Button>
+                    {isExport === false ? (
+                      <Button onClick={exportItems} variant="warning">
+                        Export Items
+                      </Button>
+                    ) : (
+                      <Button variant="warning">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                     &emsp;
-                    <Button onClick={getItemsQRCode} variant="success">
-                      <i className="fa fa-qrcode" />
-                      All Items QR Code
-                    </Button>
+                    {isGenAllQR === false ? (
+                      <Button onClick={getItemsQRCode} variant="success">
+                        <i className="fa fa-qrcode" />
+                        All Items QR Code
+                      </Button>
+                    ) : (
+                      <Button variant="success">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 )}
               </div>

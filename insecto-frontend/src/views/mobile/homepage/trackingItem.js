@@ -9,25 +9,25 @@ require("moment/locale/th");
 export default function TrackingItem(props) {
   const [problemInfo, setProblemInfo] = useState({});
   const [data, setData] = useState([]);
-  var textStatus = "";
+  // var textStatus = "";
   const history = useHistory();
   const code = props.match.params.code;
 
   // switch (problemInfo.status_name) {
   //   case "resolved":
-  //     textStatus = "ดำเนินการเสร็จสิ้น";
+      // textStatus = "ดำเนินการเสร็จสิ้น";
   //     break;
 
   //   case "closed":
-  //     textStatus = "ดำเนินการเสร็จสิ้น";
+      // textStatus = "ดำเนินการเสร็จสิ้น";
   //     break;
 
   //   case "in progress":
-  //     textStatus = "กำลังดำเนินการ";
+      // textStatus = "กำลังดำเนินการ";
   //     break;
 
   //   default:
-  //     textStatus = "รอการดำเนินการ";
+      // textStatus = "รอการดำเนินการ";
   //     break;
   // }
 
@@ -113,17 +113,17 @@ export default function TrackingItem(props) {
           {_.map(data.noti_trackings, (noti) => {
             switch (noti.new_values.status_id) {
               case 1:
-                textStatus = "รอดำเนินการ";
+                // textStatus = "รอดำเนินการ";
                 break;
               case 2:
               case 3:
               case 4:
               case 5:
               case 7:
-                textStatus = "กำลังดำเนินการ";
+                // textStatus = "กำลังดำเนินการ";
                 break;
               case 8:
-                textStatus = "ดำเนินการเสร็จสิ้น";
+                // textStatus = "ดำเนินการเสร็จสิ้น";
                 break;
               default:
                 break;

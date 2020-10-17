@@ -26,6 +26,7 @@ export default function ItemTypes() {
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [isExport, setIsExport] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -33,6 +34,7 @@ export default function ItemTypes() {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}item_types`);
       setData(res.data);
       setIsLoading(false);
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error));
     }
@@ -230,6 +232,7 @@ export default function ItemTypes() {
   };
 
   const exportItemTypes = async () => {
+    setIsExport(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/export`,
@@ -243,6 +246,7 @@ export default function ItemTypes() {
       link.setAttribute("download", "Item_Types.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -415,9 +419,15 @@ export default function ItemTypes() {
                 &emsp;
                 {data.countItemTypes === 0 ? null : (
                   <>
-                    <Button onClick={exportItemTypes} variant="warning">
-                      Export Item Types
-                    </Button>
+                    {isExport === false ? (
+                      <Button onClick={exportItemTypes} variant="warning">
+                        Export Item Types
+                      </Button>
+                    ) : (
+                      <Button variant="warning">
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 )}
               </div>
