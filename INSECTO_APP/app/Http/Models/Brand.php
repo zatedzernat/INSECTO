@@ -140,14 +140,14 @@ class Brand extends Model implements Auditable
         }
     }
 
-    public function exportBrands()
+    public function exportBrands($all_brands_id)
     {
-        $brands = $this->getALL();
+        $brands = Brand::find($all_brands_id);
         if ($brands->isEmpty()) {
             $error =  'Please add brand before export';
             return array(false, $error);
         } else {
-            $BrandsExport =  Excel::download(new BrandsExport, 'brands.xlsx');
+            $BrandsExport =  Excel::download(new BrandsExport($brands), 'brands.xlsx');
             return array(true, $BrandsExport);
         }
     }

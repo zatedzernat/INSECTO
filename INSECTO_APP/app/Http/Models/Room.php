@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
 use QrCode;
+use ZanySoft\Zip\Zip;
 
 class Room extends Model implements Auditable
 {
@@ -166,6 +167,38 @@ class Room extends Model implements Auditable
         return $fileName;
     }
 
+    public function getSelectedQRCodeZIP($urlRoot, $all_rooms_id)
+    {
+        $rooms = Room::find($all_rooms_id);
+
+        if ($rooms !== null) {
+            $zipFileName = 'Rooms-QRcode.zip';
+            $zip = Zip::create($zipFileName);
+
+            foreach ($rooms as $room) {
+                // Storage::disk('local')->makeDirectory($room->room_code);
+                $urlQR = $urlRoot . "/sendproblem/room/" . $room->room_code;
+                $qrcode = QrCode::format('png')->size(200)->margin(1)->generate($urlQR);
+                $fileName = $room->room_code . '.png';
+                Storage::disk('local')->put($fileName, $qrcode);
+
+                if (strpos($room->room_code, "/") === false) { // find / in room code do not want to add IT/101, IT/102
+                    $zip->add(storage_path('app/' . $room->room_code . '.png'));
+                }
+            }
+
+            $zip->close();
+
+            foreach ($rooms as $room) {
+                Storage::disk('local')->delete($room->room_code . '.png');
+            }
+        } else {
+            $zipFileName = null;
+        }
+
+        return $zipFileName;
+    }
+
     public function importRooms($file)
     {
         try {
@@ -180,15 +213,15 @@ class Room extends Model implements Auditable
         }
     }
 
-    public function exportRooms()
+    public function exportRooms($all_rooms_id)
     {
-        $rooms = $this->getALL();
+        $rooms = Room::find($all_rooms_id);
         if ($rooms->isEmpty()) {
             $error =  'Please add room before export';
             return array(false, $error);
         } else {
-            $RoomsExport =  Excel::download(new RoomsExport, 'items.xlsx');
-            return array(true, $RoomsExport);
+            $roomsExport =  Excel::download(new RoomsExport($rooms), 'items.xlsx');
+            return array(true, $roomsExport);
         }
     }
 }

@@ -11,12 +11,19 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class ItemTypesExport implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
 {
+    protected $item_types;
+
+    public function __construct($item_types)
+    {
+        $this->item_types = $item_types;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return Item_Type::all();
+        return $this->item_types;
     }
 
     public function headings(): array

@@ -43,9 +43,10 @@ Route::delete('rooms/{room_id}', 'RoomController@deleteOne');
 Route::post('rooms/selected', 'RoomController@deleteMultiple');
 
 Route::post('rooms/import', 'RoomController@importRooms');
-Route::get('rooms/export', 'RoomController@exportRooms');
+Route::post('rooms/export', 'RoomController@exportRooms');
 
-Route::post('getroomqr/{room_code}', 'RoomController@getRoomQRCode');
+Route::post('get_room_qr/{room_code}', 'RoomController@getRoomQRCode');
+Route::post('get_rooms_qr_zip', 'RoomController@getQRCodeZIP');
 
 Route::get('brands', 'BrandController@index')->name('brands');
 Route::post('brands', 'BrandController@store');
@@ -54,7 +55,7 @@ Route::delete('brands/{brand_id}', 'BrandController@deleteOne');
 Route::post('brands/selected', 'BrandController@deleteMultiple');
 
 Route::post('brands/import', 'BrandController@importBrands');
-Route::get('brands/export', 'BrandController@exportBrands');
+Route::post('brands/export', 'BrandController@exportBrands');
 
 Route::get('problem_descs', 'ProblemDescriptionController@index')->name('problem_descs');
 Route::post('problem_descs', 'ProblemDescriptionController@store');
@@ -63,7 +64,7 @@ Route::delete('problem_descs/{problem_des_id}', 'ProblemDescriptionController@de
 Route::post('problem_descs/selected', 'ProblemDescriptionController@deleteMultiple');
 
 Route::post('problem_descs/import', 'ProblemDescriptionController@importProblemDescs');
-Route::get('problem_descs/export', 'ProblemDescriptionController@exportProblemDescs');
+Route::post('problem_descs/export', 'ProblemDescriptionController@exportProblemDescs');
 
 Route::get('items', 'ItemController@index')->name('items');
 Route::post('items', 'ItemController@store');
@@ -72,10 +73,10 @@ Route::delete('items/{item_id}', 'ItemController@deleteOne');
 Route::post('items/selected', 'ItemController@deleteMultiple');
 
 Route::post('items/import', 'ItemController@importItems');
-Route::get('items/export', 'ItemController@exportItems');
+Route::post('items/export', 'ItemController@exportItems');
 
-Route::post('getqr/{item_code}', 'ItemController@getQRCode');
-Route::post('getqr_zip', 'ItemController@getQRCodeZIP');
+Route::post('get_item_qr/{item_code}', 'ItemController@getQRCode');
+Route::post('get_items_qr_zip', 'ItemController@getQRCodeZIP');
 
 Route::get('item_types', 'ItemTypeController@index')->name('item_types');
 Route::post('item_types', 'ItemTypeController@store');
@@ -84,7 +85,7 @@ Route::delete('item_types/{type_id}', 'ItemTypeController@deleteOne');
 Route::post('item_types/selected', 'ItemTypeController@deleteMultiple');
 
 Route::post('item_types/import', 'ItemTypeController@importItemTypes');
-Route::get('item_types/export', 'ItemTypeController@exportItemTypes');
+Route::post('item_types/export', 'ItemTypeController@exportItemTypes');
 
 Route::get('statuses', 'StatusController@index')->name('statuses');
 Route::post('statuses', 'StatusController@store');

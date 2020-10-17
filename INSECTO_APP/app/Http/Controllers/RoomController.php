@@ -129,6 +129,20 @@ class RoomController extends Controller
         return response()->download(storage_path('app') . '/' . $fileName)->deleteFileAfterSend();
     }
 
+    public function getQRCodeZIP(Request $request)
+    {
+        // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th
+        $urlRoot = $request->url; //http://insecto.sit.kmutt.ac.th
+        $all_rooms_id = $request->rooms;
+        $zipFileName = $this->room->getSelectedQRCodeZIP($urlRoot, $all_rooms_id);
+        if ($zipFileName) {
+            return response()->download(public_path() . '/' . $zipFileName)->deleteFileAfterSend();
+        } else {
+            $error =  'Please add room before get QR-Code';
+            return  $this->serverResponse($error, null);
+        }
+    }
+
     public function importRooms(ImportRequest $request)
     {
         $file = $request->file('import_file');
@@ -139,9 +153,10 @@ class RoomController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
-    public function exportRooms()
+    public function exportRooms(Request $request)
     {
-        $isSuccess = $this->room->exportRooms();
+        $all_rooms_id = $request->rooms;
+        $isSuccess = $this->room->exportRooms($all_rooms_id);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else

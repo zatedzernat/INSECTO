@@ -259,7 +259,6 @@ export default function Buildings() {
         method: "POST",
         responseType: "blob",
       });
-      setToggleCleared(!toggleCleared);
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
@@ -268,6 +267,7 @@ export default function Buildings() {
       document.body.appendChild(link);
       link.click();
       setIsExport(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -427,9 +427,9 @@ export default function Buildings() {
                 <Button variant="info" onClick={() => setModalShowAdd(true)}>
                   Add
                 </Button>
+                &emsp;
                 {selectedRows.length > 0 ? (
                   <>
-                    &emsp;
                     <Button
                       onClick={() => {
                         setModalShowDel(true);
@@ -439,7 +439,11 @@ export default function Buildings() {
                       Delete
                     </Button>
                   </>
-                ) : null}
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Delete
+                  </Button>
+                )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -461,7 +465,11 @@ export default function Buildings() {
                       </Button>
                     )}
                   </>
-                ) : null}
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Export Buildings
+                  </Button>
+                )}
               </div>
             }
             body={buildingTable(data)}

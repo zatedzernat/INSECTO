@@ -127,9 +127,10 @@ class BrandController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
-    public function exportBrands()
+    public function exportBrands(Request $request)
     {
-        $isSuccess = $this->brand->exportBrands();
+        $all_brands_id = $request->brands;
+        $isSuccess = $this->brand->exportBrands($all_brands_id);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else

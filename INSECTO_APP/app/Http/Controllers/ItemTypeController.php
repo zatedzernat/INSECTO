@@ -131,9 +131,10 @@ class ItemTypeController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
-    public function exportItemTypes()
+    public function exportItemTypes(Request $request)
     {
-        $isSuccess = $this->item_type->exportItemTypes();
+        $all_types_id = $request->item_types;
+        $isSuccess = $this->item_type->exportItemTypes($all_types_id);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else

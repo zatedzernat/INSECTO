@@ -238,12 +238,17 @@ export default function ItemTypes() {
     }
   };
 
-  const exportItemTypes = async () => {
+  const exportItemTypes = async (event) => {
     setIsExport(true);
+    event.preventDefault();
+    let item_types = {
+      item_types: selectedRows.map(({ type_id }) => type_id),
+    };
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/export`,
-        method: "GET",
+        data: item_types,
+        method: "POST",
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
@@ -254,6 +259,7 @@ export default function ItemTypes() {
       document.body.appendChild(link);
       link.click();
       setIsExport(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -402,9 +408,9 @@ export default function ItemTypes() {
                 <Button variant="info" onClick={() => setModalShowAdd(true)}>
                   Add
                 </Button>
+                &emsp;
                 {selectedRows.length > 0 ? (
                   <>
-                    &emsp;
                     <Button
                       onClick={() => {
                         setModalShowDel(true);
@@ -414,7 +420,11 @@ export default function ItemTypes() {
                       Delete
                     </Button>
                   </>
-                ) : null}
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Delete
+                  </Button>
+                )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -424,7 +434,7 @@ export default function ItemTypes() {
                   Import Item Types
                 </Button>
                 &emsp;
-                {data.countItemTypes === 0 ? null : (
+                {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
                       <Button onClick={exportItemTypes} variant="warning">
@@ -436,6 +446,10 @@ export default function ItemTypes() {
                       </Button>
                     )}
                   </>
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Export Item Types
+                  </Button>
                 )}
               </div>
             }

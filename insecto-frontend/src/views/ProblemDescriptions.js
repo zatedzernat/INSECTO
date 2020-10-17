@@ -251,12 +251,17 @@ export default function ProblemDescriptions() {
     }
   };
 
-  const exportProblemDescs = async () => {
+  const exportProblemDescs = async (event) => {
     setIsExport(true);
+    event.preventDefault();
+    let problem_descs = {
+      problem_descs: selectedRows.map(({ problem_des_id }) => problem_des_id),
+    };
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}problem_descs/export`,
-        method: "GET",
+        data: problem_descs,
+        method: "POST",
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
@@ -267,6 +272,7 @@ export default function ProblemDescriptions() {
       document.body.appendChild(link);
       link.click();
       setIsExport(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -435,9 +441,9 @@ export default function ProblemDescriptions() {
                 >
                   Add
                 </Button>
+                &emsp;
                 {selectedRows.length > 0 ? (
                   <>
-                    &emsp;
                     <Button
                       onClick={() => {
                         setModalShowDel(true);
@@ -447,7 +453,11 @@ export default function ProblemDescriptions() {
                       Delete
                     </Button>
                   </>
-                ) : null}
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Delete
+                  </Button>
+                )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -457,7 +467,7 @@ export default function ProblemDescriptions() {
                   Import Problem Descs
                 </Button>
                 &emsp;
-                {data.countProblemDescs === 0 ? null : (
+                {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
                       <Button onClick={exportProblemDescs} variant="warning">
@@ -469,6 +479,10 @@ export default function ProblemDescriptions() {
                       </Button>
                     )}
                   </>
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Export Problem Descs
+                  </Button>
                 )}
               </div>
             }

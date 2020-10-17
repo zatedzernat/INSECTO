@@ -11,12 +11,19 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class RoomsExport implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
 {
+    protected $rooms;
+
+    public function __construct($rooms)
+    {
+        $this->rooms = $rooms;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return Room::all();
+        return $this->rooms;
     }
 
     public function headings(): array

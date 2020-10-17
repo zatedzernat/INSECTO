@@ -141,15 +141,15 @@ class Item_Type extends Model implements Auditable
         }
     }
 
-    public function exportItemTypes()
+    public function exportItemTypes($all_types_id)
     {
-        $item_types = $this->getALL();
+        $item_types = Item_Type::find($all_types_id);
         if ($item_types->isEmpty()) {
             $error =  'Please add item type before export';
             return array(false, $error);
         } else {
-            $ItemTypesExport =  Excel::download(new ItemTypesExport, 'item_types.xlsx');
-            return array(true, $ItemTypesExport);
+            $itemTypesExport =  Excel::download(new ItemTypesExport($item_types), 'item_types.xlsx');
+            return array(true, $itemTypesExport);
         }
     }
 }

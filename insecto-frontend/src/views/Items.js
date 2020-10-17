@@ -229,7 +229,7 @@ export default function Items() {
   const getItemQRCode = async (row) => {
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}getqr/${row.item_code}`,
+        url: `${process.env.REACT_APP_API_URL}get_item_qr/${row.item_code}`,
         method: "POST",
         responseType: "blob",
         data: {
@@ -248,14 +248,16 @@ export default function Items() {
     }
   };
 
-  const getItemsQRCode = async (row) => {
+  const getItemsQRCode = async (event) => {
     setIsGenAllQR(true);
+    event.preventDefault();
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}getqr_zip`,
+        url: `${process.env.REACT_APP_API_URL}get_items_qr_zip`,
         method: "POST",
         responseType: "blob",
         data: {
+          items: selectedRows.map(({ item_id }) => item_id),
           url: window.location.origin,
         },
       });
@@ -267,6 +269,7 @@ export default function Items() {
       document.body.appendChild(link);
       link.click();
       setIsGenAllQR(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -328,12 +331,17 @@ export default function Items() {
     }
   };
 
-  const exportItems = async () => {
+  const exportItems = async (event) => {
     setIsExport(true);
+    event.preventDefault();
+    let items = {
+      items: selectedRows.map(({ item_id }) => item_id),
+    };
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/export`,
-        method: "GET",
+        data: items,
+        method: "POST",
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
@@ -344,6 +352,7 @@ export default function Items() {
       document.body.appendChild(link);
       link.click();
       setIsExport(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -606,9 +615,9 @@ export default function Items() {
                 >
                   Add
                 </Button>
+                &emsp;
                 {selectedRows.length > 0 ? (
                   <>
-                    &emsp;
                     <Button
                       onClick={() => {
                         setModalShowDel(true);
@@ -618,7 +627,11 @@ export default function Items() {
                       Delete
                     </Button>
                   </>
-                ) : null}
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Delete
+                  </Button>
+                )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -628,7 +641,7 @@ export default function Items() {
                   Import Items
                 </Button>
                 &emsp;
-                {data.countItems === 0 ? null : (
+                {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
                       <Button onClick={exportItems} variant="warning">
@@ -643,13 +656,24 @@ export default function Items() {
                     {isGenAllQR === false ? (
                       <Button onClick={getItemsQRCode} variant="success">
                         <i className="fa fa-qrcode" />
-                        All Items QR Code
+                        &nbsp; Items QR Code
                       </Button>
                     ) : (
                       <Button variant="success">
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
+                  </>
+                ) : (
+                  <>
+                    <Button variant="secondary" disabled>
+                      Export Items
+                    </Button>
+                    &emsp;
+                    <Button variant="secondary" disabled>
+                      <i className="fa fa-qrcode" />
+                      &nbsp; Items QR Code
+                    </Button>
                   </>
                 )}
               </div>
