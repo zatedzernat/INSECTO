@@ -34,7 +34,7 @@ Route::delete('buildings/{building_id}', 'BuildingController@deleteOne');
 Route::post('buildings/selected', 'BuildingController@deleteMultiple');
 
 Route::post('buildings/import', 'BuildingController@importBuildings');
-Route::get('buildings/export', 'BuildingController@exportBuildings');
+Route::post('buildings/export', 'BuildingController@exportBuildings');
 
 Route::get('rooms', 'RoomController@index')->name('rooms');
 Route::post('rooms', 'RoomController@store');

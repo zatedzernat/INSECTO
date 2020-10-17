@@ -237,13 +237,19 @@ export default function Buildings() {
     }
   };
 
-  const exportBuildings = async () => {
+  const exportBuildings = async (event) => {
+    event.preventDefault();
+    let buildings = {
+      buildings: selectedRows.map(({ building_id }) => building_id),
+    };
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/export`,
-        method: "GET",
+        data: buildings,
+        method: "POST",
         responseType: "blob",
       });
+      setToggleCleared(!toggleCleared);
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
@@ -432,13 +438,13 @@ export default function Buildings() {
                   Import Buildings
                 </Button>
                 &emsp;
-                {data.countBuildings === 0 ? null : (
+                {selectedRows.length > 0 ? (
                   <>
                     <Button onClick={exportBuildings} variant="warning">
                       Export Buildings
                     </Button>
                   </>
-                )}
+                ) : null}
               </div>
             }
             body={buildingTable(data)}

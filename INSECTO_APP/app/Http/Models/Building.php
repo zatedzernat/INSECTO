@@ -141,14 +141,14 @@ class Building extends Model implements Auditable
         }
     }
 
-    public function exportBuildings()
+    public function exportBuildings($all_buildings_id)
     {
-        $buildings = $this->getALL();
+        $buildings = Building::find($all_buildings_id);
         if ($buildings->isEmpty()) {
             $error =  'Please add building before export';
             return array(false, $error);
         } else {
-            $buildingsExport =  Excel::download(new BuildingsExport, 'buildings.xlsx');
+            $buildingsExport =  Excel::download(new BuildingsExport($buildings), 'buildings.xlsx');
             return array(true, $buildingsExport);
         }
     }

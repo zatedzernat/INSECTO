@@ -132,9 +132,10 @@ class BuildingController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
-    public function exportBuildings()
+    public function exportBuildings(Request $request)
     {
-        $isSuccess = $this->building->exportBuildings();
+        $all_buildings_id = $request->buildings;
+        $isSuccess = $this->building->exportBuildings($all_buildings_id);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else
