@@ -11,12 +11,19 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class BrandsExport implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
 {
+    protected $brands;
+
+    public function __construct($brands)
+    {
+        $this->brands = $brands;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return Brand::all();
+        return $this->brands;
     }
 
     public function headings(): array

@@ -231,12 +231,17 @@ export default function Brands() {
     }
   };
 
-  const exportBrands = async () => {
+  const exportBrands = async (event) => {
     setIsExport(true);
+    event.preventDefault();
+    let brands = {
+      brands: selectedRows.map(({ brand_id }) => brand_id),
+    };
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/export`,
-        method: "GET",
+        data: brands,
+        method: "POST",
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
@@ -247,6 +252,7 @@ export default function Brands() {
       document.body.appendChild(link);
       link.click();
       setIsExport(false);
+      setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -394,9 +400,9 @@ export default function Brands() {
                 <Button variant="info" onClick={() => setModalShowAdd(true)}>
                   Add
                 </Button>
+                &emsp;
                 {selectedRows.length > 0 ? (
                   <>
-                    &emsp;
                     <Button
                       onClick={() => {
                         setModalShowDel(true);
@@ -406,7 +412,11 @@ export default function Brands() {
                       Delete
                     </Button>
                   </>
-                ) : null}
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Delete
+                  </Button>
+                )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
@@ -416,7 +426,7 @@ export default function Brands() {
                   Import Brands
                 </Button>
                 &emsp;
-                {data.countBrands === 0 ? null : (
+                {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
                       <Button onClick={exportBrands} variant="warning">
@@ -428,6 +438,10 @@ export default function Brands() {
                       </Button>
                     )}
                   </>
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Export Brands
+                  </Button>
                 )}
               </div>
             }

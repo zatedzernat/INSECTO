@@ -54,7 +54,7 @@ Route::delete('brands/{brand_id}', 'BrandController@deleteOne');
 Route::post('brands/selected', 'BrandController@deleteMultiple');
 
 Route::post('brands/import', 'BrandController@importBrands');
-Route::get('brands/export', 'BrandController@exportBrands');
+Route::post('brands/export', 'BrandController@exportBrands');
 
 Route::get('problem_descs', 'ProblemDescriptionController@index')->name('problem_descs');
 Route::post('problem_descs', 'ProblemDescriptionController@store');
