@@ -63,7 +63,7 @@ Route::delete('problem_descs/{problem_des_id}', 'ProblemDescriptionController@de
 Route::post('problem_descs/selected', 'ProblemDescriptionController@deleteMultiple');
 
 Route::post('problem_descs/import', 'ProblemDescriptionController@importProblemDescs');
-Route::get('problem_descs/export', 'ProblemDescriptionController@exportProblemDescs');
+Route::post('problem_descs/export', 'ProblemDescriptionController@exportProblemDescs');
 
 Route::get('items', 'ItemController@index')->name('items');
 Route::post('items', 'ItemController@store');

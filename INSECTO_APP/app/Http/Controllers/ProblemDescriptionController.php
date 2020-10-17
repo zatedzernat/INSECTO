@@ -129,9 +129,10 @@ class ProblemDescriptionController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
-    public function exportProblemDescs()
+    public function exportProblemDescs(Request $request)
     {
-        $isSuccess = $this->problem_desc->exportProblemDescs();
+        $all_problem_descs_id = $request->problem_descs;
+        $isSuccess = $this->problem_desc->exportProblemDescs($all_problem_descs_id);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else

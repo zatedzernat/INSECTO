@@ -175,14 +175,14 @@ class Problem_Description extends Model implements Auditable
         }
     }
 
-    public function exportProblemDescs()
+    public function exportProblemDescs($all_problem_descs_id)
     {
-        $prob_descs = $this->getALL();
+        $prob_descs = Problem_Description::find($all_problem_descs_id);
         if ($prob_descs->isEmpty()) {
             $error =  'Please add problem description before export';
             return array(false, $error);
         } else {
-            $ProblemDescriptionsExport =  Excel::download(new ProblemDescriptionsExport, 'problem_descriptions.xlsx');
+            $ProblemDescriptionsExport =  Excel::download(new ProblemDescriptionsExport($prob_descs), 'problem_descriptions.xlsx');
             return array(true, $ProblemDescriptionsExport);
         }
     }

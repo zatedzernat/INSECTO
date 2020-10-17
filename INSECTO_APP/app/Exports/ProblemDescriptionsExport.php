@@ -11,12 +11,19 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class ProblemDescriptionsExport implements FromCollection, WithHeadings, WithMapping, WithTitle, ShouldAutoSize
 {
+    protected $prob_descs;
+
+    public function __construct($prob_descs)
+    {
+        $this->prob_descs = $prob_descs;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return Problem_Description::all();
+        return $this->prob_descs;
     }
 
     public function headings(): array
