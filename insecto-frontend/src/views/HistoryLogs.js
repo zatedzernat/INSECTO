@@ -8,15 +8,16 @@ import moment from "moment";
 import FormModal from "../components/FormModal";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ButtonToTop from "../components/ButtonToTop";
+import FormDateInput from "../components/FormDateInput";
 
 const styles = {
-    paddingLink: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingRight: 6,
-        paddingLeft: 12
-    }
-}
+  paddingLink: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingRight: 6,
+    paddingLeft: 12,
+  },
+};
 
 export default function HistoryLogs() {
   const [data, setData] = useState([]);
@@ -26,6 +27,11 @@ export default function HistoryLogs() {
   const [count, setCount] = useState(7);
   const [countDays, setCountDays] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const initialState = {
+    from_date: moment().subtract(7, "d").format("YYYY-MM-DD"),
+    to_date: moment().format("YYYY-MM-DD"),
+  };
+  const [logsFromTo, setLogsFromTo] = useState(initialState);
   // const [intervalId, setIntervalId] = useState(0);
 
   const fetchData = async () => {
@@ -93,6 +99,28 @@ export default function HistoryLogs() {
       }
       setCount(count + 7);
     }, 500);
+  };
+
+  const exportLogs = async (event) => {
+    event.preventDefault();
+    // console.log(logsFromTo);
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}history_logs/export`,
+        data: logsFromTo,
+        method: "POST",
+        responseType: "blob",
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Logs.xlsx"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
   };
 
   const HistoryLogCard = (props) => {
@@ -221,6 +249,65 @@ export default function HistoryLogs() {
                 <h2>History Logs</h2>
                 <h6>รายการบันทึกประวัติการแก้ไขทั้งหมด</h6>
               </div>
+            }
+            badge={
+              <FormDateInput
+                body={
+                  <>
+                    <Row>
+                      <Col>
+                        <div className="form-group row">
+                          <label className="col-form-label">Form: </label>
+                          <div className="col-10">
+                            <input
+                              className="form-control"
+                              type="date"
+                              name="from_date"
+                              value={logsFromTo.from_date}
+                              onChange={(event) =>
+                                setLogsFromTo({
+                                  ...logsFromTo,
+                                  from_date: event.target.value,
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </Col>
+                      <Col>
+                        <div className="form-group row">
+                          <label className="col-form-label">To: </label>
+                          <div className="col-10">
+                            <input
+                              className="form-control"
+                              type="date"
+                              name="to_date"
+                              value={logsFromTo.to_date}
+                              onChange={(event) =>
+                                setLogsFromTo({
+                                  ...logsFromTo,
+                                  to_date: event.target.value,
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </Col>
+                      <Col sm="3">
+                        <Button
+                          onClick={exportLogs}
+                          variant="warning"
+                          style={{ color: "white" }}
+                        >
+                          Export Logs
+                        </Button>
+                      </Col>
+                    </Row>
+                  </>
+                }
+                method="POST"
+                onSubmit={exportLogs}
+              />
             }
             body={historyLogTable(data.logsByDays)}
             loading={isLoading ? "overlay" : ""}
