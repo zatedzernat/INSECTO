@@ -145,11 +145,13 @@ export default function NotificationProblems() {
 
   const showNextStatus = (row) => {
     let next_status;
-    let color;
+    let bgColor;
+    let fontColor;
     switch (row.status_id) {
       case 1:
         next_status = [{ status_id: 2, status_name: "open" }];
-        color = "warning";
+        bgColor = "#fff4de";
+        fontColor = "#FFA800"
         break;
       case 2:
         next_status = [
@@ -157,7 +159,8 @@ export default function NotificationProblems() {
           { status_id: 4, status_name: "queue" },
           { status_id: 5, status_name: "in progress" },
         ];
-        color = "success";
+        bgColor = "#c9f7f4";
+        fontColor = "#1BC5BD"
         break;
       case 3:
         next_status = [
@@ -165,21 +168,24 @@ export default function NotificationProblems() {
           { status_id: 5, status_name: "in progress" },
           { status_id: 8, status_name: "resolved" },
         ];
-        color = "info";
+        bgColor = "#ede5ff";
+        fontColor = "#8950FC"
         break;
       case 4:
         next_status = [
           { status_id: 3, status_name: "on hold" },
           { status_id: 5, status_name: "in progress" },
         ];
-        color = "info";
+        bgColor = "#ede5ff";
+        fontColor = "#8950FC"
         break;
       case 5:
         next_status = [
           { status_id: 3, status_name: "on hold" },
           { status_id: 8, status_name: "resolved" },
         ];
-        color = "info";
+        bgColor = "#ede5ff";
+        fontColor = "#8950FC"
         break;
       case 7:
         next_status = [
@@ -187,14 +193,17 @@ export default function NotificationProblems() {
           { status_id: 4, status_name: "queue" },
           { status_id: 5, status_name: "in progress" },
         ];
-        color = "danger";
+        bgColor = "#fee2e5";
+        fontColor = "#F64E60"
         break;
       case 8:
         next_status = [{ status_id: 7, status_name: "reopen" }];
-        color = "primary";
+        bgColor = "#e0eaff";
+        fontColor = "#6993FF"
         break;
       default:
-        color = "secondary";
+        bgColor = "#eaedf2";
+        fontColor = "#E4E6EF"
         break;
     }
 
@@ -204,8 +213,8 @@ export default function NotificationProblems() {
           <Dropdown.Toggle
             id="dropdown-custom-1"
             size="xs"
-            style={{ width: "105px", fontSize: "15px", color: 'white' }}
-            variant={color}
+            style={{ width: "105px", fontSize: "15px", color: fontColor, backgroundColor: bgColor, borderStyle: "none" }}
+            // variant={bgColor}
           >
             {row.status.status_name}
           </Dropdown.Toggle>
