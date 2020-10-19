@@ -204,13 +204,32 @@ class Room extends Model implements Auditable
         try {
             $import = new RoomsImport();
             $import->onlySheets('Rooms');
-            Excel::import($import, $file);
-            $success = 'Import data of items success';
-            return array(true, $success);
+            $duplicated = $this->checkDuplicateImport($import, $file);
+            if ($duplicated->isEmpty()) {
+                Excel::import($import, $file);
+                $success = 'Import data of rooms success';
+                return array(true, $success);
+            } else {
+                $error =  'Can not insert these duplicate room code: (' . implode(", ", $duplicated->toArray()) . ')';
+                return array(false, $error);
+            }
         } catch (SheetNotFoundException $ex) {
             $error =  'Please name your sheetname to \'Rooms\'';
             return array(false, $error);
         }
+    }
+
+    public function checkDuplicateImport($import, $file)
+    {
+        $import_array = Excel::toCollection($import, $file);
+        $rooms = array();
+        foreach ($import_array as $array) {
+            $rooms = $array;
+        }
+        $all_rooms_code = Arr::pluck($rooms, 'room_code');
+        $duplicated = Room::whereIn('room_code', $all_rooms_code)->get();
+        $duplicated_codes = $duplicated->pluck('room_code');
+        return $duplicated_codes;
     }
 
     public function exportRooms($all_rooms_id)
