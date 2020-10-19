@@ -221,7 +221,7 @@ class Room extends Model implements Auditable
 
     public function checkDuplicateImport($import, $file)
     {
-        $import_array = Excel::toCollection($import, $file);
+        $import_array = Excel::toArray($import, $file);
         $rooms = array();
         foreach ($import_array as $array) {
             $rooms = $array;

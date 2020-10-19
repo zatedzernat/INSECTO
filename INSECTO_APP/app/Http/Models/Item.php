@@ -382,7 +382,7 @@ class Item extends Model implements Auditable
 
     public function checkDuplicateImport($import, $file)
     {
-        $import_array = Excel::toCollection($import, $file);
+        $import_array = Excel::toArray($import, $file);
         $items = array();
         foreach ($import_array as $array) {
             $items = $array;
