@@ -7,6 +7,7 @@ use App\Http\Models\Notification_Problem;
 use App\Http\Models\Status;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 
 class HistoryLogController extends Controller
 {
@@ -45,5 +46,23 @@ class HistoryLogController extends Controller
         }
         $time = Carbon::now()->format('H:i:s');
         return compact('noti_trackings', 'time');
+    }
+
+    public function exportLogs(Request $request)
+    {
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        $logsExport = $this->log->exportLogs($from_date, $to_date);
+        return  $logsExport;
+    }
+
+    public function serverResponse($error, $success)
+    {
+        $time = Carbon::now()->format('H:i:s');
+        return response()->json([
+            'errors' => $error,
+            'success' => $success,
+            'time' => $time
+        ]);
     }
 }

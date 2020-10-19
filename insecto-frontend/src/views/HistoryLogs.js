@@ -118,6 +118,7 @@ export default function HistoryLogs() {
       link.setAttribute("download", "Logs.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
+      setLogsFromTo(initialState);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -133,7 +134,8 @@ export default function HistoryLogs() {
             hasMore={hasMore}
             loader={
               <div className="overlay">
-                <i className="fas fa-2x fa-sync-alt fa-spin"></i>
+                {/* <i className="fas fa-2x fa-sync-alt fa-spin"></i> */}
+                wait a moment
               </div>
             }
             endMessage={

@@ -2,9 +2,11 @@
 
 namespace App\Http\Models;
 
+use App\Exports\LogsExport;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Models\Audit;
 
 class History_log extends Model
@@ -56,5 +58,18 @@ class History_log extends Model
             return $noti->created_at->toDateString() == Carbon::today()->toDateString();
         });
         return $noti_tracking_in_days;
+    }
+
+    public function exportLogs($from_date, $to_date)
+    {
+        $to_date = new Carbon($to_date);
+        $addedDay = $to_date->addDay();
+        $audits = Audit::whereBetween('created_at', [$from_date, $addedDay])->orderBy('created_at', 'desc')->get();
+        // $audits = Audit::where('created_at', '>=', $from_date)
+        //     ->where('created_at', '<=', $to_date)
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+        $logsExport = Excel::download(new LogsExport($audits), 'Logs.xlsx');
+        return $logsExport;
     }
 }

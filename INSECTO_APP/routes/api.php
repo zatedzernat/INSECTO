@@ -21,6 +21,8 @@ Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
 Route::get('history_logs/{amount}', 'HistoryLogController@getLogs');
 Route::get('history_logs/tracking/{noti_id}', 'HistoryLogController@getTracking');
 
+Route::post('history_logs/export', 'HistoryLogController@exportLogs');
+
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
 Route::get('sendprobleminroom/{room_code}', 'NotificationProblemController@showproblemNotResolvedInRoom');
 Route::get('sendproblem/{item_code}', 'NotificationProblemController@showproblemNotResolved');
