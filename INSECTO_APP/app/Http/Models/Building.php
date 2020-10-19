@@ -132,13 +132,32 @@ class Building extends Model implements Auditable
         try {
             $import = new BuildingsImport();
             $import->onlySheets('Buildings');
-            Excel::import($import, $file);
-            $success = 'Import data of buildings success';
-            return array(true, $success);
+            $duplicated = $this->checkDuplicateImport($import, $file);
+            if ($duplicated->isEmpty()) {
+                Excel::import($import, $file);
+                $success = 'Import data of buildings success';
+                return array(true, $success);
+            } else {
+                $error =  'Can not insert these duplicate building code: (' . implode(", ", $duplicated->toArray()) . ')';
+                return array(false, $error);
+            }
         } catch (SheetNotFoundException $ex) {
             $error =  'Please name your sheetname to \'Buildings\'';
             return array(false, $error);
         }
+    }
+
+    public function checkDuplicateImport($import, $file)
+    {
+        $import_array = Excel::toCollection($import, $file);
+        $buildings = array();
+        foreach ($import_array as $array) {
+            $buildings = $array;
+        }
+        $all_buildings_code = Arr::pluck($buildings, 'building_code');
+        $duplicated = Building::whereIn('building_code', $all_buildings_code)->get();
+        $duplicated_codes = $duplicated->pluck('building_code');
+        return $duplicated_codes;
     }
 
     public function exportBuildings($all_buildings_id)
