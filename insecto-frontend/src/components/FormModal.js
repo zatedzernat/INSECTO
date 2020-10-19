@@ -24,12 +24,12 @@ export default function FormModal(props) {
         <h6 className="m-3 text-right">{props.subBody}</h6>
         <Modal.Footer>
           {props.close && (
-            <Button variant="secondary" onClick={props.onHide}>
+            <Button style={{ backgroundColor: '#181d32', borderStyle: "none"  }} onClick={props.onHide}>
               {props.close}
             </Button>
           )}
           {props.button && (
-            <Button type="submit" variant="primary">
+            <Button  style={{ backgroundColor: '#4b7dff', borderStyle: "none"  }} type="submit">
               {props.button}
             </Button>
           )}
