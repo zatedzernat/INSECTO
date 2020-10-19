@@ -132,13 +132,32 @@ class Item_Type extends Model implements Auditable
         try {
             $import = new ItemTypesImport();
             $import->onlySheets('Item_Types');
-            Excel::import($import, $file);
-            $success = 'Import data of item types success';
-            return array(true, $success);
+            $duplicated = $this->checkDuplicateImport($import, $file);
+            if ($duplicated->isEmpty()) {
+                Excel::import($import, $file);
+                $success = 'Import data of item types success';
+                return array(true, $success);
+            } else {
+                $error =  'Can not insert these duplicate type name: (' . implode(", ", $duplicated->toArray()) . ')';
+                return array(false, $error);
+            }
         } catch (SheetNotFoundException $ex) {
             $error =  'Please name your sheetname to \'Item_Types\'';
             return array(false, $error);
         }
+    }
+
+    public function checkDuplicateImport($import, $file)
+    {
+        $import_array = Excel::toCollection($import, $file);
+        $types = array();
+        foreach ($import_array as $array) {
+            $types = $array;
+        }
+        $all_types_name = Arr::pluck($types, 'type_name');
+        $duplicated = Item_Type::whereIn('type_name', $all_types_name)->get();
+        $duplicated_codes = $duplicated->pluck('type_name');
+        return $duplicated_codes;
     }
 
     public function exportItemTypes($all_types_id)
