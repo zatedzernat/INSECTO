@@ -33,6 +33,7 @@ export default function HistoryLogs() {
   };
   const [logsFromTo, setLogsFromTo] = useState(initialState);
   // const [intervalId, setIntervalId] = useState(0);
+  const [isExport, setIsExport] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -48,6 +49,7 @@ export default function HistoryLogs() {
       );
       setIsLoading(false);
       setCountDays(temp.data.countDays);
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response.data.errors));
     }
@@ -102,6 +104,7 @@ export default function HistoryLogs() {
   };
 
   const exportLogs = async (event) => {
+    setIsExport(true);
     event.preventDefault();
     // console.log(logsFromTo);
     try {
@@ -119,6 +122,7 @@ export default function HistoryLogs() {
       document.body.appendChild(link);
       link.click();
       setLogsFromTo(initialState);
+      setIsExport(false);
     } catch (error) {
       console.log(JSON.stringify(error.response));
     }
@@ -256,7 +260,7 @@ export default function HistoryLogs() {
               <FormDateInput
                 body={
                   <>
-                    <Row>
+                    <Row className="text-right">
                       <Col>
                         <div className="form-group row">
                           <label className="col-form-label">Form: </label>
@@ -295,7 +299,10 @@ export default function HistoryLogs() {
                           </div>
                         </div>
                       </Col>
-                      <Col sm="3">
+                      </Row>
+                      <Row className="text-right">
+                      <Col className="text-right mr-4">
+                      {isExport === false ? (
                         <Button
                           onClick={exportLogs}
                           variant="warning"
@@ -303,6 +310,11 @@ export default function HistoryLogs() {
                         >
                           Export Logs
                         </Button>
+                        ) : (
+                      <Button variant="warning" style={{color: 'white'}}>
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                       </Col>
                     </Row>
                   </>
