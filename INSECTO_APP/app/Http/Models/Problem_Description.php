@@ -6,6 +6,7 @@ use App\Exports\ProblemDescriptionsExport;
 use App\Imports\ProblemDescriptionsImport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -166,13 +167,51 @@ class Problem_Description extends Model implements Auditable
         try {
             $import = new ProblemDescriptionsImport();
             $import->onlySheets('Problem_Descriptions');
-            Excel::import($import, $file);
-            $success = 'Import data of problem descriptions success';
-            return array(true, $success);
+            $duplicated = $this->checkDuplicateImport($import, $file);
+            if ($duplicated->isEmpty()) {
+                Excel::import($import, $file);
+                $success = 'Import data of problem descriptions success';
+                return array(true, $success);
+            } else {
+                $str_collection = $this->stringResult($duplicated->toArray());
+                $error =  'Can not insert these duplicate Problem Description and Type: (' . implode(", ", $str_collection->toArray()) . ')';
+                return array(false, $error);
+            }
         } catch (SheetNotFoundException $ex) {
             $error =  'Please name your sheetname to \'Problem_Descriptions\'';
             return array(false, $error);
         }
+    }
+
+    public function checkDuplicateImport($import, $file)
+    {
+        $import_array = Excel::toArray($import, $file);
+        $prob_descs = array();
+        foreach ($import_array as $array) {
+            $prob_descs = $array;
+        }
+        $all_probs = Arr::pluck($prob_descs, 'type_id', 'problem_description');
+        $duplicated = new Collection();
+        foreach ($all_probs as $problem_description => $type_id) {
+            $prob_desc = Problem_Description::where([
+                ['problem_description', $problem_description],
+                ['type_id', $type_id],
+            ])->first();
+            if ($prob_desc !== null) {
+                $duplicated->push($prob_desc);
+            }
+        }
+        $duplicated = $duplicated->pluck('type_id', 'problem_description');
+        return $duplicated;
+    }
+
+    public function stringResult($arrays)
+    {
+        $str_collection = new Collection();
+        foreach ($arrays as $problem_description => $type_id) {
+            $str_collection->push($problem_description . " - " . $type_id);
+        }
+        return $str_collection;
     }
 
     public function exportProblemDescs($all_problem_descs_id)
