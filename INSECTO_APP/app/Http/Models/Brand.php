@@ -131,13 +131,32 @@ class Brand extends Model implements Auditable
         try {
             $import = new BrandsImport();
             $import->onlySheets('Brands');
-            Excel::import($import, $file);
-            $success = 'Import data of brands success';
-            return array(true, $success);
+            $duplicated = $this->checkDuplicateImport($import, $file);
+            if ($duplicated->isEmpty()) {
+                Excel::import($import, $file);
+                $success = 'Import data of brands success';
+                return array(true, $success);
+            } else {
+                $error =  'Can not insert these duplicate brand name: (' . implode(", ", $duplicated->toArray()) . ')';
+                return array(false, $error);
+            }
         } catch (SheetNotFoundException $ex) {
             $error =  'Please name your sheetname to \'Brands\'';
             return array(false, $error);
         }
+    }
+
+    public function checkDuplicateImport($import, $file)
+    {
+        $import_array = Excel::toArray($import, $file);
+        $brands = array();
+        foreach ($import_array as $array) {
+            $brands = $array;
+        }
+        $all_brands_name = Arr::pluck($brands, 'brand_name');
+        $duplicated = Brand::whereIn('brand_name', $all_brands_name)->get();
+        $duplicated_codes = $duplicated->pluck('brand_name');
+        return $duplicated_codes;
     }
 
     public function exportBrands($all_brands_id)
