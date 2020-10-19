@@ -365,13 +365,32 @@ class Item extends Model implements Auditable
         try {
             $import = new ItemsImport();
             $import->onlySheets('Items');
-            Excel::import($import, $file);
-            $success = 'Import data of items success';
-            return array(true, $success);
+            $duplicated = $this->checkDuplicateImport($import, $file);
+            if ($duplicated->isEmpty()) {
+                Excel::import($import, $file);
+                $success = 'Import data of items success';
+                return array(true, $success);
+            } else {
+                $error =  'Can not insert these duplicate item code: (' . implode(", ", $duplicated->toArray()) . ')';
+                return array(false, $error);
+            }
         } catch (SheetNotFoundException $ex) {
             $error =  'Please name your sheetname to \'Items\'';
             return array(false, $error);
         }
+    }
+
+    public function checkDuplicateImport($import, $file)
+    {
+        $import_array = Excel::toCollection($import, $file);
+        $items = array();
+        foreach ($import_array as $array) {
+            $items = $array;
+        }
+        $all_items_code = Arr::pluck($items, 'item_code');
+        $duplicated = Item::whereIn('item_code', $all_items_code)->get();
+        $duplicated_codes = $duplicated->pluck('item_code');
+        return $duplicated_codes;
     }
 
     public function exportItems($all_items_id)
