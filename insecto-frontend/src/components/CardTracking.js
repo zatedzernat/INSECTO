@@ -45,12 +45,13 @@ export default function Card(props) {
           height: 22,
           width: 80,
           // backgroundColor: "#FAFAFA",
-          backgroundColor: "#ffdd59",
+          // backgroundColor: "#ffdd59",
+          backgroundColor: "#fff4de",
           borderRadius: 5,
         };
         // textStatus = "รอการดำเนินการ";
         // font = { color: "rgb(241 79 210)", fontSize: 11 };
-        font = { color: "black", fontSize: 11 };
+        font = { color: "#FFA800", fontSize: 11 };
         break;
       case 3:
       case 4:
@@ -63,12 +64,13 @@ export default function Card(props) {
           width: 80,
           // backgroundColor: "#FAFAFA",
           // backgroundColor: "#cfedff",
-          backgroundColor: "#90CAF9",
+          // backgroundColor: "#90CAF9",
+          backgroundColor: "#e0eaff",
           borderRadius: 5,
         };
         // textStatus = "กำลังดำเนินการ";
         // font = { color: "#2BB0FF", fontSize: 11 };
-        font = { color: "black", fontSize: 11 };
+        font = { color: "#6993FF", fontSize: 11 };
         break;
       case 8:
         styles = {
@@ -78,12 +80,13 @@ export default function Card(props) {
           height: 22,
           width: 80,
           // backgroundColor: "#FAFAFA",
-          backgroundColor: "#C4E538",
+          // backgroundColor: "#C4E538",
           borderRadius: 5,
+          backgroundColor: "#c9f7f4"
         };
         // textStatus = "ดำเนินการเสร็จสิ้น";
         // font = { color: "#43CF2A", fontSize: 11 };
-        font = { color: "black", fontSize: 11 };
+        font = { color: "#1BC5BD", fontSize: 11 };
         break;
       default:
         break;
