@@ -602,7 +602,7 @@ export default function Items() {
             badge={
               <div>
                 <Button
-                  variant="info"
+                  style={{ backgroundColor: "#1BC5BD" }}
                   onClick={() => {
                     setModalShowAdd(true);
                     setSelectBrand("- select brand name -");
@@ -622,22 +622,21 @@ export default function Items() {
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      variant="danger"
+                      style={{ backgroundColor: "#F64E60" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button variant="secondary" disabled>
+                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
                     Delete
                   </Button>
                 )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
-                  variant="warning"
                   type="submit"
-                  style={{color: 'white'}}
+                  style={{ color: "white", backgroundColor: "#6993FF" }}
                 >
                   Import Items
                 </Button>
@@ -645,33 +644,49 @@ export default function Items() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportItems} variant="warning" style={{color: 'white'}}>
+                      <Button
+                        onClick={exportItems}
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         Export Items
                       </Button>
                     ) : (
-                      <Button variant="warning" style={{color: 'white'}}>
+                      <Button
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                     &emsp;
                     {isGenAllQR === false ? (
-                      <Button onClick={getItemsQRCode} variant="success">
+                      <Button
+                        onClick={getItemsQRCode}
+                        style={{ color: "white", backgroundColor: "#66BB6A" }}
+                      >
                         <i className="fa fa-qrcode" />
                         &nbsp; Items QR Code
                       </Button>
                     ) : (
-                      <Button variant="success">
+                      <Button
+                        style={{ color: "white", backgroundColor: "#66BB6A" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                   </>
                 ) : (
                   <>
-                    <Button variant="secondary" disabled>
+                    <Button
+                      style={{ color: "white", backgroundColor: "#6993FF" }}
+                      disabled
+                    >
                       Export Items
                     </Button>
                     &emsp;
-                    <Button variant="secondary" disabled>
+                    <Button
+                      style={{ color: "white", backgroundColor: "#66BB6A" }}
+                      disabled
+                    >
                       <i className="fa fa-qrcode" />
                       &nbsp; Items QR Code
                     </Button>

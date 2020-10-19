@@ -424,7 +424,10 @@ export default function Buildings() {
             }
             badge={
               <div>
-                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                <Button
+                  style={{ backgroundColor: "#1BC5BD" }}
+                  onClick={() => setModalShowAdd(true)}
+                >
                   Add
                 </Button>
                 &emsp;
@@ -434,22 +437,21 @@ export default function Buildings() {
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      variant="danger"
+                      style={{ backgroundColor: "#F64E60" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button variant="secondary" disabled>
+                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
                     Delete
                   </Button>
                 )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
-                  variant="warning"
                   type="submit"
-                  style={{color: 'white'}}
+                  style={{ color: "white", backgroundColor: "#6993FF" }}
                 >
                   Import Buildings
                 </Button>
@@ -457,17 +459,25 @@ export default function Buildings() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportBuildings} variant="warning" style={{color: 'white'}}>
+                      <Button
+                        onClick={exportBuildings}
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         Export Buildings
                       </Button>
                     ) : (
-                      <Button variant="warning" style={{color: 'white'}}>
+                      <Button
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                   </>
                 ) : (
-                  <Button variant="secondary" disabled>
+                  <Button
+                    style={{ color: "white", backgroundColor: "#6993FF" }}
+                    disabled
+                  >
                     Export Buildings
                   </Button>
                 )}

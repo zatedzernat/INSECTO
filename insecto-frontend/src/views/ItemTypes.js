@@ -405,7 +405,10 @@ export default function ItemTypes() {
             }
             badge={
               <div>
-                <Button variant="info" onClick={() => setModalShowAdd(true)}>
+                <Button
+                  style={{ backgroundColor: "#1BC5BD" }}
+                  onClick={() => setModalShowAdd(true)}
+                >
                   Add
                 </Button>
                 &emsp;
@@ -415,22 +418,21 @@ export default function ItemTypes() {
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      variant="danger"
+                      style={{ backgroundColor: "#F64E60" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button variant="secondary" disabled>
+                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
                     Delete
                   </Button>
                 )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
-                  variant="warning"
                   type="submit"
-                  style={{color: 'white'}}
+                  style={{ color: "white", backgroundColor: "#6993FF" }}
                 >
                   Import Item Types
                 </Button>
@@ -438,17 +440,25 @@ export default function ItemTypes() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportItemTypes} variant="warning" style={{color: 'white'}}>
+                      <Button
+                        onClick={exportItemTypes}
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         Export Item Types
                       </Button>
                     ) : (
-                      <Button variant="warning" style={{color: 'white'}}>
+                      <Button
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                   </>
                 ) : (
-                  <Button variant="secondary" disabled>
+                  <Button
+                    style={{ color: "white", backgroundColor: "#6993FF" }}
+                    disabled
+                  >
                     Export Item Types
                   </Button>
                 )}

@@ -516,7 +516,7 @@ export default function Rooms() {
             badge={
               <div>
                 <Button
-                  variant="info"
+                  style={{ backgroundColor: "#1BC5BD" }}
                   onClick={() => {
                     setModalShowAdd(true);
                     setSelectBuilding("- select building name -");
@@ -531,22 +531,21 @@ export default function Rooms() {
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      variant="danger"
+                      style={{ backgroundColor: "#F64E60" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button variant="secondary" disabled>
+                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
                     Delete
                   </Button>
                 )}
                 &emsp;
                 <Button
                   onClick={() => setModalShowImport(true)}
-                  variant="warning"
                   type="submit"
-                  style={{color: 'white'}}
+                  style={{ color: "white", backgroundColor: "#6993FF" }}
                 >
                   Import Rooms
                 </Button>
@@ -554,33 +553,49 @@ export default function Rooms() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportRooms} variant="warning" style={{color: 'white'}}>
+                      <Button
+                        onClick={exportRooms}
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         Export Rooms
                       </Button>
                     ) : (
-                      <Button variant="warning" style={{color: 'white'}}>
+                      <Button
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                     &emsp;
                     {isGenAllQR === false ? (
-                      <Button onClick={getRoomsQRCode} variant="success">
+                      <Button
+                        onClick={getRoomsQRCode}
+                        style={{ color: "white", backgroundColor: "#66BB6A" }}
+                      >
                         <i className="fa fa-qrcode" />
                         &nbsp; Rooms QR Code
                       </Button>
                     ) : (
-                      <Button variant="success">
+                      <Button
+                        style={{ color: "white", backgroundColor: "#66BB6A" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                   </>
                 ) : (
                   <>
-                    <Button variant="secondary" disabled>
+                    <Button
+                      style={{ color: "white", backgroundColor: "#6993FF" }}
+                      disabled
+                    >
                       Export Rooms
                     </Button>
                     &emsp;
-                    <Button variant="secondary" disabled>
+                    <Button
+                      style={{ color: "white", backgroundColor: "#66BB6A" }}
+                      disabled
+                    >
                       <i className="fa fa-qrcode" />
                       &nbsp; Rooms QR Code
                     </Button>

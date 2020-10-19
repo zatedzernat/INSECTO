@@ -149,8 +149,8 @@ export default function HistoryLogs() {
             }
           >
             {_.map(props.data, (value, key, i) => (
-              <div key={key} className="card card-info">
-                <div className="card-header">
+              <div key={key} className="card card-info" style={{ backgroundColor:"#EFEBE9" }}>
+                <div className="card-header" style={{ backgroundColor:"#BCAAA4" }}>
                   <h3 className="card-title">{key}</h3>
                   {i === 1 ? (
                     <div className="card-tools">
@@ -305,13 +305,12 @@ export default function HistoryLogs() {
                       {isExport === false ? (
                         <Button
                           onClick={exportLogs}
-                          variant="warning"
-                          style={{ color: "white" }}
+                          style={{ backgroundColor:"#6993FF",color: "white"}}
                         >
                           Export Logs
                         </Button>
                         ) : (
-                      <Button variant="warning" style={{color: 'white'}}>
+                      <Button style={{ backgroundColor:"#6993FF",color: "white" }}>
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
