@@ -24,7 +24,7 @@ export default function FormModal(props) {
         <h6 className="m-3 text-right">{props.subBody}</h6>
         <Modal.Footer>
           {props.close && (
-            <Button style={{ backgroundColor: '#181d32', borderStyle: "none"  }} onClick={props.onHide}>
+            <Button style={{ backgroundColor: '#e3e6ef', borderStyle: "none", color: 'black'  }} onClick={props.onHide}>
               {props.close}
             </Button>
           )}
