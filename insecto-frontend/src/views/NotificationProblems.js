@@ -159,8 +159,8 @@ export default function NotificationProblems() {
           { status_id: 4, status_name: "queue" },
           { status_id: 5, status_name: "in progress" },
         ];
-        bgColor = "#c9f7f4";
-        fontColor = "#1BC5BD"
+        bgColor = "#fff4de";
+        fontColor = "#FFA800"
         break;
       case 3:
         next_status = [
@@ -168,24 +168,24 @@ export default function NotificationProblems() {
           { status_id: 5, status_name: "in progress" },
           { status_id: 8, status_name: "resolved" },
         ];
-        bgColor = "#ede5ff";
-        fontColor = "#8950FC"
+        bgColor = "#e0eaff";
+        fontColor = "#6993FF"
         break;
       case 4:
         next_status = [
           { status_id: 3, status_name: "on hold" },
           { status_id: 5, status_name: "in progress" },
         ];
-        bgColor = "#ede5ff";
-        fontColor = "#8950FC"
+        bgColor = "#e0eaff";
+        fontColor = "#6993FF"
         break;
       case 5:
         next_status = [
           { status_id: 3, status_name: "on hold" },
           { status_id: 8, status_name: "resolved" },
         ];
-        bgColor = "#ede5ff";
-        fontColor = "#8950FC"
+        bgColor = "#e0eaff";
+        fontColor = "#6993FF"
         break;
       case 7:
         next_status = [
@@ -198,8 +198,8 @@ export default function NotificationProblems() {
         break;
       case 8:
         next_status = [{ status_id: 7, status_name: "reopen" }];
-        bgColor = "#e0eaff";
-        fontColor = "#6993FF"
+        bgColor = "#c9f7f4";
+        fontColor = "#1BC5BD"
         break;
       default:
         bgColor = "#eaedf2";
