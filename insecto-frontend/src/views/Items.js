@@ -620,7 +620,6 @@ export default function Items() {
                 {selectedRows.length > 0 ? (
                   <>
                     <Button
-                      variant="default"
                       onClick={() => {
                         setModalShowDel(true);
                       }}
