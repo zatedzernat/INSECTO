@@ -602,7 +602,8 @@ export default function Items() {
             badge={
               <div>
                 <Button
-                  style={{ backgroundColor: "#1BC5BD" }}
+                  variant="default"
+                  style={{ color: "white", backgroundColor: "#1BC5BD" }}
                   onClick={() => {
                     setModalShowAdd(true);
                     setSelectBrand("- select brand name -");
@@ -619,21 +620,28 @@ export default function Items() {
                 {selectedRows.length > 0 ? (
                   <>
                     <Button
+                      variant="default"
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      style={{ backgroundColor: "#F64E60" }}
+                      variant="default"
+                      style={{ color: "white", backgroundColor: "#F64E60" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ color: "white", backgroundColor: "#F64E60" }}
+                    disabled
+                  >
                     Delete
                   </Button>
                 )}
                 &emsp;
                 <Button
+                  variant="default"
                   onClick={() => setModalShowImport(true)}
                   type="submit"
                   style={{ color: "white", backgroundColor: "#6993FF" }}
@@ -645,6 +653,7 @@ export default function Items() {
                   <>
                     {isExport === false ? (
                       <Button
+                        variant="default"
                         onClick={exportItems}
                         style={{ color: "white", backgroundColor: "#6993FF" }}
                       >
@@ -652,6 +661,7 @@ export default function Items() {
                       </Button>
                     ) : (
                       <Button
+                        variant="default"
                         style={{ color: "white", backgroundColor: "#6993FF" }}
                       >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
@@ -661,6 +671,7 @@ export default function Items() {
                     {isGenAllQR === false ? (
                       <Button
                         onClick={getItemsQRCode}
+                        variant="default"
                         style={{ color: "white", backgroundColor: "#66BB6A" }}
                       >
                         <i className="fa fa-qrcode" />
@@ -668,6 +679,7 @@ export default function Items() {
                       </Button>
                     ) : (
                       <Button
+                        variant="default"
                         style={{ color: "white", backgroundColor: "#66BB6A" }}
                       >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
@@ -677,6 +689,7 @@ export default function Items() {
                 ) : (
                   <>
                     <Button
+                      variant="default"
                       style={{ color: "white", backgroundColor: "#6993FF" }}
                       disabled
                     >
@@ -684,6 +697,7 @@ export default function Items() {
                     </Button>
                     &emsp;
                     <Button
+                      variant="default"
                       style={{ color: "white", backgroundColor: "#66BB6A" }}
                       disabled
                     >

@@ -78,12 +78,14 @@ export default function Buildings() {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
+          width: 350,
         });
       } else {
         setLastUpdate(res.data.time);
         Toast.fire({
           icon: "success",
           title: res.data.success,
+          width: 350,
         });
       }
     } catch (error) {
@@ -144,14 +146,13 @@ export default function Buildings() {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
-          width: 450,
         });
       } else {
         setLastUpdate(res.data.time);
         Toast.fire({
           icon: "success",
           title: res.data.success,
-          width: 450,
+          width: 350,
         });
       }
     } catch (error) {
@@ -425,7 +426,8 @@ export default function Buildings() {
             badge={
               <div>
                 <Button
-                  style={{ backgroundColor: "#1BC5BD" }}
+                  variant="default"
+                  style={{ backgroundColor: "#1BC5BD", color: "white" }}
                   onClick={() => setModalShowAdd(true)}
                 >
                   Add
@@ -434,24 +436,30 @@ export default function Buildings() {
                 {selectedRows.length > 0 ? (
                   <>
                     <Button
+                      variant="default"
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      style={{ backgroundColor: "#F64E60" }}
+                      style={{ backgroundColor: "#F64E60", color: "white" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ backgroundColor: "#F64E60", color: "white" }}
+                    disabled
+                  >
                     Delete
                   </Button>
                 )}
                 &emsp;
                 <Button
+                  variant="default"
                   onClick={() => setModalShowImport(true)}
                   type="submit"
-                  style={{ color: "white", backgroundColor: "#6993FF" }}
+                  style={{ backgroundColor: "#6993FF", color: "white" }}
                 >
                   Import Buildings
                 </Button>
@@ -460,14 +468,16 @@ export default function Buildings() {
                   <>
                     {isExport === false ? (
                       <Button
+                        variant="default"
                         onClick={exportBuildings}
-                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                        style={{ backgroundColor: "#6993FF", color: "white" }}
                       >
                         Export Buildings
                       </Button>
                     ) : (
                       <Button
-                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                        variant="default"
+                        style={{ backgroundColor: "#6993FF", color: "white" }}
                       >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
@@ -475,7 +485,8 @@ export default function Buildings() {
                   </>
                 ) : (
                   <Button
-                    style={{ color: "white", backgroundColor: "#6993FF" }}
+                    variant="default"
+                    style={{ backgroundColor: "#6993FF", color: "white" }}
                     disabled
                   >
                     Export Buildings

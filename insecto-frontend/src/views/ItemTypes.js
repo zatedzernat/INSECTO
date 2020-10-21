@@ -136,14 +136,13 @@ export default function ItemTypes() {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
-          width: 450,
         });
       } else {
         setLastUpdate(res.data.time);
         Toast.fire({
           icon: "success",
           title: res.data.success,
-          width: 450,
+          width: 350,
         });
       }
     } catch (error) {
@@ -406,7 +405,8 @@ export default function ItemTypes() {
             badge={
               <div>
                 <Button
-                  style={{ backgroundColor: "#1BC5BD" }}
+                  variant="default"
+                  style={{ backgroundColor: "#1BC5BD", color: "white" }}
                   onClick={() => setModalShowAdd(true)}
                 >
                   Add
@@ -415,16 +415,21 @@ export default function ItemTypes() {
                 {selectedRows.length > 0 ? (
                   <>
                     <Button
+                      variant="default"
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      style={{ backgroundColor: "#F64E60" }}
+                      style={{ backgroundColor: "#F64E60", color: "white" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ backgroundColor: "#F64E60", color: "white" }}
+                    disabled
+                  >
                     Delete
                   </Button>
                 )}
@@ -432,7 +437,11 @@ export default function ItemTypes() {
                 <Button
                   onClick={() => setModalShowImport(true)}
                   type="submit"
-                  style={{ color: "white", backgroundColor: "#6993FF" }}
+                  variant="default"
+                  style={{
+                    color: "white",
+                    backgroundColor: "#6993FF",
+                  }}
                 >
                   Import Item Types
                 </Button>
@@ -442,13 +451,21 @@ export default function ItemTypes() {
                     {isExport === false ? (
                       <Button
                         onClick={exportItemTypes}
-                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                        variant="default"
+                        style={{
+                          color: "white",
+                          backgroundColor: "#6993FF",
+                        }}
                       >
                         Export Item Types
                       </Button>
                     ) : (
                       <Button
-                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                        variant="default"
+                        style={{
+                          color: "white",
+                          backgroundColor: "#6993FF",
+                        }}
                       >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
@@ -456,6 +473,7 @@ export default function ItemTypes() {
                   </>
                 ) : (
                   <Button
+                    variant="default"
                     style={{ color: "white", backgroundColor: "#6993FF" }}
                     disabled
                   >

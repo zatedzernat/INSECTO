@@ -155,14 +155,13 @@ export default function Rooms() {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
-          width: 450,
         });
       } else {
         setLastUpdate(res.data.time);
         Toast.fire({
           icon: "success",
           title: res.data.success,
-          width: 450,
+          width: 350,
         });
       }
     } catch (error) {
@@ -516,7 +515,8 @@ export default function Rooms() {
             badge={
               <div>
                 <Button
-                  style={{ backgroundColor: "#1BC5BD" }}
+                  variant="default"
+                  style={{ backgroundColor: "#1BC5BD", color: "white" }}
                   onClick={() => {
                     setModalShowAdd(true);
                     setSelectBuilding("- select building name -");
@@ -528,21 +528,27 @@ export default function Rooms() {
                 {selectedRows.length > 0 ? (
                   <>
                     <Button
+                      variant="default"
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      style={{ backgroundColor: "#F64E60" }}
+                      style={{ backgroundColor: "#F64E60", color: "white" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button style={{ backgroundColor: "#F64E60" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ backgroundColor: "#F64E60", color: "white" }}
+                    disabled
+                  >
                     Delete
                   </Button>
                 )}
                 &emsp;
                 <Button
+                  variant="default"
                   onClick={() => setModalShowImport(true)}
                   type="submit"
                   style={{ color: "white", backgroundColor: "#6993FF" }}
@@ -554,6 +560,7 @@ export default function Rooms() {
                   <>
                     {isExport === false ? (
                       <Button
+                        variant="default"
                         onClick={exportRooms}
                         style={{ color: "white", backgroundColor: "#6993FF" }}
                       >
@@ -561,6 +568,7 @@ export default function Rooms() {
                       </Button>
                     ) : (
                       <Button
+                        variant="default"
                         style={{ color: "white", backgroundColor: "#6993FF" }}
                       >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
@@ -569,6 +577,7 @@ export default function Rooms() {
                     &emsp;
                     {isGenAllQR === false ? (
                       <Button
+                        variant="default"
                         onClick={getRoomsQRCode}
                         style={{ color: "white", backgroundColor: "#66BB6A" }}
                       >
@@ -577,6 +586,7 @@ export default function Rooms() {
                       </Button>
                     ) : (
                       <Button
+                        variant="default"
                         style={{ color: "white", backgroundColor: "#66BB6A" }}
                       >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
@@ -586,6 +596,7 @@ export default function Rooms() {
                 ) : (
                   <>
                     <Button
+                      variant="default"
                       style={{ color: "white", backgroundColor: "#6993FF" }}
                       disabled
                     >
@@ -593,6 +604,7 @@ export default function Rooms() {
                     </Button>
                     &emsp;
                     <Button
+                      variant="default"
                       style={{ color: "white", backgroundColor: "#66BB6A" }}
                       disabled
                     >

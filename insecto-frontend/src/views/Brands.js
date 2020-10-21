@@ -136,14 +136,13 @@ export default function Brands() {
         Toast.fire({
           icon: "error",
           title: res.data.errors,
-          width: 450,
         });
       } else {
         setLastUpdate(res.data.time);
         Toast.fire({
           icon: "success",
           title: res.data.success,
-          width: 450,
+          width: 350,
         });
       }
     } catch (error) {
@@ -199,7 +198,6 @@ export default function Brands() {
           icon: "error",
           title: res.data.errors,
           width: 450,
-          
         });
       } else {
         setLastUpdate(res.data.time);
@@ -405,7 +403,11 @@ export default function Brands() {
             }
             badge={
               <div>
-                <Button style={{ backgroundColor: "#1BC5BD" }} onClick={() => setModalShowAdd(true)}>
+                <Button
+                  variant="default"
+                  style={{ color: "white", backgroundColor: "#1BC5BD" }}
+                  onClick={() => setModalShowAdd(true)}
+                >
                   Add
                 </Button>
                 &emsp;
@@ -415,13 +417,18 @@ export default function Brands() {
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      style={{ backgroundColor: "#F64E60" }}
+                      variant="default"
+                      style={{ color: "white", backgroundColor: "#F64E60" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button  style={{ backgroundColor: "#F64E60" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ color: "white", backgroundColor: "#F64E60" }}
+                    disabled
+                  >
                     Delete
                   </Button>
                 )}
@@ -429,6 +436,7 @@ export default function Brands() {
                 <Button
                   onClick={() => setModalShowImport(true)}
                   type="submit"
+                  variant="default"
                   style={{ color: "white", backgroundColor: "#6993FF" }}
                 >
                   Import Brands
@@ -437,17 +445,28 @@ export default function Brands() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportBrands} style={{ color: "white", backgroundColor: "#6993FF" }}>
+                      <Button
+                        onClick={exportBrands}
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         Export Brands
                       </Button>
                     ) : (
-                      <Button style={{ color: "white", backgroundColor: "#6993FF" }}>
+                      <Button
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                   </>
                 ) : (
-                  <Button style={{ color: "white", backgroundColor: "#6993FF" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ color: "white", backgroundColor: "#6993FF" }}
+                    disabled
+                  >
                     Export Brands
                   </Button>
                 )}

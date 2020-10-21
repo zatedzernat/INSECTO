@@ -433,7 +433,8 @@ export default function ProblemDescriptions() {
             badge={
               <div>
                 <Button
-                  style={{ backgroundColor: "#1BC5BD" }}
+                  variant="default"
+                  style={{ color: "white", backgroundColor: "#1BC5BD" }}
                   onClick={() => {
                     setModalShowAdd(true);
                     setSelectType("- select type name -");
@@ -445,16 +446,21 @@ export default function ProblemDescriptions() {
                 {selectedRows.length > 0 ? (
                   <>
                     <Button
+                      variant="default"
                       onClick={() => {
                         setModalShowDel(true);
                       }}
-                      style={{ backgroundColor: "#F64E60" }}
+                      style={{ color: "white", backgroundColor: "#F64E60" }}
                     >
                       Delete
                     </Button>
                   </>
                 ) : (
-                  <Button  style={{ backgroundColor: "#F64E60" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ color: "white", backgroundColor: "#F64E60" }}
+                    disabled
+                  >
                     Delete
                   </Button>
                 )}
@@ -462,6 +468,7 @@ export default function ProblemDescriptions() {
                 <Button
                   onClick={() => setModalShowImport(true)}
                   type="submit"
+                  variant="default"
                   style={{ color: "white", backgroundColor: "#6993FF" }}
                 >
                   Import Problem Descs
@@ -470,17 +477,28 @@ export default function ProblemDescriptions() {
                 {selectedRows.length > 0 ? (
                   <>
                     {isExport === false ? (
-                      <Button onClick={exportProblemDescs} style={{ color: "white", backgroundColor: "#6993FF" }}>
+                      <Button
+                        onClick={exportProblemDescs}
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         Export Problem Descs
                       </Button>
                     ) : (
-                      <Button style={{ color: "white", backgroundColor: "#6993FF" }}>
+                      <Button
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
                   </>
                 ) : (
-                  <Button style={{ color: "white", backgroundColor: "#6993FF" }} disabled>
+                  <Button
+                    variant="default"
+                    style={{ color: "white", backgroundColor: "#6993FF" }}
+                    disabled
+                  >
                     Export Problem Descs
                   </Button>
                 )}
