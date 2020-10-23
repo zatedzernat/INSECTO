@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
 Route::get('history_logs/{amount}', 'HistoryLogController@getLogs');
