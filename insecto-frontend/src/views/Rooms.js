@@ -9,6 +9,7 @@ import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
+import Cookies from "js-cookie";
 
 export default function Rooms() {
   const [data, setData] = useState([]);
@@ -35,11 +36,16 @@ export default function Rooms() {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
   const [isGenAllQR, setIsGenAllQR] = useState(false);
+  const token = Cookies.get("token");
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}rooms`);
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}rooms`,
+        method: "GET",
+        headers: { Authorization: token },
+      });
       setData(res.data);
       setIsLoading(false);
       setIsExport(false);
@@ -76,10 +82,12 @@ export default function Rooms() {
     setSelectBuilding("- select building name -");
     setModalShowAdd(false);
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}rooms`,
-        room
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}rooms`,
+        method: "POST",
+        headers: { Authorization: token },
+        data: room,
+      });
       setRoom(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -117,10 +125,12 @@ export default function Rooms() {
     event.preventDefault();
     setModalShowDel(false);
     try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
-        room.room_id
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
+        method: "DELETE",
+        headers: { Authorization: token },
+        data: room.room_id,
+      });
       setRoom(initialState);
       if (res.data.error) {
         Toast.fire({
@@ -146,10 +156,12 @@ export default function Rooms() {
       rooms: selectedRows.map(({ room_id }) => room_id),
     };
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}rooms/selected`,
-        rooms
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}rooms/selected`,
+        method: "POST",
+        headers: { Authorization: token },
+        data: rooms,
+      });
       setToggleCleared(!toggleCleared);
       if (res.data.errors) {
         Toast.fire({
@@ -173,10 +185,12 @@ export default function Rooms() {
     event.preventDefault();
     setModalShowEdit(false);
     try {
-      const res = await axios.put(
-        `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
-        room
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
+        method: "PUT",
+        headers: { Authorization: token },
+        data: room,
+      });
       setRoom(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -206,6 +220,7 @@ export default function Rooms() {
         url: `${process.env.REACT_APP_API_URL}get_room_qr/${row.room_code}`,
         method: "POST",
         responseType: "blob",
+        headers: { Authorization: token },
         data: {
           url: window.location.origin,
         },
@@ -230,6 +245,7 @@ export default function Rooms() {
         url: `${process.env.REACT_APP_API_URL}get_rooms_qr_zip`,
         method: "POST",
         responseType: "blob",
+        headers: { Authorization: token },
         data: {
           rooms: selectedRows.map(({ room_id }) => room_id),
           url: window.location.origin,
@@ -256,11 +272,15 @@ export default function Rooms() {
       const formData = new FormData();
       formData.append("import_file", file);
 
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}rooms/import`,
-        formData,
-        { headers: { "content-type": "multipart/form-data" } }
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}rooms/import`,
+        method: "POST",
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: token,
+        },
+        data: formData,
+      });
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -316,6 +336,7 @@ export default function Rooms() {
         url: `${process.env.REACT_APP_API_URL}rooms/export`,
         data: rooms,
         method: "POST",
+        headers: { Authorization: token },
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
