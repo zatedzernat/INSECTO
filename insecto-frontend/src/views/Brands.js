@@ -56,6 +56,7 @@ export default function Brands() {
     return () => {
       document.body.removeChild(script);
     };
+    // eslint-disable-next-line
   }, [lastUpdate]);
 
   const Toast = Swal.mixin({

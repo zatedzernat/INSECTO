@@ -27,6 +27,7 @@ export default function Statuses() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   const statusTable = (data) => {
