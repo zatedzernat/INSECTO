@@ -80,8 +80,7 @@ export default function Header(props) {
             <a href="#hi" className="nav-link" data-toggle="dropdown">
               {user?.name ? (
                 <>
-                  <i className="far fa-user" />
-                  Hi, {user.name}
+                  <i className="far fa-user" /> Hi, {user.name}
                 </>
               ) : (
                 <i className="fas fa-1x fa-sync-alt fa-spin" />
