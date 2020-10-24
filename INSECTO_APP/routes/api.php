@@ -17,6 +17,9 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+Route::post('sso/gettoken', 'SSOLoginController@getToken');
+Route::post('sso/fetchme', 'SSOLoginController@fetchme');
+
 Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
 Route::get('history_logs/{amount}', 'HistoryLogController@getLogs');
 Route::get('history_logs/tracking/{noti_id}', 'HistoryLogController@getTracking');
