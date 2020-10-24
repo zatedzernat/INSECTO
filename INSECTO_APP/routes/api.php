@@ -85,9 +85,9 @@ Route::group(['middleware' => 'ssoauth'], function () {
 
 
     Route::get('statuses', 'StatusController@index')->name('statuses');
-    Route::post('statuses', 'StatusController@store');
-    Route::put('statuses/{status_id}', 'StatusController@update');
-    Route::delete('statuses/{status_id}', 'StatusController@destroy');
+    // Route::post('statuses', 'StatusController@store');
+    // Route::put('statuses/{status_id}', 'StatusController@update');
+    // Route::delete('statuses/{status_id}', 'StatusController@destroy');
 });
 
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
