@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
 import Content from "../components/Content";
 import Cookies from "js-cookie";
-import "../Gandlaf.scss";
 
 export default function User(props) {
   const token = Cookies.get("token");
