@@ -9,6 +9,7 @@ import FormModal from "../components/FormModal";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ButtonToTop from "../components/ButtonToTop";
 import FormDateInput from "../components/FormDateInput";
+import Cookies from "js-cookie";
 
 const styles = {
   paddingLink: {
@@ -34,19 +35,24 @@ export default function HistoryLogs() {
   const [logsFromTo, setLogsFromTo] = useState(initialState);
   // const [intervalId, setIntervalId] = useState(0);
   const [isExport, setIsExport] = useState(false);
+  const token = Cookies.get("token");
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       if (countDays === 0) {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}history_logs/${count}`
-        );
+        const res = await axios({
+          url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
+          method: "GET",
+          headers: { Authorization: token },
+        });
         setData(res.data);
       }
-      const temp = await axios.get(
-        `${process.env.REACT_APP_API_URL}history_logs`
-      );
+      const temp = await axios({
+        url: `${process.env.REACT_APP_API_URL}history_logs`,
+        method: "GET",
+        headers: { Authorization: token },
+      });
       setIsLoading(false);
       setCountDays(temp.data.countDays);
       setIsExport(false);
@@ -84,17 +90,17 @@ export default function HistoryLogs() {
   };
 
   const fetchMoreData = () => {
-    // console.log("line1", count);
-    // console.log("line2", countDays);
     if (count >= countDays) {
       setHasMore(false);
       return;
     }
     setTimeout(async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}history_logs/${count}`
-        );
+        const res = await axios({
+          url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
+          method: "GET",
+          headers: { Authorization: token },
+        });
         setData(res.data);
       } catch (error) {
         console.log(JSON.stringify(error.response.data.errors));
@@ -113,6 +119,7 @@ export default function HistoryLogs() {
         data: logsFromTo,
         method: "POST",
         responseType: "blob",
+        headers: { Authorization: token },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -138,8 +145,8 @@ export default function HistoryLogs() {
             hasMore={hasMore}
             loader={
               <div className="overlay">
-                {/* <i className="fas fa-2x fa-sync-alt fa-spin"></i> */}
-                wait a moment
+                <i className="fas fa-2x fa-sync-alt fa-spin"></i>
+                {/* wait a moment */}
               </div>
             }
             endMessage={
@@ -149,8 +156,15 @@ export default function HistoryLogs() {
             }
           >
             {_.map(props.data, (value, key, i) => (
-              <div key={key} className="card card-info" style={{ backgroundColor:"#EFEBE9" }}>
-                <div className="card-header" style={{ backgroundColor:"#BCAAA4" }}>
+              <div
+                key={key}
+                className="card card-info"
+                style={{ backgroundColor: "#EFEBE9" }}
+              >
+                <div
+                  className="card-header"
+                  style={{ backgroundColor: "#BCAAA4" }}
+                >
                   <h3 className="card-title">{key}</h3>
                   {i === 1 ? (
                     <div className="card-tools">
@@ -299,21 +313,29 @@ export default function HistoryLogs() {
                           </div>
                         </div>
                       </Col>
-                      </Row>
-                      <Row className="text-right">
+                    </Row>
+                    <Row className="text-right">
                       <Col className="text-right mr-4">
-                      {isExport === false ? (
-                        <Button
-                          onClick={exportLogs}
-                          style={{ backgroundColor:"#6993FF",color: "white"}}
-                        >
-                          Export Logs
-                        </Button>
+                        {isExport === false ? (
+                          <Button
+                            onClick={exportLogs}
+                            style={{
+                              backgroundColor: "#6993FF",
+                              color: "white",
+                            }}
+                          >
+                            Export Logs
+                          </Button>
                         ) : (
-                      <Button style={{ backgroundColor:"#6993FF",color: "white" }}>
-                        <i className="fas fa-1x fa-sync-alt fa-spin" />
-                      </Button>
-                    )}
+                          <Button
+                            style={{
+                              backgroundColor: "#6993FF",
+                              color: "white",
+                            }}
+                          >
+                            <i className="fas fa-1x fa-sync-alt fa-spin" />
+                          </Button>
+                        )}
                       </Col>
                     </Row>
                   </>
