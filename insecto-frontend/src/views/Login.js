@@ -46,10 +46,12 @@ export default function Login(props) {
         data
       );
       if (res.data.errors) {
-        Toast.fire({
+        await Toast.fire({
           icon: "error",
           title: res.data.errors,
         });
+        props.history.replace("/admin");
+        window.location.reload();
       } else {
         Cookies.set("token", res.data, { expires: 1 }); //set cookie to expire in 1 day
         await Toast.fire({
@@ -70,7 +72,7 @@ export default function Login(props) {
     toast: true,
     position: "top-end",
     showConfirmButton: false,
-    timer: 1250,
+    timer: 1500,
     timerProgressBar: true,
     onOpen: (toast) => {
       toast.addEventListener("mouseenter", Swal.stopTimer);
