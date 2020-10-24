@@ -123,6 +123,14 @@ return [
 
     'test_password' => env('TEST_PASSWORD'),
 
+    'sso_url' => env('SSO_URL'),
+
+    'sso_fetch' => env('SSO_FETCH'),
+
+    'client_id' => env('CLIENT_ID'),
+
+    'client_secret' => env('CLIENT_SECRET'),
+
     'cipher' => 'AES-256-CBC',
 
     /*
