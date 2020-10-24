@@ -10,6 +10,7 @@ import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
+import Cookies from "js-cookie";
 
 export default function Items() {
   const [data, setData] = useState([]);
@@ -45,11 +46,16 @@ export default function Items() {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
   const [isGenAllQR, setIsGenAllQR] = useState(false);
+  const token = Cookies.get("token");
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}items`);
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items}`,
+        method: "GET",
+        headers: { Authorization: token },
+      });
       setData(res.data);
       setIsLoading(false);
       setIsExport(false);
@@ -90,10 +96,12 @@ export default function Items() {
     setSelectType("- select typ name -");
     setModalShowAdd(false);
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}items`,
-        item
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items`,
+        method: "POST",
+        headers: { Authorization: token },
+        data: item,
+      });
       setItem(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -136,10 +144,12 @@ export default function Items() {
     event.preventDefault();
     setModalShowDel(false);
     try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
-        item.item_id
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
+        method: "DELETE",
+        headers: { Authorization: token },
+        data: item.item_id,
+      });
       setItem(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -165,10 +175,12 @@ export default function Items() {
       items: selectedRows.map(({ item_id }) => item_id),
     };
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}items/selected`,
-        items
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items/selected`,
+        method: "POST",
+        headers: { Authorization: token },
+        data: items,
+      });
       setToggleCleared(!toggleCleared);
       if (res.data.errors) {
         Toast.fire({
@@ -193,10 +205,12 @@ export default function Items() {
     event.preventDefault();
     setModalShowEdit(false);
     try {
-      const res = await axios.put(
-        `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
-        item
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
+        method: "PUT",
+        headers: { Authorization: token },
+        data: item,
+      });
       setItem(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -232,6 +246,7 @@ export default function Items() {
         url: `${process.env.REACT_APP_API_URL}get_item_qr/${row.item_code}`,
         method: "POST",
         responseType: "blob",
+        headers: { Authorization: token },
         data: {
           url: window.location.origin,
         },
@@ -256,6 +271,7 @@ export default function Items() {
         url: `${process.env.REACT_APP_API_URL}get_items_qr_zip`,
         method: "POST",
         responseType: "blob",
+        headers: { Authorization: token },
         data: {
           items: selectedRows.map(({ item_id }) => item_id),
           url: window.location.origin,
@@ -282,11 +298,15 @@ export default function Items() {
       const formData = new FormData();
       formData.append("import_file", file);
 
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}items/import`,
-        formData,
-        { headers: { "content-type": "multipart/form-data" } }
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items/import`,
+        method: "POST",
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: token,
+        },
+        data: formData,
+      });
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -343,6 +363,7 @@ export default function Items() {
         data: items,
         method: "POST",
         responseType: "blob",
+        headers: { Authorization: token },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
