@@ -9,6 +9,7 @@ import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
+import Cookies from "js-cookie";
 
 export default function NotificationProblems() {
   const [data, setData] = useState([]);
@@ -22,6 +23,7 @@ export default function NotificationProblems() {
   const [lastUpdate, setLastUpdate] = useState(0);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const token = Cookies.get("token");
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -108,10 +110,12 @@ export default function NotificationProblems() {
     setModalShowNote(false);
     setModalConfirm(false);
     try {
-      const res = await axios.put(
-        `${process.env.REACT_APP_API_URL}noti_problems/${notiProblem.noti_id}`,
-        status
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}noti_problems/${notiProblem.noti_id}`,
+        method: "PUT",
+        headers: { Authorization: token },
+        data: status,
+      });
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
