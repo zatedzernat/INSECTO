@@ -3,8 +3,8 @@
 namespace App\Http\Models;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -36,4 +36,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getToken($slice_arrays)
+    {
+        $email = Arr::get($slice_arrays, 'email');
+        $user = User::where('email', $email)->first();
+        $token = null;
+        if ($user) {
+            $token = Arr::get($slice_arrays, 'token.token');
+            return $token;
+        } else {
+            return $token;
+        }
+    }
+    public function getUser($email)
+    {
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
 }
