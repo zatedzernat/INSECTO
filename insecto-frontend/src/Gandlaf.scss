@@ -9,8 +9,8 @@ $skin: #ffd8ad;
 $hair: #c2beb5;
 $hair-dark: darken($hair, 10%);
 $lips: pink;
-$fire: black, #6C1305, #DE8531, #EFAC41;
-$fire-reverse:#EFAC41, #DE8531, #6C1305, black;
+$fire: black, #6c1305, #de8531, #efac41;
+$fire-reverse: #efac41, #de8531, #6c1305, black;
 
 @keyframes floating {
   to {
@@ -18,16 +18,20 @@ $fire-reverse:#EFAC41, #DE8531, #6C1305, black;
   }
 }
 
-.container {
-  background-color: $white;
-  color: $black;
-  text-align: center;
-  font-family: "Open Sans";
-  font-size: 1.3rem;
-  h1 {
-    font-size: 2.5rem;
-  }
-}
+//ref1: https://stackoverflow.com/questions/63093276/changing-the-css-for-a-react-component-has-effect-on-all-other-pages
+//ref2: https://stackoverflow.com/questions/58400213/how-to-import-sass-file-to-single-components-in-react
+//ref3: https://menubar.io/sass-react-webpack
+
+// .container {
+//   background-color: $white;
+//   color: $black;
+//   text-align: center;
+//   font-family: "Open Sans";
+//   font-size: 1.3rem;
+//   h1 {
+//     font-size: 2.5rem;
+//   }
+// }
 
 .message {
   max-width: 700px;
@@ -141,15 +145,15 @@ $fire-reverse:#EFAC41, #DE8531, #6C1305, black;
       &::after {
         // sword
         content: "";
-    position: absolute;
-    background-color: #e6e6e6;
-    width: 126px;
-    height: 8px;
-    border-radius: 4px;
-    transform: rotate(-105deg);
-    transform-origin: bottom;
-    top: -48px;
-    left: -56px;
+        position: absolute;
+        background-color: #e6e6e6;
+        width: 126px;
+        height: 8px;
+        border-radius: 4px;
+        transform: rotate(-105deg);
+        transform-origin: bottom;
+        top: -48px;
+        left: -56px;
       }
     }
     .right {
@@ -177,31 +181,31 @@ $fire-reverse:#EFAC41, #DE8531, #6C1305, black;
     left: 160px;
     background-color: #ffd8ad;
     border-radius: 50%;
-    
-    &::before, &::after {
+
+    &::before,
+    &::after {
       // eyes
       content: "";
       position: absolute;
       background-color: $black;
     }
-    
+
     &::before {
       width: 13px;
-    height: 5px;
-    border-radius: 3px;
-    top: 42px;
-    left: 22px;
-    transform: rotate(19deg);
+      height: 5px;
+      border-radius: 3px;
+      top: 42px;
+      left: 22px;
+      transform: rotate(19deg);
     }
     &::after {
       width: 13px;
-    height: 5px;
-    border-radius: 3px;
-    top: 42px;
-    right: 22px;
-    transform: rotate(-19deg);
+      height: 5px;
+      border-radius: 3px;
+      top: 42px;
+      right: 22px;
+      transform: rotate(-19deg);
     }
-    
 
     .hair {
       width: 70px;
@@ -253,17 +257,17 @@ $fire-reverse:#EFAC41, #DE8531, #6C1305, black;
       border-right: 35px solid transparent;
       border-radius: 30px;
       filter: drop-shadow(2px 5px 0 $hair-dark);
-      
+
       &::before {
         // mouth
         content: "";
-    position: absolute;
-    background-color: $lips;
-    width: 20px;
-    height: 5px;
-    border-radius: 40%;
-    top: -70px;
-    left: -9px;
+        position: absolute;
+        background-color: $lips;
+        width: 20px;
+        height: 5px;
+        border-radius: 40%;
+        top: -70px;
+        left: -9px;
       }
     }
   }
