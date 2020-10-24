@@ -3,15 +3,21 @@ import Content from "../components/Content";
 import Card from "../components/Card";
 import axios from "axios";
 import DataTable from "react-data-table-component";
+import Cookies from "js-cookie";
 
 export default function Statuses() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const token = Cookies.get("token");
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}statuses`);
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}statuses`,
+        method: "GET",
+        headers: { Authorization: token },
+      });
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
@@ -45,7 +51,7 @@ export default function Statuses() {
       rows: {
         style: {
           fontSize: "15px",
-        }
+        },
       },
       headCells: {
         style: {
