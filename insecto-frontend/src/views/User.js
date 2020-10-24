@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
 import Content from "../components/Content";
 import Cookies from "js-cookie";
@@ -7,6 +7,16 @@ import "../Gandlaf.scss";
 export default function User(props) {
   const token = Cookies.get("token");
   const { user } = props;
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+    // eslint-disable-next-line
+  }, [user]);
 
   return (
     <Content
@@ -26,6 +36,7 @@ export default function User(props) {
                 Email: {user?.email}
               </div>
             }
+            loading={isLoading ? "overlay" : ""}
           />
         ) : null
       }
