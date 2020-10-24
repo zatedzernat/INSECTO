@@ -52,7 +52,7 @@ export default function Items() {
     setIsLoading(true);
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}items}`,
+        url: `${process.env.REACT_APP_API_URL}items`,
         method: "GET",
         headers: { Authorization: token },
       });
