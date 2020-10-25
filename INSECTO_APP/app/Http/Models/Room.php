@@ -103,11 +103,11 @@ class Room extends Model implements Auditable
         $this->user_id = $user_id;
     }
 
-    public function createNewRoom($room_name, $room_code, $building_id)
+    public function createNewRoom($room_name, $room_code, $building_id, $user_id)
     {
         $room = Room::firstOrCreate(
             ['room_code' => $room_code],
-            ['room_name' => $room_name, 'building_id' => $building_id, 'cancel_flag' => 'N', 'user_id' => 2]
+            ['room_name' => $room_name, 'building_id' => $building_id, 'cancel_flag' => 'N', 'user_id' => $user_id]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
@@ -117,7 +117,7 @@ class Room extends Model implements Auditable
                 $room->room_name = $room_name;
                 $room->building_id = $building_id;
                 $room->cancel_flag = "N";
-                $room->user_id = 2;
+                $room->user_id = $user_id;
                 $room->save();
             } else {
                 return true;
@@ -126,34 +126,34 @@ class Room extends Model implements Auditable
         return false;
     }
 
-    public function updateRoom($id, $room_name, $building_id)
+    public function updateRoom($id, $room_name, $building_id, $user_id)
     {
 
         $room = $this->findByID($id);
         $room->room_name = $room_name;
         $room->building_id = $building_id;
-        $room->user_id = 2;
+        $room->user_id = $user_id;
         $room->save();
         //todo set updateby ตาม LDAP
 
         return true;
     }
 
-    public function deleteRoom($room_id)
+    public function deleteRoom($room_id, $user_id)
     {
         $room = $this->findByID($room_id);
         $room->setCancelFlag('Y');
-        $room->user_id = 2;
+        $room->user_id = $user_id;
         $room->save();
         return $room;
     }
 
-    public function deleteRooms($building)
+    public function deleteRooms($building, $user_id)
     {
         $rooms = $building->rooms;
         foreach ($rooms as $room) {
             $room->cancel_flag = 'Y';
-            $room->user_id = 2;
+            $room->user_id = $user_id;
             $room->save();
         }
         return $rooms;
