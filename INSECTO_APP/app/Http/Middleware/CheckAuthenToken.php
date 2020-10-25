@@ -20,7 +20,7 @@ class CheckAuthenToken
     {
         $token = $request->header('Authorization');
         $user_id = $request->header('user_id');
-        if ($token) {
+        if ($token && $user_id) {
             $isValid = $this->checkToken($token, $user_id);
             if ($isValid) {
                 return $next($request);
@@ -29,7 +29,7 @@ class CheckAuthenToken
                 return  $this->serverResponse($error, null, 401);
             }
         } else {
-            $error = "Token not found!";
+            $error = "Token or User ID not found!";
             return  $this->serverResponse($error, null, 404);
         }
     }
