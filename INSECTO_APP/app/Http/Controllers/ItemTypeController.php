@@ -120,7 +120,7 @@ class ItemTypeController extends Controller
     {
         $item_type = $this->item_type->deleteItemType($type_id, $user_id);
         $items = $this->item->deleteItems('item_type', $item_type, $user_id);
-        $problem_desc = $this->problem_desc->deleteProblemDescs($item_type);
+        $problem_desc = $this->problem_desc->deleteProblemDescs($item_type, $user_id);
         $deleted = $item_type->type_name;
         return $deleted;
     }

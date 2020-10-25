@@ -119,7 +119,7 @@ class RoomController extends Controller
     public function delete($room_id, $user_id)
     {
         $room = $this->room->deleteRoom($room_id, $user_id);
-        $items = $this->item->deleteItems('room', $room);
+        $items = $this->item->deleteItems('room', $room, $user_id);
         $deleted = $room->room_name;
         return $deleted;
     }

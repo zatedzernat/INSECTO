@@ -120,8 +120,8 @@ class BuildingController extends Controller
     public function delete($building_id, $user_id)
     {
         $building = $this->building->deleteBuilding($building_id, $user_id);
-        $rooms = $this->room->deleteRooms($building);
-        $items = $this->item->deleteItems('rooms', $rooms);
+        $rooms = $this->room->deleteRooms($building, $user_id);
+        $items = $this->item->deleteItems('rooms', $rooms, $user_id);
         $deleted = $building->building_name;
         return $deleted;
     }
