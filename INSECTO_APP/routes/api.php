@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => 'ssoauth2'], function () {
+Route::group(['middleware' => 'ssoauthtoken'], function () {
 
     Route::put('noti_problems/{noti_id}',  'NotificationProblemController@update');
 

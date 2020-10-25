@@ -62,7 +62,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'ssoauth' => \App\Http\Middleware\CheckAuthen::class,
-        'ssoauth2' => \App\Http\Middleware\CheckAuthenToken::class,
+        'ssoauthtoken' => \App\Http\Middleware\CheckAuthenToken::class,
     ];
 
     /**
