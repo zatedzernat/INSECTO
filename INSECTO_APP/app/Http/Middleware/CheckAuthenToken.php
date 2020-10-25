@@ -19,33 +19,50 @@ class CheckAuthenToken
     {
         $token = $request->header('Authorization');
         $user_id = $request->header('user_id');
-        if ($token && $user_id) {
-            $isValid = $this->checkToken($token, $user_id);
-            if ($isValid) {
-                return $next($request);
+        if ($token) {
+            if ($user_id) {
+                $isUserExistInINSECTO = $this->checkUser($user_id);
+                if ($isUserExistInINSECTO) {
+                    $isValid = $this->checkToken($token, $user_id);
+                    if ($isValid) {
+                        return $next($request);
+                    } else {
+                        $error = "Invalid token!";
+                        return  $this->serverResponse($error, null, 401);
+                    }
+                } else {
+                    $error = 'User not found in INSECTO';
+                    return  $this->serverResponse($error, null, 404);
+                }
             } else {
-                $error = "Invalid token!";
-                return  $this->serverResponse($error, null, 401);
+                $error = "User ID not found!";
+                return  $this->serverResponse($error, null, 404);
             }
         } else {
-            $error = "Token or User ID not found!";
+            $error = "Token not found!";
             return  $this->serverResponse($error, null, 404);
+        }
+    }
+
+    public function checkUser($user_id)
+    {
+        $user = User::find($user_id);
+        if ($user) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     public function checkToken($token, $user_id)
     {
         $user = User::find($user_id);
-        if ($user) {
-            $user_token = $user->sso_token;
-            if ($user_token === $token) {
-                return true;
-            } else {
-                return false;
-            }
+        $user_token = $user->sso_token;
+        // dd('$user_token = ' . $user_token, 'token = ' . $token);
+        if ($user_token === $token) {
+            return true;
         } else {
-            $error = 'User not found in INSECTO';
-            return  $this->serverResponse($error, null, 404);
+            return false;
         }
     }
 
