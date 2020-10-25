@@ -20,7 +20,7 @@ const styles = {
   },
 };
 
-export default function HistoryLogs() {
+export default function HistoryLogs(props) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [historyLog, setHistoryLog] = useState({});
@@ -36,6 +36,7 @@ export default function HistoryLogs() {
   // const [intervalId, setIntervalId] = useState(0);
   const [isExport, setIsExport] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -44,20 +45,20 @@ export default function HistoryLogs() {
         const res = await axios({
           url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
           method: "GET",
-          headers: { Authorization: token },
+          headers: { Authorization: token, user_id: user.user_id },
         });
         setData(res.data);
       }
       const temp = await axios({
         url: `${process.env.REACT_APP_API_URL}history_logs`,
         method: "GET",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.user_id },
       });
       setIsLoading(false);
       setCountDays(temp.data.countDays);
       setIsExport(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(error);
     }
   };
 
@@ -71,7 +72,7 @@ export default function HistoryLogs() {
     //   document.body.removeChild(script);
     // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
   const historyLogTable = (data) => {
     const cols = ["Time", "Action", "Old Values", "New Values", "User"];
@@ -99,11 +100,11 @@ export default function HistoryLogs() {
         const res = await axios({
           url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
           method: "GET",
-          headers: { Authorization: token },
+          headers: { Authorization: token, user_id: user.user_id },
         });
         setData(res.data);
       } catch (error) {
-        console.log(JSON.stringify(error.response.data.errors));
+        console.log(error);
       }
       setCount(count + 7);
     }, 500);
@@ -119,7 +120,7 @@ export default function HistoryLogs() {
         data: logsFromTo,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.user_id },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
