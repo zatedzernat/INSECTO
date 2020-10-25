@@ -121,7 +121,7 @@ class Building extends Model implements Auditable
     {
         $building = $this->findByID($building_id);
         $building->setCancelFlag('Y');
-        $building->user_id = 2;
+        $building->user_id = $user_id;
         $building->save();
         return $building;
     }
