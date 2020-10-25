@@ -28,6 +28,7 @@ export default function Login(props) {
   const checkUser = () => {
     if (token) {
       setIsAuthenticated(true);
+      props.history.replace("/admin/notification_problems");
     } else {
       setIsAuthenticated(false);
     }
