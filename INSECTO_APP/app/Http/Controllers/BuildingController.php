@@ -44,9 +44,10 @@ class BuildingController extends Controller
      */
     public function store(BuildingFormRequest $request)
     {
+        $user_id = $request->header('user_id');
         $building_code = $request->building_code;
         $building_name = $request->building_name;
-        $createFail = $this->building->createNewBuilding($building_code, $building_name);
+        $createFail = $this->building->createNewBuilding($building_code, $building_name, $user_id);
         if ($createFail) {
             $error = 'Add Duplicate Building Name';
             return  $this->serverResponse($error, null);
@@ -76,9 +77,10 @@ class BuildingController extends Controller
      */
     public function update(BuildingFormRequest $request, Building $building)
     {
+        $user_id = $request->header('user_id');
         $id = $request->input('building_id');
         $name = $request->input('building_name');
-        $updateFail = $this->building->updateBuilding($id, $name);
+        $updateFail = $this->building->updateBuilding($id, $name, $user_id);
         if ($updateFail) {
             $error = 'Edit duplicate building name';
             return  $this->serverResponse($error, null);
@@ -90,17 +92,19 @@ class BuildingController extends Controller
 
     public function deleteOne(Request $request, $buildind_id)
     {
-        $deleted = $this->delete($buildind_id);
+        $user_id = $request->header('user_id');
+        $deleted = $this->delete($buildind_id, $user_id);
         $success = 'Delete building \'' . $deleted . '\' success';
         return $this->serverResponse(null, $success);
     }
 
     public function deleteMultiple(Request $request)
     {
+        $user_id = $request->header('user_id');
         $buildings = $request->buildings;
         $name = array();
         foreach ($buildings as $building_id) {
-            $deleted = $this->delete($building_id);
+            $deleted = $this->delete($building_id, $user_id);
             array_push($name, $deleted);
         }
         $success = 'Delete buildings \'' . implode(", ", $name) . '\' success';
@@ -113,9 +117,9 @@ class BuildingController extends Controller
      * @param  \App\Http\Models\Building  $building
      * @return \Illuminate\Http\Response
      */
-    public function delete($building_id)
+    public function delete($building_id, $user_id)
     {
-        $building = $this->building->deleteBuilding($building_id);
+        $building = $this->building->deleteBuilding($building_id, $user_id);
         $rooms = $this->room->deleteRooms($building);
         $items = $this->item->deleteItems('rooms', $rooms);
         $deleted = $building->building_name;

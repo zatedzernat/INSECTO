@@ -82,11 +82,11 @@ class Building extends Model implements Auditable
         $this->user_id = $user_id;
     }
 
-    public function createNewBuilding($building_code, $building_name)
+    public function createNewBuilding($building_code, $building_name, $user_id)
     {
         $building = Building::firstOrCreate(
             ['building_code' => $building_code],
-            ['building_name' => $building_name, 'cancel_flag' => 'N', 'user_id' => 2]
+            ['building_name' => $building_name, 'cancel_flag' => 'N', 'user_id' => $user_id]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
@@ -94,8 +94,7 @@ class Building extends Model implements Auditable
             if ($building->cancel_flag == "Y") {
                 $building->building_name = $building_name;
                 $building->cancel_flag = "N";
-                //todo set update by ตาม LDAP
-                $building->user_id = 2;
+                $building->user_id = $user_id;
                 $building->save();
             } else {
                 return true;
@@ -104,21 +103,21 @@ class Building extends Model implements Auditable
         return false;
     }
 
-    public function updateBuilding($building_id, $name)
+    public function updateBuilding($building_id, $name, $user_id)
     {
         $findName = Building::where('building_name', $name)->first();
 
         if (is_null($findName) || $findName->building_id == $building_id) {
             $building = $this->findByID($building_id);
             $building->building_name = $name;
-            $building->user_id = 2;
+            $building->user_id = $user_id;
             $building->save();
             return false;
         }
         return true;
     }
 
-    public function deleteBuilding($building_id)
+    public function deleteBuilding($building_id, $user_id)
     {
         $building = $this->findByID($building_id);
         $building->setCancelFlag('Y');
