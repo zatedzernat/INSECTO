@@ -37,6 +37,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getAll()
+    {
+        return User::all();
+    }
+
     public function getToken($slice_arrays)
     {
         $email = Arr::get($slice_arrays, 'email');
