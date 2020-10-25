@@ -100,6 +100,8 @@ export default function ItemTypes(props) {
           icon: "error",
           title: error.response.data.errors.type_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -193,6 +195,8 @@ export default function ItemTypes(props) {
           icon: "error",
           title: error.response.data.errors.type_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -254,6 +258,8 @@ export default function ItemTypes(props) {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };

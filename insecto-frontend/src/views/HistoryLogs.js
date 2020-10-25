@@ -58,7 +58,7 @@ export default function HistoryLogs(props) {
       setCountDays(temp.data.countDays);
       setIsExport(false);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -104,7 +104,7 @@ export default function HistoryLogs(props) {
         });
         setData(res.data);
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       }
       setCount(count + 7);
     }, 500);
@@ -132,7 +132,7 @@ export default function HistoryLogs(props) {
       setLogsFromTo(initialState);
       setIsExport(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response));
+      console.log(error.message);
     }
   };
 

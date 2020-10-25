@@ -35,7 +35,7 @@ export default function NotificationProblems(props) {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 

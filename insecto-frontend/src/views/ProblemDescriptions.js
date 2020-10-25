@@ -47,7 +47,7 @@ export default function ProblemDescriptions(props) {
       setIsLoading(false);
       setIsExport(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error));
     }
   };
 
@@ -111,6 +111,8 @@ export default function ProblemDescriptions(props) {
           icon: "error",
           title: mess1 + " " + mess2,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -205,6 +207,8 @@ export default function ProblemDescriptions(props) {
           icon: "error",
           title: error.response.data.errors.problem_description,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -266,6 +270,8 @@ export default function ProblemDescriptions(props) {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };

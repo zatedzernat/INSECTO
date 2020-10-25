@@ -119,6 +119,8 @@ export default function Rooms(props) {
           icon: "error",
           title: mess,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -212,6 +214,8 @@ export default function Rooms(props) {
           icon: "error",
           title: error.response.data.errors.room_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -324,6 +328,8 @@ export default function Rooms(props) {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };

@@ -138,6 +138,8 @@ export default function Items(props) {
           icon: "error",
           title: mess1 + " " + mess2 + " " + mess3 + " " + mess4 + " " + mess5,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -238,6 +240,8 @@ export default function Items(props) {
           icon: "error",
           title: mess1 + " " + mess2,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -305,7 +309,8 @@ export default function Items(props) {
         method: "POST",
         headers: {
           "content-type": "multipart/form-data",
-          Authorization: token, user_id: user.id,
+          Authorization: token,
+          user_id: user.id,
         },
         data: formData,
       });
@@ -349,6 +354,8 @@ export default function Items(props) {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };

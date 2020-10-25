@@ -101,6 +101,8 @@ export default function Brands(props) {
           icon: "error",
           title: error.response.data.errors.brand_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -194,6 +196,8 @@ export default function Brands(props) {
           icon: "error",
           title: error.response.data.errors.brand_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -255,6 +259,8 @@ export default function Brands(props) {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };

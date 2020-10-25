@@ -110,6 +110,8 @@ export default function Buildings(props) {
           icon: "error",
           title: mess1 + " " + mess2,
         });
+      } else {
+        console.log(error.message);
       }
     }
   };
@@ -203,6 +205,8 @@ export default function Buildings(props) {
           icon: "error",
           title: error.response.data.errors.building_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -264,6 +268,8 @@ export default function Buildings(props) {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };
