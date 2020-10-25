@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
 
-export default function NotificationProblems() {
+export default function NotificationProblems(props) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [notiProblem, setNotiProblem] = useState({});
@@ -24,6 +24,7 @@ export default function NotificationProblems() {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -113,7 +114,7 @@ export default function NotificationProblems() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}noti_problems/${notiProblem.noti_id}`,
         method: "PUT",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.user_id },
         data: status,
       });
       if (res.data.errors) {
