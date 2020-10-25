@@ -37,6 +37,7 @@ export default function HistoryLogs(props) {
   const [isExport, setIsExport] = useState(false);
   const token = Cookies.get("token");
   const { user } = props;
+  const [userAll, setUserAll] = useState(null);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -57,6 +58,7 @@ export default function HistoryLogs(props) {
       setIsLoading(false);
       setCountDays(temp.data.countDays);
       setIsExport(false);
+      setUserAll(temp.data.user);
     } catch (error) {
       console.log(error.message);
     }
@@ -222,7 +224,11 @@ export default function HistoryLogs(props) {
                             ))}
                         <br />
                       </Col>
-                      <Col xs={3}>by "wait for log-in system"</Col>
+                      <Col xs={3}>
+                        {_.find(userAll, { id: log.user_id })?.name ? (
+                          <>by {_.find(userAll, { id: log.user_id })?.name}</>
+                        ) : null}
+                      </Col>
                     </Row>
                   ))}
                 </div>
