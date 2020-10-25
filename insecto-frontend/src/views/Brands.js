@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
 
-export default function Brands() {
+export default function Brands(props) {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
@@ -30,6 +30,7 @@ export default function Brands() {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -37,7 +38,7 @@ export default function Brands() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands`,
         method: "GET",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -57,7 +58,7 @@ export default function Brands() {
       document.body.removeChild(script);
     };
     // eslint-disable-next-line
-  }, [lastUpdate]);
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -78,7 +79,7 @@ export default function Brands() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: brand,
       });
       setBrand(initialState);
@@ -111,7 +112,7 @@ export default function Brands() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         method: "DELETE",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: brand.brand_id,
       });
       setBrand(initialState);
@@ -142,7 +143,7 @@ export default function Brands() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/selected`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: brands,
       });
       setToggleCleared(!toggleCleared);
@@ -171,7 +172,7 @@ export default function Brands() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         method: "PUT",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: brand,
       });
       setBrand(initialState);
@@ -210,6 +211,7 @@ export default function Brands() {
         headers: {
           "content-type": "multipart/form-data",
           Authorization: token,
+          user_id: user.id,
         },
         data: formData,
       });
@@ -271,6 +273,7 @@ export default function Brands() {
         responseType: "blob",
         headers: {
           Authorization: token,
+          user_id: user.id,
         },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs

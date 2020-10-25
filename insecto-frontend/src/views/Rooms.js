@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
 
-export default function Rooms() {
+export default function Rooms(props) {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
@@ -37,6 +37,7 @@ export default function Rooms() {
   const [isExport, setIsExport] = useState(false);
   const [isGenAllQR, setIsGenAllQR] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -44,7 +45,7 @@ export default function Rooms() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms`,
         method: "GET",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -64,7 +65,7 @@ export default function Rooms() {
       document.body.removeChild(script);
     };
     // eslint-disable-next-line
-  }, [lastUpdate]);
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -86,7 +87,7 @@ export default function Rooms() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: room,
       });
       setRoom(initialState);
@@ -129,7 +130,7 @@ export default function Rooms() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         method: "DELETE",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: room.room_id,
       });
       setRoom(initialState);
@@ -160,7 +161,7 @@ export default function Rooms() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/selected`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: rooms,
       });
       setToggleCleared(!toggleCleared);
@@ -189,7 +190,7 @@ export default function Rooms() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         method: "PUT",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: room,
       });
       setRoom(initialState);
@@ -221,7 +222,7 @@ export default function Rooms() {
         url: `${process.env.REACT_APP_API_URL}get_room_qr/${row.room_code}`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: {
           url: window.location.origin,
         },
@@ -246,7 +247,7 @@ export default function Rooms() {
         url: `${process.env.REACT_APP_API_URL}get_rooms_qr_zip`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: {
           rooms: selectedRows.map(({ room_id }) => room_id),
           url: window.location.origin,
@@ -279,6 +280,7 @@ export default function Rooms() {
         headers: {
           "content-type": "multipart/form-data",
           Authorization: token,
+          user_id: user.id,
         },
         data: formData,
       });
@@ -337,7 +339,7 @@ export default function Rooms() {
         url: `${process.env.REACT_APP_API_URL}rooms/export`,
         data: rooms,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs

@@ -5,10 +5,11 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import Cookies from "js-cookie";
 
-export default function Statuses() {
+export default function Statuses(props) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -16,19 +17,19 @@ export default function Statuses() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}statuses`,
         method: "GET",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(error);
     }
   };
 
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   const statusTable = (data) => {
     const columns = [

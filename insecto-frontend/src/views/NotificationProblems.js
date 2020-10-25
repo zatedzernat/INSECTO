@@ -35,7 +35,7 @@ export default function NotificationProblems(props) {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(error);
     }
   };
 
@@ -114,7 +114,7 @@ export default function NotificationProblems(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}noti_problems/${notiProblem.noti_id}`,
         method: "PUT",
-        headers: { Authorization: token, user_id: user.user_id },
+        headers: { Authorization: token, user_id: user.id },
         data: status,
       });
       if (res.data.errors) {

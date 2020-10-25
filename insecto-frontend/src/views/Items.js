@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
 
-export default function Items() {
+export default function Items(props) {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
@@ -47,6 +47,7 @@ export default function Items() {
   const [isExport, setIsExport] = useState(false);
   const [isGenAllQR, setIsGenAllQR] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -54,7 +55,7 @@ export default function Items() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items`,
         method: "GET",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -75,7 +76,7 @@ export default function Items() {
       document.body.removeChild(script);
     };
     // eslint-disable-next-line
-  }, [lastUpdate]);
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -100,7 +101,7 @@ export default function Items() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: item,
       });
       setItem(initialState);
@@ -148,7 +149,7 @@ export default function Items() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         method: "DELETE",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: item.item_id,
       });
       setItem(initialState);
@@ -179,7 +180,7 @@ export default function Items() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/selected`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: items,
       });
       setToggleCleared(!toggleCleared);
@@ -209,7 +210,7 @@ export default function Items() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         method: "PUT",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: item,
       });
       setItem(initialState);
@@ -247,7 +248,7 @@ export default function Items() {
         url: `${process.env.REACT_APP_API_URL}get_item_qr/${row.item_code}`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: {
           url: window.location.origin,
         },
@@ -272,7 +273,7 @@ export default function Items() {
         url: `${process.env.REACT_APP_API_URL}get_items_qr_zip`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: {
           items: selectedRows.map(({ item_id }) => item_id),
           url: window.location.origin,
@@ -304,7 +305,7 @@ export default function Items() {
         method: "POST",
         headers: {
           "content-type": "multipart/form-data",
-          Authorization: token,
+          Authorization: token, user_id: user.id,
         },
         data: formData,
       });
@@ -364,7 +365,7 @@ export default function Items() {
         data: items,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));

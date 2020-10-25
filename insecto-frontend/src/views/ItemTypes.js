@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
 
-export default function ItemTypes() {
+export default function ItemTypes(props) {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
@@ -29,6 +29,7 @@ export default function ItemTypes() {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -36,7 +37,7 @@ export default function ItemTypes() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types`,
         method: "GET",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -56,7 +57,7 @@ export default function ItemTypes() {
       document.body.removeChild(script);
     };
     // eslint-disable-next-line
-  }, [lastUpdate]);
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -77,7 +78,7 @@ export default function ItemTypes() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: itemType,
       });
       setItemType(initialState);
@@ -110,7 +111,7 @@ export default function ItemTypes() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
         method: "DELETE",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: itemType.type_id,
       });
       setItemType(initialState);
@@ -141,7 +142,7 @@ export default function ItemTypes() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/selected`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: item_types,
       });
       setToggleCleared(!toggleCleared);
@@ -170,7 +171,7 @@ export default function ItemTypes() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
         method: "PUT",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: itemType,
       });
       setItemType(initialState);
@@ -209,6 +210,7 @@ export default function ItemTypes() {
         headers: {
           "content-type": "multipart/form-data",
           Authorization: token,
+          user_id: user.id,
         },
         data: formData,
       });
@@ -270,6 +272,7 @@ export default function ItemTypes() {
         responseType: "blob",
         headers: {
           Authorization: token,
+          user_id: user.id,
         },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs

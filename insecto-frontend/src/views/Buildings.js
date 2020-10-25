@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
 
-export default function Buildings() {
+export default function Buildings(props) {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
@@ -31,6 +31,7 @@ export default function Buildings() {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
   const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -38,7 +39,7 @@ export default function Buildings() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings`,
         method: "GET",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -58,7 +59,7 @@ export default function Buildings() {
       document.body.removeChild(script);
     };
     // eslint-disable-next-line
-  }, [lastUpdate]);
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -79,7 +80,7 @@ export default function Buildings() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: building,
       });
       setBuilding(initialState);
@@ -120,7 +121,7 @@ export default function Buildings() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/${building.building_id}`,
         method: "DELETE",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: building.building_id,
       });
       setBuilding(initialState);
@@ -151,7 +152,7 @@ export default function Buildings() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/selected`,
         method: "POST",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: buildings,
       });
       setToggleCleared(!toggleCleared);
@@ -180,7 +181,7 @@ export default function Buildings() {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/${building.building_id}`,
         method: "PUT",
-        headers: { Authorization: token },
+        headers: { Authorization: token, user_id: user.id },
         data: building,
       });
       setBuilding(initialState);
@@ -218,6 +219,7 @@ export default function Buildings() {
         method: "POST",
         headers: {
           Authorization: token,
+          user_id: user.user_id,
           "content-type": "multipart/form-data",
         },
         data: formData,
@@ -280,6 +282,7 @@ export default function Buildings() {
         responseType: "blob",
         headers: {
           Authorization: token,
+          user_id: user.user_id,
         },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
