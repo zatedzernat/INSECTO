@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'seeder',
+            'name' => 'Seeder',
             'email' => 'seeder@mail.com',
             'password' => Hash::make(config('app.test_password')),
             'created_at' => Carbon::now(),
@@ -48,7 +48,7 @@ class UsersTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
         DB::table('users')->insert([
-            'name' => 'problem sender',
+            'name' => 'Problem sender',
             'email' => 'problem_sender@mail.com',
             'password' => Hash::make(config('app.test_password')),
             'created_at' => Carbon::now(),
