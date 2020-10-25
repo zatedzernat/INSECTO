@@ -41,8 +41,9 @@ class BrandController extends Controller
      */
     public function store(BrandFormRequest $request)
     {
+        $user_id = $request->header('user_id');
         $name = $request->brand_name;
-        $createFail = $this->brand->createNewBrand($name);
+        $createFail = $this->brand->createNewBrand($name, $user_id);
         if ($createFail) {
             $error = 'Add duplicate brand name!';
             return  $this->serverResponse($error, null);
@@ -72,9 +73,10 @@ class BrandController extends Controller
      */
     public function update(BrandFormRequest $request, $brand_id)
     {
+        $user_id = $request->header('user_id');
         $id = $request->input('brand_id');
         $name = $request->input('brand_name');
-        $updateFail = $this->brand->updateBrand($id, $name);
+        $updateFail = $this->brand->updateBrand($id, $name, $user_id);
         if ($updateFail) {
             $error = 'Edit duplicate brand name!';
             return  $this->serverResponse($error, null);
@@ -86,17 +88,19 @@ class BrandController extends Controller
 
     public function deleteOne(Request $request, $brand_id)
     {
-        $deleted = $this->delete($brand_id);
+        $user_id = $request->header('user_id');
+        $deleted = $this->delete($brand_id, $user_id);
         $success =  'Delete brand \'' . $deleted . '\' success';
         return $this->serverResponse(null, $success);
     }
 
     public function deleteMultiple(Request $request)
     {
+        $user_id = $request->header('user_id');
         $brands = $request->brands;
         $name = array();
         foreach ($brands as $brand_id) {
-            $deleted = $this->delete($brand_id);
+            $deleted = $this->delete($brand_id, $user_id);
             array_push($name, $deleted);
         }
         $success = 'Delete brands \'' . implode(", ", $name) . '\' success';
@@ -109,10 +113,10 @@ class BrandController extends Controller
      * @param  \App\Http\Models\Brand   $brand
      * @return \Illuminate\Http\Response
      */
-    public function delete($brand_id)
+    public function delete($brand_id, $user_id)
     {
-        $brand = $this->brand->deleteBrand($brand_id);
-        $items = $this->item->setNullInItem($brand);
+        $brand = $this->brand->deleteBrand($brand_id, $user_id);
+        $items = $this->item->setNullInItem($brand, $user_id);
         $deleted = $brand->brand_name;
         return $deleted;
     }

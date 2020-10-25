@@ -78,13 +78,13 @@ class Brand extends Model implements Auditable
         $this->user_id = $user_id;
     }
 
-    public function createNewBrand($brand_name)
+    public function createNewBrand($brand_name, $user_id)
     {
         $brand = Brand::firstOrCreate(
             ['brand_name' => $brand_name],
             [
                 'cancel_flag' => 'N',
-                'user_id' => 2
+                'user_id' => $user_id
             ]
         );
 
@@ -93,7 +93,7 @@ class Brand extends Model implements Auditable
             if ($brand->cancel_flag == "Y") {
                 //todo set update by ตาม LDAP
                 $brand->cancel_flag = "N";
-                $brand->user_id = 2;
+                $brand->user_id = $user_id;
                 $brand->save();
             } else {
                 return true;
@@ -102,13 +102,13 @@ class Brand extends Model implements Auditable
         return false;
     }
 
-    public function updateBrand($brand_id, $brand_name)
+    public function updateBrand($brand_id, $brand_name, $user_id)
     {
         $findName = Brand::where('brand_name', $brand_name)->first();
         if (is_null($findName) || $findName->brand_id == $brand_id) {
             $brand = $this->findByID($brand_id);
             $brand->brand_name = $brand_name;
-            $brand->user_id = 2;
+            $brand->user_id = $user_id;
             $brand->save();
             return false;
         }
@@ -117,11 +117,11 @@ class Brand extends Model implements Auditable
         return true;
     }
 
-    public function deleteBrand($brand_id)
+    public function deleteBrand($brand_id, $user_id)
     {
         $brand = $this->findByID($brand_id);
         $brand->cancel_flag = 'Y';
-        $brand->user_id = 2;
+        $brand->user_id = $user_id;
         $brand->save();
         return $brand;
     }
