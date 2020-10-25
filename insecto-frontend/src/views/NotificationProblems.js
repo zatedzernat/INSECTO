@@ -41,7 +41,7 @@ export default function NotificationProblems(props) {
 
   useEffect(() => {
     fetchData();
-  }, [lastUpdate]);
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
