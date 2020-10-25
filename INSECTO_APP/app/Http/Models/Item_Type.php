@@ -83,18 +83,17 @@ class Item_Type extends Model implements Auditable
         $this->cancel_flag = $cancelFlag;
     }
 
-    public function createNewItemType($type_name)
+    public function createNewItemType($type_name, $user_id)
     {
         $itemtype = Item_Type::firstOrCreate(
             ['type_name' => $type_name],
-            ['cancel_flag' => 'N', 'user_id' => 1]
+            ['cancel_flag' => 'N', 'user_id' => $user_id]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$itemtype->wasRecentlyCreated) {
             if ($itemtype->cancel_flag == "Y") {
-                //todo set update by ตาม LDAP
-                $itemtype->user_id = 2;
+                $itemtype->user_id = $user_id;
                 $itemtype->cancel_flag = "N";
                 $itemtype->save();
             } else {
@@ -104,25 +103,25 @@ class Item_Type extends Model implements Auditable
         return false;
     }
 
-    public function updateItemType($type_id, $name)
+    public function updateItemType($type_id, $name, $user_id)
     {
         $findName = Item_Type::where('type_name', $name)->first();
 
         if (is_null($findName) || $findName->type_id == $type_id) {
             $itemtype = $this->findByID($type_id);
             $itemtype->type_name = $name;
-            $itemtype->user_id = 2;
+            $itemtype->user_id = $user_id;
             $itemtype->save();
             return false;
         }
         return true;
     }
 
-    public function deleteItemType($type_id)
+    public function deleteItemType($type_id, $user_id)
     {
         $item_type = $this->findByID($type_id);
         $item_type->cancel_flag = 'Y';
-        $item_type->user_id = 2;
+        $item_type->user_id = $user_id;
         $item_type->save();
         return $item_type;
     }

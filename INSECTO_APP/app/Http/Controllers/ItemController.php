@@ -55,6 +55,7 @@ class ItemController extends Controller
      */
     public function store(ItemFormRequest $request)
     {
+        $user_id = $request->header('user_id');
         $itemCode = $request->item_code;
         $itemName = $request->item_name;
         $roomID = $request->room_id;
@@ -64,7 +65,7 @@ class ItemController extends Controller
         $serial = $request->serial_number;
         $model = $request->model;
         $note = $request->note;
-        $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $group, $brand_id, $serial, $model, $note);
+        $createFail = $this->item->createNewItem($itemCode, $itemName, $roomID, $typeID, $group, $brand_id, $serial, $model, $note, $user_id);
         if ($createFail) {
             $error =  'Add Duplicate Item Code';
             return  $this->serverResponse($error, null);
@@ -94,7 +95,7 @@ class ItemController extends Controller
      */
     public function update(ItemFormRequest $request, $item_id)
     {
-        //todo กดปุ่มedit แล้วเข้าไปแก้แต่ไม่ได้กดsave แต่กดปิดไป พอกดeditใหม่ ควรจะต้องขึ้นอันเดิมที่ยังไม่ได้แก้ เพราะเรายังไม่ได้เซฟ
+        $user_id = $request->header('user_id');
         $id = $request->input('item_id');
         $item_name = $request->input('item_name');
         $room_id = $request->input('room_id');
@@ -104,24 +105,26 @@ class ItemController extends Controller
         $serial = $request->input('serial_number');
         $model = $request->input('model');
         $note = $request->input('note');
-        $updateFail = $this->item->updateItem($id, $item_name, $room_id, $type_id, $group, $brand_id, $serial, $model, $note);
+        $updateFail = $this->item->updateItem($id, $item_name, $room_id, $type_id, $group, $brand_id, $serial, $model, $note, $user_id);
         $success = 'Update item \'' . $item_name . '\' success';
         return  $this->serverResponse(null, $success);
     }
 
     public function deleteOne(Request $request, $item_id)
     {
-        $deleted = $this->delete($item_id);
+        $user_id = $request->header('user_id');
+        $deleted = $this->delete($item_id, $user_id);
         $success = 'Delete item \'' . $deleted . '\' success';
         return $this->serverResponse(null, $success);
     }
 
     public function deleteMultiple(Request $request)
     {
+        $user_id = $request->header('user_id');
         $items = $request->items;
         $code = array();
         foreach ($items as $item_id) {
-            $deleted = $this->delete($item_id);
+            $deleted = $this->delete($item_id, $user_id);
             array_push($code, $deleted);
         }
         $success = 'Delete items \'' . implode(", ", $code) . '\' success';
@@ -134,9 +137,9 @@ class ItemController extends Controller
      * @param  \App\Http\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function delete($item_id)
+    public function delete($item_id, $user_id)
     {
-        $item = $this->item->deleteItem($item_id);
+        $item = $this->item->deleteItem($item_id, $user_id);
         $deleted = $item->item_code;
         return $deleted;
     }

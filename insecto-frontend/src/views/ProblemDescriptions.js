@@ -9,8 +9,9 @@ import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
+import Cookies from "js-cookie";
 
-export default function ProblemDescriptions() {
+export default function ProblemDescriptions(props) {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
@@ -31,18 +32,22 @@ export default function ProblemDescriptions() {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
+  const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}problem_descs`
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}problem_descs`,
+        method: "GET",
+        headers: { Authorization: token, user_id: user.id },
+      });
       setData(res.data);
       setIsLoading(false);
       setIsExport(false);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(JSON.stringify(error));
     }
   };
 
@@ -55,7 +60,8 @@ export default function ProblemDescriptions() {
     return () => {
       document.body.removeChild(script);
     };
-  }, [lastUpdate]);
+    // eslint-disable-next-line
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -74,10 +80,12 @@ export default function ProblemDescriptions() {
     setSelectType("- select type name -");
     setModalShowAdd(false);
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}problem_descs`,
-        problemDesc
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}problem_descs`,
+        method: "POST",
+        headers: { Authorization: token, user_id: user.id },
+        data: problemDesc,
+      });
       setProblemDesc(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -103,6 +111,8 @@ export default function ProblemDescriptions() {
           icon: "error",
           title: mess1 + " " + mess2,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -111,10 +121,12 @@ export default function ProblemDescriptions() {
     event.preventDefault();
     setModalShowDel(false);
     try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
-        problemDesc.problem_des_id
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
+        method: "DELETE",
+        headers: { Authorization: token, user_id: user.id },
+        data: problemDesc.problem_des_id,
+      });
       setProblemDesc(initialState);
       if (res.data.error) {
         Toast.fire({
@@ -140,10 +152,12 @@ export default function ProblemDescriptions() {
       problem_descs: selectedRows.map(({ problem_des_id }) => problem_des_id),
     };
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}problem_descs/selected`,
-        problem_descs
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}problem_descs/selected`,
+        method: "POST",
+        headers: { Authorization: token, user_id: user.id },
+        data: problem_descs,
+      });
       setToggleCleared(!toggleCleared);
       if (res.data.errors) {
         Toast.fire({
@@ -168,10 +182,12 @@ export default function ProblemDescriptions() {
     event.preventDefault();
     setModalShowEdit(false);
     try {
-      const res = await axios.put(
-        `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
-        problemDesc
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
+        method: "PUT",
+        headers: { Authorization: token, user_id: user.id },
+        data: problemDesc,
+      });
       setProblemDesc(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -191,6 +207,8 @@ export default function ProblemDescriptions() {
           icon: "error",
           title: error.response.data.errors.problem_description,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -202,11 +220,16 @@ export default function ProblemDescriptions() {
       const formData = new FormData();
       formData.append("import_file", file);
 
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}problem_descs/import`,
-        formData,
-        { headers: { "content-type": "multipart/form-data" } }
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}problem_descs/import`,
+        method: "POST",
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: token,
+          user_id: user.id,
+        },
+        data: formData,
+      });
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -247,6 +270,8 @@ export default function ProblemDescriptions() {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -263,6 +288,10 @@ export default function ProblemDescriptions() {
         data: problem_descs,
         method: "POST",
         responseType: "blob",
+        headers: {
+          Authorization: token,
+          user_id: user.id,
+        },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));

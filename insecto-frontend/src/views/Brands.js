@@ -8,8 +8,9 @@ import DataTable from "react-data-table-component";
 import moment from "moment";
 import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
+import Cookies from "js-cookie";
 
-export default function Brands() {
+export default function Brands(props) {
   const [data, setData] = useState([]);
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowDel, setModalShowDel] = useState(false);
@@ -28,11 +29,17 @@ export default function Brands() {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
+  const token = Cookies.get("token");
+  const { user } = props;
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}brands`);
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}brands`,
+        method: "GET",
+        headers: { Authorization: token, user_id: user.id },
+      });
       setData(res.data);
       setIsLoading(false);
       setIsExport(false);
@@ -50,7 +57,8 @@ export default function Brands() {
     return () => {
       document.body.removeChild(script);
     };
-  }, [lastUpdate]);
+    // eslint-disable-next-line
+  }, [lastUpdate, user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -63,14 +71,17 @@ export default function Brands() {
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
   });
+
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowAdd(false);
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}brands`,
-        brand
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}brands`,
+        method: "POST",
+        headers: { Authorization: token, user_id: user.id },
+        data: brand,
+      });
       setBrand(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -90,6 +101,8 @@ export default function Brands() {
           icon: "error",
           title: error.response.data.errors.brand_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -98,10 +111,12 @@ export default function Brands() {
     event.preventDefault();
     setModalShowDel(false);
     try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
-        brand.brand_id
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
+        method: "DELETE",
+        headers: { Authorization: token, user_id: user.id },
+        data: brand.brand_id,
+      });
       setBrand(initialState);
       if (res.data.error) {
         Toast.fire({
@@ -127,10 +142,12 @@ export default function Brands() {
       brands: selectedRows.map(({ brand_id }) => brand_id),
     };
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}brands/selected`,
-        brands
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}brands/selected`,
+        method: "POST",
+        headers: { Authorization: token, user_id: user.id },
+        data: brands,
+      });
       setToggleCleared(!toggleCleared);
       if (res.data.errors) {
         Toast.fire({
@@ -154,10 +171,12 @@ export default function Brands() {
     event.preventDefault();
     setModalShowEdit(false);
     try {
-      const res = await axios.put(
-        `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
-        brand
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
+        method: "PUT",
+        headers: { Authorization: token, user_id: user.id },
+        data: brand,
+      });
       setBrand(initialState);
       if (res.data.errors) {
         Toast.fire({
@@ -177,6 +196,8 @@ export default function Brands() {
           icon: "error",
           title: error.response.data.errors.brand_name,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -188,11 +209,16 @@ export default function Brands() {
       const formData = new FormData();
       formData.append("import_file", file);
 
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}brands/import`,
-        formData,
-        { headers: { "content-type": "multipart/form-data" } }
-      );
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}brands/import`,
+        method: "POST",
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: token,
+          user_id: user.id,
+        },
+        data: formData,
+      });
       if (res.data.errors) {
         Toast.fire({
           icon: "error",
@@ -233,6 +259,8 @@ export default function Brands() {
             err_message.split(":")[1]
           }' column!`,
         });
+      } else {
+        console.log(error);
       }
     }
   };
@@ -249,6 +277,10 @@ export default function Brands() {
         data: brands,
         method: "POST",
         responseType: "blob",
+        headers: {
+          Authorization: token,
+          user_id: user.id,
+        },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));

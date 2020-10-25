@@ -151,7 +151,7 @@ class Item extends Model implements Auditable
         $this->model = $model;
     }
 
-    public function createNewItem($item_code, $item_name, $room_id, $type_id, $group, $brand_id, $serial_number, $model, $note)
+    public function createNewItem($item_code, $item_name, $room_id, $type_id, $group, $brand_id, $serial_number, $model, $note, $user_id)
     {
         $item = Item::firstOrCreate(
             ['item_code' => $item_code],
@@ -165,7 +165,7 @@ class Item extends Model implements Auditable
                 'model' => $model,
                 'note' => $note,
                 'cancel_flag' => 'N',
-                'user_id' => 2,
+                'user_id' => $user_id,
             ]
         );
 
@@ -181,8 +181,7 @@ class Item extends Model implements Auditable
                 $item->model = $model;
                 $item->note = $note;
                 $item->cancel_flag = "N";
-                //todo set update by ตาม LDAP
-                $item->user_id = 2;
+                $item->user_id = $user_id;
                 $item->save();
             } else {
                 return true;
@@ -191,7 +190,7 @@ class Item extends Model implements Auditable
         return false;
     }
 
-    public function updateItem($id, $item_name, $room_id, $type_id, $group,  $brand_id, $serial_number, $model, $note)
+    public function updateItem($id, $item_name, $room_id, $type_id, $group,  $brand_id, $serial_number, $model, $note, $user_id)
     {
         // $findName = Item::where('item_name', $item_name)->first();
         // if(is_null($findName) || $findName->item_id = $id) {
@@ -204,36 +203,35 @@ class Item extends Model implements Auditable
         $item->serial_number = $serial_number;
         $item->model = $model;
         $item->note = $note;
-        $item->user_id = 2;
+        $item->user_id = $user_id;
         $item->save();
-        //todo set updateby ตาม LDAP
         return false;
         // }
         // return true;
     }
 
-    public function setNullInItem($brand)
+    public function setNullInItem($brand, $user_id)
     {
         // * change brand in items
         $items = $brand->items;
         foreach ($brand->items as $item) {
             $item->brand_id = null;
-            $item->user_id = 2;
+            $item->user_id = $user_id;
             $item->save();
         }
         return $items;
     }
 
-    public function deleteItem($item_id)
+    public function deleteItem($item_id, $user_id)
     {
         $item = $this->findByID($item_id);
         $item->setCancelFlag('Y');
-        $item->user_id = 2;
+        $item->user_id = $user_id;
         $item->save();
         return $item;
     }
 
-    public function deleteItems($model, $data)
+    public function deleteItems($model, $data, $user_id)
     {
         $collection = new Collection();
         switch ($model) {
@@ -243,7 +241,7 @@ class Item extends Model implements Auditable
                 foreach ($items as $item) {
                     $collection->push($item);
                     $item->cancel_flag = 'Y';
-                    $item->user_id = 2;
+                    $item->user_id = $user_id;
                     $item->save();
                 }
                 break;
@@ -253,7 +251,7 @@ class Item extends Model implements Auditable
                     foreach ($room->items as $item) {
                         $collection->push($item);
                         $item->cancel_flag = 'Y';
-                        $item->user_id = 2;
+                        $item->user_id = $user_id;
                         $item->save();
                     }
                 }
@@ -264,7 +262,7 @@ class Item extends Model implements Auditable
                 foreach ($items as $item) {
                     $collection->push($item);
                     $item->cancel_flag = 'Y';
-                    $item->user_id = 2;
+                    $item->user_id = $user_id;
                     $item->save();
                 }
                 break;

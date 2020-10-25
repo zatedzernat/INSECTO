@@ -46,10 +46,11 @@ class RoomController extends Controller
      */
     public function store(RoomFormRequest $request)
     {
+        $user_id = $request->header('user_id');
         $room_code = $request->room_code;
         $room_name = $request->room_name;
         $building_id = $request->building_id;
-        $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id);
+        $createFail = $this->room->createNewRoom($room_name, $room_code, $building_id, $user_id);
         if ($createFail) {
             $error = 'Add Duplicate Room Code';
             return $this->serverResponse($error, null);
@@ -79,27 +80,30 @@ class RoomController extends Controller
      */
     public function update(RoomFormRequest $request, $room_id)
     {
+        $user_id = $request->header('user_id');
         $id = $request->input('room_id');
         $room_name = $request->input('room_name');
         $building_id = $request->input('building_id');
-        $updateFail = $this->room->updateRoom($id, $room_name, $building_id);
+        $updateFail = $this->room->updateRoom($id, $room_name, $building_id, $user_id);
         $success = 'Update room \'' . $room_name . '\' success';
         return  $this->serverResponse(null, $success);
     }
 
     public function deleteOne(Request $request, $room_id)
     {
-        $deleted = $this->delete($room_id);
+        $user_id = $request->header('user_id');
+        $deleted = $this->delete($room_id, $user_id);
         $success = 'Delete room \'' . $deleted . '\' success';
         return $this->serverResponse(null, $success);
     }
 
     public function deleteMultiple(Request $request)
     {
+        $user_id = $request->header('user_id');
         $rooms = $request->rooms;
         $name = array();
         foreach ($rooms as $room_id) {
-            $deleted = $this->delete($room_id);
+            $deleted = $this->delete($room_id, $user_id);
             array_push($name, $deleted);
         }
         $success = 'Delete rooms \'' . implode(", ", $name) . '\' success';
@@ -112,10 +116,10 @@ class RoomController extends Controller
      * @param  \App\Http\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function delete($room_id)
+    public function delete($room_id, $user_id)
     {
-        $room = $this->room->deleteRoom($room_id);
-        $items = $this->item->deleteItems('room', $room);
+        $room = $this->room->deleteRoom($room_id, $user_id);
+        $items = $this->item->deleteItems('room', $room, $user_id);
         $deleted = $room->room_name;
         return $deleted;
     }

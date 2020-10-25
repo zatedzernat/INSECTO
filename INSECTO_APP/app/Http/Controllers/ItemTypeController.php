@@ -44,8 +44,9 @@ class ItemTypeController extends Controller
      */
     public function store(ItemTypeFormRequest $request)
     {
+        $user_id = $request->header('user_id');
         $name = $request->type_name;
-        $createFail = $this->item_type->createNewItemType($name);
+        $createFail = $this->item_type->createNewItemType($name, $user_id);
         if ($createFail) {
             $error = 'Add Duplicate Type Name';
             return  $this->serverResponse($error, null);
@@ -75,9 +76,10 @@ class ItemTypeController extends Controller
      */
     public function update(ItemTypeFormRequest $request, $type_id)
     {
+        $user_id = $request->header('user_id');
         $id = $request->input('type_id');
         $name = $request->input('type_name');
-        $updateFail = $this->item_type->updateItemType($id, $name);
+        $updateFail = $this->item_type->updateItemType($id, $name, $user_id);
         if ($updateFail) {
             $error = 'Edit duplicate type name';
             return  $this->serverResponse($error, null);
@@ -89,17 +91,19 @@ class ItemTypeController extends Controller
 
     public function deleteOne(Request $request, $type_id)
     {
-        $deleted = $this->delete($type_id);
+        $user_id = $request->header('user_id');
+        $deleted = $this->delete($type_id, $user_id);
         $success = 'Delete type \'' . $deleted . '\' success';
         return $this->serverResponse(null, $success);
     }
 
     public function deleteMultiple(Request $request)
     {
+        $user_id = $request->header('user_id');
         $item_types = $request->item_types;
         $name = array();
         foreach ($item_types as $type_id) {
-            $deleted = $this->delete($type_id);
+            $deleted = $this->delete($type_id, $user_id);
             array_push($name, $deleted);
         }
         $success = 'Delete types \'' . implode(", ", $name) . '\' success';
@@ -112,11 +116,11 @@ class ItemTypeController extends Controller
      * @param  \App\Http\Models\Item_Type  $item_Type
      * @return \Illuminate\Http\Response
      */
-    public function delete($type_id)
+    public function delete($type_id, $user_id)
     {
-        $item_type = $this->item_type->deleteItemType($type_id);
-        $items = $this->item->deleteItems('item_type', $item_type);
-        $problem_desc = $this->problem_desc->deleteProblemDescs($item_type);
+        $item_type = $this->item_type->deleteItemType($type_id, $user_id);
+        $items = $this->item->deleteItems('item_type', $item_type, $user_id);
+        $problem_desc = $this->problem_desc->deleteProblemDescs($item_type, $user_id);
         $deleted = $item_type->type_name;
         return $deleted;
     }

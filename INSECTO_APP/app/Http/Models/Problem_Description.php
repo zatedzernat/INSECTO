@@ -102,19 +102,18 @@ class Problem_Description extends Model implements Auditable
         $this->user_id = $user_id;
     }
 
-    public function createNewProblemDesc($problem_description, $type_id)
+    public function createNewProblemDesc($problem_description, $type_id, $user_id)
     {
         $problem_desc = Problem_Description::firstOrCreate(
             ['problem_description' => $problem_description, 'type_id' => $type_id],
-            ['cancel_flag' => 'N', 'user_id' => 2]
+            ['cancel_flag' => 'N', 'user_id' => $user_id]
         );
 
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$problem_desc->wasRecentlyCreated) {
             if ($problem_desc->cancel_flag == "Y") {
-                //todo set update by ตาม LDAP
                 $problem_desc->cancel_flag = "N";
-                $problem_desc->user_id = 2;
+                $problem_desc->user_id = $user_id;
                 $problem_desc->save();
             } else {
                 return true;
@@ -123,7 +122,7 @@ class Problem_Description extends Model implements Auditable
         return false;
     }
 
-    public function updateProblemDesc($problem_des_id, $desc, $type_id)
+    public function updateProblemDesc($problem_des_id, $desc, $type_id, $user_id)
     {
         $findDescAndType = Problem_Description::where([
             ['problem_description', $desc],
@@ -134,29 +133,28 @@ class Problem_Description extends Model implements Auditable
             $prob_desc = $this->findByID($problem_des_id);
             $prob_desc->problem_description = $desc;
             $prob_desc->type_id = $type_id;
-            //todo set updateby ตาม LDAP
-            $prob_desc->user_id = 2;
+            $prob_desc->user_id = $user_id;
             $prob_desc->save();
             return false;
         }
         return true;
     }
 
-    public function deleteProblemDesc($problem_des_id)
+    public function deleteProblemDesc($problem_des_id, $user_id)
     {
         $problem_desc = $this->findByID($problem_des_id);
         $problem_desc->setCancelFlag('Y');
-        $problem_desc->user_id = 2;
+        $problem_desc->user_id = $user_id;
         $problem_desc->save();
         return $problem_desc;
     }
 
-    public function deleteProblemDescs($item_type)
+    public function deleteProblemDescs($item_type, $user_id)
     {
         $problem_descs = $item_type->problem_descriptions;
         foreach ($problem_descs as $problem_desc) {
             $problem_desc->cancel_flag = 'Y';
-            $problem_desc->user_id = 2;
+            $problem_desc->user_id = $user_id;
             $problem_desc->save();
         }
         return $problem_descs;

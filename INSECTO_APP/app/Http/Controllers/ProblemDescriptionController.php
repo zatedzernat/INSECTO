@@ -42,9 +42,10 @@ class ProblemDescriptionController extends Controller
      */
     public function store(ProblemDescriptionFormRequest $request)
     {
+        $user_id = $request->header('user_id');
         $problem_description = $request->problem_description;
         $type_id = $request->type_id;
-        $createFail = $this->problem_desc->createNewProblemDesc($problem_description, $type_id);
+        $createFail = $this->problem_desc->createNewProblemDesc($problem_description, $type_id, $user_id);
         if ($createFail) {
             $error =  'Add Duplicate Problem Description and Type';
             return  $this->serverResponse($error, null);
@@ -74,10 +75,11 @@ class ProblemDescriptionController extends Controller
      */
     public function update(ProblemDescriptionFormRequest $request, $problem_des_id)
     {
+        $user_id = $request->header('user_id');
         $id = $request->input('problem_des_id');
         $description = $request->input('problem_description');
         $type_id = $request->input('type_id');
-        $updateFail = $this->problem_desc->updateProblemDesc($id, $description, $type_id);
+        $updateFail = $this->problem_desc->updateProblemDesc($id, $description, $type_id, $user_id);
         if ($updateFail) {
             $error = 'Edit duplicate description and type';
             return  $this->serverResponse($error, null);
@@ -89,17 +91,19 @@ class ProblemDescriptionController extends Controller
 
     public function deleteOne(Request $request, $problem_des_id)
     {
-        $deleted = $this->delete($problem_des_id);
+        $user_id = $request->header('user_id');
+        $deleted = $this->delete($problem_des_id, $user_id);
         $success = 'Delete description \'' . $deleted . '\' success';
         return $this->serverResponse(null, $success);
     }
 
     public function deleteMultiple(Request $request)
     {
+        $user_id = $request->header('user_id');
         $problem_descs = $request->problem_descs;
         $description = array();
         foreach ($problem_descs as $problem_des_id) {
-            $deleted = $this->delete($problem_des_id);
+            $deleted = $this->delete($problem_des_id, $user_id);
             array_push($description, $deleted);
         }
         $success = 'Delete descriptions \'' . implode(", ", $description) . '\' success';
@@ -112,9 +116,9 @@ class ProblemDescriptionController extends Controller
      * @param  \App\Http\Models\Problem_Description  $problem_Description
      * @return \Illuminate\Http\Response
      */
-    public function delete($problem_des_id)
+    public function delete($problem_des_id, $user_id)
     {
-        $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id);
+        $problem_desc = $this->problem_desc->deleteProblemDesc($problem_des_id, $user_id);
         $deleted = $problem_desc->problem_description;
         return $deleted;
     }

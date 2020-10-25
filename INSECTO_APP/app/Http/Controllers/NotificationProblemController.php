@@ -105,11 +105,12 @@ class NotificationProblemController extends Controller
      */
     public function update(NotiUpdateFormRequest $request, $noti_id)
     {
+        $user_id = $request->header('user_id');
         if ($noti_id) {
             $next_status_id = $request->next_status_id;
             $service_desk_code = $request->service_desk_code;
             $note = $request->note;
-            $status = $this->noti_problem->checkStatus($noti_id, $next_status_id, $service_desk_code, $note);
+            $status = $this->noti_problem->checkStatus($noti_id, $next_status_id, $service_desk_code, $note, $user_id);
             $success = 'change status to \'' . $status . '\' complete';
             return $this->serverResponse(null, $success);
         } else {

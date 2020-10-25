@@ -4,12 +4,12 @@ import HeaderMobile from "../views/mobile/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 
-const Admin = ({ children }) => (
+const Admin = ({ children, user }) => (
   <div>
-    <Header />
-    <Sidebar />
+    <Header user={user} />
+    <Sidebar user={user} />
     {children}
-    <Footer />
+    <Footer user={user} />
   </div>
 );
 
