@@ -113,24 +113,24 @@ class Notification_Problem extends Model implements Auditable
         $this->save();
     }
 
-    public function checkStatus($noti_id, $next_status_id, $service_desk_code, $note)
+    public function checkStatus($noti_id, $next_status_id, $service_desk_code, $note, $user_id)
     {
         $noti_prob = $this->findByID($noti_id);
         if ($noti_prob) {
             if ($next_status_id == 2 || $next_status_id == 7) { // status_id = 2 = open
-                $status = $this->openTask($noti_prob, $service_desk_code);
+                $status = $this->openTask($noti_prob, $service_desk_code, $user_id);
                 return $status;
             } else if ($next_status_id == 8) { // status_id = 8 = resolved
-                $status = $this->resolvedTask($noti_prob, $note);
+                $status = $this->resolvedTask($noti_prob, $note, $user_id);
                 return $status;
             } else {
-                $status = $this->changeStatus($noti_prob, $next_status_id);
+                $status = $this->changeStatus($noti_prob, $next_status_id, $user_id);
                 return $status;
             }
         }
     }
 
-    public function openTask($noti_prob, $service_desk_code)
+    public function openTask($noti_prob, $service_desk_code, $user_id)
     {
         $noti_prob->service_desk_code = $service_desk_code;
         if ($noti_prob->note) {
@@ -140,12 +140,12 @@ class Notification_Problem extends Model implements Auditable
             $noti_prob->status_id = 2; // status_id = 2 = open
             $status = 'open';
         }
-        $noti_prob->user_id = 2;
+        $noti_prob->user_id = $user_id;
         $noti_prob->save();
         return $status;
     }
 
-    public function changeStatus($noti_prob, $next_status_id)
+    public function changeStatus($noti_prob, $next_status_id, $user_id)
     {
         switch ($next_status_id) {
             case 3: // status_id = 3 = on hold
@@ -161,16 +161,16 @@ class Notification_Problem extends Model implements Auditable
                 $status = 'in progress';
                 break;
         }
-        $noti_prob->user_id = 2;
+        $noti_prob->user_id = $user_id;
         $noti_prob->save();
         return $status;
     }
 
-    public function resolvedTask($noti_prob, $note)
+    public function resolvedTask($noti_prob, $note, $user_id)
     {
         $noti_prob->note = $note;
         $noti_prob->status_id = 8; //status_id = 8 = resolved
-        $noti_prob->user_id = 2;
+        $noti_prob->user_id = $user_id;
         $noti_prob->save();
         return 'resolved';
     }
