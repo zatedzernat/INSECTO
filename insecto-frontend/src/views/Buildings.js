@@ -45,7 +45,7 @@ export default function Buildings(props) {
       setIsLoading(false);
       setIsExport(false);
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.log(error);
     }
   };
 
