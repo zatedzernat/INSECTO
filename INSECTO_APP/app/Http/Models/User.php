@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'sso_token',
     ];
 
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'sso_token',
     ];
 
     /**
@@ -44,6 +44,8 @@ class User extends Authenticatable
         $token = null;
         if ($user) {
             $token = Arr::get($slice_arrays, 'token.token');
+            $user->sso_token = $token;
+            $user->save();
             return $token;
         } else {
             return $token;
