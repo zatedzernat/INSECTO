@@ -93,7 +93,7 @@ export default function HistoryLogs(props) {
   };
 
   const fetchMoreData = () => {
-    if (count >= countDays) {
+    if (count > countDays) {
       setHasMore(false);
       return;
     }
@@ -352,7 +352,7 @@ export default function HistoryLogs(props) {
               />
             }
             body={historyLogTable(data.logsByDays)}
-            loading={isLoading ? "overlay" : ""}
+            // loading={isLoading ? "overlay" : ""}
           />
         }
       />
