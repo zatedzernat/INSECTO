@@ -17,6 +17,8 @@ Route::group(['middleware' => 'ssoauthtoken'], function () {
 
     Route::put('noti_problems/{noti_id}',  'NotificationProblemController@update');
 
+    Route::post('noti_problems/export', 'NotificationProblemController@exportNotiProbs');
+
     Route::get('history_logs', 'HistoryLogController@index')->name('history_logs');
     Route::get('history_logs/{amount}', 'HistoryLogController@getLogs');
 

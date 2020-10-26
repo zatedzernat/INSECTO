@@ -2,6 +2,8 @@
 
 namespace App\Http\Models;
 
+use App\Exports\NotificationProblemsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -173,5 +175,17 @@ class Notification_Problem extends Model implements Auditable
         $noti_prob->user_id = $user_id;
         $noti_prob->save();
         return 'resolved';
+    }
+
+    public function exportNotiProbs($all_noti_probs_id)
+    {
+        $noti_probs = Notification_Problem::find($all_noti_probs_id);
+        if ($noti_probs->isEmpty()) {
+            $error =  'No Notification Problems in record!';
+            return array(false, $error);
+        } else {
+            $notiProbsExport =  Excel::download(new NotificationProblemsExport($noti_probs), 'Notification_Problems.xlsx');
+            return array(true, $notiProbsExport);
+        }
     }
 }

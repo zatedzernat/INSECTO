@@ -9,6 +9,7 @@ use App\Http\Models\Room;
 use App\Http\Models\Status;
 use App\Http\Requests\NotiUpdateFormRequest;
 use App\Http\Requests\SendProblemRequest;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class NotificationProblemController extends Controller
@@ -128,6 +129,16 @@ class NotificationProblemController extends Controller
     public function destroy(Notification_Problem $notification_Problem)
     {
         //
+    }
+
+    public function exportNotiProbs(Request $request)
+    {
+        $all_noti_probs_id = $request->noti_probs;
+        $isSuccess = $this->noti_problem->exportNotiProbs($all_noti_probs_id);
+        if ($isSuccess[0]) {
+            return $isSuccess[1];
+        } else
+            return  $this->serverResponse($isSuccess[1], null);
     }
 
     public function serverResponse($error, $success)

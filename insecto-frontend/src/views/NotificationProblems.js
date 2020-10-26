@@ -23,6 +23,9 @@ export default function NotificationProblems(props) {
   const [lastUpdate, setLastUpdate] = useState(0);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [isExport, setIsExport] = useState(false);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
   const token = Cookies.get("token");
   const { user } = props;
 
@@ -167,7 +170,7 @@ export default function NotificationProblems(props) {
           { status_id: 5, status_name: "in progress" },
         ];
         bgColor = "#fff4de";
-        fontColor = "#FFA800"
+        fontColor = "#FFA800";
         break;
       case 3:
         next_status = [
@@ -176,7 +179,7 @@ export default function NotificationProblems(props) {
           { status_id: 8, status_name: "resolved" },
         ];
         bgColor = "#e0eaff";
-        fontColor = "#6993FF"
+        fontColor = "#6993FF";
         break;
       case 4:
         next_status = [
@@ -184,7 +187,7 @@ export default function NotificationProblems(props) {
           { status_id: 5, status_name: "in progress" },
         ];
         bgColor = "#e0eaff";
-        fontColor = "#6993FF"
+        fontColor = "#6993FF";
         break;
       case 5:
         next_status = [
@@ -192,7 +195,7 @@ export default function NotificationProblems(props) {
           { status_id: 8, status_name: "resolved" },
         ];
         bgColor = "#e0eaff";
-        fontColor = "#6993FF"
+        fontColor = "#6993FF";
         break;
       case 7:
         next_status = [
@@ -206,7 +209,7 @@ export default function NotificationProblems(props) {
       case 8:
         next_status = [{ status_id: 7, status_name: "reopen" }];
         bgColor = "#c9f7f4";
-        fontColor = "#1BC5BD"
+        fontColor = "#1BC5BD";
         break;
       default:
         bgColor = "#eaedf2";
@@ -250,6 +253,45 @@ export default function NotificationProblems(props) {
       </>
     );
   };
+
+  const exportBrands = async (event) => {
+    setIsExport(true);
+    event.preventDefault();
+    let noti_probs = {
+      noti_probs: selectedRows.map(({ noti_id }) => noti_id),
+    };
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}noti_problems/export`,
+        data: noti_probs,
+        method: "POST",
+        responseType: "blob",
+        headers: {
+          Authorization: token,
+          user_id: user.id,
+        },
+      });
+      // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Notification_Problems.xlsx"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      setIsExport(false);
+      setToggleCleared(!toggleCleared);
+    } catch (error) {
+      console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const handleRowSelected = React.useCallback((state) => {
+    let selected = state.selectedRows.map(({ noti_id }) => ({
+      noti_id,
+    }));
+    let sort = selected.sort((a, b) => a.noti_id - b.noti_id);
+    setSelectedRows(sort);
+  }, []);
 
   const styles = {
     container: { color: "red" },
@@ -398,13 +440,15 @@ export default function NotificationProblems(props) {
         data={filteredItems}
         striped
         responsive
-        noHeader
+        selectableRows
         selectableRowsHighlight
         highlightOnHover
         pagination
         customStyles={myFonts}
         subHeader
         subHeaderComponent={subHeaderComponentMemo}
+        onSelectedRowsChange={handleRowSelected}
+        clearSelectedRows={toggleCleared}
       />
     );
   };
@@ -419,6 +463,38 @@ export default function NotificationProblems(props) {
                 <h2>Notification Problems</h2>
                 <h6>รายการการแจ้งปัญหาทั้งหมด</h6>
               </div>
+            }
+            badge={
+              <>
+                {selectedRows.length > 0 ? (
+                  <>
+                    {isExport === false ? (
+                      <Button
+                        onClick={exportBrands}
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
+                        Export Notification Problems
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#6993FF" }}
+                      >
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <Button
+                    variant="default"
+                    style={{ color: "white", backgroundColor: "#6993FF" }}
+                    disabled
+                  >
+                    Export Notification Problems
+                  </Button>
+                )}
+              </>
             }
             body={notiProblemTable(data)}
             loading={isLoading ? "overlay" : ""}
