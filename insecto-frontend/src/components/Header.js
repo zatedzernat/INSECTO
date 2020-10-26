@@ -20,7 +20,7 @@ export default function Header(props) {
       setIsLoading(true);
     }
     // eslint-disable-next-line
-  }, [code]);
+  }, [code, user]);
 
   const redirectToSSO = async (event) => {
     setIsLoading(true);
