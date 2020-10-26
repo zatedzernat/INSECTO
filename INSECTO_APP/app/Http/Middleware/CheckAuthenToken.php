@@ -35,7 +35,7 @@ class CheckAuthenToken
                     return  $this->serverResponse($error, null, 404);
                 }
             } else {
-                $error = "User ID not found!";
+                $error = "User ID not found! (" . $user_id . ")";
                 return  $this->serverResponse($error, null, 404);
             }
         } else {
