@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import "../Gandlaf.scss";
 
 export default function Login(props) {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const token = Cookies.get("token");
 
@@ -31,11 +31,18 @@ export default function Login(props) {
       props.history.replace("/admin/notification_problems");
     } else {
       setIsAuthenticated(false);
+      if (props.location.state) {
+        Toast.fire({
+          icon: "error",
+          title: props.location.state.login,
+        });
+        window.history.replaceState(null, "");
+      }
     }
   };
 
   const getToken = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     let data = {
       client_id: process.env.REACT_APP_CLIENT_ID,
       code: code,
@@ -63,7 +70,7 @@ export default function Login(props) {
         props.history.replace("/admin/notification_problems");
         window.location.reload();
       }
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (error) {
       console.log(error);
     }

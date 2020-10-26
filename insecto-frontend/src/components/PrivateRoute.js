@@ -24,7 +24,17 @@ const PrivateRoute = ({ component: Component, layout: Layout, ...rest }) => {
         `${process.env.REACT_APP_API_URL}sso/fetchme`,
         data
       );
-      setUser(res.data);
+      if (res.data.errors) {
+        Cookies.remove("token");
+        history.replace({
+          pathname: "/admin",
+          state: {
+            login: "Please Login again!",
+          },
+        });
+      } else {
+        setUser(res.data);
+      }
     } catch (error) {
       console.log(JSON.stringify(error));
     }
@@ -37,7 +47,7 @@ const PrivateRoute = ({ component: Component, layout: Layout, ...rest }) => {
       history.replace({
         pathname: "/admin",
         state: {
-          isActive: true,
+          login: "Please Login first!",
         },
       });
     }
