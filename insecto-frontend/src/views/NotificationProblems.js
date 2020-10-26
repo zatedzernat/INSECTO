@@ -117,7 +117,7 @@ export default function NotificationProblems(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}noti_problems/${notiProblem.noti_id}`,
         method: "PUT",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: status,
       });
       if (res.data.errors) {

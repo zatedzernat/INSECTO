@@ -39,7 +39,7 @@ export default function Buildings(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings`,
         method: "GET",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -80,7 +80,7 @@ export default function Buildings(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings`,
         method: "POST",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: building,
       });
       setBuilding(initialState);
@@ -123,7 +123,7 @@ export default function Buildings(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/${building.building_id}`,
         method: "DELETE",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: building.building_id,
       });
       setBuilding(initialState);
@@ -154,7 +154,7 @@ export default function Buildings(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/selected`,
         method: "POST",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: buildings,
       });
       setToggleCleared(!toggleCleared);
@@ -183,7 +183,7 @@ export default function Buildings(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}buildings/${building.building_id}`,
         method: "PUT",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: building,
       });
       setBuilding(initialState);

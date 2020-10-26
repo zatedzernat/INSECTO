@@ -17,8 +17,10 @@ class CheckAuthenToken
      */
     public function handle($request, Closure $next)
     {
+        // dd($request->header());
         $token = $request->header('Authorization');
-        $user_id = $request->header('user_id');
+        // $user_id = $request->header('User_Id',);
+        $user_id = $request->header('User-Id',);
         if ($token) {
             if ($user_id) {
                 $isUserExistInINSECTO = $this->checkUser($user_id);

@@ -38,7 +38,7 @@ export default function Brands(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands`,
         method: "GET",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -79,7 +79,7 @@ export default function Brands(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands`,
         method: "POST",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: brand,
       });
       setBrand(initialState);
@@ -114,7 +114,7 @@ export default function Brands(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         method: "DELETE",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: brand.brand_id,
       });
       setBrand(initialState);
@@ -145,7 +145,7 @@ export default function Brands(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/selected`,
         method: "POST",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: brands,
       });
       setToggleCleared(!toggleCleared);
@@ -174,7 +174,7 @@ export default function Brands(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}brands/${brand.brand_id}`,
         method: "PUT",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
         data: brand,
       });
       setBrand(initialState);

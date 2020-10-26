@@ -17,7 +17,7 @@ export default function Statuses(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}statuses`,
         method: "GET",
-        headers: { Authorization: token, user_id: user.id },
+        headers: { Authorization: token, User_Id: user.id },
       });
       setData(res.data);
       setIsLoading(false);
