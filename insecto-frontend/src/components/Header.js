@@ -24,7 +24,7 @@ export default function Header(props) {
 
   const redirectToSSO = async (event) => {
     setIsLoading(true);
-    window.location = `https://std-sso-fe.sit.kmutt.ac.th/login?response_type=code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri==${process.env.REACT_APP_REDIRECT_URI}&state=insecto`;
+    window.location = `https://std-sso-fe.sit.kmutt.ac.th/login?response_type=code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&state=insecto`;
   };
 
   const handleLogout = async (event) => {
