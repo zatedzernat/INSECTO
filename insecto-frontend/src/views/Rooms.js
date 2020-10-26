@@ -45,7 +45,7 @@ export default function Rooms(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms`,
         method: "GET",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -87,7 +87,7 @@ export default function Rooms(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: room,
       });
       setRoom(initialState);
@@ -132,7 +132,7 @@ export default function Rooms(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         method: "DELETE",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: room.room_id,
       });
       setRoom(initialState);
@@ -163,7 +163,7 @@ export default function Rooms(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/selected`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: rooms,
       });
       setToggleCleared(!toggleCleared);
@@ -192,7 +192,7 @@ export default function Rooms(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}rooms/${room.room_id}`,
         method: "PUT",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: room,
       });
       setRoom(initialState);
@@ -226,7 +226,7 @@ export default function Rooms(props) {
         url: `${process.env.REACT_APP_API_URL}get_room_qr/${row.room_code}`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: {
           url: window.location.origin,
         },
@@ -251,7 +251,7 @@ export default function Rooms(props) {
         url: `${process.env.REACT_APP_API_URL}get_rooms_qr_zip`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: {
           rooms: selectedRows.map(({ room_id }) => room_id),
           url: window.location.origin,
@@ -345,7 +345,7 @@ export default function Rooms(props) {
         url: `${process.env.REACT_APP_API_URL}rooms/export`,
         data: rooms,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         responseType: "blob",
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs

@@ -37,7 +37,7 @@ export default function ItemTypes(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types`,
         method: "GET",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -78,7 +78,7 @@ export default function ItemTypes(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: itemType,
       });
       setItemType(initialState);
@@ -113,7 +113,7 @@ export default function ItemTypes(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
         method: "DELETE",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: itemType.type_id,
       });
       setItemType(initialState);
@@ -144,7 +144,7 @@ export default function ItemTypes(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/selected`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: item_types,
       });
       setToggleCleared(!toggleCleared);
@@ -173,7 +173,7 @@ export default function ItemTypes(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}item_types/${itemType.type_id}`,
         method: "PUT",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: itemType,
       });
       setItemType(initialState);

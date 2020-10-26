@@ -46,14 +46,14 @@ export default function HistoryLogs(props) {
         const res = await axios({
           url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
           method: "GET",
-          headers: { Authorization: token, User_Id: user.id },
+          headers: { Authorization: token, "User-Id": user.id },
         });
         setData(res.data);
       }
       const temp = await axios({
         url: `${process.env.REACT_APP_API_URL}history_logs`,
         method: "GET",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
       });
       setIsLoading(false);
       setCountDays(temp.data.countDays);
@@ -102,7 +102,7 @@ export default function HistoryLogs(props) {
         const res = await axios({
           url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
           method: "GET",
-          headers: { Authorization: token, User_Id: user.id },
+          headers: { Authorization: token, "User-Id": user.id },
         });
         setData(res.data);
       } catch (error) {
@@ -122,7 +122,7 @@ export default function HistoryLogs(props) {
         data: logsFromTo,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));

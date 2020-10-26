@@ -41,7 +41,7 @@ export default function ProblemDescriptions(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}problem_descs`,
         method: "GET",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -83,7 +83,7 @@ export default function ProblemDescriptions(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}problem_descs`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: problemDesc,
       });
       setProblemDesc(initialState);
@@ -124,7 +124,7 @@ export default function ProblemDescriptions(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
         method: "DELETE",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: problemDesc.problem_des_id,
       });
       setProblemDesc(initialState);
@@ -155,7 +155,7 @@ export default function ProblemDescriptions(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}problem_descs/selected`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: problem_descs,
       });
       setToggleCleared(!toggleCleared);
@@ -185,7 +185,7 @@ export default function ProblemDescriptions(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}problem_descs/${problemDesc.problem_des_id}`,
         method: "PUT",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: problemDesc,
       });
       setProblemDesc(initialState);

@@ -55,7 +55,7 @@ export default function Items(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items`,
         method: "GET",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
       });
       setData(res.data);
       setIsLoading(false);
@@ -101,7 +101,7 @@ export default function Items(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: item,
       });
       setItem(initialState);
@@ -151,7 +151,7 @@ export default function Items(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         method: "DELETE",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: item.item_id,
       });
       setItem(initialState);
@@ -182,7 +182,7 @@ export default function Items(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/selected`,
         method: "POST",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: items,
       });
       setToggleCleared(!toggleCleared);
@@ -212,7 +212,7 @@ export default function Items(props) {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/${item.item_id}`,
         method: "PUT",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: item,
       });
       setItem(initialState);
@@ -252,7 +252,7 @@ export default function Items(props) {
         url: `${process.env.REACT_APP_API_URL}get_item_qr/${row.item_code}`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: {
           url: window.location.origin,
         },
@@ -277,7 +277,7 @@ export default function Items(props) {
         url: `${process.env.REACT_APP_API_URL}get_items_qr_zip`,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
         data: {
           items: selectedRows.map(({ item_id }) => item_id),
           url: window.location.origin,
@@ -372,7 +372,7 @@ export default function Items(props) {
         data: items,
         method: "POST",
         responseType: "blob",
-        headers: { Authorization: token, User_Id: user.id },
+        headers: { Authorization: token, "User-Id": user.id },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
       const url = window.URL.createObjectURL(new Blob([res.data]));
