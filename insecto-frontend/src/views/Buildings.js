@@ -223,7 +223,7 @@ export default function Buildings(props) {
         method: "POST",
         headers: {
           Authorization: token,
-          user_id: user.user_id,
+          "User-Id": user.id,
           "content-type": "multipart/form-data",
         },
         data: formData,
@@ -288,7 +288,7 @@ export default function Buildings(props) {
         responseType: "blob",
         headers: {
           Authorization: token,
-          user_id: user.user_id,
+          "User-Id": user.id,
         },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs
