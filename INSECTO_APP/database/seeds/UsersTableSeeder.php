@@ -16,6 +16,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Seeder',
             'email' => 'seeder@mail.com',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -23,6 +24,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'BILL',
             'email' => '60130500055@st.sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -30,6 +32,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Hong',
             'email' => '60130500060@st.sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -37,6 +40,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'TINY',
             'email' => '60130500059@st.sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -44,6 +48,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Problem sender',
             'email' => 'problem_sender@mail.com',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -51,6 +56,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Gai',
             'email' => 'aritach@sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -58,6 +64,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Oat',
             'email' => 'wasan.pae@sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -65,6 +72,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'A',
             'email' => 'wuttichai@sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -72,6 +80,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Toey',
             'email' => 'chanin@sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -79,6 +88,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Kaithong',
             'email' => 'pichet@sit.kmutt.ac.th',
             'password' => Hash::make(config('app.test_password')),
+            'cancel_flag' => 'N',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
