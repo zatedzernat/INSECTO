@@ -37,8 +37,8 @@ class ItemFormRequest extends FormRequest
         return [
             'item_code.required' => 'Item Code is required!',
             'item_name.required' => 'Item Name is required!',
-            'room_id.required' => 'Room ID is required!',
-            'type_id.required' => 'Type ID is required!',
+            'room_id.required' => 'Room is required!',
+            'type_id.required' => 'Type is required!',
             'group.required' => 'Group is required!'
         ];
     }

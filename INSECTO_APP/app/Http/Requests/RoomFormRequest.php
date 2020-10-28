@@ -35,7 +35,7 @@ class RoomFormRequest extends FormRequest
         return [
             'room_code.required' => 'Room Code is required!',
             'room_name.required' => 'Room Name is required!',
-            'building_id.required' => 'Building ID is required!',
+            'building_id.required' => 'Building is required!',
         ];
     }
 }

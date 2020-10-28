@@ -33,7 +33,7 @@ class ProblemDescriptionFormRequest extends FormRequest
     {
         return [
             'problem_description.required' => 'Problem Description is required!',
-            'type_id.required' => 'Type ID is required!',
+            'type_id.required' => 'Type is required!',
         ];
     }
 }
