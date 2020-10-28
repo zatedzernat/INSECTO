@@ -26,7 +26,7 @@ export default function Rooms(props) {
     room_name: "",
     building_id: 0,
   };
-  const [room, setRoom] = useState(initialState);
+  const [room, setRoom] = useState({});
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"
   );

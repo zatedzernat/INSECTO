@@ -23,7 +23,7 @@ export default function Brands(props) {
     brand_id: 0,
     brand_name: "",
   };
-  const [brand, setBrand] = useState(initialState);
+  const [brand, setBrand] = useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");

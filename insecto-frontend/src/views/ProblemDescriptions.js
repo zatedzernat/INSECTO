@@ -25,7 +25,7 @@ export default function ProblemDescriptions(props) {
     problem_description: "",
     type_id: "",
   };
-  const [problemDesc, setProblemDesc] = useState(initialState);
+  const [problemDesc, setProblemDesc] = useState({});
   const [selectType, setSelectType] = useState("- select type name -");
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);

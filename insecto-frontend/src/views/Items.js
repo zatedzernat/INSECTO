@@ -31,7 +31,7 @@ export default function Items(props) {
     model: "",
     group: "",
   };
-  const [item, setItem] = useState(initialState);
+  const [item, setItem] = useState({});
   const [rooms, setRooms] = useState({});
   const [selectBuilding, setSelectBuilding] = useState(
     "- select building name -"

@@ -24,7 +24,7 @@ export default function Buildings(props) {
     building_code: 0,
     building_name: "",
   };
-  const [building, setBuilding] = useState(initialState);
+  const [building, setBuilding] = useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");

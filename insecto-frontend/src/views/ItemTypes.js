@@ -22,7 +22,7 @@ export default function ItemTypes(props) {
   const initialState = {
     type_name: "",
   };
-  const [itemType, setItemType] = useState(initialState);
+  const [itemType, setItemType] = useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
   const [filterText, setFilterText] = useState("");
