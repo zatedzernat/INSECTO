@@ -5,6 +5,8 @@ namespace App\Http\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
+
 // use OwenIt\Auditing\Contracts\Auditable;
 
 class User extends Authenticatable /*implements Auditable*/
@@ -43,7 +45,7 @@ class User extends Authenticatable /*implements Auditable*/
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'sso_token',
+        'name', 'email', 'password', 'sso_token', 'cancel_flag',
     ];
 
     /**
@@ -102,6 +104,29 @@ class User extends Authenticatable /*implements Auditable*/
         } else {
             return null;
         }
+    }
+
+    public function createNewUser($name, $email)
+    {
+        $user = User::firstOrCreate(
+            ['email' => $email],
+            [
+                'name' => $name,
+                'password' => Hash::make(config('app.test_password')),
+                'cancel_flag' => 'N'
+            ]
+        );
+
+        //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
+        if (!$user->wasRecentlyCreated) {
+            if ($user->cancel_flag == "Y") {
+                $user->cancel_flag = "N";
+                $user->save();
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function updateUser($id, $name)

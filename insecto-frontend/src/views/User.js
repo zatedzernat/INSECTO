@@ -15,8 +15,8 @@ export default function User(props) {
   const { user } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [loginUser, setLoginUser] = useState([]);
-  const [newUser, setNewUser] = useState([]);
+  const [loginUser, setLoginUser] = useState({});
+  const [newUser, setNewUser] = useState({});
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
@@ -70,49 +70,47 @@ export default function User(props) {
   const addHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowAdd(false);
-    console.log("Add", newUser);
-    // try {
-    //   const res = await axios({
-    //     url: `${process.env.REACT_APP_API_URL}users`,
-    //     method: "POST",
-    //     headers: { Authorization: token, "User-Id": user.id },
-    //     data: user,
-    //   });
-    //   setNewUser(initialState);
-    //   if (res.data.errors) {
-    //     Toast.fire({
-    //       icon: "error",
-    //       title: res.data.errors,
-    //     });
-    //   } else {
-    //     setLastUpdate(res.data.time);
-    //     Toast.fire({
-    //       icon: "success",
-    //       title: res.data.success,
-    //     });
-    //   }
-    // } catch (error) {
-    //   if (error.response.status === 422) {
-    //     let mess1 = error.response.data.errors.username
-    //       ? error.response.data.errors.username
-    //       : "";
-    //     let mess2 = error.response.data.errors.email
-    //       ? error.response.data.errors.email
-    //       : "";
-    //     Toast.fire({
-    //       icon: "error",
-    //       title: mess1 + " " + mess2,
-    //     });
-    //   } else {
-    //     console.log(error);
-    //   }
-    // }
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}users`,
+        method: "POST",
+        headers: { Authorization: token, "User-Id": user.id },
+        data: newUser,
+      });
+      setNewUser(initialState);
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.name
+          ? error.response.data.errors.name
+          : "";
+        let mess2 = error.response.data.errors.email
+          ? error.response.data.errors.email
+          : "";
+        Toast.fire({
+          icon: "error",
+          title: mess1 + " " + mess2,
+        });
+      } else {
+        console.log(error);
+      }
+    }
   };
 
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
-    // console.log("Edit", loginUser.id, "***", loginUser.name);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}users/${loginUser.id}`,
@@ -134,7 +132,20 @@ export default function User(props) {
         });
       }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 422) {
+        let mess1 = error.response.data.errors.id
+          ? error.response.data.errors.id
+          : "";
+        let mess2 = error.response.data.errors.name
+          ? error.response.data.errors.name
+          : "";
+        Toast.fire({
+          icon: "error",
+          title: mess1 + " " + mess2,
+        });
+      } else {
+        console.log(error);
+      }
     }
   };
 

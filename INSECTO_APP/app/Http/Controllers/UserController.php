@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\User;
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -33,9 +35,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
-        //
+        $name = $request->name;
+        $email = $request->email;
+        $createFail = $this->user->createNewUser($name, $email);
+        if ($createFail) {
+            $error = 'Add duplicate user eamil!';
+            return  $this->serverResponse($error, null);
+        } else {
+            $success = 'Add user \'' . $name . '\' success';
+            return  $this->serverResponse(null, $success);
+        }
     }
 
     /**
@@ -56,10 +67,10 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $user_id)
+    public function update(UserUpdateRequest $request, $user_id)
     {
-        $id = $request->input('id');
-        $name = $request->input('name');
+        $id = $request->id;
+        $name = $request->name;
         $isSuccess = $this->user->updateUser($id, $name);
         if ($isSuccess) {
             $success = 'Update user \'' . $name . '\' success';
