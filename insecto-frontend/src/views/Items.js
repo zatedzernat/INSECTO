@@ -449,7 +449,7 @@ export default function Items(props) {
         name: "Type",
         selector: "item_type.type_name",
         sortable: true,
-        // width: "120px",
+        width: "120px",
       },
       {
         name: "Room",
@@ -481,6 +481,7 @@ export default function Items(props) {
         name: "User",
         selector: "user.name",
         sortable: true,
+        width: "100px",
 
       },
       {
