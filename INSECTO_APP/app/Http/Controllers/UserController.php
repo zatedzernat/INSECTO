@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->user->getAll();
+        $users = $this->user->findByCancelFlag('N');
         return compact('users');
     }
 
