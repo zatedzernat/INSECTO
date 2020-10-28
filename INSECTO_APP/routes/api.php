@@ -73,7 +73,7 @@ Route::group(['middleware' => 'ssoauthtoken'], function () {
     Route::post('items', 'ItemController@store');
     Route::put('items/{item_id}', 'ItemController@update');
     Route::delete('items/{item_id}', 'ItemController@deleteOne');
-    Route::post('items/selected', 'ItemController@deleteMultiple');
+    Route::post('items/selected/delete', 'ItemController@deleteMultiple');
 
     Route::post('get_item_qr/{item_code}', 'ItemController@getQRCode');
     Route::post('get_items_qr_zip', 'ItemController@getQRCodeZIP');

@@ -180,7 +180,7 @@ export default function Items(props) {
     };
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}items/selected`,
+        url: `${process.env.REACT_APP_API_URL}items/selected/delete`,
         method: "POST",
         headers: { Authorization: token, "User-Id": user.id },
         data: items,
