@@ -54,5 +54,40 @@ class UsersTableSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        DB::table('users')->insert([
+            'name' => 'Gai',
+            'email' => 'aritach@sit.kmutt.ac.th',
+            'password' => Hash::make(config('app.test_password')),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Oat',
+            'email' => 'wasan.pae@sit.kmutt.ac.th',
+            'password' => Hash::make(config('app.test_password')),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'A',
+            'email' => 'wuttichai@sit.kmutt.ac.th',
+            'password' => Hash::make(config('app.test_password')),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Toey',
+            'email' => 'chanin@sit.kmutt.ac.th',
+            'password' => Hash::make(config('app.test_password')),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Kaithong',
+            'email' => 'pichet@sit.kmutt.ac.th',
+            'password' => Hash::make(config('app.test_password')),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
     }
 }
