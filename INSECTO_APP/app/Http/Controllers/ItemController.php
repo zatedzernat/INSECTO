@@ -144,6 +144,16 @@ class ItemController extends Controller
         return $deleted;
     }
 
+    public function moveItems(Request $request)
+    {
+        $user_id = $request->header('user_id');
+        $all_items_id = $request->items;
+        $room_id = $request->room_id;
+        $items = $this->item->moveItems($all_items_id, $room_id, $user_id);
+        $success = 'Move items ID= [ ' . implode(", ", $items) . ' ] success';
+        return $this->serverResponse(null, $success);
+    }
+
     public function getQRCode(Request $request, $item_code)
     {
         // $urlRoot = $request->root(); //http://insecto.sit.kmutt.ac.th

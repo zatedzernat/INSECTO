@@ -231,6 +231,17 @@ class Item extends Model implements Auditable
         return $item;
     }
 
+    public function moveItems($all_items_id, $room_id, $user_id)
+    {
+        foreach ($all_items_id as $item_id) {
+            $item = Item::find($item_id);
+            $item->room_id = $room_id;
+            $item->user_id = $user_id;
+            $item->save();
+        }
+        return $all_items_id;
+    }
+
     public function deleteItems($model, $data, $user_id)
     {
         $collection = new Collection();
