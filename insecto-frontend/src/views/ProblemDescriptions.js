@@ -21,9 +21,9 @@ export default function ProblemDescriptions(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
-    problem_des_id: 0,
-    problem_description: "",
-    type_id: "",
+    // problem_des_id: 0,
+    // problem_description: "",
+    // type_id: "",
   };
   const [problemDesc, setProblemDesc] = useState({});
   const [selectType, setSelectType] = useState("- select type name -");

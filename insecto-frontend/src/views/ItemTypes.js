@@ -20,7 +20,7 @@ export default function ItemTypes(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
-    type_name: "",
+    // type_name: "",
   };
   const [itemType, setItemType] = useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);

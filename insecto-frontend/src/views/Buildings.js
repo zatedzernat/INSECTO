@@ -21,8 +21,8 @@ export default function Buildings(props) {
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
     // building_id: 0,
-    building_code: 0,
-    building_name: "",
+    // building_code: 0,
+    // building_name: "",
   };
   const [building, setBuilding] = useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);

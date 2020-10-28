@@ -20,8 +20,8 @@ export default function Brands(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
-    brand_id: 0,
-    brand_name: "",
+    // brand_id: 0,
+    // brand_name: "",
   };
   const [brand, setBrand] = useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);

@@ -21,10 +21,10 @@ export default function Rooms(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
-    room_id: 0,
-    room_code: "",
-    room_name: "",
-    building_id: 0,
+    // room_id: 0,
+    // room_code: "",
+    // room_name: "",
+    // building_id: 0,
   };
   const [room, setRoom] = useState({});
   const [selectBuilding, setSelectBuilding] = useState(

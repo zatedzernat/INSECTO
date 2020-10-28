@@ -22,14 +22,14 @@ export default function Items(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
-    item_code: 0,
-    item_name: "",
-    building_id: 0,
-    room_id: 0,
+    // item_code: 0,
+    // item_name: "",
+    // building_id: 0,
+    // room_id: 0,
     // brand_id: 0,
-    serial_number: "",
-    model: "",
-    group: "",
+    // serial_number: "",
+    // model: "",
+    // group: "",
   };
   const [item, setItem] = useState({});
   const [rooms, setRooms] = useState({});
