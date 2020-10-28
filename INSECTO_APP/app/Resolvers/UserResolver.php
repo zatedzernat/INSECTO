@@ -19,7 +19,7 @@ class UserResolver implements \OwenIt\Auditing\Contracts\UserResolver
         if ($user) {
             return $user;
         } else {
-            $problem_sender_id = 5;
+            $problem_sender_id = 2;
             return User::find($problem_sender_id);
         }
     }
