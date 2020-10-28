@@ -170,10 +170,11 @@ export default function User(props) {
         });
       } else {
         setLastUpdate(res.data.time);
-        Toast.fire({
+        await Toast.fire({
           icon: "success",
           title: res.data.success,
         });
+        window.location.reload();
       }
     } catch (error) {
       console.log(JSON.stringify(error));
