@@ -17,7 +17,8 @@ Route::group(['middleware' => 'ssoauthtoken'], function () {
 
     Route::get('users', 'UserController@index')->name('users');
     Route::post('users', 'UserController@store');
-    Route::put('users/{user_id}', 'UserController@update');
+    Route::put('users/{id}', 'UserController@update');
+    Route::delete('users/{id}', 'UserController@delete');
 
     Route::put('noti_problems/{noti_id}',  'NotificationProblemController@update');
 

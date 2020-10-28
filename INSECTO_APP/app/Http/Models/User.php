@@ -136,4 +136,12 @@ class User extends Authenticatable /*implements Auditable*/
         $user->save();
         return true;
     }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id)->first();
+        $user->cancel_flag = 'Y';
+        $user->save();
+        return $user;
+    }
 }

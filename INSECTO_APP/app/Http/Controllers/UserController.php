@@ -78,6 +78,13 @@ class UserController extends Controller
         }
     }
 
+    public function delete(Request $request, $id)
+    {
+        $user = $this->user->deleteUser($id);
+        $success =  'Delete user \'' . $user->name . '\' success';
+        return $this->serverResponse(null, $success);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

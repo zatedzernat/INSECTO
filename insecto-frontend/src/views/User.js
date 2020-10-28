@@ -17,8 +17,10 @@ export default function User(props) {
   const [data, setData] = useState([]);
   const [loginUser, setLoginUser] = useState({});
   const [newUser, setNewUser] = useState({});
+  const [editUser, setEditUser] = useState({});
   const [modalShowAdd, setModalShowAdd] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
+  const [modalShowDel, setModalShowDel] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
     // id: 0,
@@ -149,6 +151,34 @@ export default function User(props) {
     }
   };
 
+  const deleteHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowDel(false);
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}users/${editUser.id}`,
+        method: "DELETE",
+        headers: { Authorization: token, "User-Id": user.id },
+        data: editUser.id,
+      });
+      setEditUser(initialState);
+      if (res.data.error) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
+  };
+
   const userTable = (data) => {
     const columns = [
       {
@@ -173,7 +203,33 @@ export default function User(props) {
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
       },
+      {
+        name: "Action",
+        cell: (row) => (
+          <>
+            {/* <span
+              onClick={() => {
+                setModalShowEdit(true);
+                setBrand(row);
+              }}
+            >
+              <i className="ion-edit" />
+            </span>
+            &emsp; */}
+            <span
+              onClick={() => {
+                setModalShowDel(true);
+                setEditUser(row);
+              }}
+            >
+              <i className="fa fa-times" />
+            </span>
+          </>
+        ),
+        button: true,
+      },
     ];
+
     const myFonts = {
       rows: {
         style: {
@@ -372,6 +428,24 @@ export default function User(props) {
               method="POST"
               onSubmit={addHandleSubmit}
               button="Add"
+            />
+
+            <FormModal
+              show={modalShowDel}
+              onHide={() => {
+                setModalShowDel(false);
+                setEditUser(initialState);
+              }}
+              title="Are you sure that you want to delete?"
+              body={
+                <div className="form-group col-form-label">
+                  <p>User: "{editUser.name}"</p>
+                </div>
+              }
+              method="POST"
+              onSubmit={deleteHandleSubmit}
+              button="Confirm"
+              close="Cancel"
             />
           </>
         ) : null
