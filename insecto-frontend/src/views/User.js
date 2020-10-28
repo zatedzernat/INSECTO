@@ -5,9 +5,10 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import _ from "lodash";
 import DataTable from "react-data-table-component";
-import { Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import FormModal from "../components/FormModal";
+import moment from "moment";
 
 export default function User(props) {
   const token = Cookies.get("token");
@@ -20,9 +21,9 @@ export default function User(props) {
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   const initialState = {
-    id: 0,
-    name: "",
-    email: "",
+    // id: 0,
+    // name: "",
+    // email: "",
   };
 
   useEffect(() => {
@@ -39,22 +40,16 @@ export default function User(props) {
     setIsLoading(true);
     try {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}statuses`,
+        url: `${process.env.REACT_APP_API_URL}users`,
         method: "GET",
         headers: { Authorization: token, "User-Id": user.id },
       });
       setData(res.data);
       setIsLoading(false);
-      setLoginUser(user)
     } catch (error) {
       console.log(error);
     }
   };
-
-  // useEffect(() => {
-  //   fetchData();
-  //   // eslint-disable-next-line
-  // }, [user]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -117,55 +112,55 @@ export default function User(props) {
   const editHandleSubmit = async (event) => {
     event.preventDefault();
     setModalShowEdit(false);
-    console.log("Edit", loginUser.id ,'***', loginUser.name);
-    // try {
-    //   const res = await axios({
-    //     url: `${process.env.REACT_APP_API_URL}users`,
-    //     method: "PUT",
-    //     headers: { Authorization: token, "User-Id": user.id },
-    //     data: loginUser,
-    //   });
-    //   setLoginUser(initialState);
-    //   if (res.data.errors) {
-    //     Toast.fire({
-    //       icon: "error",
-    //       title: res.data.errors,
-    //     });
-    //   } else {
-    //     setLastUpdate(res.data.time);
-    //     Toast.fire({
-    //       icon: "success",
-    //       title: res.data.success,
-    //     });
-    //   }
-    // } catch (error) {
-    //   if (error.response.status === 422) {
-    //     Toast.fire({
-    //       icon: "error",
-    //       title: error.response.data.errors.username,
-    //     });
-    //   } else {
-    //     console.log(error);
-    //   }
-    // }
+    // console.log("Edit", loginUser.id, "***", loginUser.name);
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}users/${loginUser.id}`,
+        method: "PUT",
+        headers: { Authorization: token, "User-Id": user.id },
+        data: loginUser,
+      });
+      setLoginUser(initialState);
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const userTable = (data) => {
     const columns = [
       {
         name: "#",
-        selector: "status_id",
+        selector: "id",
+        width: "70px",
         sortable: true,
       },
       {
-        name: "Name*",
-        selector: "status_name",
+        name: "Name",
+        selector: "name",
         sortable: true,
       },
       {
         name: "Email",
-        selector: "status_description",
+        selector: "email",
         sortable: true,
+      },
+      {
+        name: "Last Updated",
+        selector: "updated_at",
+        sortable: true,
+        format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
       },
     ];
     const myFonts = {
@@ -183,7 +178,7 @@ export default function User(props) {
     return (
       <DataTable
         columns={columns}
-        data={data.statuses}
+        data={data.users}
         striped
         noHeader
         responsive
@@ -213,7 +208,7 @@ export default function User(props) {
                   style={{ color: "white", backgroundColor: "#8950FC" }}
                   onClick={() => {
                     setModalShowEdit(true);
-                    setLoginUser(user);
+                    setLoginUser(_.find(data.users, { id: user?.id }));
                   }}
                 >
                   Edit Profile
@@ -222,9 +217,9 @@ export default function User(props) {
               body={
                 <>
                   <div>
-                    ID: {user?.id} <br />
-                    Username: {user?.name} <br />
-                    Email: {user?.email}
+                    ID: {_.find(data.users, { id: user?.id })?.id} <br />
+                    Name: {_.find(data.users, { id: user?.id })?.name} <br />
+                    Email: {_.find(data.users, { id: user?.id })?.email}
                   </div>
                 </>
               }
@@ -275,12 +270,12 @@ export default function User(props) {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-sm-5 col-form-label">Username:</label>
+                    <label className="col-sm-5 col-form-label">Name:</label>
                     <div className="col-sm-7">
                       <input
                         type="text"
                         className="form-control"
-                        name="username" 
+                        name="username"
                         value={loginUser.name}
                         onChange={(event) =>
                           setLoginUser({
@@ -294,9 +289,7 @@ export default function User(props) {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-sm-5 col-form-label">
-                      Email <span style={styles.container}>*</span>
-                    </label>
+                    <label className="col-sm-5 col-form-label">Email:</label>
                     <div className="col-sm-7">
                       <input
                         type="text"
@@ -328,7 +321,7 @@ export default function User(props) {
                 <div>
                   <div className="form-group row">
                     <label className="col-sm-4 col-form-label">
-                      Username: <span style={styles.container}>*</span>
+                      Name: <span style={styles.container}>*</span>
                     </label>
                     <div className="col-sm-8">
                       <input
@@ -336,10 +329,10 @@ export default function User(props) {
                         className="form-control"
                         name="username"
                         onChange={(event) => {
-                            setNewUser({
-                              ...newUser,
-                              name: event.target.value,
-                            });
+                          setNewUser({
+                            ...newUser,
+                            name: event.target.value,
+                          });
                         }}
                         required
                         autoFocus

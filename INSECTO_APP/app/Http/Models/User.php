@@ -65,4 +65,12 @@ class User extends Authenticatable
             return null;
         }
     }
+
+    public function updateUser($id, $name)
+    {
+        $user = User::find($id);
+        $user->name = $name;
+        $user->save();
+        return true;
+    }
 }
