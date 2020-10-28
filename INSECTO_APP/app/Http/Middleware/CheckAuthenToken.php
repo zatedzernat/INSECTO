@@ -48,7 +48,7 @@ class CheckAuthenToken
 
     public function checkUser($user_id)
     {
-        $user = User::find($user_id);
+        $user = User::find($user_id)->where('cancel_flag', 'N')->first();
         if ($user) {
             return true;
         } else {
