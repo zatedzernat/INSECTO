@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'ssoauthtoken'], function () {
 
+    Route::get('users', 'UserController@index')->name('users');
+    Route::post('users', 'UserController@store');
+    Route::put('users/{user_id}', 'UserController@update');
+
     Route::put('noti_problems/{noti_id}',  'NotificationProblemController@update');
 
     Route::post('noti_problems/export', 'NotificationProblemController@exportNotiProbs');
