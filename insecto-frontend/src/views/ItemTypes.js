@@ -214,7 +214,7 @@ export default function ItemTypes(props) {
         headers: {
           "content-type": "multipart/form-data",
           Authorization: token,
-          user_id: user.id,
+          "User-Id": user.id,
         },
         data: formData,
       });
@@ -278,7 +278,7 @@ export default function ItemTypes(props) {
         responseType: "blob",
         headers: {
           Authorization: token,
-          user_id: user.id,
+          "User-Id": user.id,
         },
       });
       // ref = https://stackoverflow.com/questions/58131035/download-file-from-the-server-laravel-and-reactjs

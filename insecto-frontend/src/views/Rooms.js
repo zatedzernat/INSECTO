@@ -284,7 +284,7 @@ export default function Rooms(props) {
         headers: {
           "content-type": "multipart/form-data",
           Authorization: token,
-          user_id: user.id,
+          "User-Id": user.id,
         },
         data: formData,
       });
