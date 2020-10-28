@@ -128,10 +128,11 @@ export default function User(props) {
         });
       } else {
         setLastUpdate(res.data.time);
-        Toast.fire({
+        await Toast.fire({
           icon: "success",
           title: res.data.success,
         });
+        window.location.reload();
       }
     } catch (error) {
       if (error.response.status === 422) {
