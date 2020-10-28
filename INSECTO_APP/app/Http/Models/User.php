@@ -5,10 +5,37 @@ namespace App\Http\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Arr;
+// use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable
+class User extends Authenticatable /*implements Auditable*/
 {
+    // use \OwenIt\Auditing\Auditable;
     use Notifiable;
+
+    // /**
+    //  * {@inheritdoc}
+    //  */
+    // public function transformAudit(array $data): array
+    // {
+    //     if (Arr::has($data['old_values'], 'cancel_flag') and Arr::has($data['new_values'], 'cancel_flag')) {
+    //         if ($data['old_values']['cancel_flag'] == 'N' and $data['new_values']['cancel_flag'] == 'Y') {
+    //             $data['event'] = 'deleted';
+    //         } elseif ($data['old_values']['cancel_flag'] == 'Y' and $data['new_values']['cancel_flag'] == 'N') {
+    //             $data['event'] = 'restored';
+    //         }
+    //     }
+
+    //     return $data;
+    // }
+
+    // /**
+    //  * Attributes to exclude from the Audit.
+    //  *
+    //  * @var array
+    //  */
+    // protected $auditExclude = [
+    //     'sso_token',
+    // ];
 
     /**
      * The attributes that are mass assignable.
@@ -42,10 +69,18 @@ class User extends Authenticatable
         return User::all();
     }
 
+    public function findByCancelFlag($string)
+    {
+        return User::where('cancel_flag', $string)->get();
+    }
+
     public function getToken($slice_arrays)
     {
         $email = Arr::get($slice_arrays, 'email');
-        $user = User::where('email', $email)->first();
+        $user = User::where([
+            ['email', $email],
+            ['cancel_flag', 'N'],
+        ])->first();
         $token = null;
         if ($user) {
             $token = Arr::get($slice_arrays, 'token.token');
@@ -58,7 +93,10 @@ class User extends Authenticatable
     }
     public function getUser($email)
     {
-        $user = User::where('email', $email)->first();
+        $user = User::where([
+            ['email', $email],
+            ['cancel_flag', 'N'],
+        ])->first();
         if ($user) {
             return $user;
         } else {
