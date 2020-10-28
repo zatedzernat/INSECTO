@@ -95,7 +95,7 @@ export default function Items(props) {
     setSelectBuilding("- select building name -");
     setSelectRoom("- select room name -");
     setSelectBrand("- select brand name -");
-    setSelectType("- select typ name -");
+    setSelectType("- select type name -");
     setModalShowAdd(false);
     try {
       const res = await axios({
