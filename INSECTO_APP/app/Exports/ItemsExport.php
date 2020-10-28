@@ -40,7 +40,8 @@ class ItemsExport implements FromCollection, WithHeadings, WithMapping, WithTitl
             'model',
             'note',
             'cancel_flag',
-            'user_id'
+            'user_id',
+            'qr_url'
         ];
     }
 
@@ -60,7 +61,8 @@ class ItemsExport implements FromCollection, WithHeadings, WithMapping, WithTitl
             $item->model,
             $item->note,
             $item->cancel_flag,
-            $item->user_id
+            $item->user_id,
+            $item->qr_url
         ];
     }
 

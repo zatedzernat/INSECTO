@@ -62,7 +62,7 @@ export default function Items(props) {
       setIsExport(false);
       setIsGenAllQR(false);
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.log(error);
     }
   };
 
@@ -363,13 +363,17 @@ export default function Items(props) {
   const exportItems = async (event) => {
     setIsExport(true);
     event.preventDefault();
-    let items = {
-      items: selectedRows.map(({ item_id }) => item_id),
-    };
+    // let items = {
+    //   items: selectedRows.map(({ item_id }) => item_id),
+    // };
+    // let url = window.location.origin;
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}items/export`,
-        data: items,
+        data: {
+          items: selectedRows.map(({ item_id }) => item_id),
+          url: window.location.origin,
+        },
         method: "POST",
         responseType: "blob",
         headers: { Authorization: token, "User-Id": user.id },
@@ -384,7 +388,7 @@ export default function Items(props) {
       setIsExport(false);
       setToggleCleared(!toggleCleared);
     } catch (error) {
-      console.log(JSON.stringify(error.response));
+      console.log(error);
     }
   };
 

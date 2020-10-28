@@ -180,7 +180,8 @@ class ItemController extends Controller
     public function exportItems(Request $request)
     {
         $all_items_id = $request->items;
-        $isSuccess = $this->item->exportItems($all_items_id);
+        $urlRoot = $request->url;
+        $isSuccess = $this->item->exportItems($all_items_id, $urlRoot);
         if ($isSuccess[0]) {
             return $isSuccess[1];
         } else

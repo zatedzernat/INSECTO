@@ -391,9 +391,13 @@ class Item extends Model implements Auditable
         return $duplicated_codes;
     }
 
-    public function exportItems($all_items_id)
+    public function exportItems($all_items_id, $urlRoot)
     {
         $items = Item::find($all_items_id);
+        foreach ($items as $item) {
+            $urlQR = $urlRoot . "/sendproblem/" . $item->item_code;
+            $item->qr_url = $urlQR;
+        }
         if ($items->isEmpty()) {
             $error =  'Please add item before export';
             return array(false, $error);
