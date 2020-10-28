@@ -437,19 +437,19 @@ export default function Items(props) {
         name: "Item Code*",
         selector: "item_code",
         sortable: true,
-        width: "155px",
+        width: "120px",
       },
       {
         name: "Item Name",
         selector: "item_name",
         sortable: true,
-        width: "150px",
+        width: "250px",
       },
       {
         name: "Type",
         selector: "item_type.type_name",
         sortable: true,
-        width: "130px",
+        // width: "120px",
       },
       {
         name: "Room",
@@ -462,7 +462,7 @@ export default function Items(props) {
         selector: "group",
         sortable: true,
         center: true,
-        width: "60px",
+        width: "45px",
       },
       // {
       //   name: "Created At",
@@ -475,12 +475,13 @@ export default function Items(props) {
         selector: "updated_at",
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
-        width: "190px",
+        width: "195px",
       },
       {
         name: "User",
         selector: "user.name",
         sortable: true,
+
       },
       {
         name: "Action",

@@ -544,7 +544,7 @@ export default function NotificationProblems(props) {
                 </div>
                 <div className="form-group row">
                   <label className="col-sm-6 col-form-label">
-                    Service Desk Code:{" "}
+                    Servicedesk Code:{" "}
                   </label>
                   <div className="col-sm-6 col-form-label">
                     {notiProblem.service_desk_code ?? "-"}
@@ -569,7 +569,7 @@ export default function NotificationProblems(props) {
             body={
               <div className="form-group row">
                 <label className="col-sm-5 col-form-label">
-                  Service Desk Code: <span style={styles.container}>*</span>
+                  Servicedesk Code: <span style={styles.container}>*</span>
                 </label>
                 <div className="col-sm-7">
                   <input
