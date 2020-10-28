@@ -91,7 +91,6 @@ class Brand extends Model implements Auditable
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$brand->wasRecentlyCreated) {
             if ($brand->cancel_flag == "Y") {
-                //todo set update by ตาม LDAP
                 $brand->cancel_flag = "N";
                 $brand->user_id = $user_id;
                 $brand->save();

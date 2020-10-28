@@ -113,7 +113,6 @@ class Room extends Model implements Auditable
         //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
         if (!$room->wasRecentlyCreated) {
             if ($room->cancel_flag == "Y") {
-                //todo set update by ตาม LDAP
                 $room->room_name = $room_name;
                 $room->building_id = $building_id;
                 $room->cancel_flag = "N";
