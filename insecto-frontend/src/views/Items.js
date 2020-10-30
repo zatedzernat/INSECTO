@@ -483,13 +483,13 @@ export default function Items(props) {
         name: "Item Name",
         selector: "item_name",
         sortable: true,
-        width: "250px",
+        width: "260px",
       },
       {
         name: "Type",
         selector: "item_type.type_name",
         sortable: true,
-        width: "120px",
+        width: "180px",
       },
       {
         name: "Room",
@@ -515,13 +515,12 @@ export default function Items(props) {
         selector: "updated_at",
         sortable: true,
         format: (r) => moment(r.updated_at).format("D/MM/YYYY - HH:mm:ss"),
-        width: "195px",
+        width: " 200px",
       },
       {
         name: "User",
         selector: "user.name",
         sortable: true,
-        width: "100px",
       },
       {
         name: "Action",
