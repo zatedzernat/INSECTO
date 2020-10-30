@@ -18,6 +18,7 @@ export default function Items(props) {
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [modalShowImport, setModalShowImport] = useState(false);
+  const [modalShowMove, setModalShowMove] = useState(false);
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
@@ -45,6 +46,7 @@ export default function Items(props) {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
+  const [isMove, setMove] = useState(false);
   const [isGenAllQR, setIsGenAllQR] = useState(false);
   const token = Cookies.get("token");
   const { user } = props;
@@ -244,6 +246,10 @@ export default function Items(props) {
         console.log(error);
       }
     }
+  };
+  const moveHandleSubmit = async (event) => {
+    event.preventDefault();
+    setModalShowMove(false);
   };
 
   const getItemQRCode = async (row) => {
@@ -481,7 +487,6 @@ export default function Items(props) {
         name: "User",
         selector: "user.name",
         sortable: true,
-
       },
       {
         name: "Action",
@@ -719,6 +724,25 @@ export default function Items(props) {
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
+                    &emsp;
+                    {isMove === false ? (
+                      <Button
+                        variant="default"
+                        onClick={() => {
+                          setModalShowMove(true);
+                        }}
+                        style={{ color: "white", backgroundColor: "#8950FC" }}
+                      >
+                        Move
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#8950FC" }}
+                      >
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 ) : (
                   <>
@@ -737,6 +761,14 @@ export default function Items(props) {
                     >
                       <i className="fa fa-qrcode" />
                       &nbsp; Items QR Code
+                    </Button>
+                    &emsp;
+                    <Button
+                      variant="default"
+                      style={{ color: "white", backgroundColor: "#8950FC" }}
+                      disabled
+                    >
+                      Move
                     </Button>
                   </>
                 )}
@@ -1074,6 +1106,89 @@ export default function Items(props) {
                 ? deleteSelectedHandleSubmit
                 : deleteHandleSubmit
             }
+            button="Confirm"
+            close="Cancel"
+          />
+          <FormModal
+            show={modalShowMove}
+            onHide={() => {
+              setModalShowMove(false);
+              setItem(initialState);
+            }}
+            title="Move Item ?"
+            body={
+              <div>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBuilding}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.buildings, (building) => (
+                          <Dropdown.Item
+                            key={building.building_id}
+                            eventKey={building.building_id}
+                            onSelect={(eventKey) => {
+                              setRooms(building.rooms);
+                              setSelectBuilding(building.building_name);
+                              setSelectRoom("- select room name -");
+                              setItem({
+                                ...item,
+                                room_id: null,
+                              });
+                            }}
+                          >
+                            {building.building_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Room: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectRoom}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(rooms, (room) => (
+                          <Dropdown.Item
+                            key={room.room_id}
+                            eventKey={room.room_id}
+                            onSelect={(eventKey) => {
+                              setItem({
+                                ...item,
+                                room_id: eventKey,
+                              });
+                              setSelectRoom(room.room_name);
+                            }}
+                          >
+                            {room.room_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
+                  </div>
+                </div>
+              </div>
+            }
+            method="POST"
+            onSubmit={moveHandleSubmit}
             button="Confirm"
             close="Cancel"
           />
