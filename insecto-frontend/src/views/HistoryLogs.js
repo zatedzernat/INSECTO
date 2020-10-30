@@ -149,97 +149,100 @@ export default function HistoryLogs(props) {
             hasMore={hasMore}
             loader={
               countDays ? (
-              <div className="overlay">
-                <i className="fas fa-2x fa-sync-alt fa-spin"></i>
-                {/* wait a moment */}
-              </div>
+                <div className="overlay">
+                  <i className="fas fa-2x fa-sync-alt fa-spin"></i>
+                  {/* wait a moment */}
+                </div>
               ) : null
             }
             endMessage={
               countDays ? (
-              <p style={{ textAlign: "center", color: "rgb(209, 209, 209)" }}>
-                Looks like you've reached the end
-              </p>
+                <p style={{ textAlign: "center", color: "rgb(209, 209, 209)" }}>
+                  Looks like you've reached the end
+                </p>
               ) : null
             }
-          >{countDays ? (
-            _.map(props.data, (value, key, i) => (
-              <div
-                key={key}
-                className="card card-info"
-                style={{ backgroundColor: "#EFEBE9" }}
-              >
+          >
+            {countDays ? (
+              _.map(props.data, (value, key, i) => (
                 <div
-                  className="card-header"
-                  style={{ backgroundColor: "#BCAAA4" }}
+                  key={key}
+                  className="card card-info"
+                  style={{ backgroundColor: "#EFEBE9" }}
                 >
-                  <h3 className="card-title">{key}</h3>
-                  {i === 1 ? (
-                    <div className="card-tools">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                      >
-                        <i className="fas fa-plus" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="card-tools">
-                      <button
-                        type="button"
-                        className="btn btn-tool"
-                        data-card-widget="collapse"
-                      >
-                        <i className="fas fa-minus"></i>
-                      </button>
-                    </div>
-                  )}
-                </div>
-                <div className="card-body">
-                  {_.map(value, (log) => (
-                    <Row key={log.id}>
-                      <Col>{moment(log.created_at).format("HH:mm:ss")}</Col>
-                      <Col xs={3}>
-                        {log.event[0].toUpperCase() + log.event.slice(1)}
-                        <Button
-                          style={styles.paddingLink}
-                          variant="link"
-                          onClick={() => {
-                            setModalShowDetail(true);
-                            setHistoryLog(log);
-                          }}
+                  <div
+                    className="card-header"
+                    style={{ backgroundColor: "#BCAAA4" }}
+                  >
+                    <h3 className="card-title">{key}</h3>
+                    {i === 1 ? (
+                      <div className="card-tools">
+                        <button
+                          type="button"
+                          className="btn btn-tool"
+                          data-card-widget="collapse"
                         >
-                          {getModel(log.auditable_type)}
-                        </Button>
-                      </Col>
-                      <Col xs={5}>
-                        {log.old_values.length === 0
-                          ? _.map(log.new_values, (value, key) => (
-                              <div key={Math.random()}>
-                                - {upperKey(key)}: {value}
-                              </div>
-                            ))
-                          : _.map(log.old_values, (value, key) => (
-                              <div key={Math.random()}>
-                                - {upperKey(key)} changed from "
-                                {value ?? "null"}" to "
-                                {_.get(log.new_values, key)}"
-                              </div>
-                            ))}
-                        <br />
-                      </Col>
-                      <Col xs={3}>
-                        {_.find(userAll, { id: log.user_id })?.name ? (
-                          <>by {_.find(userAll, { id: log.user_id })?.name}</>
-                        ) : null}
-                      </Col>
-                    </Row>
-                  ))}
+                          <i className="fas fa-plus" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="card-tools">
+                        <button
+                          type="button"
+                          className="btn btn-tool"
+                          data-card-widget="collapse"
+                        >
+                          <i className="fas fa-minus"></i>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="card-body">
+                    {_.map(value, (log) => (
+                      <Row key={log.id}>
+                        <Col>{moment(log.created_at).format("HH:mm:ss")}</Col>
+                        <Col xs={3}>
+                          {log.event[0].toUpperCase() + log.event.slice(1)}
+                          <Button
+                            style={styles.paddingLink}
+                            variant="link"
+                            onClick={() => {
+                              setModalShowDetail(true);
+                              setHistoryLog(log);
+                            }}
+                          >
+                            {getModel(log.auditable_type)}
+                          </Button>
+                        </Col>
+                        <Col xs={5}>
+                          {log.old_values.length === 0
+                            ? _.map(log.new_values, (value, key) => (
+                                <div key={Math.random()}>
+                                  - {upperKey(key)}: {value}
+                                </div>
+                              ))
+                            : _.map(log.old_values, (value, key) => (
+                                <div key={Math.random()}>
+                                  - {upperKey(key)} changed from "
+                                  {value ?? "null"}" to "
+                                  {_.get(log.new_values, key)}"
+                                </div>
+                              ))}
+                          <br />
+                        </Col>
+                        <Col xs={3}>
+                          {_.find(userAll, { id: log.user_id })?.name ? (
+                            <>by {_.find(userAll, { id: log.user_id })?.name}</>
+                          ) : null}
+                        </Col>
+                      </Row>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))
-            ) : <div className="overlay">There are no data to display</div>}
+              ))
+            ) : (
+              <div className="overlay">There are no data to display</div>
+            )}
           </InfiniteScroll>
         </div>
 
@@ -290,7 +293,7 @@ export default function HistoryLogs(props) {
                     <Row className="text-right">
                       <Col>
                         <div className="form-group row">
-                          <label className="col-form-label">Form: </label>
+                          <label className="col-form-label">From: </label>
                           <div className="col-10">
                             <input
                               className="form-control"
@@ -303,6 +306,7 @@ export default function HistoryLogs(props) {
                                   from_date: event.target.value,
                                 })
                               }
+                              max={moment(logsFromTo.to_date).format("YYYY-MM-DD")}
                             />
                           </div>
                         </div>
@@ -322,6 +326,8 @@ export default function HistoryLogs(props) {
                                   to_date: event.target.value,
                                 })
                               }
+                              min={moment(logsFromTo.from_date).format("YYYY-MM-DD")}
+                              max={moment().format("YYYY-MM-DD")}
                             />
                           </div>
                         </div>
