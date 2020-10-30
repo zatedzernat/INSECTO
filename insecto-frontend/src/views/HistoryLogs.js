@@ -147,18 +147,22 @@ export default function HistoryLogs(props) {
             next={fetchMoreData}
             hasMore={hasMore}
             loader={
+              props.data ? (
               <div className="overlay">
                 <i className="fas fa-2x fa-sync-alt fa-spin"></i>
                 {/* wait a moment */}
               </div>
+              ) : <div className="overlay">There are no data to display</div>
             }
             endMessage={
+              props.data ? (
               <p style={{ textAlign: "center", color: "rgb(209, 209, 209)" }}>
                 Looks like you've reached the end
               </p>
+              ) : null
             }
-          >
-            {_.map(props.data, (value, key, i) => (
+          >{props.data ? (
+            _.map(props.data, (value, key, i) => (
               <div
                 key={key}
                 className="card card-info"
@@ -233,7 +237,8 @@ export default function HistoryLogs(props) {
                   ))}
                 </div>
               </div>
-            ))}
+            ))
+            ) : null}
           </InfiniteScroll>
         </div>
 
