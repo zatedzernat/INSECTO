@@ -46,8 +46,9 @@ export default function Items(props) {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
-  const [isMove, setMove] = useState(false);
   const [isGenAllQR, setIsGenAllQR] = useState(false);
+  const [moveto, setMoveto] = useState(initialState);
+  const [isMove, setIsMove] = useState(false);
   const token = Cookies.get("token");
   const { user } = props;
 
@@ -248,8 +249,41 @@ export default function Items(props) {
     }
   };
   const moveHandleSubmit = async (event) => {
+    setIsMove(true);
     event.preventDefault();
+    setSelectBuilding("- select building name -");
+    setSelectRoom("- select room name -");
     setModalShowMove(false);
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items/selected/move`,
+        method: "POST",
+        headers: { Authorization: token, "User-Id": user.id },
+        data: {
+          items: selectedRows.map(({ item_id }) => item_id),
+          room_id: moveto,
+        },
+      });
+      setToggleCleared(!toggleCleared);
+      setMoveto(initialState);
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+          width: 450,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+          width: 450,
+        });
+      }
+      setIsMove(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getItemQRCode = async (row) => {
@@ -488,7 +522,6 @@ export default function Items(props) {
         selector: "user.name",
         sortable: true,
         width: "100px",
-
       },
       {
         name: "Action",
@@ -670,15 +703,44 @@ export default function Items(props) {
                     >
                       Delete
                     </Button>
+                    &emsp;
+                    {isMove === false ? (
+                      <Button
+                        variant="default"
+                        onClick={() => {
+                          setModalShowMove(true);
+                        }}
+                        style={{ color: "white", backgroundColor: "#8950FC" }}
+                      >
+                        Move
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#8950FC" }}
+                      >
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 ) : (
-                  <Button
-                    variant="default"
-                    style={{ color: "white", backgroundColor: "#F64E60" }}
-                    disabled
-                  >
-                    Delete
-                  </Button>
+                  <>
+                    <Button
+                      variant="default"
+                      style={{ color: "white", backgroundColor: "#F64E60" }}
+                      disabled
+                    >
+                      Delete
+                    </Button>
+                    &emsp;
+                    <Button
+                      variant="default"
+                      style={{ color: "white", backgroundColor: "#8950FC" }}
+                      disabled
+                    >
+                      Move
+                    </Button>
+                  </>
                 )}
                 &emsp;
                 <Button
@@ -727,24 +789,6 @@ export default function Items(props) {
                       </Button>
                     )}
                     &emsp;
-                    {isMove === false ? (
-                      <Button
-                        variant="default"
-                        onClick={() => {
-                          setModalShowMove(true);
-                        }}
-                        style={{ color: "white", backgroundColor: "#8950FC" }}
-                      >
-                        Move
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="default"
-                        style={{ color: "white", backgroundColor: "#8950FC" }}
-                      >
-                        <i className="fas fa-1x fa-sync-alt fa-spin" />
-                      </Button>
-                    )}
                   </>
                 ) : (
                   <>
@@ -763,14 +807,6 @@ export default function Items(props) {
                     >
                       <i className="fa fa-qrcode" />
                       &nbsp; Items QR Code
-                    </Button>
-                    &emsp;
-                    <Button
-                      variant="default"
-                      style={{ color: "white", backgroundColor: "#8950FC" }}
-                      disabled
-                    >
-                      Move
                     </Button>
                   </>
                 )}
@@ -1115,9 +1151,9 @@ export default function Items(props) {
             show={modalShowMove}
             onHide={() => {
               setModalShowMove(false);
-              setItem(initialState);
+              setSelectBuilding("- select building name -");
             }}
-            title="Move Item ?"
+            title="Move items to room"
             body={
               <div>
                 <div className="form-group row">
@@ -1141,10 +1177,6 @@ export default function Items(props) {
                               setRooms(building.rooms);
                               setSelectBuilding(building.building_name);
                               setSelectRoom("- select room name -");
-                              setItem({
-                                ...item,
-                                room_id: null,
-                              });
                             }}
                           >
                             {building.building_name}
@@ -1173,18 +1205,15 @@ export default function Items(props) {
                             key={room.room_id}
                             eventKey={room.room_id}
                             onSelect={(eventKey) => {
-                              setItem({
-                                ...item,
-                                room_id: eventKey,
-                              });
                               setSelectRoom(room.room_name);
+                              setMoveto(eventKey);
                             }}
                           >
                             {room.room_name}
                           </Dropdown.Item>
                         ))}
                       </Dropdown.Menu>
-                    </Dropdown>{" "}
+                    </Dropdown>
                   </div>
                 </div>
               </div>

@@ -150,7 +150,8 @@ class ItemController extends Controller
         $all_items_id = $request->items;
         $room_id = $request->room_id;
         $items = $this->item->moveItems($all_items_id, $room_id, $user_id);
-        $success = 'Move items ID= [ ' . implode(", ", $items) . ' ] success';
+        $room = $this->room->findByID($room_id);
+        $success = 'Move items ID = [' . implode(", ", $items) . '] to ' . $room->room_name . ' success';
         return $this->serverResponse(null, $success);
     }
 
