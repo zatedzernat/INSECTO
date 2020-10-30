@@ -565,7 +565,7 @@ export default function NotificationProblems(props) {
           <FormModal
             show={modalShowSDC}
             onHide={() => setModalShowSDC(false)}
-            title="Enter your service desk code"
+            title="Enter your servicedesk code"
             body={
               <div className="form-group row">
                 <label className="col-sm-5 col-form-label">
