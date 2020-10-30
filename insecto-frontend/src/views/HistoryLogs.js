@@ -154,7 +154,6 @@ export default function HistoryLogs(props) {
                 {/* wait a moment */}
               </div>
               ) : null
-              // <div className="overlay">There are no data to display</div>
             }
             endMessage={
               countDays ? (
