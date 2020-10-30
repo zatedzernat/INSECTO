@@ -18,6 +18,7 @@ export default function Items(props) {
   const [modalShowDel, setModalShowDel] = useState(false);
   const [modalShowEdit, setModalShowEdit] = useState(false);
   const [modalShowImport, setModalShowImport] = useState(false);
+  const [modalShowMove, setModalShowMove] = useState(false);
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
@@ -46,6 +47,8 @@ export default function Items(props) {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [isExport, setIsExport] = useState(false);
   const [isGenAllQR, setIsGenAllQR] = useState(false);
+  const [moveto, setMoveto] = useState(initialState);
+  const [isMove, setIsMove] = useState(false);
   const token = Cookies.get("token");
   const { user } = props;
 
@@ -243,6 +246,43 @@ export default function Items(props) {
       } else {
         console.log(error);
       }
+    }
+  };
+  const moveHandleSubmit = async (event) => {
+    setIsMove(true);
+    event.preventDefault();
+    setSelectBuilding("- select building name -");
+    setSelectRoom("- select room name -");
+    setModalShowMove(false);
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}items/selected/move`,
+        method: "POST",
+        headers: { Authorization: token, "User-Id": user.id },
+        data: {
+          items: selectedRows.map(({ item_id }) => item_id),
+          room_id: moveto,
+        },
+      });
+      setToggleCleared(!toggleCleared);
+      setMoveto(initialState);
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+          width: 450,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+          width: 450,
+        });
+      }
+      setIsMove(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -482,7 +522,6 @@ export default function Items(props) {
         selector: "user.name",
         sortable: true,
         width: "100px",
-
       },
       {
         name: "Action",
@@ -664,15 +703,44 @@ export default function Items(props) {
                     >
                       Delete
                     </Button>
+                    &emsp;
+                    {isMove === false ? (
+                      <Button
+                        variant="default"
+                        onClick={() => {
+                          setModalShowMove(true);
+                        }}
+                        style={{ color: "white", backgroundColor: "#8950FC" }}
+                      >
+                        Move
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="default"
+                        style={{ color: "white", backgroundColor: "#8950FC" }}
+                      >
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )}
                   </>
                 ) : (
-                  <Button
-                    variant="default"
-                    style={{ color: "white", backgroundColor: "#F64E60" }}
-                    disabled
-                  >
-                    Delete
-                  </Button>
+                  <>
+                    <Button
+                      variant="default"
+                      style={{ color: "white", backgroundColor: "#F64E60" }}
+                      disabled
+                    >
+                      Delete
+                    </Button>
+                    &emsp;
+                    <Button
+                      variant="default"
+                      style={{ color: "white", backgroundColor: "#8950FC" }}
+                      disabled
+                    >
+                      Move
+                    </Button>
+                  </>
                 )}
                 &emsp;
                 <Button
@@ -720,6 +788,7 @@ export default function Items(props) {
                         <i className="fas fa-1x fa-sync-alt fa-spin" />
                       </Button>
                     )}
+                    &emsp;
                   </>
                 ) : (
                   <>
@@ -1075,6 +1144,82 @@ export default function Items(props) {
                 ? deleteSelectedHandleSubmit
                 : deleteHandleSubmit
             }
+            button="Confirm"
+            close="Cancel"
+          />
+          <FormModal
+            show={modalShowMove}
+            onHide={() => {
+              setModalShowMove(false);
+              setSelectBuilding("- select building name -");
+            }}
+            title="Move items to room"
+            body={
+              <div>
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Building: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectBuilding}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(data.buildings, (building) => (
+                          <Dropdown.Item
+                            key={building.building_id}
+                            eventKey={building.building_id}
+                            onSelect={(eventKey) => {
+                              setRooms(building.rooms);
+                              setSelectBuilding(building.building_name);
+                              setSelectRoom("- select room name -");
+                            }}
+                          >
+                            {building.building_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>{" "}
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">
+                    Room: <span style={styles.container}>*</span>
+                  </label>
+                  <div className="col-sm-8">
+                    <Dropdown as={ButtonGroup}>
+                      <Dropdown.Toggle
+                        style={{ width: "303px" }}
+                        variant="outline-primary"
+                      >
+                        {selectRoom}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="super-colors">
+                        {_.map(rooms, (room) => (
+                          <Dropdown.Item
+                            key={room.room_id}
+                            eventKey={room.room_id}
+                            onSelect={(eventKey) => {
+                              setSelectRoom(room.room_name);
+                              setMoveto(eventKey);
+                            }}
+                          >
+                            {room.room_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
+                </div>
+              </div>
+            }
+            method="POST"
+            onSubmit={moveHandleSubmit}
             button="Confirm"
             close="Cancel"
           />
