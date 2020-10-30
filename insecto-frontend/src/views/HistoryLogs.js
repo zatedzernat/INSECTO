@@ -70,6 +70,7 @@ export default function HistoryLogs(props) {
     // script.async = true;
     // document.body.appendChild(script);
     fetchData();
+    setCount(7);
     // return () => {
     //   document.body.removeChild(script);
     // };
@@ -147,21 +148,22 @@ export default function HistoryLogs(props) {
             next={fetchMoreData}
             hasMore={hasMore}
             loader={
-              props.data ? (
+              countDays ? (
               <div className="overlay">
                 <i className="fas fa-2x fa-sync-alt fa-spin"></i>
                 {/* wait a moment */}
               </div>
-              ) : <div className="overlay">There are no data to display</div>
+              ) : null
+              // <div className="overlay">There are no data to display</div>
             }
             endMessage={
-              props.data ? (
+              countDays ? (
               <p style={{ textAlign: "center", color: "rgb(209, 209, 209)" }}>
                 Looks like you've reached the end
               </p>
               ) : null
             }
-          >{props.data ? (
+          >{countDays ? (
             _.map(props.data, (value, key, i) => (
               <div
                 key={key}
@@ -238,7 +240,7 @@ export default function HistoryLogs(props) {
                 </div>
               </div>
             ))
-            ) : null}
+            ) : <div className="overlay">There are no data to display</div>}
           </InfiniteScroll>
         </div>
 
@@ -357,7 +359,7 @@ export default function HistoryLogs(props) {
               />
             }
             body={historyLogTable(data.logsByDays)}
-            // loading={isLoading ? "overlay" : ""}
+            loading={isLoading ? "overlay" : ""}
           />
         }
       />
