@@ -21,6 +21,8 @@ export default function MobileSendProblem(props) {
   const [canSubmit, setCanSubmit] = useState(false);
   const code = props.match.params.code;
   const history = useHistory();
+  const [image, setImage] = useState();
+  const [fileName, setFileName] = useState("");
 
   const checkData = () => {
     try {
@@ -112,6 +114,17 @@ export default function MobileSendProblem(props) {
     timerProgressBar: true,
   });
 
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setFileName(event.target.files[0].name)
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        setImage(e.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
+
   return (
     <>
       {isError.error && (
@@ -198,6 +211,37 @@ export default function MobileSendProblem(props) {
               </Form.Control>
             </Form.Group>
           </Row>
+          <Row>
+            <Form.Group as={Col} md="5" className="ml-2">
+              <Row>
+                {image ? (
+                  <img
+                    src={image}
+                    id="target"
+                    alt="Preview"
+                    width="270"
+                    height="270"
+                  />
+                ) : (
+                  null
+                )}
+              </Row>
+              <Row>
+                <label for="files" className="btn mt-2" style={{ backgroundColor: '#0BB7AF', color: 'white' }} >
+                  Add photo
+                </label>
+                <p className="pt-3 pl-3" >{fileName}</p>
+                <input
+                  type="file"
+                  id="files"
+                  name="upload"
+                  style={{ visibility: "hidden" }}
+                  accept=".jpg, .png, .jpeg"
+                  onChange={onImageChange}
+                />
+              </Row>
+            </Form.Group>
+          </Row>
           <form method="POST" onSubmit={(event) => submitSendHandle(event)}>
             {showInputProblem === true ? (
               <Row>
@@ -212,7 +256,7 @@ export default function MobileSendProblem(props) {
                 </Form.Group>
               </Row>
             ) : null}
-            <Row style={{ marginTop: 50 }}>
+            <Row style={{ marginTop: 40 }}>
               {canSubmit ? (
                 <Button
                   variant="light"
