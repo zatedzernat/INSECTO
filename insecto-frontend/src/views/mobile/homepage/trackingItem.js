@@ -9,25 +9,26 @@ require("moment/locale/th");
 export default function TrackingItem(props) {
   const [problemInfo, setProblemInfo] = useState({});
   const [data, setData] = useState([]);
+  const [image, setImage] = useState(null);
   // var textStatus = "";
   const history = useHistory();
   const code = props.match.params.code;
 
   // switch (problemInfo.status_name) {
   //   case "resolved":
-      // textStatus = "ดำเนินการเสร็จสิ้น";
+  // textStatus = "ดำเนินการเสร็จสิ้น";
   //     break;
 
   //   case "closed":
-      // textStatus = "ดำเนินการเสร็จสิ้น";
+  // textStatus = "ดำเนินการเสร็จสิ้น";
   //     break;
 
   //   case "in progress":
-      // textStatus = "กำลังดำเนินการ";
+  // textStatus = "กำลังดำเนินการ";
   //     break;
 
   //   default:
-      // textStatus = "รอการดำเนินการ";
+  // textStatus = "รอการดำเนินการ";
   //     break;
   // }
 
