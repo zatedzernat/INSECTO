@@ -84,6 +84,8 @@ export default function MobileSendProblem(props) {
           item_id: item.item_id,
           problem_des_id: problemDes.problem_des_id,
           problem_description: problemDes.problem_description,
+          image: image,
+          filename: fileName,
         }
       );
       if (res.data.errors) {
