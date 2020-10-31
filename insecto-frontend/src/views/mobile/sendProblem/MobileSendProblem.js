@@ -236,8 +236,8 @@ export default function MobileSendProblem(props) {
                         src={image}
                         id="target"
                         alt="Preview"
-                        width="270px"
-                        height="auto"
+                        width="32%"
+                        height="8%"
                         style={{
                           display: "block",
                           marginLeft: "auto",
@@ -249,8 +249,8 @@ export default function MobileSendProblem(props) {
                       <label
                         className="btn position-absolute"
                         style={{
-                          top: "5%",
-                          left: "80%",
+                          top: "8%",
+                          left: "61%",
                           transform: "translate(-50%, -50%)",
                           backgroundColor: "#F3F6F9",
                           color: "#7E8299",
@@ -261,12 +261,14 @@ export default function MobileSendProblem(props) {
                           setFileName("");
                         }}
                       >
-                        X
+                        x
                       </label>
                     </>
                   ) : null}
                 </Row>
               </Form.Group>
+              </Row>
+              <Row>
               <Form.Group as={Col} md="5" className="ml-2">
                 <Row>
                   <label
@@ -276,6 +278,8 @@ export default function MobileSendProblem(props) {
                       backgroundColor: "transparent",
                       color: "#0BB7AF",
                       borderColor: "#0BB7AF",
+                      width: '120px',
+                      height: '40px'
                     }}
                   >
                     Add photo
