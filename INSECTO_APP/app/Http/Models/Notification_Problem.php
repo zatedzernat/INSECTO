@@ -125,6 +125,10 @@ class Notification_Problem extends Model implements Auditable
         $noti->save();
 
         if ($filename && $image) {
+            $isExists = Storage::disk('public')->exists('//noti_prob');
+            if (!($isExists)) {
+                $maked = Storage::disk('public')->makeDirectory('//noti_prob');
+            }
             $noti_id = $noti->noti_id;
             $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
             // dd($path);
