@@ -116,7 +116,7 @@ export default function MobileSendProblem(props) {
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setFileName(event.target.files[0].name)
+      setFileName(event.target.files[0].name);
       let reader = new FileReader();
       reader.onload = (e) => {
         setImage(e.target.result);
@@ -211,37 +211,6 @@ export default function MobileSendProblem(props) {
               </Form.Control>
             </Form.Group>
           </Row>
-          <Row>
-            <Form.Group as={Col} md="5" className="ml-2">
-              <Row>
-                {image ? (
-                  <img
-                    src={image}
-                    id="target"
-                    alt="Preview"
-                    width="270"
-                    height="270"
-                  />
-                ) : (
-                  null
-                )}
-              </Row>
-              <Row>
-                <label for="files" className="btn mt-2" style={{ backgroundColor: '#0BB7AF', color: 'white' }} >
-                  Add photo
-                </label>
-                <p className="pt-3 pl-3" >{fileName}</p>
-                <input
-                  type="file"
-                  id="files"
-                  name="upload"
-                  style={{ visibility: "hidden" }}
-                  accept=".jpg, .png, .jpeg"
-                  onChange={onImageChange}
-                />
-              </Row>
-            </Form.Group>
-          </Row>
           <form method="POST" onSubmit={(event) => submitSendHandle(event)}>
             {showInputProblem === true ? (
               <Row>
@@ -256,6 +225,67 @@ export default function MobileSendProblem(props) {
                 </Form.Group>
               </Row>
             ) : null}
+            <Row>
+              <Form.Group as={Col} md="5">
+                <Row className="position-relative">
+                  {image ? (
+                    <>
+                      <img
+                        src={image}
+                        id="target"
+                        alt="Preview"
+                        width="270px"
+                        height="auto"
+                        style={{
+                          display: "block",
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          marginTop: 0,
+                          padding: 0,
+                        }}
+                      />
+                      <label
+                        className="btn position-absolute"
+                        style={{
+                          top: "5%",
+                          left: "80%",
+                          transform: "translate(-50%, -50%)",
+                          backgroundColor: "#F3F6F9",
+                          color: "#7E8299",
+                          opacity: 0.7,
+                        }}
+                        onClick={() => {
+                          setImage();
+                          setFileName("");
+                        }}
+                      >
+                        X
+                      </label>
+                    </>
+                  ) : null}
+                </Row>
+              </Form.Group>
+              <Form.Group as={Col} md="5" className="ml-2">
+                <Row>
+                  <label
+                    for="files"
+                    className="btn mt-2"
+                    style={{ backgroundColor: "#0BB7AF", color: "white" }}
+                  >
+                    Add photo
+                  </label>
+                  <p className="pt-3 pl-3">{fileName}</p>
+                  <input
+                    type="file"
+                    id="files"
+                    name="upload"
+                    style={{ visibility: "hidden" }}
+                    accept=".jpg, .png, .jpeg, .HEIF , .HEIC"
+                    onChange={onImageChange}
+                  />
+                </Row>
+              </Form.Group>
+            </Row>
             <Row style={{ marginTop: 40 }}>
               {canSubmit ? (
                 <Button
