@@ -5,12 +5,13 @@ namespace App\Http\Models;
 use App\Exports\NotificationProblemsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
+use Intervention\Image\Facades\Image;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Notification_Problem extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'service_desk_code', 'note', 'cancel_flag', 'user_id'];
+    protected $fillable = ['item_id', 'status_id', 'problem_des_id', 'problem_description', 'service_desk_code', 'note', 'image_extension', 'cancel_flag', 'user_id'];
     protected $primaryKey = 'noti_id';
 
     public function status()
@@ -104,15 +105,31 @@ class Notification_Problem extends Model implements Auditable
         return $isDuplicated;
     }
 
-    public function create($item_id, $problem_des_id, $problem_description)
+    public function create($item_id, $problem_des_id, $problem_description, $filename, $image)
     {
-        $this->item_id = $item_id;
-        $this->status_id = 1;
-        $this->problem_des_id = $problem_des_id;
-        $this->problem_description = $problem_description;
-        $this->cancel_flag = 'N';
-        $this->user_id = 6; //problem sender
-        $this->save();
+        $noti = new Notification_Problem();
+        $noti->item_id = $item_id;
+        $noti->status_id = 1;
+        $noti->problem_des_id = $problem_des_id;
+        $noti->problem_description = $problem_description;
+
+        if ($filename) {
+            $explode = explode('.', $filename);
+            $image_extension = $explode[1];
+            $noti->image_extension = $image_extension;
+        }
+
+        $noti->cancel_flag = 'N';
+        $noti->user_id = 6; //problem sender
+        $noti->save();
+
+        if ($filename && $image) {
+            $noti_id = $noti->noti_id;
+            $path = public_path() . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
+            // dd($path);
+            $img = Image::make($image)->resize(800, 800)->save($path, 90);
+            // dd($img);
+        }
     }
 
     public function checkStatus($noti_id, $next_status_id, $service_desk_code, $note, $user_id)
