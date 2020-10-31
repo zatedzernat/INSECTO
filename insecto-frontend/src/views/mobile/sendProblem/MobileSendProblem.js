@@ -270,9 +270,13 @@ export default function MobileSendProblem(props) {
               <Form.Group as={Col} md="5" className="ml-2">
                 <Row>
                   <label
-                    for="files"
+                    htmlFor="files"
                     className="btn"
-                    style={{ backgroundColor: "transparent", color: "#0BB7AF" , borderColor: '#0BB7AF' }}
+                    style={{
+                      backgroundColor: "transparent",
+                      color: "#0BB7AF",
+                      borderColor: "#0BB7AF",
+                    }}
                   >
                     Add photo
                   </label>
