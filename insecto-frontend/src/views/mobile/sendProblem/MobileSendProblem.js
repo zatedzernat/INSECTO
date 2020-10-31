@@ -269,8 +269,8 @@ export default function MobileSendProblem(props) {
                 <Row>
                   <label
                     for="files"
-                    className="btn mt-2"
-                    style={{ backgroundColor: "#0BB7AF", color: "white" }}
+                    className="btn"
+                    style={{ backgroundColor: "transparent", color: "#0BB7AF" , borderColor: '#0BB7AF' }}
                   >
                     Add photo
                   </label>
@@ -280,7 +280,7 @@ export default function MobileSendProblem(props) {
                     id="files"
                     name="upload"
                     style={{ visibility: "hidden" }}
-                    accept=".jpg, .png, .jpeg, .HEIF , .HEIC"
+                    accept=".jpg, .png, .jpeg"
                     onChange={onImageChange}
                   />
                 </Row>
