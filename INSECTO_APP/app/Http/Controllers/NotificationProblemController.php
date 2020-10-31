@@ -80,6 +80,8 @@ class NotificationProblemController extends Controller
         $item_id = $request->item_id;
         $problem_des_id = $request->problem_des_id; //can be 'etc' (string) and id (integer)
         $problem_description = $request->problem_description;
+        $image = $request->image;
+        $filename = $request->filename;
 
         if ($problem_des_id == "etc") {
             $problem_des_id = null;
@@ -91,7 +93,7 @@ class NotificationProblemController extends Controller
             }
         }
 
-        $this->noti_problem->create($item_id, $problem_des_id, $problem_description);
+        $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $filename, $image);
 
         $success =  "Send Problem Success";
         return $this->serverResponse(null, $success);

@@ -22,6 +22,7 @@ class CreateNotificationProblemsTable extends Migration
             // $table->ipAddress('sender_ip');
             $table->string('service_desk_code', 15)->nullable();
             $table->string('note', 100)->nullable();
+            $table->string('image_extension', 10)->nullable();
             $table->string('cancel_flag', 1);
             $table->timestamps();
             $table->unsignedBigInteger('user_id')->nullable();
