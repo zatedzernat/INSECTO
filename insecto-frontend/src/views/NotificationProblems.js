@@ -294,7 +294,6 @@ export default function NotificationProblems(props) {
         method: "GET",
         responseType: "blob",
       });
-      console.log(res.data);
       setImage({
         url: URL.createObjectURL(res.data),
       });
