@@ -149,6 +149,13 @@ class NotificationProblemController extends Controller
         return response()->file($path);
     }
 
+    public function delImageFromNotiID(Request $request, $noti_id)
+    {
+        $isSuccess = $this->noti_problem->delImage($noti_id);
+        $success = 'delete image from Noti ID = ' . $noti_id . ' success';
+        return $this->serverResponse(null, $success);
+    }
+
     public function serverResponse($error, $success)
     {
         $time = Carbon::now()->format('H:i:s');

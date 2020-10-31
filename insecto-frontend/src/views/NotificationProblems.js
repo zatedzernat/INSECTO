@@ -302,6 +302,36 @@ export default function NotificationProblems(props) {
     }
   };
 
+  const delImage = async (event, noti_id) => {
+    event.preventDefault();
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}noti_problems/deleteimage/${noti_id}`,
+        method: "GET",
+        headers: {
+          Authorization: token,
+          "User-Id": user.id,
+        },
+      });
+      if (res.data.errors) {
+        Toast.fire({
+          icon: "error",
+          title: res.data.errors,
+        });
+      } else {
+        setLastUpdate(res.data.time);
+        Toast.fire({
+          icon: "success",
+          title: res.data.success,
+        });
+      }
+      setImage(null);
+      setModalShowDetail(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleRowSelected = React.useCallback((state) => {
     let selected = state.selectedRows.map(({ noti_id }) => ({
       noti_id,
@@ -601,10 +631,17 @@ export default function NotificationProblems(props) {
                             getImage(event, notiProblem.noti_id)
                           }
                         >
-                          See Image
+                          See
                         </Button>
                       </>
                     )}
+                    &nbsp;
+                    <Button
+                      variant="outline-danger"
+                      onClick={(event) => delImage(event, notiProblem.noti_id)}
+                    >
+                      Delete
+                    </Button>
                   </div>
                 ) : null}
                 {image?.url ? (

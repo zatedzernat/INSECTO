@@ -21,6 +21,7 @@ Route::group(['middleware' => 'ssoauthtoken'], function () {
     Route::delete('users/{id}', 'UserController@delete');
 
     Route::put('noti_problems/{noti_id}',  'NotificationProblemController@update');
+    Route::get('noti_problems/deleteimage/{noti_id}', 'NotificationProblemController@delImageFromNotiID');
 
     Route::post('noti_problems/export', 'NotificationProblemController@exportNotiProbs');
 

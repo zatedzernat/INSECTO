@@ -5,6 +5,7 @@ namespace App\Http\Models;
 use App\Exports\NotificationProblemsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -125,7 +126,7 @@ class Notification_Problem extends Model implements Auditable
 
         if ($filename && $image) {
             $noti_id = $noti->noti_id;
-            $path = public_path() . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
+            $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
             // dd($path);
             $img = Image::make($image)->resize(800, 800)->save($path, 90);
             // dd($img);
@@ -209,8 +210,20 @@ class Notification_Problem extends Model implements Auditable
     public function getImagePathFromNotiID($noti_id)
     {
         $noti = Notification_Problem::find($noti_id);
-        // dd($noti_id);
-        $path = public_path() . '/noti_prob/noti_' . $noti->noti_id . '.' . $noti->image_extension;
+        $path = storage_path('app/public') . '/noti_prob/noti_' . $noti->noti_id . '.' . $noti->image_extension;
         return $path;
+    }
+
+    public function delImage($noti_id)
+    {
+        $noti = Notification_Problem::find($noti_id);
+
+        $path = '/noti_prob/noti_' . $noti->noti_id . '.' . $noti->image_extension;
+        $deleted = Storage::disk('public')->delete($path);
+
+        $noti->image_extension = null;
+        $noti->save();
+
+        return true;
     }
 }
