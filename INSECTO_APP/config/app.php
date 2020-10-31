@@ -176,6 +176,7 @@ return [
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         ZanySoft\Zip\ZipServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -244,6 +245,7 @@ return [
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Zip' => ZanySoft\Zip\ZipFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 
