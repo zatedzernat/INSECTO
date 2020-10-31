@@ -48,42 +48,42 @@ export default function TrackingProblem() {
 
   const statusBar = () => {
     const arr = [];
-      arr.push(
-        data.slice(0,30).map((item) => (
-          <div
-            key={Math.random()}
-            onClick={() => {
-              setIsClick(true);
-              setCode(item.noti_id);
-              setProblemInfo({
-                item_code: item.item.item_code,
-                item_name: item.item.item_name,
-                problem_description: item.problem_description,
-                status_id: item.status_id,
-                room: item.item.room.room_name,
-                building: item.item.room.building.building_name,
-                updated_at: item.updated_at,
-              });
+    arr.push(
+      data.slice(0, 30).map((item) => (
+        <div
+          key={Math.random()}
+          onClick={() => {
+            setIsClick(true);
+            setCode(item.noti_id);
+            setProblemInfo({
+              item_code: item.item.item_code,
+              item_name: item.item.item_name,
+              problem_description: item.problem_description,
+              status_id: item.status_id,
+              room: item.item.room.room_name,
+              building: item.item.room.building.building_name,
+              updated_at: item.updated_at,
+            });
+          }}
+        >
+          <Row
+            style={{
+              borderColor: "#E2E2E2",
+              borderBottomWidth: 1,
+              borderBottomStyle: "solid",
             }}
           >
-            <Row
-              style={{
-                borderColor: "#E2E2E2",
-                borderBottomWidth: 1,
-                borderBottomStyle: "solid",
-              }}
-            >
-              <Card
-                itemName={item.item.item_code}
-                itemProblem={item.problem_description}
-                room={item.item.room.room_name}
-                status={item.status.status_id}
-                statusName={item.status.status_name}
-              />
-            </Row>
-          </div>
-        ))
-      );
+            <Card
+              itemName={item.item.item_code}
+              itemProblem={item.problem_description}
+              room={item.item.room.room_name}
+              status={item.status.status_id}
+              statusName={item.status.status_name}
+            />
+          </Row>
+        </div>
+      ))
+    );
     return arr;
   };
 
@@ -108,7 +108,10 @@ export default function TrackingProblem() {
         {componentTracking()}
         {isLoading ? (
           <Row>
-            <Col className="overlay dark text-center" style={{paddingTop: '140px'}}>
+            <Col
+              className="overlay dark text-center"
+              style={{ paddingTop: "140px" }}
+            >
               <i className="fas fa-2x fa-sync-alt fa-spin" />
             </Col>
           </Row>
