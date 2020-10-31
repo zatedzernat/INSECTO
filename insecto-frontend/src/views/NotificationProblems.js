@@ -26,6 +26,7 @@ export default function NotificationProblems(props) {
   const [isExport, setIsExport] = useState(false);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
+  const [image, setImage] = useState(null);
   const token = Cookies.get("token");
   const { user } = props;
 
@@ -254,7 +255,7 @@ export default function NotificationProblems(props) {
     );
   };
 
-  const exportBrands = async (event) => {
+  const exportNotiProbs = async (event) => {
     setIsExport(true);
     event.preventDefault();
     let noti_probs = {
@@ -282,6 +283,23 @@ export default function NotificationProblems(props) {
       setToggleCleared(!toggleCleared);
     } catch (error) {
       console.log(JSON.stringify(error.response));
+    }
+  };
+
+  const getImage = async (event, noti_id) => {
+    event.preventDefault();
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}noti_problems/getimage/${noti_id}`,
+        method: "GET",
+        responseType: "blob",
+      });
+      console.log(res.data);
+      setImage({
+        url: URL.createObjectURL(res.data),
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -470,7 +488,7 @@ export default function NotificationProblems(props) {
                   <>
                     {isExport === false ? (
                       <Button
-                        onClick={exportBrands}
+                        onClick={exportNotiProbs}
                         variant="default"
                         style={{ color: "white", backgroundColor: "#6993FF" }}
                       >
@@ -502,7 +520,10 @@ export default function NotificationProblems(props) {
 
           <FormModal
             show={modalShowDetail}
-            onHide={() => setModalShowDetail(false)}
+            onHide={() => {
+              setModalShowDetail(false);
+              setImage(null);
+            }}
             title="Detail"
             body={
               <>
@@ -544,7 +565,7 @@ export default function NotificationProblems(props) {
                 </div>
                 <div className="form-group row">
                   <label className="col-sm-6 col-form-label">
-                    Servicedesk Code:{" "}
+                    Servicedesk Code:
                   </label>
                   <div className="col-sm-6 col-form-label">
                     {notiProblem.service_desk_code ?? "-"}
@@ -556,6 +577,44 @@ export default function NotificationProblems(props) {
                     {notiProblem.note ?? "-"}
                   </div>
                 </div>
+                {notiProblem.image_extension ? (
+                  <div className="form-group row">
+                    {image?.url ? (
+                      <>
+                        <label className="col-sm-6 col-form-label">
+                          Image:
+                        </label>
+                        <Button
+                          variant="outline-primary"
+                          onClick={(event) => setImage(null)}
+                        >
+                          Hide Image
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <label className="col-sm-6 col-form-label">
+                          Image:
+                        </label>
+                        <Button
+                          variant="outline-primary"
+                          onClick={(event) =>
+                            getImage(event, notiProblem.noti_id)
+                          }
+                        >
+                          See Image
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                ) : null}
+                {image?.url ? (
+                  <div className="form-group row">
+                    <div className="mr-auto ml-auto">
+                      <img src={image.url} alt="noti_image" width="400px" />
+                    </div>
+                  </div>
+                ) : null}
               </>
             }
             method="POST"

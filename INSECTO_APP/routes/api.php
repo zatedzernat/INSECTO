@@ -99,8 +99,11 @@ Route::group(['middleware' => 'ssoauthtoken'], function () {
 });
 
 Route::get('noti_problems', 'NotificationProblemController@index')->name('noti_problems');
+Route::get('noti_problems/getimage/{noti_id}', 'NotificationProblemController@getImageFromNotiID');
+
 Route::get('sendprobleminroom/{room_code}', 'NotificationProblemController@showproblemNotResolvedInRoom');
 Route::get('sendproblem/{item_code}', 'NotificationProblemController@showproblemNotResolved');
+
 Route::post('noti_problems',  'NotificationProblemController@store');
 
 

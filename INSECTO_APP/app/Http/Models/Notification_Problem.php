@@ -205,4 +205,12 @@ class Notification_Problem extends Model implements Auditable
             return array(true, $notiProbsExport);
         }
     }
+
+    public function getImagePathFromNotiID($noti_id)
+    {
+        $noti = Notification_Problem::find($noti_id);
+        // dd($noti_id);
+        $path = public_path() . '/noti_prob/noti_' . $noti->noti_id . '.' . $noti->image_extension;
+        return $path;
+    }
 }

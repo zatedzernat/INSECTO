@@ -143,6 +143,12 @@ class NotificationProblemController extends Controller
             return  $this->serverResponse($isSuccess[1], null);
     }
 
+    public function getImageFromNotiID(Request $request, $noti_id)
+    {
+        $path = $this->noti_problem->getImagePathFromNotiID($noti_id);
+        return response()->file($path);
+    }
+
     public function serverResponse($error, $success)
     {
         $time = Carbon::now()->format('H:i:s');
