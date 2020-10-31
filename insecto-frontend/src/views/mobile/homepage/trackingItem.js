@@ -42,6 +42,17 @@ export default function TrackingItem(props) {
           `${process.env.REACT_APP_API_URL}history_logs/tracking/${code}`
         );
         setData(res.data);
+
+        if (props.location.state.problemInfo.image_extension) {
+          const res = await axios({
+            url: `${process.env.REACT_APP_API_URL}noti_problems/getimage/${code}`,
+            method: "GET",
+            responseType: "blob",
+          });
+          setImage({
+            url: URL.createObjectURL(res.data),
+          });
+        }
       }
     } catch (error) {
       console.log(error);
@@ -105,6 +116,13 @@ export default function TrackingItem(props) {
               <Col className="col-1">:</Col>
               <Col className="col-8">{problemInfo.building}</Col>
             </Row>
+            {image?.url ? (
+              <Row className="mr-auto ml-auto">
+                <Col>
+                  <img src={image.url} alt="noti_image" width="250px" />
+                </Col>
+              </Row>
+            ) : null}
           </div>
         </div>
         <div className="mt-4 ml-4 mr-4">

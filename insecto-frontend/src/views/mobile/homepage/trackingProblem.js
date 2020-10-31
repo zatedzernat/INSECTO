@@ -62,6 +62,7 @@ export default function TrackingProblem() {
               status_id: item.status_id,
               room: item.item.room.room_name,
               building: item.item.room.building.building_name,
+              image_extension: item.image_extension,
               updated_at: item.updated_at,
             });
           }}
