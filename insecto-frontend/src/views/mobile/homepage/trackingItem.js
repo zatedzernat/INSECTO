@@ -117,10 +117,19 @@ export default function TrackingItem(props) {
               <Col className="col-8">{problemInfo.building}</Col>
             </Row>
             {image?.url ? (
-              <Row className="mr-auto ml-auto">
-                <Col>
-                  <img src={image.url} alt="noti_image" width="250px" />
-                </Col>
+              <Row className="mb-4">
+                  <img
+                        src={image.url}
+                        id="target"
+                        alt="noti_image"
+                        width="50%"
+                        height="99%"
+                        style={{
+                          display: "block",
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                        }}
+                      />
               </Row>
             ) : null}
           </div>
