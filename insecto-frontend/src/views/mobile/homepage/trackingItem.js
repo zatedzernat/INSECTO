@@ -116,6 +116,8 @@ export default function TrackingItem(props) {
               <Col className="col-1">:</Col>
               <Col className="col-8">{problemInfo.building}</Col>
             </Row>
+             </div>
+             <div>
             {image?.url ? (
               <Row className="mb-4">
                   <img
