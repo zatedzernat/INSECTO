@@ -227,49 +227,47 @@ export default function MobileSendProblem(props) {
                 </Form.Group>
               </Row>
             ) : null}
-            <Row>
-              <Form.Group as={Col} md="5">
-                <Row className="position-relative">
-                  {image ? (
-                    <>
-                      <img
-                        src={image}
-                        id="target"
-                        alt="Preview"
-                        width="32%"
-                        height="8%"
-                        style={{
-                          display: "block",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          marginTop: 0,
-                          padding: 0,
-                        }}
-                      />
-                      <label
-                        className="btn position-absolute"
-                        style={{
-                          top: "8%",
-                          left: "61%",
-                          transform: "translate(-50%, -50%)",
-                          backgroundColor: "#F3F6F9",
-                          color: "#7E8299",
-                          opacity: 0.7,
-                        }}
-                        onClick={() => {
-                          setImage();
-                          setFileName("");
-                        }}
-                      >
-                        x
-                      </label>
-                    </>
-                  ) : null}
-                </Row>
-              </Form.Group>
-              </Row>
+                <Form.Group as={Col}>
               <Row>
-              <Form.Group as={Col} md="5" className="ml-2">
+                {image ? (
+                  <>
+                    <img
+                      src={image}
+                      id="target"
+                      alt="Preview"
+                      width="32%"
+                      height="8%"
+                      style={{
+                        display: "block",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        marginTop: 0,
+                        padding: 0,
+                      }}
+                    />
+                    <label
+                      className="btn position-absolute"
+                      style={{
+                        top: "8%",
+                        left: "61%",
+                        transform: "translate(-50%, -50%)",
+                        backgroundColor: "#F3F6F9",
+                        color: "#7E8299",
+                        opacity: 0.7,
+                      }}
+                      onClick={() => {
+                        setImage();
+                        setFileName("");
+                      }}
+                    >
+                      x
+                    </label>
+                  </>
+                ) : null}
+              </Row>
+            </Form.Group>
+            <Row>
+              <Form.Group className="ml-2">
                 <Row>
                   <label
                     htmlFor="files"
@@ -278,13 +276,17 @@ export default function MobileSendProblem(props) {
                       backgroundColor: "transparent",
                       color: "#0BB7AF",
                       borderColor: "#0BB7AF",
-                      width: '120px',
-                      height: '40px'
+                      width: "120px",
+                      height: "40px",
                     }}
                   >
                     Add photo
                   </label>
-                  <p className="pt-3 pl-3">{fileName}</p>
+                  {image ? (
+                    <p className="pt-2 pl-3">{fileName}</p>
+                  ) : (
+                    <span className="pt-2 pl-3">No file chosen</span>
+                  )}
                   <input
                     type="file"
                     id="files"
