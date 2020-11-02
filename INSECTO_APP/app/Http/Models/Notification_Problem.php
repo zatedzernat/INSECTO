@@ -121,7 +121,7 @@ class Notification_Problem extends Model implements Auditable
         }
 
         $noti->cancel_flag = 'N';
-        $noti->user_id = 6; //problem sender
+        $noti->user_id = 2; //problem sender
         $noti->save();
 
         if ($filename && $image) {
