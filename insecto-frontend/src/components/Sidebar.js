@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export default function Sidebar(props) {
@@ -9,10 +9,10 @@ export default function Sidebar(props) {
     //   sidebar from adminLTE-3.0.4 - indexedDB.html
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
       {/* Brand Logo */}
-      <a
-        href="#reload"
+      <Link
+        to={token ? "/admin/notification_problems" : "/admin"}
         className="brand-link"
-        onClick={(event) => window.location.reload()}
+        // onClick={(event) => window.location.reload()}
       >
         <img
           src="/images/bug.png"
@@ -20,7 +20,7 @@ export default function Sidebar(props) {
           className="brand-image img-circle elevation-3"
         />
         <span className="brand-text font-weight-light">INSECTO</span>
-      </a>
+      </Link>
       {/* Sidebar */}
       <div className="sidebar">
         {/* Sidebar Menu */}
