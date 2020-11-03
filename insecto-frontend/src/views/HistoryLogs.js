@@ -26,7 +26,7 @@ export default function HistoryLogs(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [historyLog, setHistoryLog] = useState({});
   const [modalShowDetail, setModalShowDetail] = useState(false);
-  const [count, setCount] = useState(7);
+  // const [count, setCount] = useState(7);
   const [countDays, setCountDays] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const initialState = {
@@ -40,13 +40,18 @@ export default function HistoryLogs(props) {
   const { user } = props;
   const [userAll, setUserAll] = useState(null);
   const history = useHistory();
+  const [daysStore, setDaysStore] = useSessionStorage("daysStore", 0);
+  const [daysAllHistory, setDaysAllHistory] = useSessionStorage(
+    "daysAllHistory",
+    0
+  );
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       if (countDays === 0) {
         const res = await axios({
-          url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
+          url: `${process.env.REACT_APP_API_URL}history_logs/${daysStore}`,
           method: "GET",
           headers: { Authorization: token, "User-Id": user.id },
         });
@@ -61,6 +66,8 @@ export default function HistoryLogs(props) {
       setCountDays(temp.data.countDays);
       setIsExport(false);
       setUserAll(temp.data.user);
+      console.log("temp.data.countDays", temp.data.countDays);
+      setDaysAllHistory(temp.data.countDays);
     } catch (error) {
       console.log(error);
       if (error.response?.status === 401) {
@@ -76,12 +83,37 @@ export default function HistoryLogs(props) {
   };
 
   useEffect(() => {
+    const items = JSON.parse(sessionStorage.getItem("daysStore"));
+    const allItem = JSON.parse(sessionStorage.getItem("daysAllHistory"));
+    if (items === null || items === 0) {
+      // if( items < allItem ){
+      setDaysStore(7);
+      fetchData();
+      // }
+    } else if (items < allItem) {
+      setDaysStore(7);
+      fetchData();
+    } else {
+      // if (window.performance) {
+      //   if (performance.navigation.type === 1) {
+      // console.log("reloaded");
+      // setDaysStore(7);
+      fetchData();
+      // console.log("local storage is", items);
+      setDaysStore(items);
+      //   } else {
+      //     console.log("This page is not reloaded");
+      //     console.log("local storage is", items);
+      //     setDaysStore(items);
+      //     fetchData();
+      //   }
+      // }
+    }
+
     // const script = document.createElement("script");
     // script.src = "/scripts/logdata.js";
     // script.async = true;
     // document.body.appendChild(script);
-    fetchData();
-    setCount(7);
     // return () => {
     //   document.body.removeChild(script);
     // };
@@ -105,22 +137,23 @@ export default function HistoryLogs(props) {
   };
 
   const fetchMoreData = () => {
-    if (count > countDays) {
+    if (daysStore > countDays) {
       setHasMore(false);
       return;
     }
     setTimeout(async () => {
       try {
         const res = await axios({
-          url: `${process.env.REACT_APP_API_URL}history_logs/${count}`,
+          url: `${process.env.REACT_APP_API_URL}history_logs/${daysStore}`,
           method: "GET",
           headers: { Authorization: token, "User-Id": user.id },
         });
         setData(res.data);
+        setDaysStore(daysStore + 7);
       } catch (error) {
         console.log(error.message);
       }
-      setCount(count + 7);
+      // setCount(count + 7);
     }, 500);
   };
 
@@ -155,7 +188,7 @@ export default function HistoryLogs(props) {
       <div>
         <div className="card-body">
           <InfiniteScroll
-            dataLength={count}
+            dataLength={daysStore}
             next={fetchMoreData}
             hasMore={hasMore}
             loader={
@@ -386,4 +419,43 @@ export default function HistoryLogs(props) {
       <ButtonToTop scrollStepInPx="50" delayInMs="6.66" />;
     </>
   );
+}
+
+function useSessionStorage(key, initialValue) {
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      // Get from local storage by key
+      const item = window.sessionStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  });
+
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to sessionStorage.
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage or remove if value is null or undefined
+      if (valueToStore === undefined) {
+        window.sessionStorage.removeItem(key);
+      } else {
+        window.sessionStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+  return [storedValue, setValue];
 }
