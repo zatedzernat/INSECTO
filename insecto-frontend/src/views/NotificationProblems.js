@@ -485,6 +485,7 @@ export default function NotificationProblems(props) {
       <DataTable
         columns={columns}
         data={filteredItems}
+        overflowY={true}
         striped
         responsive
         selectableRows
