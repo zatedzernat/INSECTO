@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 
 export default function Header(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -103,6 +103,10 @@ export default function Header(props) {
           {token ? (
             <div className="dropdown-menu dropdown-menu dropdown-menu-right">
               {/* <span class="dropdown-item dropdown-header">15 Notifications</span> */}
+              <Link to="/admin/user" className="dropdown-item">
+                <i className="fas fa-users" /> Users
+              </Link>
+              <div className="dropdown-divider" />
               <a
                 href="#logout"
                 onClick={handleLogout}
