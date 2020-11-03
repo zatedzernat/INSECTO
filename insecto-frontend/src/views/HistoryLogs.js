@@ -40,7 +40,11 @@ export default function HistoryLogs(props) {
   const { user } = props;
   const [userAll, setUserAll] = useState(null);
   const history = useHistory();
-  const [daysStore, setDaysStore] = useSessionStorage("daysStore" , 0);
+  const [daysStore, setDaysStore] = useSessionStorage("daysStore", 0);
+  const [daysAllHistory, setDaysAllHistory] = useSessionStorage(
+    "daysAllHistory",
+    0
+  );
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -62,6 +66,8 @@ export default function HistoryLogs(props) {
       setCountDays(temp.data.countDays);
       setIsExport(false);
       setUserAll(temp.data.user);
+      console.log("temp.data.countDays", temp.data.countDays);
+      setDaysAllHistory(temp.data.countDays);
     } catch (error) {
       console.log(error);
       if (error.response?.status === 401) {
@@ -78,17 +84,23 @@ export default function HistoryLogs(props) {
 
   useEffect(() => {
     const items = JSON.parse(sessionStorage.getItem("daysStore"));
+    const allItem = JSON.parse(sessionStorage.getItem("daysAllHistory"));
     if (items === null || items === 0) {
+      // if( items < allItem ){
+      setDaysStore(7);
+      fetchData();
+      // }
+    } else if (items < allItem) {
       setDaysStore(7);
       fetchData();
     } else {
       // if (window.performance) {
       //   if (performance.navigation.type === 1) {
-          // console.log("reloaded"); 
-          // setDaysStore(7);
-          fetchData();
-          // console.log("local storage is", items);
-          setDaysStore(items);
+      // console.log("reloaded");
+      // setDaysStore(7);
+      fetchData();
+      // console.log("local storage is", items);
+      setDaysStore(items);
       //   } else {
       //     console.log("This page is not reloaded");
       //     console.log("local storage is", items);
@@ -137,10 +149,10 @@ export default function HistoryLogs(props) {
           headers: { Authorization: token, "User-Id": user.id },
         });
         setData(res.data);
+        setDaysStore(daysStore + 7);
       } catch (error) {
         console.log(error.message);
       }
-      setDaysStore(daysStore + 7);
       // setCount(count + 7);
     }, 500);
   };
