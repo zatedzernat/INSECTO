@@ -267,7 +267,7 @@ export default function MobileSendProblem(props) {
               </Row>
             </Form.Group>
             <Row>
-              <Form.Group className="ml-2">
+              <Form.Group className="ml-3">
                 <Row>
                   <label
                     htmlFor="files"
@@ -277,7 +277,7 @@ export default function MobileSendProblem(props) {
                       color: "#0BB7AF",
                       borderColor: "#0BB7AF",
                       width: "120px",
-                      height: "40px",
+                      height: "35px",
                     }}
                   >
                     Add photo
