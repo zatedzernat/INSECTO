@@ -52,9 +52,17 @@ class History_log extends Model
         return $lastest_with_amount_of_day;
     }
 
-    public function getTrackingInSameDay($noti_tracking)
+    public function filterStatusChange($noti_trackings)
     {
-        $noti_tracking_in_days = $noti_tracking->filter(function ($noti) {
+        $filtered = $noti_trackings->filter(function ($noti) {
+            return isset($noti->old_values['status_id']) === true || isset($noti->new_values['status_id']) === true;
+        });
+        return $filtered;
+    }
+
+    public function getTrackingInSameDay($noti_trackings)
+    {
+        $noti_tracking_in_days = $noti_trackings->filter(function ($noti) {
             return $noti->created_at->toDateString() == Carbon::today()->toDateString();
         });
         return $noti_tracking_in_days;

@@ -42,6 +42,7 @@ class HistoryLogController extends Controller
         $noti_prob =  $this->noti->findByID($noti_id);
         $noti_trackings = $noti_prob->audits;
         // $noti_trackings = $this->log->getTrackingInSameDay($noti_trackings); //? can get tracking only in same day, why ???
+        $noti_trackings = $this->log->filterStatusChange($noti_trackings);
         foreach ($noti_trackings as $noti_tracking) {
             $status_id = Arr::get($noti_tracking->new_values, 'status_id');
             $status_name = $this->status->findByID($status_id)->status_name;
