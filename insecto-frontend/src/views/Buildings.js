@@ -9,6 +9,7 @@ import moment from "moment";
 import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
+import { useHistory } from "react-router-dom";
 
 export default function Buildings(props) {
   const [data, setData] = useState([]);
@@ -32,6 +33,7 @@ export default function Buildings(props) {
   const [isExport, setIsExport] = useState(false);
   const token = Cookies.get("token");
   const { user } = props;
+  const history = useHistory();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -46,6 +48,15 @@ export default function Buildings(props) {
       setIsExport(false);
     } catch (error) {
       console.log(error);
+      if (error.response?.status === 401) {
+        Cookies.remove("token");
+        history.replace({
+          pathname: "/admin",
+          state: {
+            login: "Please Login again!",
+          },
+        });
+      }
     }
   };
 

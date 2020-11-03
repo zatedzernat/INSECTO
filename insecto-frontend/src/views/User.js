@@ -9,6 +9,7 @@ import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import FormModal from "../components/FormModal";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 export default function User(props) {
   const token = Cookies.get("token");
@@ -27,6 +28,7 @@ export default function User(props) {
     // name: "",
     // email: "",
   };
+  const history = useHistory();
 
   useEffect(() => {
     fetchData();
@@ -49,7 +51,16 @@ export default function User(props) {
       setData(res.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
+      if (error.response?.status === 401) {
+        Cookies.remove("token");
+        history.replace({
+          pathname: "/admin",
+          state: {
+            login: "Please Login again!",
+          },
+        });
+      }
     }
   };
 

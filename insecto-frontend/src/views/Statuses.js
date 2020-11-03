@@ -4,12 +4,14 @@ import Card from "../components/Card";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import Cookies from "js-cookie";
+import { useHistory } from "react-router-dom";
 
 export default function Statuses(props) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const token = Cookies.get("token");
   const { user } = props;
+  const history = useHistory();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -23,6 +25,15 @@ export default function Statuses(props) {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      if (error.response?.status === 401) {
+        Cookies.remove("token");
+        history.replace({
+          pathname: "/admin",
+          state: {
+            login: "Please Login again!",
+          },
+        });
+      }
     }
   };
 

@@ -10,6 +10,7 @@ import moment from "moment";
 import Swal from "sweetalert2";
 import FilterComponent from "../components/FilterBox";
 import Cookies from "js-cookie";
+import { useHistory } from "react-router-dom";
 
 export default function Rooms(props) {
   const [data, setData] = useState([]);
@@ -38,6 +39,7 @@ export default function Rooms(props) {
   const [isGenAllQR, setIsGenAllQR] = useState(false);
   const token = Cookies.get("token");
   const { user } = props;
+  const history = useHistory();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -53,6 +55,15 @@ export default function Rooms(props) {
       setIsGenAllQR(false);
     } catch (error) {
       console.log(error);
+      if (error.response?.status === 401) {
+        Cookies.remove("token");
+        history.replace({
+          pathname: "/admin",
+          state: {
+            login: "Please Login again!",
+          },
+        });
+      }
     }
   };
   useEffect(() => {

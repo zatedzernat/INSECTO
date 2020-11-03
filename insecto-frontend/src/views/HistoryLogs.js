@@ -10,6 +10,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ButtonToTop from "../components/ButtonToTop";
 import FormDateInput from "../components/FormDateInput";
 import Cookies from "js-cookie";
+import { useHistory } from "react-router-dom";
 
 const styles = {
   paddingLink: {
@@ -38,6 +39,7 @@ export default function HistoryLogs(props) {
   const token = Cookies.get("token");
   const { user } = props;
   const [userAll, setUserAll] = useState(null);
+  const history = useHistory();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -60,7 +62,16 @@ export default function HistoryLogs(props) {
       setIsExport(false);
       setUserAll(temp.data.user);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
+      if (error.response?.status === 401) {
+        Cookies.remove("token");
+        history.replace({
+          pathname: "/admin",
+          state: {
+            login: "Please Login again!",
+          },
+        });
+      }
     }
   };
 
@@ -306,7 +317,9 @@ export default function HistoryLogs(props) {
                                   from_date: event.target.value,
                                 })
                               }
-                              max={moment(logsFromTo.to_date).format("YYYY-MM-DD")}
+                              max={moment(logsFromTo.to_date).format(
+                                "YYYY-MM-DD"
+                              )}
                             />
                           </div>
                         </div>
@@ -326,7 +339,9 @@ export default function HistoryLogs(props) {
                                   to_date: event.target.value,
                                 })
                               }
-                              min={moment(logsFromTo.from_date).format("YYYY-MM-DD")}
+                              min={moment(logsFromTo.from_date).format(
+                                "YYYY-MM-DD"
+                              )}
                               max={moment().format("YYYY-MM-DD")}
                             />
                           </div>
