@@ -618,7 +618,7 @@ export default function NotificationProblems(props) {
                           variant="outline-primary"
                           onClick={(event) => setImage(null)}
                         >
-                          Hide Image
+                          Hide
                         </Button>
                       </>
                     ) : (
@@ -632,7 +632,7 @@ export default function NotificationProblems(props) {
                             getImage(event, notiProblem.noti_id)
                           }
                         >
-                          See
+                          Show
                         </Button>
                       </>
                     )}
