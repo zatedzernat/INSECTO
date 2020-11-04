@@ -41,7 +41,7 @@ class UserController extends Controller
         $email = $request->email;
         $createFail = $this->user->createNewUser($name, $email);
         if ($createFail) {
-            $error = 'Add duplicate user eamil!';
+            $error = 'Add duplicate user email!';
             return  $this->serverResponse($error, null);
         } else {
             $success = 'Add user \'' . $name . '\' success';
