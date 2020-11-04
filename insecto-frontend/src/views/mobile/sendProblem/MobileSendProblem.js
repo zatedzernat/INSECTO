@@ -23,6 +23,7 @@ export default function MobileSendProblem(props) {
   const history = useHistory();
   const [image, setImage] = useState();
   const [fileName, setFileName] = useState("");
+  const [isLarge, setIsLarge] = useState(false);
 
   const checkData = () => {
     try {
@@ -31,6 +32,7 @@ export default function MobileSendProblem(props) {
       } else {
         setItem(props.location.state.item);
         setAllproblemDes(props.location.state.allproblemDes);
+        setIsLarge(false);
       }
     } catch (error) {
       console.log(error);
@@ -118,12 +120,20 @@ export default function MobileSendProblem(props) {
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setFileName(event.target.files[0].name);
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        setImage(e.target.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      console.log("size", event.target.files[0].size);
+      if (event.target.files[0].size < 5242880) {
+        setIsLarge(false);
+        setFileName(event.target.files[0].name);
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          setImage(e.target.result);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      } else {
+        setIsLarge(true);
+        setImage();
+        setFileName("");
+      }
     }
   };
 
@@ -227,7 +237,7 @@ export default function MobileSendProblem(props) {
                 </Form.Group>
               </Row>
             ) : null}
-                <Form.Group as={Col}>
+            <Form.Group as={Col}>
               <Row>
                 {image ? (
                   <>
@@ -269,6 +279,22 @@ export default function MobileSendProblem(props) {
             <Row>
               <Form.Group className="ml-3">
                 <Row>
+                  <span
+                    className="text-danger"
+                    style={
+                      isLarge
+                        ? {
+                            fontSize: "3%",
+                            visibility: "visible",
+                            marginBottom: 10,
+                          }
+                        : { visibility: "hidden" }
+                    }
+                  >
+                    File must be .JPG or .PNG and less than 5MB.
+                  </span>
+                </Row>
+                <Row>
                   <label
                     htmlFor="files"
                     className="btn"
@@ -283,7 +309,13 @@ export default function MobileSendProblem(props) {
                     Add photo
                   </label>
                   {image ? (
-                    <p className="pt-2 pl-3">{fileName}</p>
+                    <span className="pt-2 pl-3">
+                      {fileName.length > 13
+                        ? fileName.slice(0, 5) +
+                          "..." +
+                          fileName.slice(fileName.length - 7, fileName.length)
+                        : fileName}
+                    </span>
                   ) : (
                     <span className="pt-2 pl-3">No file chosen</span>
                   )}
