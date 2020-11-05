@@ -286,19 +286,23 @@ export default function NotificationProblems(props) {
     }
   };
 
-  const getImage = async (event, noti_id) => {
-    event.preventDefault();
-    try {
-      const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}noti_problems/getimage/${noti_id}`,
-        method: "GET",
-        responseType: "blob",
-      });
-      setImage({
-        url: URL.createObjectURL(res.data),
-      });
-    } catch (error) {
-      console.log(error);
+  const getImage = async (event, row) => {
+    if (event) {
+      event.preventDefault();
+    }
+    if (row.image_extension) {
+      try {
+        const res = await axios({
+          url: `${process.env.REACT_APP_API_URL}noti_problems/getimage/${row.noti_id}`,
+          method: "GET",
+          responseType: "blob",
+        });
+        setImage({
+          url: URL.createObjectURL(res.data),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -429,6 +433,7 @@ export default function NotificationProblems(props) {
             onClick={() => {
               setModalShowDetail(true);
               setNotiProblem(row);
+              getImage(null, row);
             }}
           >
             Detail
@@ -609,33 +614,7 @@ export default function NotificationProblems(props) {
                 </div>
                 {notiProblem.image_extension ? (
                   <div className="form-group row">
-                    {image?.url ? (
-                      <>
-                        <label className="col-sm-6 col-form-label">
-                          Image:
-                        </label>
-                        <Button
-                          variant="outline-primary"
-                          onClick={(event) => setImage(null)}
-                        >
-                          Hide
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <label className="col-sm-6 col-form-label">
-                          Image:
-                        </label>
-                        <Button
-                          variant="outline-primary"
-                          onClick={(event) =>
-                            getImage(event, notiProblem.noti_id)
-                          }
-                        >
-                          Show
-                        </Button>
-                      </>
-                    )}
+                    <label className="col-sm-6 col-form-label">Image:</label>
                     &nbsp;
                     <Button
                       variant="outline-danger"
