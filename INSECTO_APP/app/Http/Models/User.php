@@ -129,17 +129,16 @@ class User extends Authenticatable /*implements Auditable*/
 
         if ($user->exists) {
             $userByName = $this->findByName($name);
-            if ($userByName) {
+            if ($userByName && $user->email !== $userByName->email) {
                 return array(true, "name"); // createfail == true
+            }
+            if ($user->cancel_flag == "Y") {
+                $user->name = $name;
+                $user->cancel_flag = "N";
+                $user->save();
+                return array(false);
             } else {
-                if ($user->cancel_flag == "Y") {
-                    $user->name = $name;
-                    $user->cancel_flag = "N";
-                    $user->save();
-                    return array(false);
-                } else {
-                    return array(true, "email");
-                }
+                return array(true, "email");
             }
         } else {
             $userByName = $this->findByName($name);
@@ -150,18 +149,6 @@ class User extends Authenticatable /*implements Auditable*/
                 return array(false);
             }
         }
-
-        // //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
-        // if (!$user->wasRecentlyCreated) {
-        //     if ($user->cancel_flag == "Y") {
-        //         $user->name = $name;
-        //         $user->cancel_flag = "N";
-        //         $user->save();
-        //     } else {
-        //         return true;
-        //     }
-        // }
-        // return false;
     }
 
     public function updateUser($id, $name)
