@@ -201,12 +201,12 @@ export default function User(props) {
         sortable: true,
       },
       {
-        name: "Name",
+        name: "Name*",
         selector: "name",
         sortable: true,
       },
       {
-        name: "Email",
+        name: "Email*",
         selector: "email",
         sortable: true,
       },

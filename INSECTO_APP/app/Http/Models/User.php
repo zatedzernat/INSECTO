@@ -106,9 +106,19 @@ class User extends Authenticatable /*implements Auditable*/
         }
     }
 
+    public function findByName($name)
+    {
+        $user = User::where('name', $name)->first();
+        if ($user) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
+
     public function createNewUser($name, $email)
     {
-        $user = User::firstOrCreate(
+        $user = User::firstOrNew(
             ['email' => $email],
             [
                 'name' => $name,
@@ -117,25 +127,54 @@ class User extends Authenticatable /*implements Auditable*/
             ]
         );
 
-        //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
-        if (!$user->wasRecentlyCreated) {
-            if ($user->cancel_flag == "Y") {
-                $user->name = $name;
-                $user->cancel_flag = "N";
-                $user->save();
+        if ($user->exists) {
+            $userByName = $this->findByName($name);
+            if ($userByName) {
+                return array(true, "name"); // createfail == true
             } else {
-                return true;
+                if ($user->cancel_flag == "Y") {
+                    $user->name = $name;
+                    $user->cancel_flag = "N";
+                    $user->save();
+                    return array(false);
+                } else {
+                    return array(true, "email");
+                }
+            }
+        } else {
+            $userByName = $this->findByName($name);
+            if ($userByName) {
+                return array(true, "name"); // createfail == true
+            } else {
+                $user->save();
+                return array(false);
             }
         }
-        return false;
+
+        // //* when delete (chang cc_flag to y) and want to add same thing it will change cc_flg to n or return error (create duplicate)
+        // if (!$user->wasRecentlyCreated) {
+        //     if ($user->cancel_flag == "Y") {
+        //         $user->name = $name;
+        //         $user->cancel_flag = "N";
+        //         $user->save();
+        //     } else {
+        //         return true;
+        //     }
+        // }
+        // return false;
     }
 
     public function updateUser($id, $name)
     {
-        $user = User::find($id);
-        $user->name = $name;
-        $user->save();
-        return true;
+        $userByName = $this->findByName($name);
+        if ($userByName) {
+            return false;
+        } else {
+            $user = User::find($id);
+            $user->name = $name;
+            $user->save();
+            return true;
+        }
     }
 
     public function deleteUser($id)

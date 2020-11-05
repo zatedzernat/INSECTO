@@ -40,8 +40,8 @@ class UserController extends Controller
         $name = $request->name;
         $email = $request->email;
         $createFail = $this->user->createNewUser($name, $email);
-        if ($createFail) {
-            $error = 'Add duplicate user email!';
+        if ($createFail[0]) {
+            $error = 'Add duplicate user ' . $createFail[1] . '!';
             return  $this->serverResponse($error, null);
         } else {
             $success = 'Add user \'' . $name . '\' success';
@@ -75,6 +75,9 @@ class UserController extends Controller
         if ($isSuccess) {
             $success = 'Update user \'' . $name . '\' success';
             return  $this->serverResponse(null, $success);
+        } else {
+            $error = 'Update duplicate user name!';
+            return  $this->serverResponse($error, null);
         }
     }
 
