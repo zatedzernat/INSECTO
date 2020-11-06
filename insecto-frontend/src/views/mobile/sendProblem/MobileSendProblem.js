@@ -22,7 +22,7 @@ export default function MobileSendProblem(props) {
   const code = props.match.params.code;
   const history = useHistory();
   const [image, setImage] = useState();
-  const [imageFile, setImageFile] = useState();
+  // const [imageFile, setImageFile] = useState();
   const [fileName, setFileName] = useState("");
   const [isLarge, setIsLarge] = useState(false);
 
@@ -81,27 +81,30 @@ export default function MobileSendProblem(props) {
   const submitSendHandle = async (event) => {
     event.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("item_id", item.item_id);
-      formData.append("problem_des_id", problemDes.problem_des_id);
-      formData.append("problem_description", problemDes.problem_description);
-      formData.append("filename", fileName);
-      formData.append("image", imageFile);
+      // const formData = new FormData();
+      // formData.append("item_id", item.item_id);
+      // formData.append("problem_des_id", problemDes.problem_des_id);
+      // formData.append("problem_description", problemDes.problem_description);
+      // formData.append("filename", fileName);
+      // formData.append("image", imageFile);
 
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}noti_problems`,
         method: "POST",
-        headers: {
-          "content-type": "multipart/form-data",
+        // headers: {
+        //   "content-type": "multipart/form-data",
+        // },
+        // data: formData,
+        data: {
+          item_id: item.item_id,
+          problem_des_id: problemDes.problem_des_id,
+          problem_description: problemDes.problem_description,
+          image: image,
+          filename: fileName,
         },
-        data: formData,
       });
 
       if (res.data.errors) {
-        // setIsError({
-        //   error: true,
-        //   message: res.data.errors,
-        // });
         Toast.fire({
           icon: "error",
           title: res.data.errors,
@@ -131,7 +134,7 @@ export default function MobileSendProblem(props) {
       if (event.target.files[0].size < 5242880) {
         setIsLarge(false);
         setFileName(event.target.files[0].name);
-        setImageFile(event.target.files[0]);
+        // setImageFile(event.target.files[0]);
         let reader = new FileReader();
         reader.onload = (e) => {
           setImage(e.target.result);
