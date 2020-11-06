@@ -3,6 +3,7 @@
 namespace App\Http\Models;
 
 use App\Exports\NotificationProblemsExport;
+use Exception;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -124,14 +125,18 @@ class Notification_Problem extends Model implements Auditable
         $noti->user_id = 2; //problem sender
         $noti->save();
 
-        if ($filename && $image) {
-            $isExists = Storage::disk('public')->exists('//noti_prob');
-            if (!($isExists)) {
-                $maked = Storage::disk('public')->makeDirectory('//noti_prob');
+        try{
+            if ($filename && $image) {
+                $isExists = Storage::disk('public')->exists('//noti_prob');
+                if (!($isExists)) {
+                    $maked = Storage::disk('public')->makeDirectory('//noti_prob');
+                }
+                $noti_id = $noti->noti_id;
+                $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
+                $img = Image::make($image)->orientate()->save($path, 40);
             }
-            $noti_id = $noti->noti_id;
-            $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
-            $img = Image::make($image)->orientate()->save($path, 40);
+        }catch(Exception $ex){
+            dd($ex);
         }
     }
 
