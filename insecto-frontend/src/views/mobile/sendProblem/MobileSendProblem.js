@@ -25,6 +25,7 @@ export default function MobileSendProblem(props) {
   // const [imageFile, setImageFile] = useState();
   const [fileName, setFileName] = useState("");
   const [isLarge, setIsLarge] = useState(false);
+  const [isHandleSent, setIsHandleSent] = useState(false);
 
   const checkData = () => {
     try {
@@ -34,6 +35,7 @@ export default function MobileSendProblem(props) {
         setItem(props.location.state.item);
         setAllproblemDes(props.location.state.allproblemDes);
         setIsLarge(false);
+        setIsHandleSent(false)
       }
     } catch (error) {
       console.log(error);
@@ -79,6 +81,7 @@ export default function MobileSendProblem(props) {
   };
 
   const submitSendHandle = async (event) => {
+    setIsHandleSent(true)
     event.preventDefault();
     try {
       // const formData = new FormData();
@@ -343,7 +346,8 @@ export default function MobileSendProblem(props) {
             </Row>
             <Row style={{ marginTop: 40 }}>
               {canSubmit ? (
-                <Button
+                isHandleSent === false ? (
+                      <Button
                   variant="light"
                   type="submit"
                   className="text-light"
@@ -353,6 +357,16 @@ export default function MobileSendProblem(props) {
                 >
                   Submit
                 </Button>
+                    ) : (
+                      <Button
+                        variant="light"
+                        block
+                        style={{ color: "white", backgroundColor: "#5091ff" }}
+                      >
+                        <i className="fas fa-1x fa-sync-alt fa-spin" />
+                      </Button>
+                    )
+                
               ) : (
                 <Button
                   variant="light"
