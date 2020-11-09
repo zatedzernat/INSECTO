@@ -120,7 +120,6 @@ class Notification_Problem extends Model implements Auditable
     public function create($item_id, $problem_des_id, $problem_description, $filename, $image)
     {
         try {
-            // dd($image);
             $noti = new Notification_Problem();
             $noti->item_id = $item_id;
             $noti->status_id = 1;
@@ -128,7 +127,17 @@ class Notification_Problem extends Model implements Auditable
             $noti->problem_description = $problem_description;
 
             if ($filename && $image) {
-                $img = Image::make($image);
+                $mime_type = $image->getClientMimeType();
+                $exploded = explode('/', $mime_type);
+
+                if ($exploded[1] == "octet-stream") {
+                    $imagedata = file_get_contents($image);
+                    $base64 = base64_encode($imagedata);
+                    $img = Image::make($base64);
+                } else {
+                    $img = Image::make($image);
+                }
+                
                 $explode = explode('.', $filename);
                 $image_extension = $explode[1];
                 $noti->image_extension = $image_extension;
