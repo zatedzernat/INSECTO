@@ -127,18 +127,12 @@ class Notification_Problem extends Model implements Auditable
             $noti->problem_description = $problem_description;
 
             if ($filename && $image) {
-                // $mime_type = $image->getClientMimeType();
-                // $exploded = explode('/', $mime_type);
-
-                // if ($exploded[1] == "octet-stream") {
-                //     dd(1111);
-                //     $imagedata = file_get_contents($image);
-                //     $base64 = base64_encode($imagedata);
-                //     $img = Image::make($base64);
-                // } else {
                 $img = Image::make($image);
                 $img->orientate();
-                // }
+                $img->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
 
                 $explode = explode('.', $filename);
                 $image_extension = $explode[1];
