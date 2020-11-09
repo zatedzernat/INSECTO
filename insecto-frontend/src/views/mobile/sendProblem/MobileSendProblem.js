@@ -22,6 +22,7 @@ export default function MobileSendProblem(props) {
   const code = props.match.params.code;
   const history = useHistory();
   const [image, setImage] = useState();
+  const [imageFormData, setImageFormData] = useState();
   const [fileName, setFileName] = useState("");
   const [isLarge, setIsLarge] = useState(false);
   const [isHandleSent, setIsHandleSent] = useState(false);
@@ -83,17 +84,29 @@ export default function MobileSendProblem(props) {
     setIsHandleSent(true);
     event.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append("item_id", item.item_id);
+      formData.append("problem_des_id", problemDes.problem_des_id);
+      formData.append("problem_description", problemDes.problem_description);
+      formData.append("filename", fileName);
+      formData.append("image", imageFormData);
+
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}noti_problems`,
         method: "POST",
-        data: {
-          item_id: item.item_id,
-          problem_des_id: problemDes.problem_des_id,
-          problem_description: problemDes.problem_description,
-          image: image,
-          filename: fileName,
+        headers: {
+          "content-type": "multipart/form-data",
         },
+        data: formData,
+        // data: {
+        //   item_id: item.item_id,
+        //   problem_des_id: problemDes.problem_des_id,
+        //   problem_description: problemDes.problem_description,
+        //   image: image,
+        //   filename: fileName,
+        // },
       });
+      setImageFormData(null);
       setIsHandleSent(false);
       if (res.data.errors) {
         Toast.fire({
@@ -124,6 +137,7 @@ export default function MobileSendProblem(props) {
       console.log("size", event.target.files[0].size);
       if (event.target.files[0].size < 5242880) {
         setIsLarge(false);
+        setImageFormData(event.target.files[0]);
         setFileName(event.target.files[0].name);
         let reader = new FileReader();
         reader.onload = (e) => {

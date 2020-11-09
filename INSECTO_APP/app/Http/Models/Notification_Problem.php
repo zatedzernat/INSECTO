@@ -120,6 +120,7 @@ class Notification_Problem extends Model implements Auditable
     public function create($item_id, $problem_des_id, $problem_description, $filename, $image)
     {
         try {
+            // dd($image);
             $noti = new Notification_Problem();
             $noti->item_id = $item_id;
             $noti->status_id = 1;
@@ -135,7 +136,6 @@ class Notification_Problem extends Model implements Auditable
             $noti->cancel_flag = 'N';
             $noti->user_id = 2; //problem sender
             $noti->save();
-
             if ($filename && $image) {
                 $isExists = Storage::disk('public')->exists('//noti_prob');
                 if (!($isExists)) {
@@ -143,9 +143,7 @@ class Notification_Problem extends Model implements Auditable
                 }
                 $noti_id = $noti->noti_id;
                 $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
-                // dd($path);
                 $img = Image::make($image);
-                // dd($img);
                 $img->save($path, 40);
                 return null;
             }
