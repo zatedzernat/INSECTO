@@ -129,10 +129,10 @@ class Notification_Problem extends Model implements Auditable
             if ($filename && $image) {
                 $img = Image::make($image);
                 $img->orientate();
-                $img->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+                // $img->resize(800, null, function ($constraint) {
+                //     $constraint->aspectRatio();
+                //     $constraint->upsize();
+                // });
 
                 $explode = explode('.', $filename);
                 $image_extension = $explode[1];
