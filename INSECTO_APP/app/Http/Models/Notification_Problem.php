@@ -137,6 +137,7 @@ class Notification_Problem extends Model implements Auditable
                 //     $img = Image::make($base64);
                 // } else {
                 $img = Image::make($image);
+                $img->orientate();
                 // }
 
                 $explode = explode('.', $filename);
