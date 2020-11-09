@@ -93,10 +93,15 @@ class NotificationProblemController extends Controller
             }
         }
 
-        $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $filename, $image);
+        $exception_message = $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $filename, $image);
+        if ($exception_message) {
+            $error = $exception_message;
+            return $this->serverResponse($error, null);
+        } else {
 
-        $success =  "Send Problem Success";
-        return $this->serverResponse(null, $success);
+            $success =  "Send Problem Success";
+            return $this->serverResponse(null, $success);
+        }
     }
 
     /**

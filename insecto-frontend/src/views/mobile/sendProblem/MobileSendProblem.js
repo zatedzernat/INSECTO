@@ -107,6 +107,7 @@ export default function MobileSendProblem(props) {
         // },
       });
       setImageFile(null);
+      setIsHandleSent(false);
       if (res.data.errors) {
         Toast.fire({
           icon: "error",

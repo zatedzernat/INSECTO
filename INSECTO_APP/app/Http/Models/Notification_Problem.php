@@ -109,23 +109,23 @@ class Notification_Problem extends Model implements Auditable
 
     public function create($item_id, $problem_des_id, $problem_description, $filename, $image)
     {
-        $noti = new Notification_Problem();
-        $noti->item_id = $item_id;
-        $noti->status_id = 1;
-        $noti->problem_des_id = $problem_des_id;
-        $noti->problem_description = $problem_description;
+        try {
+            $noti = new Notification_Problem();
+            $noti->item_id = $item_id;
+            $noti->status_id = 1;
+            $noti->problem_des_id = $problem_des_id;
+            $noti->problem_description = $problem_description;
 
-        if ($filename) {
-            $explode = explode('.', $filename);
-            $image_extension = $explode[1];
-            $noti->image_extension = $image_extension;
-        }
+            if ($filename) {
+                $explode = explode('.', $filename);
+                $image_extension = $explode[1];
+                $noti->image_extension = $image_extension;
+            }
 
-        $noti->cancel_flag = 'N';
-        $noti->user_id = 2; //problem sender
-        $noti->save();
+            $noti->cancel_flag = 'N';
+            $noti->user_id = 2; //problem sender
+            $noti->save();
 
-        try{
             if ($filename && $image) {
                 $isExists = Storage::disk('public')->exists('//noti_prob');
                 if (!($isExists)) {
@@ -134,9 +134,10 @@ class Notification_Problem extends Model implements Auditable
                 $noti_id = $noti->noti_id;
                 $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
                 $img = Image::make($image)->orientate()->save($path, 40);
+                return null;
             }
-        }catch(Exception $ex){
-            dd($ex);
+        } catch (Exception $ex) {
+            return $ex->getMessage();
         }
     }
 
