@@ -85,6 +85,10 @@ class NotificationProblemController extends Controller
 
         if ($problem_des_id == "etc") {
             $problem_des_id = null;
+            if ($this->noti_problem->isDuplicatedProblemDescription($item_id, $problem_description)) {
+                $error = "ปัญหานี้ถูกแจ้งแล้ว! - " . $problem_description;
+                return $this->serverResponse($error, null);
+            }
         } else {
             $problem_description = $this->problem_desc->getProblemDescription($problem_des_id);
             if ($this->noti_problem->isDuplicateProblem($item_id, $problem_des_id)) {
@@ -98,7 +102,6 @@ class NotificationProblemController extends Controller
             $error = $exception_message;
             return $this->serverResponse($error, null);
         } else {
-
             $success =  "Send Problem Success";
             return $this->serverResponse(null, $success);
         }

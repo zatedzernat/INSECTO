@@ -97,6 +97,16 @@ class Notification_Problem extends Model implements Auditable
         return $result;
     }
 
+    public function isDuplicatedProblemDescription($item_id, $problem_description)
+    {
+        $isDuplicated = Notification_Problem::where([
+            ['item_id', $item_id],
+            ['problem_description', $problem_description],
+            ['status_id', '<>', 8], //status_id = 8 = resolved
+        ])->exists();
+        return $isDuplicated;
+    }
+
     public function isDuplicateProblem($item_id, $problem_des_id)
     {
         $isDuplicated = Notification_Problem::where([
