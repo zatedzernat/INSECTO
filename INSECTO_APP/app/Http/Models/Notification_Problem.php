@@ -147,7 +147,7 @@ class Notification_Problem extends Model implements Auditable
                 return null;
             }
         } catch (Exception $ex) {
-            return $ex->getMessage();
+            dd($ex);
         }
     }
 
