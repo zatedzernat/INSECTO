@@ -127,7 +127,8 @@ class Notification_Problem extends Model implements Auditable
             $noti->problem_des_id = $problem_des_id;
             $noti->problem_description = $problem_description;
 
-            if ($filename) {
+            if ($filename && $image) {
+                $img = Image::make($image);
                 $explode = explode('.', $filename);
                 $image_extension = $explode[1];
                 $noti->image_extension = $image_extension;
@@ -136,14 +137,14 @@ class Notification_Problem extends Model implements Auditable
             $noti->cancel_flag = 'N';
             $noti->user_id = 2; //problem sender
             $noti->save();
-            if ($filename && $image) {
+
+            if ($img) {
                 $isExists = Storage::disk('public')->exists('//noti_prob');
                 if (!($isExists)) {
                     $maked = Storage::disk('public')->makeDirectory('//noti_prob');
                 }
                 $noti_id = $noti->noti_id;
                 $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
-                $img = Image::make($image);
                 $img->save($path, 40);
                 return null;
             }
