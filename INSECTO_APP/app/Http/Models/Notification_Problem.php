@@ -143,7 +143,7 @@ class Notification_Problem extends Model implements Auditable
             $noti->user_id = 2; //problem sender
             $noti->save();
 
-            if ($img) {
+            if ($filename && $image) {
                 $isExists = Storage::disk('public')->exists('//noti_prob');
                 if (!($isExists)) {
                     $maked = Storage::disk('public')->makeDirectory('//noti_prob');
