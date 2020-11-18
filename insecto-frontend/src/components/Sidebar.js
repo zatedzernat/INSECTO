@@ -17,42 +17,35 @@ export default function Sidebar(props) {
     //   sidebar from adminLTE-3.0.4 - indexedDB.html
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
       {/* Brand Logo */}
-      <Link
-        to={token ? "/admin/notification_problems" : "/admin"}
-        className="brand-link"
-        // onClick={(event) => window.location.reload()}
-      >
-        <div className="row">
-          {windowWidth < 992 ? (
-            <div className="col-2">
-              <a
-                data-widget="pushmenu"
-                href="#section"
-                role="button"
-              >
-                <i
-                  className="fas fa-bars pl-3"
-                  style={{
-                    color: "white",
-                    height: "14px",
-                    width: "16px",
-                  }}
-                />
-              </a>
-            </div>
-          ) : (
-            <></>
-          )}
-          <div className="col-10">
-            <img
-              src="/images/bug.png"
-              alt="insecto logo"
-              className="brand-image img-circle elevation-3"
-            />
-            <span className="brand-text font-weight-light">INSECTO</span>
+      <div className="row">
+        {windowWidth < 992 ? (
+          <div className="col-3">
+            <a data-widget="pushmenu" href="#section" role="button">
+              <i className="fas fa-bars pl-4 pt-4 text-white" />
+            </a>
           </div>
+        ) : (
+          <></>
+        )}
+        <div className="col-9 brand-link">
+          <Link
+            to={token ? "/admin/notification_problems" : "/admin"}
+            // className="brand-link"
+            // onClick={(event) => window.location.reload()}
+          >
+            <div>
+              <img
+                src="/images/bug.png"
+                alt="insecto logo"
+                className="brand-image img-circle elevation-3"
+              />
+              <span className="brand-text font-weight-light text-white">
+                INSECTO
+              </span>
+            </div>
+          </Link>
         </div>
-      </Link>
+      </div>
       {/* Sidebar */}
       <div className="sidebar">
         {/* Sidebar Menu */}
