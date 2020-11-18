@@ -93,7 +93,6 @@ export default function HistoryLogs(props) {
     } else if (items < allItem) {
       setDaysStore(7);
       fetchData();
-      console.log("have data", items);
     } else {
       // if (window.performance) {
       //   if (performance.navigation.type === 1) {
