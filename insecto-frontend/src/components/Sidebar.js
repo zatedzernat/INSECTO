@@ -98,7 +98,7 @@ export default function Sidebar(props) {
                     <i className="right fas fa-angle-left" />
                   </p>
                 </a>
-                <ul className="nav nav-treeview">
+                <ul className="nav nav-treeview sidebar-collapse">
                   <li className="nav-item">
                     <NavLink
                       to="/admin/buildings"
