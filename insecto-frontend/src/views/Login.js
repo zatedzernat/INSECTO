@@ -10,6 +10,7 @@ export default function Login(props) {
   // const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const token = Cookies.get("token");
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -22,6 +23,7 @@ export default function Login(props) {
     if (code !== null) {
       getToken();
     }
+    window.addEventListener("resize", handleResize);
     // eslint-disable-next-line
   }, [code]);
 
@@ -87,26 +89,35 @@ export default function Login(props) {
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
   });
+
+  const handleResize = (e) => {
+    setWindowWidth(window.innerWidth);
+  };
+
   return (
     <Content
       content={
         isAuthenticated ? null : (
           <div>
-            <div className="gandalf">
-              <div className="fireball"></div>
-              <div className="skirt"></div>
-              <div className="sleeves"></div>
-              <div className="shoulders">
-                <div className="hand left"></div>
-                <div className="hand right"></div>
+            {windowWidth > 430 ? (
+              <div className="gandalf">
+                <div className="fireball"></div>
+                <div className="skirt"></div>
+                <div className="sleeves"></div>
+                <div className="shoulders">
+                  <div className="hand left"></div>
+                  <div className="hand right"></div>
+                </div>
+                <div className="head">
+                  <div className="hair"></div>
+                  <div className="beard"></div>
+                </div>
               </div>
-              <div className="head">
-                <div className="hair"></div>
-                <div className="beard"></div>
-              </div>
-            </div>
+            ) : (
+              ""
+            )}
             <div className="message">
-              <h1 style={{ textAlign: "center" }}>403 - You Shall Not Pass</h1>
+              <h2 style={{ textAlign: "center" }}>403 - You Shall Not Pass</h2>
               <p style={{ textAlign: "center" }}>
                 Uh oh, Gandalf is blocking the way, Please Login !
                 <br />
