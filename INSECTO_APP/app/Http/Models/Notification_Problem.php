@@ -146,12 +146,12 @@ class Notification_Problem extends Model implements Auditable
             $noti->save();
 
             if ($filename && $image) {
-                $path = public_path('upload');
-                if (!(File::isDirectory($path))) {
-                    File::makeDirectory($path, 0775, true, true);
+                $isExists = Storage::disk('public')->exists('//noti_prob');
+                if (!($isExists)) {
+                    $maked = Storage::disk('public')->makeDirectory('//noti_prob');
                 }
                 $noti_id = $noti->noti_id;
-                $path = $path . '/noti_' . $noti_id . '.' . $image_extension;
+                $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
                 $img->save($path, 40);
                 return null;
             }
@@ -237,7 +237,7 @@ class Notification_Problem extends Model implements Auditable
     public function getImagePathFromNotiID($noti_id)
     {
         $noti = Notification_Problem::find($noti_id);
-        $path = public_path('upload') . '/noti_' . $noti->noti_id . '.' . $noti->image_extension;
+        $path = storage_path('app/public') . '/noti_prob/noti_' . $noti->noti_id . '.' . $noti->image_extension;
         return $path;
     }
 
@@ -245,8 +245,9 @@ class Notification_Problem extends Model implements Auditable
     {
         $noti = Notification_Problem::find($noti_id);
 
-        $path = public_path('upload') . '/noti_' . $noti->noti_id . '.' . $noti->image_extension;
-        $deleted = File::delete($path);
+        $path = '/noti_prob/noti_' . $noti->noti_id . '.' . $noti->image_extension;
+        $deleted = Storage::disk('public')->delete($path);
+
         $noti->image_extension = null;
         $noti->save();
 
