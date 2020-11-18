@@ -129,7 +129,7 @@ class Notification_Problem extends Model implements Auditable
 
             if ($filename && $image) {
                 // dd($image->getRealPath());
-                $img = Image::make($image->getRealPath());
+                $img = Image::make($image);
                 $img->orientate();
                 // $img->resize(800, null, function ($constraint) {
                 //     $constraint->aspectRatio();
