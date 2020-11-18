@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export default function Sidebar(props) {
   const token = Cookies.get("token");
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, []);
+
+  const handleResize = (e) => {
+    setWindowWidth(window.innerWidth);
+  };
   return (
     //   sidebar from adminLTE-3.0.4 - indexedDB.html
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -14,12 +22,36 @@ export default function Sidebar(props) {
         className="brand-link"
         // onClick={(event) => window.location.reload()}
       >
-        <img
-          src="/images/bug.png"
-          alt="insecto logo"
-          className="brand-image img-circle elevation-3"
-        />
-        <span className="brand-text font-weight-light">INSECTO</span>
+        <div className="row">
+          {windowWidth < 992 ? (
+            <div className="col-2">
+              <a
+                data-widget="pushmenu"
+                href="#section"
+                role="button"
+              >
+                <i
+                  className="fas fa-bars pl-3"
+                  style={{
+                    color: "white",
+                    height: "14px",
+                    width: "16px",
+                  }}
+                />
+              </a>
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="col-10">
+            <img
+              src="/images/bug.png"
+              alt="insecto logo"
+              className="brand-image img-circle elevation-3"
+            />
+            <span className="brand-text font-weight-light">INSECTO</span>
+          </div>
+        </div>
       </Link>
       {/* Sidebar */}
       <div className="sidebar">
