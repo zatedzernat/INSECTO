@@ -6,6 +6,7 @@ use App\Exports\NotificationProblemsExport;
 use Exception;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -127,6 +128,7 @@ class Notification_Problem extends Model implements Auditable
             $noti->problem_description = $problem_description;
 
             if ($filename && $image) {
+                // dd($image->getRealPath());
                 $img = Image::make($image);
                 $img->orientate();
                 // $img->resize(800, null, function ($constraint) {
