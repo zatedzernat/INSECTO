@@ -27,7 +27,7 @@ export default function Sidebar(props) {
         ) : (
           <></>
         )}
-        <div className="col-9 brand-link">
+        <div className="col brand-link">
           <Link
             to={token ? "/admin/notification_problems" : "/admin"}
             // className="brand-link"
@@ -90,7 +90,7 @@ export default function Sidebar(props) {
                   <p>Dashboard</p>
                 </NavLink>
               </li>
-              <li className="nav-item has-treeview menu-close">
+              <li className="nav-item has-treeview menu-open">
                 <a href="#section" className="nav-link">
                   <i className="nav-icon fas fa-database" />
                   <p>
