@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { useHistory, useLocation, Link } from "react-router-dom";
@@ -23,6 +24,18 @@ export default function Header(props) {
   }, [code, user]);
 
   const redirectToSSO = async (event) => {
+    if (process.env.REACT_APP_KIBANA_LOGIN) {
+      const res = await axios({
+        url: `${process.env.REACT_APP_KIBANA_LOGIN}`,
+        method: "POST",
+        headers: { "Content-Type": "application/json", "kbn-xsrf": true },
+        data: {
+          username: process.env.REACT_APP_KIBANA_USERNAME,
+          password: process.env.REACT_APP_KIBANA_PASSWORD,
+        },
+      });
+      console.log(res);
+    }
     setIsLoading(true);
     window.location = `https://std-sso-fe.sit.kmutt.ac.th/login?response_type=code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&state=insecto`;
   };
@@ -30,6 +43,9 @@ export default function Header(props) {
   const handleLogout = async (event) => {
     event.preventDefault();
     if (token) {
+      if (process.env.REACT_APP_KIBANA_LOGOUT) {
+        window.open(process.env.REACT_APP_KIBANA_LOGOUT, "_blank");
+      }
       Cookies.remove("token");
       await Toast.fire({
         icon: "success",
