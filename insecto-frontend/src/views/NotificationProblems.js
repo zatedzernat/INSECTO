@@ -554,6 +554,7 @@ export default function NotificationProblems(props) {
           />
 
           <FormModal
+            size="lg"
             show={modalShowDetail}
             onHide={() => {
               setModalShowDetail(false);
@@ -562,75 +563,86 @@ export default function NotificationProblems(props) {
             title="Detail"
             body={
               <>
-                <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">Created At:</label>
-                  <div className="col-sm-6 col-form-label">
-                    {moment(notiProblem.created_at).format(
-                      "D/MM/YYYY - HH:mm:ss"
-                    )}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">
-                    Problem Description ID:{" "}
-                  </label>
-                  <div className="col-sm-6 col-form-label">
-                    {notiProblem.problem_des_id ?? "New Problem Description**"}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">Room Name:</label>
-                  <div className="col-sm-6 col-form-label">
-                    {notiProblem.item?.room.room_name}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">
-                    Building Name:
-                  </label>
-                  <div className="col-sm-6 col-form-label">
-                    {notiProblem.item?.room.building.building_name}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">Status: </label>
-                  <div className="col-sm-6 col-form-label">
-                    {notiProblem.status?.status_name}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">
-                    Servicedesk Code:
-                  </label>
-                  <div className="col-sm-6 col-form-label">
-                    {notiProblem.service_desk_code ?? "-"}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label className="col-sm-6 col-form-label">Note: </label>
-                  <div className="col-sm-6 col-form-label">
-                    {notiProblem.note ?? "-"}
-                  </div>
-                </div>
-                {notiProblem.image_extension ? (
+                <div className="col-lg-7 float-lg-left">
                   <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">Image:</label>
-                    &nbsp;
-                    <Button
-                      variant="outline-danger"
-                      onClick={(event) => delImage(event, notiProblem.noti_id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                ) : null}
-                {image?.url ? (
-                  <div className="form-group row">
-                    <div className="mr-auto ml-auto">
-                      <img src={image.url} alt="noti_image" width="400px" />
+                    <label className="col-sm-6 col-form-label">
+                      Created At:
+                    </label>
+                    <div className="col-sm-6 col-form-label">
+                      {moment(notiProblem.created_at).format(
+                        "D/MM/YYYY - HH:mm:ss"
+                      )}
                     </div>
                   </div>
-                ) : null}
+                  <div className="form-group row">
+                    <label className="col-sm-6 col-form-label">
+                      Problem Description ID:{" "}
+                    </label>
+                    <div className="col-sm-6 col-form-label">
+                      {notiProblem.problem_des_id ??
+                        "New Problem Description**"}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-6 col-form-label">
+                      Room Name:
+                    </label>
+                    <div className="col-sm-6 col-form-label">
+                      {notiProblem.item?.room.room_name}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-6 col-form-label">
+                      Building Name:
+                    </label>
+                    <div className="col-sm-6 col-form-label">
+                      {notiProblem.item?.room.building.building_name}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-6 col-form-label">Status: </label>
+                    <div className="col-sm-6 col-form-label">
+                      {notiProblem.status?.status_name}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-6 col-form-label">
+                      Servicedesk Code:
+                    </label>
+                    <div className="col-sm-6 col-form-label">
+                      {notiProblem.service_desk_code ?? "-"}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-6 col-form-label">Note: </label>
+                    <div className="col-sm-6 col-form-label">
+                      {notiProblem.note ?? "-"}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-5 float-lg-right">
+                  {notiProblem.image_extension ? (
+                    <div className="form-group row">
+                      <label className="col-sm-6 col-form-label">Image:</label>
+                      &nbsp;
+                      <Button
+                        variant="outline-danger"
+                        onClick={(event) =>
+                          delImage(event, notiProblem.noti_id)
+                        }
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  ) : null}
+                  {image?.url ? (
+                    <div className="form-group row">
+                      <div className="mr-auto ml-auto">
+                        <img src={image.url} alt="noti_image" width="300px"/>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
               </>
             }
             method="POST"
