@@ -153,8 +153,9 @@ class Notification_Problem extends Model implements Auditable
                 $noti_id = $noti->noti_id;
                 $path = storage_path('app/public') . '/noti_prob/noti_' . $noti_id . '.' . $image_extension;
                 $img->save($path, 40);
-                return null;
             }
+
+            return $noti;
         } catch (Exception $ex) {
             dd($ex);
         }

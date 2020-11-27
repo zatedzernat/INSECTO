@@ -9,8 +9,10 @@ use App\Http\Models\Room;
 use App\Http\Models\Status;
 use App\Http\Requests\NotiUpdateFormRequest;
 use App\Http\Requests\SendProblemRequest;
+use App\Mail\NotiToMail;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class NotificationProblemController extends Controller
 {
@@ -97,14 +99,19 @@ class NotificationProblemController extends Controller
             }
         }
 
-        $exception_message = $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $filename, $image);
-        // if ($exception_message) {
-        //     $error = $exception_message;
-        //     return $this->serverResponse($error, null);
-        // } else {
+        $noti = $this->noti_problem->create($item_id, $problem_des_id, $problem_description, $filename, $image);
+        $url = $request->url;
+        $url = $url . "/admin/notification_problems";
+        $this->NotiToMail($noti, $url); //send mail
+
         $success =  "Send Problem Success";
         return $this->serverResponse(null, $success);
-        // }
+    }
+
+    public function NotiToMail($noti, $url)
+    {
+        $email = config('app.admin_mail');
+        Mail::to($email)->send(new NotiToMail($noti, $url));
     }
 
     /**

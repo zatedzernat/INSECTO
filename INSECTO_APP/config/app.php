@@ -131,6 +131,8 @@ return [
 
     'client_secret' => env('CLIENT_SECRET'),
 
+    'admin_mail' => env('ADMIN_MAIL'),
+
     'cipher' => 'AES-256-CBC',
 
     /*
