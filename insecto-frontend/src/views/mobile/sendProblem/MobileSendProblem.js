@@ -90,6 +90,7 @@ export default function MobileSendProblem(props) {
       formData.append("problem_description", problemDes.problem_description);
       formData.append("filename", fileName);
       formData.append("image", imageFormData);
+      formData.append("url", window.location.origin)
 
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}noti_problems`,
@@ -233,7 +234,7 @@ export default function MobileSendProblem(props) {
                   </option>
                 ))}
                 <option key="0" value="etc">
-                  อื่น ๆ
+                  etc.
                 </option>
               </Form.Control>
             </Form.Group>
