@@ -13,5 +13,5 @@
 <p>Problem ID: {{ $noti->problem_des_id ?? "***New Problem***" }}
 <p>Problem Description: {{ $noti->problem_description }}</p>
 <p>----------------------------------------------------------</p>
-<p>Link: {{ $url }} </p>
+<p>Link: <a href={{ $url }}> {{ $url }} </a></p>
 
