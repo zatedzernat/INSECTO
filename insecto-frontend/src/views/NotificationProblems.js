@@ -664,7 +664,7 @@ export default function NotificationProblems(props) {
               </>
             }
             method="POST"
-            close="Close"
+            // close="Close"
           />
 
           <FormModal
