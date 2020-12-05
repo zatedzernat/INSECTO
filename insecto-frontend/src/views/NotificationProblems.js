@@ -385,18 +385,19 @@ export default function NotificationProblems(props) {
         name: "Item Name",
         selector: "item.item_name",
         sortable: true,
-        width: "130px",
+        width: "170px",
       },
       {
         name: "Problem Decription",
         selector: "problem_description",
         sortable: true,
+        width: "300px",
       },
       {
         name: "Room Code",
         selector: "item.room.room_code",
         sortable: true,
-        width: "125px",
+        width: "140px",
       },
       {
         name: "Status",
@@ -422,10 +423,11 @@ export default function NotificationProblems(props) {
         name: "User",
         selector: "user.name",
         sortable: true,
-        width: "135px",
+        width: "150px",
       },
       {
         name: "Detail",
+        width: "80px",
         cell: (row) => (
           <Button
             variant="link"
@@ -554,7 +556,7 @@ export default function NotificationProblems(props) {
           />
 
           <FormModal
-            size="lg"
+            size="xl"
             show={modalShowDetail}
             onHide={() => {
               setModalShowDetail(false);
@@ -565,65 +567,81 @@ export default function NotificationProblems(props) {
               <>
                 <div className="col-lg-7 float-lg-left">
                   <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">
-                      Created At:
+                    <label className="col-sm-5 col-form-label">
+                      Item Name:{" "}
                     </label>
-                    <div className="col-sm-6 col-form-label">
-                      {moment(notiProblem.created_at).format(
-                        "D/MM/YYYY - HH:mm:ss"
-                      )}
+                    <div className="col-sm-7 col-form-label">
+                      {notiProblem.item?.item_name}
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">
+                    <label className="col-sm-5 col-form-label">
                       Problem Description ID:{" "}
                     </label>
-                    <div className="col-sm-6 col-form-label">
+                    <div className="col-sm-7 col-form-label">
                       {notiProblem.problem_des_id ??
                         "New Problem Description**"}
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">
+                    <label className="col-sm-5 col-form-label">
+                      Problem Description:{" "}
+                    </label>
+                    <div className="col-sm-7 col-form-label">
+                      {notiProblem.problem_description}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-5 col-form-label">
                       Room Name:
                     </label>
-                    <div className="col-sm-6 col-form-label">
+                    <div className="col-sm-7 col-form-label">
                       {notiProblem.item?.room.room_name}
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">
+                    <label className="col-sm-5 col-form-label">
                       Building Name:
                     </label>
-                    <div className="col-sm-6 col-form-label">
+                    <div className="col-sm-7 col-form-label">
                       {notiProblem.item?.room.building.building_name}
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">Status: </label>
-                    <div className="col-sm-6 col-form-label">
-                      {notiProblem.status?.status_name}
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">
-                      Servicedesk Code:
+                    <label className="col-sm-5 col-form-label">
+                      Created At:
                     </label>
-                    <div className="col-sm-6 col-form-label">
-                      {notiProblem.service_desk_code ?? "-"}
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-sm-6 col-form-label">Note: </label>
-                    <div className="col-sm-6 col-form-label">
-                      {notiProblem.note ?? "-"}
+                    <div className="col-sm-7 col-form-label">
+                      {moment(notiProblem.created_at).format(
+                        "D/MM/YYYY - HH:mm:ss"
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="col-lg-5 float-lg-right">
+                  <div className="form-group row">
+                    <label className="col-sm-5 col-form-label">Status: </label>
+                    <div className="col-sm-7 col-form-label">
+                      {notiProblem.status?.status_name}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-5 col-form-label">
+                      Servicedesk Code:
+                    </label>
+                    <div className="col-sm-7 col-form-label">
+                      {notiProblem.service_desk_code ?? "-"}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-sm-5 col-form-label">Note: </label>
+                    <div className="col-sm-7 col-form-label">
+                      {notiProblem.note ?? "-"}
+                    </div>
+                  </div>
                   {notiProblem.image_extension ? (
                     <div className="form-group row">
-                      <label className="col-sm-6 col-form-label">Image:</label>
+                      <label className="col-sm-5 col-form-label">Image:</label>
                       &nbsp;
                       <Button
                         variant="outline-danger"
@@ -638,7 +656,7 @@ export default function NotificationProblems(props) {
                   {image?.url ? (
                     <div className="form-group row">
                       <div className="mr-auto ml-auto">
-                        <img src={image.url} alt="noti_image" width="300px"/>
+                        <img src={image.url} alt="noti_image" width="300px" />
                       </div>
                     </div>
                   ) : null}

@@ -121,7 +121,7 @@ export default function MobileSendProblem(props) {
         });
       }
     } catch (error) {
-      console.log(JSON.stringify(error.response.data.errors));
+      console.log(error);
     }
   };
 
